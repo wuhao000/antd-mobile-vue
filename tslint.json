@@ -1,0 +1,54 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "rules": {
+    "quotemark": {
+      "options": [
+        "single"
+      ]
+    },
+    "indent": true,
+    "max-line-length": [
+      true,
+      1000
+    ],
+    "no-console": [
+      false
+    ],
+    "no-string-literal": false,
+    "interface-name": false,
+    "no-parameter-reassignment": true,
+    "no-bitwise": false,
+    "no-object-literal-type-assertion": false,
+    "no-unused-expression": false,
+    "no-default-export": false,
+    "no-empty-interface": false,
+    "interface-over-type-literal": false,
+    "arrow-parens": false,
+    "array-type": false,
+    "object-literal-sort-keys": false,
+    "object-literal-key-quotes": false,
+    "trailing-comma": false,
+    "ordered-imports": false,
+    "max-classes-per-file": false,
+    "radix": false,
+    "no-conditional-assignment": false,
+    "no-consecutive-blank-lines": [
+      false
+    ],
+    "variable-name": false,
+    "no-shadowed-variable": false,
+    "jsdoc-format": false,
+    "only-arrow-functions": false,
+    "no-empty": false,
+    "member-ordering": false,
+    "no-var-requires": true,
+    "no-reference": false,
+    "no-namespace": false,
+    "newline-before-return": false,
+    "prefer-for-of": false,
+    "forin": false
+  }
+}
