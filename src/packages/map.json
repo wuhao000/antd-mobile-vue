@@ -1,0 +1,437 @@
+{
+  "ae-codemirror": {
+    "name": "codemirror",
+    "componentType": "general",
+    "chineseName": "代码编辑",
+    "type": "component"
+  },
+  "ae-grid": {
+    "type": "component",
+    "componentType": "general",
+    "name": "ae-grid",
+    "chineseName": "栅格"
+  },
+  "ae-icon": {
+    "type": "component",
+    "componentType": "general",
+    "name": "ae-icon",
+    "chineseName": "图标"
+  },
+  "ae-layout": {
+    "type": "component",
+    "componentType": "general",
+    "name": "ae-layout",
+    "chineseName": "布局"
+  },
+  "ae-modal": {
+    "type": "component",
+    "componentType": "general",
+    "name": "ae-modal",
+    "chineseName": "模态框"
+  },
+  "ae-tooltip": {
+    "type": "component",
+    "componentType": "general",
+    "name": "ae-tooltip",
+    "chineseName": "提示"
+  },
+  "api-proxy": {
+    "type": "tool",
+    "name": "api-proxy",
+    "chineseName": "接口代理工具"
+  },
+  "codemirror-directive": {
+    "name": "codemirror",
+    "chineseName": "代码展示",
+    "type": "directive"
+  },
+  "d-anchor": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-anchor",
+    "chineseName": "锚点"
+  },
+  "d-auto-complete": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-auto-complete",
+    "chineseName": "自动完成"
+  },
+  "d-button": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-button",
+    "chineseName": "按钮"
+  },
+  "d-calendar": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-calendar",
+    "chineseName": "日历"
+  },
+  "d-card": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-card",
+    "chineseName": "卡片"
+  },
+  "d-cascader": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-cascader",
+    "chineseName": "级联组件"
+  },
+  "d-checkbox": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-checkbox",
+    "chineseName": "单选框"
+  },
+  "d-color-picker": {
+    "name": "d-color-picker",
+    "componentType": "desktop",
+    "chineseName": "颜色选择",
+    "type": "component"
+  },
+  "d-date-picker": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-date-picker",
+    "chineseName": "日期选择框"
+  },
+  "d-description-list": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-description-list",
+    "chineseName": "列表页"
+  },
+  "d-divider": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-divider",
+    "chineseName": "分割线"
+  },
+  "d-empty": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-empty",
+    "chineseName": "空状态"
+  },
+  "d-form": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-form",
+    "chineseName": "表单"
+  },
+  "d-input": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-input",
+    "chineseName": "文本框"
+  },
+  "d-input-number": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-input-number",
+    "chineseName": "数字输入框"
+  },
+  "d-list": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-list",
+    "chineseName": "列表"
+  },
+  "d-menu": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-menu",
+    "chineseName": "菜单"
+  },
+  "d-message": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-message",
+    "chineseName": "消息提示"
+  },
+  "d-pagination": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-pagination",
+    "chineseName": "分页器"
+  },
+  "d-popover": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-popover",
+    "chineseName": "气泡卡片"
+  },
+  "d-province": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-province",
+    "chineseName": "省市区联动"
+  },
+  "d-radio": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-radio",
+    "chineseName": "单选"
+  },
+  "d-rate": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-rate",
+    "chineseName": "评分器"
+  },
+  "d-select": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-select",
+    "chineseName": "下拉选择"
+  },
+  "d-slider": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-slider",
+    "chineseName": "滑动输入条"
+  },
+  "d-switch": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-switch",
+    "chineseName": "开关"
+  },
+  "d-table": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-table",
+    "chineseName": "表格"
+  },
+  "d-tag": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-tag",
+    "chineseName": "标签"
+  },
+  "d-time-picker": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-time-picker",
+    "chineseName": "时间选择框"
+  },
+  "d-transfer": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-transfer",
+    "chineseName": "穿梭框"
+  },
+  "d-tree": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-tree",
+    "chineseName": "树"
+  },
+  "d-upload": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-upload",
+    "chineseName": "上传组件"
+  },
+  "d-year-picker": {
+    "type": "component",
+    "componentType": "desktop",
+    "name": "d-year-picker",
+    "chineseName": "年份选择器"
+  },
+  "loading-directive": {
+    "type": "directive",
+    "componentType": null,
+    "name": "loading-directive",
+    "chineseName": "加载中"
+  },
+  "m-accordion": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-accordion",
+    "chineseName": "手风琴"
+  },
+  "m-action-sheet": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-action-sheet",
+    "chineseName": "动作面板"
+  },
+  "m-animate": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-animate",
+    "chineseName": "动画"
+  },
+  "m-badge": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-badge",
+    "chineseName": "徽标"
+  },
+  "m-button": {
+    "name": "m-button",
+    "componentType": "mobile",
+    "chineseName": "移动端按钮",
+    "type": "component"
+  },
+  "m-calendar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-calendar",
+    "chineseName": "日历"
+  },
+  "m-card": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-card",
+    "chineseName": "卡片"
+  },
+  "m-carousel": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-carousel",
+    "chineseName": "走马灯"
+  },
+  "m-checkbox": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-checkbox",
+    "chineseName": "复选框"
+  },
+  "m-date-picker": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-date-picker",
+    "chineseName": "日期选择"
+  },
+  "m-drawer": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-drawer",
+    "chineseName": "抽屉"
+  },
+  "m-flex": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-flex",
+    "chineseName": "弹性布局"
+  },
+  "m-grid": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-grid",
+    "chineseName": "宫格"
+  },
+  "m-icon": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-icon",
+    "chineseName": "移动端图标"
+  },
+  "m-input": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-input",
+    "chineseName": "输入框"
+  },
+  "m-list": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-list",
+    "chineseName": "列表"
+  },
+  "m-modal": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-modal",
+    "chineseName": "模态框"
+  },
+  "m-picker": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-picker",
+    "chineseName": "选择器"
+  },
+  "m-popup": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-popup",
+    "chineseName": "弹出层"
+  },
+  "m-pull-refresh": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-pull-refresh",
+    "chineseName": "下拉刷新"
+  },
+  "m-radio": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-radio",
+    "chineseName": "单选"
+  },
+  "m-search-bar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-search-bar",
+    "chineseName": "搜索框"
+  },
+  "m-steps": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-steps",
+    "chineseName": "步骤条"
+  },
+  "m-switch": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-switch",
+    "chineseName": "开关"
+  },
+  "m-tab-bar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-tab-bar",
+    "chineseName": "标签栏"
+  },
+  "m-tabs": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-tabs",
+    "chineseName": "标签页"
+  },
+  "m-textarea": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-textarea",
+    "chineseName": "文本框"
+  },
+  "m-toast": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-toast",
+    "chineseName": "轻提示"
+  },
+  "m-white-space": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-white-space",
+    "chineseName": "上下留白"
+  },
+  "m-wing-blank": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-wing-blank",
+    "chineseName": "两翼留白"
+  },
+  "time-directive": {
+    "name": "time",
+    "chineseName": "时间展示",
+    "type": "directive"
+  }
+}

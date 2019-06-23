@@ -1,0 +1,432 @@
+@import '../../m-style/mixins';
+@import '../../m-style/themes/default';
+
+@prefixClass: am-calendar;
+
+// Animation
+
+.@{prefixClass} {
+  .animate {
+    animation-duration: .3s;
+    animation-fill-mode: both;
+  }
+
+  @keyframes fadeIn {
+
+    0% {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes fadeOut {
+
+    0% {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+    }
+  }
+
+  .fade-enter {
+    animation-name: fadeIn;
+  }
+
+  .fade-leave {
+    animation-name: fadeOut;
+  }
+
+  @keyframes slideInUp {
+
+    0% {
+      transform: translate3d(0, 100%, 0);
+      visibility: visible;
+    }
+
+    to {
+      transform: translateZ(0);
+    }
+  }
+  @keyframes slideInDown {
+
+    0% {
+      transform: translateZ(0);
+      visibility: visible;
+    }
+
+    to {
+      transform: translate3d(0, 100%, 0);
+    }
+  }
+  @keyframes slideInLeft {
+
+    0% {
+      transform: translate3d(100%, 0, 0);
+      visibility: visible;
+    }
+
+    to {
+      transform: translateZ(0);
+    }
+  }
+  @keyframes slideInRight {
+
+    0% {
+      transform: translateZ(0);
+      visibility: visible;
+    }
+
+    to {
+      transform: translate3d(100%, 0, 0);
+    }
+  }
+
+  .slideV-enter {
+    animation-name: slideInUp;
+  }
+
+  .slideV-leave {
+    animation-name: slideInDown;
+  }
+
+  .slideH-enter {
+    animation-name: slideInLeft;
+  }
+
+  .slideH-leave {
+    animation-name: slideInRight;
+  }
+}
+
+// Calendar
+
+.@{prefixClass} {
+  .mask {
+    background: rgba(0, 0, 0, .5);
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: @modal-zindex;
+  }
+
+  .content {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    left: 0;
+    overflow-y: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: @modal-zindex;
+    padding: 0;
+  }
+
+  .header {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    margin: 5 * @hd;
+
+    .title {
+      font-size: @font-size-caption;
+      font-weight: bold;
+      text-align: center;
+      width: 100%;
+    }
+
+    .left {
+      align-items: center;
+      color: #068EEF;
+      display: flex;
+      height: 24 * @hd;
+      justify-content: center;
+      left: 5 * @hd;
+      padding: 0 8 * @hd;
+      position: absolute;
+      top: 5 * @hd;
+    }
+
+    .right {
+      align-items: center;
+      color: #068EEF;
+      display: flex;
+      font-size: 14 * @hd;
+      height: 24 * @hd;
+      justify-content: center;
+      padding: 0 8 * @hd;
+      position: absolute;
+      right: 5 * @hd;
+      top: 5 * @hd;
+    }
+  }
+
+  .timePicker {
+    border-top: 1PX #ccc solid;
+  }
+}
+
+// WeekPanel
+
+.@{prefixClass} .week-panel {
+  background: #fff;
+  border-bottom: @border-width-sm @border-color-base solid;
+  display: flex;
+  flex-shrink: 0;
+  padding: 0 2 * @hd;
+
+  .cell {
+    align-items: center;
+    color: @color-text-base;
+    display: flex;
+    font-size: @font-size-base;
+    height: 24 * @hd;
+    justify-content: center;
+    width: 100/7%;
+  }
+
+  .cell-grey {
+    color: @color-text-placeholder;
+  }
+}
+
+// DatePicker
+
+.@{prefixClass} .date-picker {
+  background: #eee;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+
+  .wrapper {
+    height: auto;
+    position: relative;
+  }
+
+  .months {
+    background: #fff;
+  }
+
+  .load-tip {
+    align-items: flex-end;
+    color: #bbb;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    padding: 10 * @hd 0;
+    position: absolute;
+    right: 0;
+    top: -40 * @hd;
+  }
+}
+
+// ConfirmPanel
+
+.@{prefixClass} .confirm-panel {
+  align-items: center;
+  background: @fill-grey;
+  border-top: @border-color-base @border-width-sm solid;
+  display: flex;
+  flex-shrink: 0;
+  padding: @h-spacing-md @h-spacing-lg;
+
+  .info {
+    font-size: @font-size-caption-sm;
+
+    p {
+      margin: 0;
+    }
+
+    p + p {
+      margin-top: @h-spacing-md;
+    }
+
+    .grey {
+      color: @color-text-placeholder;
+    }
+  }
+
+  .button {
+    background: @brand-primary;
+    background: @primary-button-fill;
+    border-radius: @radius-md;
+    color: @color-text-base-inverse;
+    font-size: @button-font-size;
+    margin: 0 0 0 auto;
+    padding: @h-spacing-md 0;
+    text-align: center;
+    width: 80 * @hd;
+  }
+
+  .button-disable {
+    background: @fill-disabled;
+    color: @color-text-disabled;
+  }
+
+  .button-full {
+    text-align: center;
+    width: 100%;
+  }
+}
+
+// TimePicker
+
+.@{prefixClass} .time-picker {
+  background: #fff;
+  flex-shrink: 0;
+  text-align: center;
+
+  .title {
+    align-items: center;
+    border-bottom: @border-width-sm @border-color-base solid;
+    border-top: @border-width-sm @border-color-base solid;
+    display: flex;
+    font-size: @font-size-caption;
+    height: 44 * @hd;
+    justify-content: center;
+  }
+}
+
+// SingleMonth
+
+.@{prefixClass} .single-month {
+  padding: 0;
+
+  .month-title {
+    margin: 0;
+    padding: @v-spacing-xl 0 @v-spacing-sm @h-spacing-lg;
+  }
+
+  .row {
+    align-items: baseline;
+    display: flex;
+    @cell-size: 35 * @hd;
+
+    .cell {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 100/7%;
+
+      .date-wrapper {
+        align-items: center;
+        display: flex;
+        height: @cell-size;
+        justify-content: center;
+        margin-bottom: 2 * @hd;
+        width: 100%;
+
+        .date {
+          align-items: center;
+          color: @color-text-base;
+          display: flex;
+          flex-shrink: 0;
+          font-size: @font-size-heading;
+          font-weight: bold;
+          height: @cell-size;
+          justify-content: center;
+          width: @cell-size;
+        }
+
+        .disable {
+          background: #eee;
+          border: none;
+          border-radius: 100%;
+          color: @color-text-disabled;
+        }
+
+        .grey {
+          color: @color-text-placeholder;
+        }
+
+        .important {
+          border: @border-width-sm @border-color-base solid;
+          border-radius: 100%;
+        }
+
+        .left,
+        .right {
+          border: none;
+          height: @cell-size;
+          width: 100%;
+        }
+
+        .date-selected {
+          background: @brand-primary;
+          border: none;
+          color: @color-text-base-inverse;
+          font-size: @font-size-heading;
+        }
+
+        .selected-start {
+          border-radius: 100% 0 0 100%;
+        }
+
+        .selected-single {
+          border-radius: 100%;
+        }
+
+        .selected-middle {
+          border-radius: 0;
+        }
+
+        .selected-end {
+          border-radius: 0 100% 100% 0;
+        }
+      }
+
+      .info {
+        color: @color-text-caption;
+        font-size: @font-size-icontext;
+        height: @font-size-icontext + 5;
+        overflow: hidden;
+        padding: 0 5 * @hd;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+      }
+
+      .date-selected {
+        color: @brand-primary;
+      }
+    }
+  }
+
+  .row + .row {
+    margin-top: @v-spacing-sm;
+  }
+
+  .row-xl + .row-xl {
+    margin-top: @v-spacing-xl;
+  }
+}
+
+// ShortcutPanel
+
+.@{prefixClass} .shortcut-panel {
+  align-items: center;
+  border-top: @border-color-base @border-width-sm solid;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  height: @option-height;
+  justify-content: space-between;
+  padding: 0 30 * @hd;
+
+  .item {
+    color: @brand-primary;
+    display: inline-block;
+    font-size: @font-size-caption;
+  }
+}
+

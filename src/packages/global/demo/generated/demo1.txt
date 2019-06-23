@@ -1,0 +1,85 @@
+<template>
+  <div>
+    <div>
+      <m-button type="info"
+                :block="false"
+                @click="registerAPI">注册API
+      </m-button>
+      <m-button v-if="showRequest"
+                class="m-l"
+                type="info"
+                :block="false"
+                @click="requestAPI">测试接口请求
+      </m-button>
+    </div>
+    <div class="m-t">
+      <div v-codemirror.format="code"
+           v-if="apiResult"
+           type="json">
+      </div>
+    </div>
+  </div>
+</template>
+<script lang="ts">
+  import HttpMethod from '@/packages/api-proxy/src/method';
+  import AegisUI from '@/packages/global';
+  import MButton from '@/packages/m-button/src/index.vue';
+  import {message} from 'ant-design-vue';
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+  import {ApiResponse} from '../../../../../types';
+  import Codemirror from '../../../codemirror-directive';
+
+  Vue.use(Codemirror);
+
+  @Component({
+    name: 'Demo1',
+    components: {MButton}
+  })
+  export default class Demo1 extends Vue {
+    private apiResult: any = null;
+    private showRequest: boolean = false;
+
+    get code() {
+      if (this.apiResult) {
+        return JSON.stringify(this.apiResult);
+      } else {
+        return '';
+      }
+    }
+
+    public registerAPI() {
+      AegisUI.proxyAPI({
+        user: {
+          get: {
+            url: 'https://oa.aegis-info.com/api/management/info',
+            method: HttpMethod.GET
+          }
+        }
+      }, {
+        basePath: '/api',
+        httpStatusErrorHandler: () => {
+        },
+        logicErrorHandler: (data: ApiResponse<any>, code: number): boolean => {
+          return false;
+        },
+        pathSuffix: ''
+      });
+      if (this.$api) {
+        this.showRequest = true;
+      }
+    }
+
+    public async requestAPI() {
+      try {
+        this.apiResult = await this.$api['user']['get'].r();
+      } catch (e) {
+        message.success('接口请求完成');
+        this.apiResult = e;
+      } finally {
+
+      }
+    }
+
+  }
+</script>

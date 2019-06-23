@@ -1,0 +1,19 @@
+.ant-layout {
+  height: 100%;
+
+  &-header {
+    line-height: 1;
+  }
+  &-header, &-footer {
+    height: auto;
+  }
+  &-sider {
+    & > &-children {
+      overflow: auto;
+    }
+  }
+  &, &-header, &-sider, &-footer, &-content {
+    background: transparent;
+    padding: 0;
+  }
+}

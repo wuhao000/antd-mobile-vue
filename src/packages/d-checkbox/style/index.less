@@ -1,0 +1,17 @@
+.ant-btn {
+  &.ant-checkbox-btn {
+    & + & {
+      border-left: 1px solid #8cc5ff;
+    }
+
+    &:not(:first-of-type) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &:not(:last-of-type) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+}

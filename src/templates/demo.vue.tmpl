@@ -1,0 +1,31 @@
+<template>
+  <div>
+    <div class="toc-affix">
+      <d-anchor :get-container="getContainer"
+                :offset-top="20">
+        <d-anchor-link href="#basic"
+                       title="基本"/>
+        <d-anchor-link href="#demo"
+                       title="示例"/>
+{{{anchors}}}
+        <d-anchor-link v-show="{{{propsExists}}}" href="#props"
+                       title="属性"/>
+        <d-anchor-link v-show="{{{eventsExists}}}" href="#events"
+                       title="事件"/>
+        <d-anchor-link v-show="{{{functionsExists}}}" href="#functions"
+                       title="方法"/>
+        <d-anchor-link v-show="{{{slotsExists}}}" href="#slots"
+                       title="插槽"/>
+      </d-anchor>
+    </div>
+    <div id="basic">
+      {{{title}}}
+    </div>
+    <div class="markdown-body m-b" id="demo">
+      <span></span>
+      <h2>示例代码</h2>
+    </div>
+{{{demoComponents}}}
+    {{{mdComponents}}}
+ </div>
+</template>

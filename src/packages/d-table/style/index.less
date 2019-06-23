@@ -1,0 +1,24 @@
+@charset "UTF-8";
+
+@prefixCls: ant-table;
+@spinPrefixCls: ant-spin;
+
+.@{prefixCls}-striped {
+  & > .@{spinPrefixCls}-nested-loading {
+    & > .@{spinPrefixCls}-container {
+      & > .@{prefixCls} {
+        & > .@{prefixCls}-content {
+          & > .@{prefixCls}-body {
+            & > table {
+              & > tbody.@{prefixCls}-tbody {
+                & > tr:nth-child(2n) {
+                  background-color: #FAFAFA;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

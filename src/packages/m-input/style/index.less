@@ -1,0 +1,160 @@
+@import '../../m-style/mixins';
+@import '../../m-style/themes/default';
+@import './custom-keyboard';
+
+@listPrefixCls: am-list;
+@inputPrefixCls: am-input;
+
+.@{listPrefixCls}-item {
+
+  &.@{inputPrefixCls}-item {
+    height: @list-item-height;
+    padding-left: @h-spacing-lg;
+  }
+
+  &:not(:last-child) {
+
+    .@{listPrefixCls}-line {
+      .hairline('bottom');
+    }
+  }
+
+  .@{inputPrefixCls}-label {
+    color: @color-text-base;
+    font-size: @font-size-heading;
+    margin-left: 0;
+    margin-right: @h-spacing-sm;
+    overflow: hidden;
+    padding: 2 * @hd 0;
+    text-align: left;
+    white-space: nowrap;
+
+    &.@{inputPrefixCls}-label-2 {
+      width: 2 * @input-label-width;
+    }
+
+    &.@{inputPrefixCls}-label-3 {
+      width: 3 * @input-label-width;
+    }
+
+    &.@{inputPrefixCls}-label-4 {
+      width: 4 * @input-label-width;
+    }
+
+    &.@{inputPrefixCls}-label-5 {
+      width: 5 * @input-label-width;
+    }
+
+    &.@{inputPrefixCls}-label-6 {
+      width: 6 * @input-label-width;
+    }
+
+    &.@{inputPrefixCls}-label-7 {
+      width: 7 * @input-label-width;
+    }
+  }
+
+  .@{inputPrefixCls}-control {
+    flex: 1;
+    font-size: @input-font-size;
+
+    input {
+      appearance: none;
+      background-color: transparent;
+      border: 0;
+      box-sizing: border-box;
+      color: @color-text-base;
+      font-size: @font-size-heading;
+      line-height: @line-height-base;
+      padding: 2 * @hd 0;
+      width: 100%;
+
+      &::placeholder {
+        color: @color-text-placeholder;
+        line-height: 1.2;
+      }
+
+      &:disabled {
+        background-color: #fff;
+        color: @color-text-disabled;
+      }
+    }
+  }
+
+  .@{inputPrefixCls}-clear {
+    background-color: @input-color-icon;
+    background-position: 2 * @hd 2 * @hd;
+    background-repeat: no-repeat;
+    background-size: @icon-size-sm auto;
+    border-radius: @radius-circle;
+    color: @fill-base;
+    display: none;
+    font-style: normal;
+    height: @icon-size-sm;
+    .encoded-svg-background('input_item_delete');
+
+    overflow: hidden;
+    width: @icon-size-sm;
+
+    &-active {
+      background-color: @input-color-icon-tap;
+    }
+  }
+
+  &.@{inputPrefixCls}-focus {
+
+    .@{inputPrefixCls}-clear {
+      display: block;
+    }
+  }
+
+  .@{inputPrefixCls}-extra {
+    color: @color-text-caption;
+    flex: initial;
+    font-size: @font-size-subhead;
+    line-height: @line-height-base;
+    margin-left: @h-spacing-sm;
+    max-height: @icon-size-sm;
+    min-width: 0;
+    overflow: hidden;
+    padding-right: 0;
+  }
+
+  &.@{inputPrefixCls}-error {
+
+    .@{inputPrefixCls}-control {
+
+      input {
+        color: #f50;
+      }
+    }
+
+    .@{inputPrefixCls}-error-extra {
+      background-size: @icon-size-sm auto;
+      height: @icon-size-sm;
+      margin-left: @v-spacing-sm;
+      .encoded-svg-background('error');
+
+      width: @icon-size-sm;
+    }
+  }
+
+  &.@{inputPrefixCls}-disabled {
+
+    .@{inputPrefixCls}-label {
+      color: @color-text-disabled;
+    }
+  }
+}
+
+.sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}

@@ -1,0 +1,79 @@
+<template>
+  <div>
+    <ae-layout>
+      <ae-layout-content>
+        <div style="height:200px;">
+          {{activeTab}}
+          啊啊啊啊啊啊啊啊
+        </div>
+      </ae-layout-content>
+      <ae-layout-footer>
+        <m-tab-bar v-model="activeTab">
+          <m-tab-bar-item active-icon="close"
+                          title="选项1"
+                          @click="clicked">
+            <ae-icon slot="icon"
+                     type="home"></ae-icon>
+          </m-tab-bar-item>
+          <m-tab-bar-item title="选项2">
+            <ae-icon slot="icon"
+                     type="laptop"></ae-icon>
+          </m-tab-bar-item>
+          <m-tab-bar-item title="选项2">
+            <ae-icon slot="icon"
+                     type="tool"></ae-icon>
+          </m-tab-bar-item>
+          <m-tab-bar-item title="选项2">
+            <ae-icon slot="icon"
+                     type="user"></ae-icon>
+          </m-tab-bar-item>
+        </m-tab-bar>
+      </ae-layout-footer>
+    </ae-layout>
+    <div style="height:320px;width:240px;border: 1px solid lightgray;">
+      <m-tab-bar v-model="activeTab">
+        <m-tab-bar-item active-icon="close"
+                        title="选项1"
+                        @click="clicked">
+          <ae-icon slot="icon"
+                   type="home"></ae-icon>
+          <div>aaa</div>
+        </m-tab-bar-item>
+        <m-tab-bar-item title="选项2">
+          <ae-icon slot="icon"
+                   type="laptop"></ae-icon>
+          <div>bbb</div>
+        </m-tab-bar-item>
+        <m-tab-bar-item title="选项2">
+          <ae-icon slot="icon"
+                   type="tool"></ae-icon>
+          <div>cccc</div>
+        </m-tab-bar-item>
+        <m-tab-bar-item title="选项2">
+          <ae-icon slot="icon"
+                   type="user"></ae-icon>
+          <div>ddd</div>
+        </m-tab-bar-item>
+      </m-tab-bar>
+    </div>
+  </div>
+</template>
+<script lang="ts">
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+  import MTabbar from '../../index';
+
+  Vue.use(MTabbar);
+  @Component({
+    name: 'Demo1'
+  })
+  export default class Demo1 extends Vue {
+
+    public activeTab = 0;
+
+    public clicked() {
+    }
+  }
+</script>
+<style scoped lang="less">
+</style>

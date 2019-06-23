@@ -1,0 +1,234 @@
+@import '../../style/themes/default';
+@import '../../m-style/mixins/hairline';
+
+@dawer-prefix-cls: am-popup;
+@mask-opacity: 0.6;
+
+.@{dawer-prefix-cls} {
+  height: 100%;
+  position: fixed;
+  top: 0;
+  width: 0;
+  z-index: @zindex-modal;
+
+  > * {
+    transition: transform @animation-duration-slow @ease-base-in;
+  }
+
+  &-content-wrapper {
+    overflow-y: auto;
+    position: fixed;
+  }
+
+  .@{dawer-prefix-cls}-content {
+    height: 100%;
+    width: 100%;
+  }
+
+  &-left,
+  &-right {
+    height: 100%;
+    width: 0;
+
+    .@{dawer-prefix-cls}-content-wrapper {
+      height: 100%;
+    }
+
+    &.@{dawer-prefix-cls}-open {
+      width: 100%;
+    }
+
+    &.@{dawer-prefix-cls}-open.no-mask {
+      width: 0;
+    }
+  }
+
+  &-right {
+
+    .@{dawer-prefix-cls} {
+
+      &-content-wrapper {
+        right: 0;
+      }
+    }
+  }
+
+  &-top,
+  &-bottom {
+    height: 0;
+    width: 100%;
+
+    .@{dawer-prefix-cls}-content-wrapper {
+      width: 100%;
+    }
+
+    &.@{dawer-prefix-cls}-open {
+      height: 100%;
+    }
+
+    &.@{dawer-prefix-cls}-open.no-mask {
+      height: 0;
+    }
+  }
+
+  &-bottom {
+
+    .@{dawer-prefix-cls} {
+
+      &-content-wrapper {
+        bottom: 0;
+      }
+    }
+  }
+
+  &.@{dawer-prefix-cls}-open {
+
+    .@{dawer-prefix-cls} {
+
+      &-mask {
+        animation: antdDrawerFadeIn @animation-duration-slow @ease-base-out;
+        height: 100%;
+        opacity: @mask-opacity;
+        transition: none;
+      }
+    }
+  }
+
+  &-title {
+    color: @heading-color;
+    font-size: @font-size-lg;
+    font-weight: 500;
+    line-height: 22px;
+    margin: 0;
+    &-wrap {
+      display: flex;
+    }
+  }
+
+  &-content {
+    background-clip: padding-box;
+    background-color: @component-background;
+    border: 0;
+    position: relative;
+    z-index: 1;
+
+    .@{dawer-prefix-cls}-wrapper-body {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &-close {
+    background: transparent;
+    border: 0;
+    color: @text-color-secondary;
+    cursor: pointer;
+    display: none;
+    font-weight: 700;
+    line-height: 1;
+    outline: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    text-decoration: none;
+    top: 0;
+    transition: color @animation-duration-slow;
+    z-index: 10;
+
+    &-x {
+      display: block;
+      font-size: @font-size-lg;
+      font-style: normal;
+      height: 56px;
+      line-height: 56px;
+      text-align: center;
+      text-rendering: auto;
+      text-transform: none;
+      width: 56px;
+    }
+
+    &:focus,
+    &:hover {
+      color: #444;
+      text-decoration: none;
+    }
+  }
+
+  &-header {
+    align-items: center;
+    background-image: linear-gradient(to bottom, #e7e7e7, #e7e7e7, transparent, transparent);
+    background-image: -webkit-linear-gradient(top, #e7e7e7, #e7e7e7, transparent, transparent);
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: 100% 1PX;
+    display: flex;
+    position: relative;
+    .hairline('bottom');
+
+    & & {
+
+      &-right {
+        text-align: right;
+      }
+    }
+  }
+
+  &-item {
+    align-items: center;
+    box-sizing: border-box;
+    color: @brand-primary;
+    display: flex;
+    font-size: @font-size-heading;
+    height: @option-height;
+    justify-content: center;
+    padding: @v-spacing-md @h-spacing-lg;
+
+    &-active {
+      background-color: @fill-tap;
+    }
+  }
+
+  &-title {
+    color: @color-text-base;
+    flex: 1;
+    text-align: center;
+  }
+
+  &-body {
+    font-size: @font-size-base;
+    line-height: @line-height-base;
+    word-wrap: break-word;
+    overflow-y: auto;
+    flex: 1;
+
+    .am-list-body {
+      border-top: 0;
+    }
+  }
+
+  &-mask {
+    background-color: @modal-mask-bg;
+    filter: ~'alpha(opacity=50)';
+    height: 0;
+    opacity: 0;
+    position: fixed;
+    transition: opacity @animation-duration-slow linear, height 0s ease @animation-duration-slow;
+    width: 100%;
+  }
+
+  &-open {
+    transition: transform @animation-duration-slow @ease-base-out;
+  }
+}
+
+@keyframes antdDrawerFadeIn {
+
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: @mask-opacity;
+  }
+}
