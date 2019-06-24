@@ -47,14 +47,14 @@ export default (apiObj: ApiObject<ApiDef>,
     // @ts-ignore
     return Promise.resolve(p).then((v: AxiosResponse<ApiResponse<any>>) => {
       return new Promise((resolve, reject) => {
-        if (v.data.code === 0) {
+        if (v.data.code) {
+          reject(v.data);
+        } else {
           if (pure) {
             resolve(v.data.data);
           } else {
             resolve(v.data);
           }
-        } else {
-          reject(v.data);
         }
       });
     });
@@ -68,7 +68,7 @@ export default (apiObj: ApiObject<ApiDef>,
     return Promise.resolve(p).then((v: AxiosResponse<ApiResponse<any>>) => new Promise((resolve) => {
       if ((obj.errorHandleType === undefined || obj.errorHandleType === 'global')
           && config.logicErrorHandler
-          && v.data.code !== 0) {
+          && v.data.code) {
         config.logicErrorHandler(v.data, v.data.code);
       }
       resolve(v);

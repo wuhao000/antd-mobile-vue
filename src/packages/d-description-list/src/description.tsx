@@ -22,8 +22,6 @@ class Description extends Vue {
       ...responsive[this.column],
       ...this.$attrs
     };
-    console.log(this.column);
-    console.log(attrs);
     return <Col attrs={attrs}>
       {
         this.term && <div class={this.prefixCls + '-term'}>{term}</div>
