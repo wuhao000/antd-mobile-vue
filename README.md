@@ -1,6 +1,6 @@
-# aegis-ui
+# antd-mobile-vue
 
-> 基于 Vue 私用组件库 aegis-ui
+> 基于 Vue 的移动端组件库，代码由antd-mobile转为Vue版本，目前已具备antd-mobile的绝大部分组件
 
 ## 安装
 
