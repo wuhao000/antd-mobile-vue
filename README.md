@@ -1,3 +1,8 @@
+该项目原本为公司内部项目，现放到github上开源，发布个时候项目名称改为antd-mobile-vue
+
+[查看文档](http://aegis-ui.aegis-info.com)
+
+
 # antd-mobile-vue
 
 > 基于 Vue 的移动端组件库，代码由antd-mobile转为Vue版本，目前已具备antd-mobile的绝大部分组件
