@@ -1,51 +1,61 @@
-import Vue, {VNode} from 'vue';
+import Vue from 'vue';
+import {plugin, value as ValueWrapper} from 'vue-function-api';
 import {AeAlert, AePrompt, ModalOptions} from '../../../types/components/ae-modal';
 import DButton from '../d-button';
 import DForm from '../d-form';
 import DInput from '../d-input';
 import AeModal from './src';
 
-Vue.use(DForm);
-Vue.use(DInput);
+Vue.use(plugin);
 const Modal = window.antd.Modal;
 const defaultConfirmOptions: ModalOptions = {
   centered: true,
   okText: '确认',
   cancelText: '取消'
 };
+const PromptInput = {
+  props: {
+    value: String,
+    rules: Array
+  },
+  setup(props) {
+    const currentValue = ValueWrapper(props.value);
+    return {currentValue};
+  },
+  render(this: any) {
+    // @ts-ignore
+    return <DForm
+      props={{
+        model: {inputValue: this.currentValue},
+        rules: {inputValue: this.rules}
+      }}>
+      <DForm.Item prop={'inputValue'}>
+        {
+          // @ts-ignore
+          <DInput onChange={(value) => {
+            this.$emit('input', value);
+          }} vModel={this.currentValue}/>
+        }
+      </DForm.Item>
+    </DForm>;
+  }
+};
+
 
 function createPromptContent(copyOptions: {} & ModalOptions, onChange?) {
   const rules = (copyOptions.rules || []).concat(
     copyOptions.required ? [{required: true, message: '必须输入', trigger: 'change'}] : []
   );
   const h = new Vue().$createElement;
-  return h('DForm', {
-    props: {
-      model: {
-        inputValue: copyOptions.inputValue
+  // @ts-ignore
+  return <PromptInput
+    rules={rules}
+    onInput={(value) => {
+      if (onChange) {
+        onChange(value);
       }
-    }
-  }, [
-    h('DFormItem', {
-      props: {
-        rules,
-        prop: 'inputValue'
-      }
-    }, [h('DInput', {
-      props: {
-        value: copyOptions.inputValue
-      },
-      on: {
-        input: (e) => {
-          if (typeof e === 'string') {
-            copyOptions.inputValue = e;
-            if (onChange) {
-              onChange(e);
-            }
-          }
-        }
-      }
-    })])]);
+    }}
+    value={copyOptions.inputValue}/>;
 }
 
 type Type = 'confirm' | 'alert' | 'info' | 'success' | 'error' | 'warning' | 'prompt';
@@ -95,17 +105,9 @@ function createModal(message: string | ModalOptions, title: string, icon: string
       copyOptions.okCancel = false;
       Modal.confirm(copyOptions);
     } else if (type === 'prompt') {
-      let modal = null;
       copyOptions.title = copyOptions.title || '输入';
       copyOptions.content = createPromptContent(copyOptions, (value) => {
-        if (copyOptions.content) {
-          (copyOptions.content as VNode).componentOptions.propsData = {
-            inputValue: value
-          };
-          if (modal) {
-            modal.update();
-          }
-        }
+        copyOptions.inputValue = value;
       });
       copyOptions.onOk = (e) => {
         resolve(copyOptions.inputValue);
@@ -113,7 +115,7 @@ function createModal(message: string | ModalOptions, title: string, icon: string
           e();
         }
       };
-      modal = Modal.confirm(copyOptions);
+      Modal.confirm(copyOptions);
     } else if (type === 'info') {
       copyOptions.title = copyOptions.title || '信息';
       Modal.info(copyOptions);
