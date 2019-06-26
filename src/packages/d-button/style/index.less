@@ -62,11 +62,17 @@
     }
   }
 
-  &-text {
+  &&-text {
     background: transparent;
     border: none;
     box-shadow: none;
-
+    &:hover, &:focus {
+      background: transparent;
+      color: #40a9ff;
+    }
+    .anticon + span {
+      margin-left: 4px;
+    }
     &.@{btn-prefix-cls}-primary {
       color: @btn-primary-bg;
 

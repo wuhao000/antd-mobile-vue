@@ -42,6 +42,19 @@
                 type="danger">我是一个按钮
       </d-button>
     </div>
+    <div style="background: black;">
+      <d-button text
+                icon="edit">修改
+      </d-button>
+      <d-button text
+                style="color:white;"
+                icon="delete">删除
+      </d-button>
+      <d-button text
+                style="color:white;"
+                icon="file-text">查看
+      </d-button>
+    </div>
   </div>
 </template>
 <script lang="ts">
