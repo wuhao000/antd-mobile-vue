@@ -3,9 +3,9 @@ import classNames from 'classnames';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import Icon from '../../ae-icon';
 import {Indicator} from './prop-types';
 
+const Icon = aegis.AeIcon;
 function setTransform(nodeStyle: any, value: any) {
   nodeStyle.transform = value;
   nodeStyle.webkitTransform = value;

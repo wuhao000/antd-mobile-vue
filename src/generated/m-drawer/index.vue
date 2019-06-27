@@ -37,14 +37,13 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MDrawer from '@/packages/m-drawer';
   import title from '../../packages/m-drawer/demo/README.md';
   import props from '../../packages/m-drawer/demo/props.md';
 
-  Vue.use(Anchor);
   Vue.use(MDrawer);
   @Component({
     name: 'ComponentDemo',

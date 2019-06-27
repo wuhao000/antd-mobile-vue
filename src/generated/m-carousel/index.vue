@@ -45,14 +45,13 @@
   import demo1 from './demo1.vue';
   import demo2 from './demo2.vue';
   import demo3 from './demo3.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MCarousel from '@/packages/m-carousel';
   import title from '../../packages/m-carousel/demo/README.md';
   import props from '../../packages/m-carousel/demo/props.md';
 
-  Vue.use(Anchor);
   Vue.use(MCarousel);
   @Component({
     name: 'ComponentDemo',

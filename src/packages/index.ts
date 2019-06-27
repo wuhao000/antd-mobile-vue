@@ -3,47 +3,7 @@ import Global from './global';
 import HttpMethod from './http-method';
 import VueIcon from '@ant-design/icons-vue';
 import zhCn from './moment-zh_CN';
-import AeCodemirror from './ae-codemirror';
-import AeGrid from './ae-grid';
-import AeIcon from './ae-icon';
-import AeLayout from './ae-layout';
-import AeModal from './ae-modal';
-import AeTooltip from './ae-tooltip';
 import ApiProxy from './api-proxy';
-import CodemirrorDirective from './codemirror-directive';
-import DAnchor from './d-anchor';
-import DAutoComplete from './d-auto-complete';
-import DButton from './d-button';
-import DCalendar from './d-calendar';
-import DCard from './d-card';
-import DCascader from './d-cascader';
-import DCheckbox from './d-checkbox';
-import DColorPicker from './d-color-picker';
-import DDatePicker from './d-date-picker';
-import DDescriptionList from './d-description-list';
-import DDivider from './d-divider';
-import DEmpty from './d-empty';
-import DForm from './d-form';
-import DInput from './d-input';
-import DInputNumber from './d-input-number';
-import DList from './d-list';
-import DMenu from './d-menu';
-import DMessage from './d-message';
-import DPagination from './d-pagination';
-import DPopover from './d-popover';
-import DProvince from './d-province';
-import DRadio from './d-radio';
-import DRate from './d-rate';
-import DSelect from './d-select';
-import DSlider from './d-slider';
-import DSwitch from './d-switch';
-import DTable from './d-table';
-import DTag from './d-tag';
-import DTimePicker from './d-time-picker';
-import DTransfer from './d-transfer';
-import DTree from './d-tree';
-import DUpload from './d-upload';
-import DYearPicker from './d-year-picker';
 import LoadingDirective from './loading-directive';
 import MAccordion from './m-accordion';
 import MActionSheet from './m-action-sheet';
@@ -90,47 +50,7 @@ if (window.AntDesignIcons) {
 }
 // 存储组件列表
 const components = [
-  AeCodemirror,
-	AeGrid,
-	AeIcon,
-	AeLayout,
-	AeModal,
-	AeTooltip,
-	CodemirrorDirective,
-	DAnchor,
-	DAutoComplete,
-	DButton,
-	DCalendar,
-	DCard,
-	DCascader,
-	DCheckbox,
-	DColorPicker,
-	DDatePicker,
-	DDescriptionList,
-	DDivider,
-	DEmpty,
-	DForm,
-	DInput,
-	DInputNumber,
-	DList,
-	DMenu,
-	DMessage,
-	DPagination,
-	DPopover,
-	DProvince,
-	DRadio,
-	DRate,
-	DSelect,
-	DSlider,
-	DSwitch,
-	DTable,
-	DTag,
-	DTimePicker,
-	DTransfer,
-	DTree,
-	DUpload,
-	DYearPicker,
-	LoadingDirective,
+  LoadingDirective,
 	MAccordion,
 	MActionSheet,
 	MAnimate,
@@ -181,47 +101,7 @@ export {
   // 以下是具体的组件列表
   Global,
   HttpMethod,
-  AeCodemirror,
-	AeGrid,
-	AeIcon,
-	AeLayout,
-	AeModal,
-	AeTooltip,
-	ApiProxy,
-	CodemirrorDirective,
-	DAnchor,
-	DAutoComplete,
-	DButton,
-	DCalendar,
-	DCard,
-	DCascader,
-	DCheckbox,
-	DColorPicker,
-	DDatePicker,
-	DDescriptionList,
-	DDivider,
-	DEmpty,
-	DForm,
-	DInput,
-	DInputNumber,
-	DList,
-	DMenu,
-	DMessage,
-	DPagination,
-	DPopover,
-	DProvince,
-	DRadio,
-	DRate,
-	DSelect,
-	DSlider,
-	DSwitch,
-	DTable,
-	DTag,
-	DTimePicker,
-	DTransfer,
-	DTree,
-	DUpload,
-	DYearPicker,
+  ApiProxy,
 	LoadingDirective,
 	MAccordion,
 	MActionSheet,
@@ -261,47 +141,7 @@ export default {
   install,
   Global,
   HttpMethod,
-  AeCodemirror,
-	AeGrid,
-	AeIcon,
-	AeLayout,
-	AeModal,
-	AeTooltip,
-	ApiProxy,
-	CodemirrorDirective,
-	DAnchor,
-	DAutoComplete,
-	DButton,
-	DCalendar,
-	DCard,
-	DCascader,
-	DCheckbox,
-	DColorPicker,
-	DDatePicker,
-	DDescriptionList,
-	DDivider,
-	DEmpty,
-	DForm,
-	DInput,
-	DInputNumber,
-	DList,
-	DMenu,
-	DMessage,
-	DPagination,
-	DPopover,
-	DProvince,
-	DRadio,
-	DRate,
-	DSelect,
-	DSlider,
-	DSwitch,
-	DTable,
-	DTag,
-	DTimePicker,
-	DTransfer,
-	DTree,
-	DUpload,
-	DYearPicker,
+  ApiProxy,
 	LoadingDirective,
 	MAccordion,
 	MActionSheet,

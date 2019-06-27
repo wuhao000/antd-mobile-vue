@@ -11,12 +11,10 @@
   </div>
 </template>
 <script lang="ts">
-  import DButton from '@/packages/d-button';
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import LoadingDirective from '../../index';
 
-  Vue.use(DButton);
   Vue.use(LoadingDirective);
   @Component({
     name: 'Demo1'

@@ -41,13 +41,12 @@
   import demo1 from './demo1.vue';
   import demo2 from './demo2.vue';
   import demo3 from './demo3.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import TimeDirective from '@/packages/time-directive';
   import title from '../../packages/time-directive/demo/README.md';
 
-  Vue.use(Anchor);
   Vue.use(TimeDirective);
   @Component({
     name: 'ComponentDemo',

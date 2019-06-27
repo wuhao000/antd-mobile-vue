@@ -37,14 +37,13 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MInput from '@/packages/m-input';
   import title from '../../packages/m-input/demo/README.md';
   import props from '../../packages/m-input/demo/props.md';
 
-  Vue.use(Anchor);
   Vue.use(MInput);
   @Component({
     name: 'ComponentDemo',

@@ -37,14 +37,13 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MAccordion from '@/packages/m-accordion';
   import title from '../../packages/m-accordion/demo/README.md';
   import props from '../../packages/m-accordion/demo/props.md';
 
-  Vue.use(Anchor);
   Vue.use(MAccordion);
   @Component({
     name: 'ComponentDemo',

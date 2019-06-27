@@ -33,13 +33,12 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MModal from '@/packages/m-modal';
   import title from '../../packages/m-modal/demo/README.md';
 
-  Vue.use(Anchor);
   Vue.use(MModal);
   @Component({
     name: 'ComponentDemo',

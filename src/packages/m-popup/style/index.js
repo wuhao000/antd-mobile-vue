@@ -2,4 +2,4 @@ import '../../style/index.less';
 import './index.less';
 
 // style dependencies
-import '../../d-button/style';
+import 'aegis-ui-desktop/src/packages/d-button/style';

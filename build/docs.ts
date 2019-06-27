@@ -102,13 +102,12 @@ function createDemoIndex(component: Component, componentDemoRootPath, demos: Dem
   const content = `${createDemoTemplate(demos, options)}
 <script lang="ts">
 ${demoImports}
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
 ${component.type !== 'tool' ? `  import ${component.upperCase} from '@/packages/${component.dir}';` : ''}
   ${mdImports}
 
-  Vue.use(Anchor);
 ${component.type !== 'tool' ? `  Vue.use(${component.upperCase});` : ''}
   ${generateDecorator(demos)}
   export default class ComponentDemo extends Vue {

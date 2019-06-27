@@ -1,6 +1,6 @@
 {
   "name": "ant-design-mobile-vue",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "基于Vue和ant-desing的移动端及PC端综合组件库",
   "main": "src/packages/index.ts",
   "keyword": "antd antd-mobile vue",
@@ -52,6 +52,7 @@
     "@ant-design/icons": "^1.2.1",
     "@ant-design/icons-vue": "^1.0.1",
     "@types/axios": "^0.14.0",
+    "aegis-ui-desktop": "^1.0.0",
     "antd-mobile": "^2.2.14",
     "async-validator": "^1.11.0",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",

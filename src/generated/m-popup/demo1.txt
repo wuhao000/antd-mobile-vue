@@ -11,9 +11,6 @@
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
-  import Button from '@/packages/d-button';
-
-  Vue.use(Button);
   Vue.use(MPopup);
   @Component({
     name: 'Demo1'

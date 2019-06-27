@@ -1,8 +1,8 @@
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import Icon from '../packages/ae-icon';
 
+const Icon = aegis.AeIcon;
 const httpReg = /^http(s)?:\/\//;
 
 export interface IconResProps {

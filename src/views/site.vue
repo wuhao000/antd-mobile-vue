@@ -19,7 +19,6 @@
 </template>
 <script lang="ts">
   import NavList from '@/components/nav-list.vue';
-  import Layout from '@/packages/ae-layout';
   import {routes} from '@/router';
   import UiHeader from '@/views/header.vue';
   import Vue from 'vue';
@@ -27,7 +26,6 @@
   import {Component} from 'vue-property-decorator';
 
   Vue.use(VueClipboard as any);
-  Vue.use(Layout);
   @Component({
     components: {
       UiHeader,

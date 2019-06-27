@@ -33,13 +33,13 @@
 
 <script lang="ts">
   import demo1 from './generated/demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
   import title from './README.md';
 
-  Vue.use(Anchor);
+
 
   @Component({
     name: 'ComponentDemo',

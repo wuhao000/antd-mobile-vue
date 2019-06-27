@@ -105,4 +105,5 @@ declare global {
   export const moment: any;
   export const axios: any;
   export const hljs: any;
+  export const aegis: any;
 }

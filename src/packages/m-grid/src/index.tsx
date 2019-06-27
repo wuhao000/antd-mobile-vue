@@ -2,10 +2,12 @@ import classnames from 'classnames';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import Icon from '../../ae-icon';
+
 import Carousel from '../../m-carousel';
 import Flex from '../../m-flex';
 import TouchFeedback from '../../vmc-feedback';
+
+const Icon = aegis.AeIcon;
 
 interface DataItem {
   icon?: string | object;
@@ -75,12 +77,12 @@ export default class Grid extends Vue {
         }
       }
       pagesArr.push(
-          <div
-              key={`pageitem-${pageIndex}`}
-              clas={`${prefixCls}-carousel-page`}
-          >
-            {pageRows}
-          </div>
+        <div
+          key={`pageitem-${pageIndex}`}
+          clas={`${prefixCls}-carousel-page`}
+        >
+          {pageRows}
+        </div>
       );
     }
     return pagesArr;
@@ -94,12 +96,12 @@ export default class Grid extends Vue {
     if (dataItem) {
       const {icon, text} = dataItem;
       itemEl = (
-          <div
-              class={`${prefixCls}-item-inner-content column-num-${columnNum}`}
-          >
-            {this.renderIcon(icon, prefixCls)}
-            <div class={`${prefixCls}-text`}>{text}</div>
-          </div>
+        <div
+          class={`${prefixCls}-item-inner-content column-num-${columnNum}`}
+        >
+          {this.renderIcon(icon, prefixCls)}
+          <div class={`${prefixCls}-text`}>{text}</div>
+        </div>
       );
     }
     return <div class={`${prefixCls}-item-content`}>{itemEl}</div>;
@@ -128,42 +130,42 @@ export default class Grid extends Vue {
           const el = this.data && this.data[dataIndex];
           const TouchFeedback2 = TouchFeedback as any;
           itemEl = (
-              <TouchFeedback2
-                  key={`griditem-${dataIndex}`}
-                  activeClassName={
-                    activeClassName ? activeClassName : `${prefixCls}-item-active`}
-                  activeStyle={activeStyle}
-              >
-                <Flex.Item
-                    class={`${prefixCls}-item`}
-                    nativeOn={
-                      {
-                        click: () => {
-                          this.$emit('click', el, dataIndex);
-                        }
-                      }
+            <TouchFeedback2
+              key={`griditem-${dataIndex}`}
+              activeClassName={
+                activeClassName ? activeClassName : `${prefixCls}-item-active`}
+              activeStyle={activeStyle}
+            >
+              <Flex.Item
+                class={`${prefixCls}-item`}
+                nativeOn={
+                  {
+                    click: () => {
+                      this.$emit('click', el, dataIndex);
                     }
-                    style={colStyle}
-                >
-                  {this.renderItem(el, dataIndex, cols)}
-                </Flex.Item>
-              </TouchFeedback2>
+                  }
+                }
+                style={colStyle}
+              >
+                {this.renderItem(el, dataIndex, cols)}
+              </Flex.Item>
+            </TouchFeedback2>
           );
         } else {
           itemEl = (
-              <Flex.Item
-                  key={`griditem-${dataIndex}`}
-                  class={`${prefixCls}-item ${prefixCls}-null-item`}
-                  style={colStyle}
-              />
+            <Flex.Item
+              key={`griditem-${dataIndex}`}
+              class={`${prefixCls}-item ${prefixCls}-null-item`}
+              style={colStyle}
+            />
           );
         }
         rowArr.push(itemEl);
       }
       rowsArr.push(
-          <Flex justify={'center'} align={'stretch'} key={`gridline-${i}`}>
-            {rowArr}
-          </Flex>
+        <Flex justify={'center'} align={'stretch'} key={`gridline-${i}`}>
+          {rowArr}
+        </Flex>
       );
     }
     return rowsArr;
@@ -207,13 +209,13 @@ export default class Grid extends Vue {
         };
       }
       renderEl = (
-          <Carousel
-              initialSlideWidth={initialSlideWidth}
-              {...restPropsForCarousel}
-              {...carouselProps}
-          >
-            {this.renderCarousel(rowsArr, pageCount, rowCount)}
-          </Carousel>
+        <Carousel
+          initialSlideWidth={initialSlideWidth}
+          {...restPropsForCarousel}
+          {...carouselProps}
+        >
+          {this.renderCarousel(rowsArr, pageCount, rowCount)}
+        </Carousel>
       );
     } else {
       renderEl = this.getRows(rowCount, dataLength);

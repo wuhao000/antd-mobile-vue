@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Inject, Prop} from 'vue-property-decorator';
-import Icon from '../../ae-icon';
+
+const Icon = aegis.AeIcon;
 
 function isString(str) {
   return typeof str === 'string';

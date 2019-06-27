@@ -37,14 +37,13 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MSearchBar from '@/packages/m-search-bar';
   import title from '../../packages/m-search-bar/demo/README.md';
   import props from '../../packages/m-search-bar/demo/props.md';
 
-  Vue.use(Anchor);
   Vue.use(MSearchBar);
   @Component({
     name: 'ComponentDemo',

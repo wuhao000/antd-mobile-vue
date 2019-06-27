@@ -37,14 +37,13 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MCalendar from '@/packages/m-calendar';
   import title from '../../packages/m-calendar/demo/README.md';
   import props from '../../packages/m-calendar/demo/props.md';
 
-  Vue.use(Anchor);
   Vue.use(MCalendar);
   @Component({
     name: 'ComponentDemo',

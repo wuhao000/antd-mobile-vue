@@ -37,14 +37,13 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MActionSheet from '@/packages/m-action-sheet';
   import title from '../../packages/m-action-sheet/demo/README.md';
   import props from '../../packages/m-action-sheet/demo/props.md';
 
-  Vue.use(Anchor);
   Vue.use(MActionSheet);
   @Component({
     name: 'ComponentDemo',

@@ -37,14 +37,13 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MIcon from '@/packages/m-icon';
   import title from '../../packages/m-icon/demo/README.md';
   import props from '../../packages/m-icon/demo/props.md';
 
-  Vue.use(Anchor);
   Vue.use(MIcon);
   @Component({
     name: 'ComponentDemo',

@@ -37,14 +37,13 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MWingBlank from '@/packages/m-wing-blank';
   import title from '../../packages/m-wing-blank/demo/README.md';
   import props from '../../packages/m-wing-blank/demo/props.md';
 
-  Vue.use(Anchor);
   Vue.use(MWingBlank);
   @Component({
     name: 'ComponentDemo',

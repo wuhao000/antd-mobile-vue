@@ -33,13 +33,12 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MFlex from '@/packages/m-flex';
   import title from '../../packages/m-flex/demo/README.md';
 
-  Vue.use(Anchor);
   Vue.use(MFlex);
   @Component({
     name: 'ComponentDemo',

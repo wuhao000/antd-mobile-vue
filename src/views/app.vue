@@ -2,13 +2,11 @@
   <router-view/>
 </template>
 <script lang="ts">
-  import Layout from '@/packages/ae-layout';
   import Vue from 'vue';
   import VueClipboard from 'vue-clipboard2';
   import {Component} from 'vue-property-decorator';
 
   Vue.use(VueClipboard as any);
-  Vue.use(Layout);
   @Component({
     name: 'App'
   })

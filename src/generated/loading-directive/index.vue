@@ -33,13 +33,12 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import LoadingDirective from '@/packages/loading-directive';
   import title from '../../packages/loading-directive/demo/README.md';
 
-  Vue.use(Anchor);
   Vue.use(LoadingDirective);
   @Component({
     name: 'ComponentDemo',

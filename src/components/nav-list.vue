@@ -22,11 +22,9 @@
   </d-menu>
 </template>
 <script lang="ts">
-  import Menu from '@/packages/d-menu';
   import {Component, Prop, Vue} from 'vue-property-decorator';
   import {RouteConfig} from 'vue-router';
 
-  Vue.use(Menu);
   @Component
   export default class NavList extends Vue {
     @Prop({

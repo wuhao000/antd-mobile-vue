@@ -1,9 +1,8 @@
 import classnames from 'classnames';
 import Notification from '../../../ant/vc-notification';
-import Icon from '../../ae-icon';
 
 const prefixCls = 'am-toast';
-
+const Icon = aegis.AeIcon;
 function getMessageInstance(mask: boolean,
                             callback: (notification: any) => void) {
   (Notification as any).newInstance(

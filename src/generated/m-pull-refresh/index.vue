@@ -37,14 +37,13 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MPullRefresh from '@/packages/m-pull-refresh';
   import title from '../../packages/m-pull-refresh/demo/README.md';
   import props from '../../packages/m-pull-refresh/demo/props.md';
 
-  Vue.use(Anchor);
   Vue.use(MPullRefresh);
   @Component({
     name: 'ComponentDemo',

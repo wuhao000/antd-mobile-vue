@@ -41,14 +41,13 @@
 <script lang="ts">
   import demo1 from './demo1.vue';
   import demo2 from './demo2.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MTabs from '@/packages/m-tabs';
   import title from '../../packages/m-tabs/demo/README.md';
   import props from '../../packages/m-tabs/demo/props.md';
 
-  Vue.use(Anchor);
   Vue.use(MTabs);
   @Component({
     name: 'ComponentDemo',

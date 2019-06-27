@@ -81,8 +81,7 @@ export default class MRadioPopupList extends OptionsBasedComponent {
             }/>
         }
       </MPopup>
-      <span
-        slot='extra'>{(this['stateValue'] !== undefined && this['stateValue'] !== null) ? this.optionText : this.placeholder}</span>
+      <span slot="extra">{(this['stateValue'] !== undefined && this['stateValue'] !== null) ? this.optionText : this.placeholder}</span>
       <span>{this.title}</span>
     </Item>;
   }

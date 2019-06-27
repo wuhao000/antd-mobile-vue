@@ -12,10 +12,8 @@
 </template>
 <script lang="ts">
   import Vue from 'vue';
-  import Grid from '@/packages/ae-grid';
   import Component from 'vue-class-component';
 
-  Vue.use(Grid);
   @Component({
     name: 'Header'
   })

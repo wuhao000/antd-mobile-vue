@@ -33,13 +33,12 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MToast from '@/packages/m-toast';
   import title from '../../packages/m-toast/demo/README.md';
 
-  Vue.use(Anchor);
   Vue.use(MToast);
   @Component({
     name: 'ComponentDemo',

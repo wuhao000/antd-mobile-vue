@@ -37,14 +37,13 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MCard from '@/packages/m-card';
   import title from '../../packages/m-card/demo/README.md';
   import props from '../../packages/m-card/demo/props.md';
 
-  Vue.use(Anchor);
   Vue.use(MCard);
   @Component({
     name: 'ComponentDemo',

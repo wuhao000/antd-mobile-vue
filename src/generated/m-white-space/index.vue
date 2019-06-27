@@ -37,14 +37,13 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MWhiteSpace from '@/packages/m-white-space';
   import title from '../../packages/m-white-space/demo/README.md';
   import props from '../../packages/m-white-space/demo/props.md';
 
-  Vue.use(Anchor);
   Vue.use(MWhiteSpace);
   @Component({
     name: 'ComponentDemo',

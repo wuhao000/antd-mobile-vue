@@ -27,16 +27,10 @@
   </div>
 </template>
 <script lang="ts">
-  import Icon from '@/packages/ae-icon';
-  import Button from '@/packages/d-button';
-  import message from '@/packages/d-message';
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import {Prop} from 'vue-property-decorator';
 
-  Vue.use(message);
-  Vue.use(Button);
-  Vue.use(Icon);
   @Component({
     name: 'CodeBox'
   })

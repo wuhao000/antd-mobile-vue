@@ -6,11 +6,9 @@
   </div>
 </template>
 <script lang="ts">
-  import Grid from '@/packages/m-grid';
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
-  Vue.use(Grid);
   @Component({
     name: 'MobileDemoHome'
   })

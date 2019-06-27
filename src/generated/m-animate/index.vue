@@ -33,13 +33,12 @@
 
 <script lang="ts">
   import demo1 from './demo1.vue';
-  import Anchor from '@/packages/d-anchor';
+  
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MAnimate from '@/packages/m-animate';
   import title from '../../packages/m-animate/demo/README.md';
 
-  Vue.use(Anchor);
   Vue.use(MAnimate);
   @Component({
     name: 'ComponentDemo',
