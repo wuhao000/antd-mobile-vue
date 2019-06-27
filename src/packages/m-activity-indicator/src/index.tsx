@@ -4,7 +4,7 @@ import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
 
 @Component({
-  name: ''
+  name: 'ActivityIndicator'
 })
 export default class ActivityIndicator extends Vue {
   @Prop({

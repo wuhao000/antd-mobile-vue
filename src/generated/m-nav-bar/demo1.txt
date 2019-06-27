@@ -1,16 +1,13 @@
 <template>
   <div>
-    <m-activity-indicator size="small"/>
-    <m-activity-indicator size="large"/>
-    <m-activity-indicator text="正在加载中"/>
   </div>
 </template>
 <script lang="ts">
-  import MActivityIndicator from '../../index';
+  import MNavBar from '../../index';
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
-  Vue.use(MActivityIndicator);
+  Vue.use(MNavBar);
   @Component({
     name: 'Demo1'
   })

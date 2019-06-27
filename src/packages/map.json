@@ -118,6 +118,12 @@
     "name": "m-modal",
     "chineseName": "模态框"
   },
+  "m-nav-bar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-nav-bar",
+    "chineseName": "导航栏"
+  },
   "m-picker": {
     "type": "component",
     "componentType": "mobile",

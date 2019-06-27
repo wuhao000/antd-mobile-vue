@@ -23,6 +23,7 @@ import MIcon from './m-icon';
 import MInput from './m-input';
 import MList from './m-list';
 import MModal from './m-modal';
+import MNavBar from './m-nav-bar';
 import MPicker from './m-picker';
 import MPopup from './m-popup';
 import MPullRefresh from './m-pull-refresh';
@@ -70,6 +71,7 @@ const components = [
 	MInput,
 	MList,
 	MModal,
+	MNavBar,
 	MPicker,
 	MPopup,
 	MPullRefresh,
@@ -123,6 +125,7 @@ export {
 	MInput,
 	MList,
 	MModal,
+	MNavBar,
 	MPicker,
 	MPopup,
 	MPullRefresh,
@@ -164,6 +167,7 @@ export default {
 	MInput,
 	MList,
 	MModal,
+	MNavBar,
 	MPicker,
 	MPopup,
 	MPullRefresh,

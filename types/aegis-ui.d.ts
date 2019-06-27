@@ -17,6 +17,7 @@ import {MIconComponent} from './components/m-icon';
 import {MInputComponent} from './components/m-input';
 import {MListComponent} from './components/m-list';
 import {MModalComponent} from './components/m-modal';
+import {MNavBarComponent} from './components/m-nav-bar';
 import {MPickerComponent} from './components/m-picker';
 import {MPopupComponent} from './components/m-popup';
 import {MPullRefreshComponent} from './components/m-pull-refresh';
@@ -70,6 +71,8 @@ export class MInput extends MInputComponent {
 export class MList extends MListComponent {
 }
 export class MModal extends MModalComponent {
+}
+export class MNavBar extends MNavBarComponent {
 }
 export class MPicker extends MPickerComponent {
 }

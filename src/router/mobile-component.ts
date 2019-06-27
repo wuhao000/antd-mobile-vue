@@ -73,6 +73,10 @@ export default [{
   name: 'MModal 模态框',
   component: () => import('@/generated/m-modal/index.vue')
 }, {
+  path: 'm-nav-bar',
+  name: 'MNavBar 导航栏',
+  component: () => import('@/generated/m-nav-bar/index.vue')
+}, {
   path: 'm-picker',
   name: 'MPicker 选择器',
   component: () => import('@/generated/m-picker/index.vue')
