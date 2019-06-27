@@ -22,6 +22,12 @@
     "name": "m-action-sheet",
     "chineseName": "动作面板"
   },
+  "m-activity-indicator": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-activity-indicator",
+    "chineseName": "活动指示器"
+  },
   "m-animate": {
     "type": "component",
     "componentType": "mobile",

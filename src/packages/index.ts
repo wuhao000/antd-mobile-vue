@@ -7,6 +7,7 @@ import ApiProxy from './api-proxy';
 import LoadingDirective from './loading-directive';
 import MAccordion from './m-accordion';
 import MActionSheet from './m-action-sheet';
+import MActivityIndicator from './m-activity-indicator';
 import MAnimate from './m-animate';
 import MBadge from './m-badge';
 import MButton from './m-button';
@@ -53,6 +54,7 @@ const components = [
   LoadingDirective,
 	MAccordion,
 	MActionSheet,
+	MActivityIndicator,
 	MAnimate,
 	MBadge,
 	MButton,
@@ -105,6 +107,7 @@ export {
 	LoadingDirective,
 	MAccordion,
 	MActionSheet,
+	MActivityIndicator,
 	MAnimate,
 	MBadge,
 	MButton,
@@ -145,6 +148,7 @@ export default {
 	LoadingDirective,
 	MAccordion,
 	MActionSheet,
+	MActivityIndicator,
 	MAnimate,
 	MBadge,
 	MButton,

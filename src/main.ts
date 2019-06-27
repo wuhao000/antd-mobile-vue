@@ -1,5 +1,4 @@
 import App from '@/views/app.vue';
-import * as antd from 'antd-mobile';
 import 'highlight.js/styles/atelier-cave-dark.css';
 import Vue from 'vue';
 import AegisUI from './packages/index';

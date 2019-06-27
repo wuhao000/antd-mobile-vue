@@ -9,6 +9,10 @@ export default [{
   name: 'MActionSheet 动作面板',
   component: () => import('@/generated/m-action-sheet/index.vue')
 }, {
+  path: 'm-activity-indicator',
+  name: 'MActivityIndicator 活动指示器',
+  component: () => import('@/generated/m-activity-indicator/index.vue')
+}, {
   path: 'm-animate',
   name: 'MAnimate 动画',
   component: () => import('@/generated/m-animate/index.vue')

@@ -17,7 +17,7 @@ export default {
       component: Home
     },
     {
-      path: 'install',
+      path: 'develop',
       name: '开发',
       component: () => import('@/views/develop.vue')
     },
@@ -30,18 +30,6 @@ export default {
       path: '/global',
       name: '全局工具',
       component: () => import('@/views/global.vue')
-    },
-    {
-      path: '/general-components',
-      name: '通用组件',
-      component: () => import('@/components/components.vue'),
-      children: generalComponent
-    },
-    {
-      path: '/desktop-components',
-      name: '桌面组件',
-      component: () => import('@/components/components.vue'),
-      children: desktopComponent
     },
     {
       path: '/mobile-components',
