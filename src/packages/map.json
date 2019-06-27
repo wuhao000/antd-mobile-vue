@@ -37,7 +37,7 @@
   "m-button": {
     "name": "m-button",
     "componentType": "mobile",
-    "chineseName": "移动端按钮",
+    "chineseName": "按钮",
     "type": "component"
   },
   "m-calendar": {
@@ -92,7 +92,7 @@
     "type": "component",
     "componentType": "mobile",
     "name": "m-icon",
-    "chineseName": "移动端图标"
+    "chineseName": "图标"
   },
   "m-input": {
     "type": "component",

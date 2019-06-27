@@ -5,7 +5,7 @@
 
 # antd-mobile-vue
 
-> 基于 Vue 的移动端组件库，代码由antd-mobile转为Vue版本，目前已具备antd-mobile的绝大部分组件
+> 基于 Vue 的组件库，代码由antd-mobile转为Vue版本，目前已具备antd-mobile的绝大部分组件
 
 ## 安装
 
@@ -72,7 +72,6 @@ npm run create <name> <cn-name> <type>
 
 * name为组件名称，格式要求如下：
   * 命名统一使用小写单词，多个单词之间以-分隔
-  * ui组件以ae-、d-、m-其中之一开头，ae-表示通用组件，d-表示pc端组件，m-表示移动端组件
   * vue指令或工具类组件按实际作用命名
 * cn-name为组件的中文名称
 * type 可选ui（ui组件）、directive（vue指令）、tool（工具）

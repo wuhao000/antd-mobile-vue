@@ -17,7 +17,7 @@ export const routes = [
     component: () => import('@/components/demo.vue'),
     children: [{
       path: 'home',
-      name: '移动端演示',
+      name: '演示',
       props: true,
       component: () => import('@/components/demo/mobile/index.vue')
     }, {

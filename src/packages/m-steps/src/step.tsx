@@ -29,7 +29,7 @@ export default class Step extends Vue {
   @Prop({type: String, default: 'ant'})
   public iconPrefix?: string;
   /**
-   * 图标类型，仅支持移动端的图标名称
+   * 图标类型，仅支持的图标名称
    */
   @Prop(String)
   public icon?: string;

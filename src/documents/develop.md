@@ -14,7 +14,7 @@
 
 UI组件命名特别说明：
 
-* 移动端UI组件以M开头，例如MInput
+* UI组件以M开头，例如MInput
 * PC端UI组件以D开头，例如DInput
 * 通用UI组件以Ae开头，例如AeInput
 

@@ -18,7 +18,7 @@ export default [{
   component: () => import('@/generated/m-badge/index.vue')
 }, {
   path: 'm-button',
-  name: 'MButton 移动端按钮',
+  name: 'MButton 按钮',
   component: () => import('@/generated/m-button/index.vue')
 }, {
   path: 'm-calendar',
@@ -54,7 +54,7 @@ export default [{
   component: () => import('@/generated/m-grid/index.vue')
 }, {
   path: 'm-icon',
-  name: 'MIcon 移动端图标',
+  name: 'MIcon 图标',
   component: () => import('@/generated/m-icon/index.vue')
 }, {
   path: 'm-input',

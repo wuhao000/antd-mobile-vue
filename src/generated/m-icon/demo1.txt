@@ -1,11 +1,16 @@
 <template>
   <div>
-    <m-icon color="blue"
-            type="check-circle"></m-icon>
-    <m-icon color="blue"
-            type="search"></m-icon>
-    <m-icon type="fail"></m-icon>
-    <m-icon type="loading"></m-icon>
+    <div>
+      <m-icon color="blue"
+              type="check-circle"></m-icon>
+      <m-icon color="blue"
+              type="search"></m-icon>
+      <m-icon type="fail"></m-icon>
+      <m-icon type="loading"></m-icon>
+    </div>
+    <div>
+      <ae-icon type="user"/>
+    </div>
   </div>
 </template>
 <script lang="ts">

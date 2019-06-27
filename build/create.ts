@@ -163,7 +163,7 @@ if (args.length !== 3) {
   if (!nameReg.test(options.name)) {
     throw Error(`命名方式为-连接小写单词，不允许使用大写`);
   } else if (options.type === 'component' && !componentNameReg.test(options.name)) {
-    throw Error(`移动端UI组件以m开头，例如m-input,PC端UI组件以d开头，例如d-input,通用UI组件以ae开头，例如ae-input`);
+    throw Error(`UI组件以m开头，例如m-input,PC端UI组件以d开头，例如d-input,通用UI组件以ae开头，例如ae-input`);
   }
   // if (args.length > 1) {
   //   args.splice(0, 1);

@@ -10,13 +10,22 @@ import TouchFeedback from '../../vmc-feedback';
 export default class ActionSheet extends Vue {
   @Prop({type: String, default: 'am-action-sheet'})
   public prefixCls: string;
+  /**
+   * 取消按钮文本
+   */
   @Prop({type: String, default: '取消'})
   public cancelText: string;
+  /**
+   * 是否在点击遮罩层时关闭
+   */
   @Prop({
     type: Boolean,
     default: true
   })
   public closeOnClickingMask: boolean;
+  /**
+   * 是否在点击按钮后关闭
+   */
   @Prop({
     type: Boolean,
     default: true
@@ -27,6 +36,9 @@ export default class ActionSheet extends Vue {
     default: () => []
   })
   public menus: any[];
+  /**
+   * 是否显示取消按钮
+   */
   @Prop({type: Boolean, default: true})
   public showCancel: boolean;
   @Prop({
