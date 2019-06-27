@@ -7,6 +7,62 @@
 
 > 基于 Vue 的组件库，代码由antd-mobile转为Vue版本，目前已具备antd-mobile的绝大部分组件
 
+**与antd-mobile的组件对比**
+
+antd-mobile 共有 <code>49</code>个组件，本项目截至现在移植了<code>30</code>个
+
+组件名称 | antd-mobile | antd-mobile-vue | 说明
+--- | :---: | :---: | ---
+Accordion | √ | √
+ActionSheet | √ | √
+ActivityIndicator | √ | 
+Badge | √ | √
+Button | √ | √
+Calendar | √ | √
+Card | √ | √
+Carousel | √ | √
+Checkbox | √ | √
+DatePicker | √ | √
+DatePickerView | √ | 
+Drawer | √ | √
+Flex | √ | √
+Grid | √ | √
+Icon | √ | √
+ImagePicker | √ | 
+InputItem | √ | √
+List | √ | √
+ListView | √ | 
+Menu | √ | 
+Modal | √ | √
+NavBar | √ | 
+NoticeBar | √ | 
+Pagination | √ |
+Picker | √ | √
+PickerView | √ | √
+Popover | √ | 
+Progress | √ | 
+Radio | √ | √
+PullToRefresh | √ | √
+Result | √ | √
+SearchBar | √ | √
+SegmentedControl | √ | 
+Slider | √ | 
+Range | √ | 
+Stepper | √ | 
+Steps | √ | √
+SwipeAction | √ | 
+Switch | √ | √
+TabBar | √ | √
+Tabs | √ | √
+Tag | √ | 
+Text | √ | 
+TextareaItem | √ | √
+Toast | √ | √
+View | √ | 
+WhiteSpace | √ | √
+WingBlank | √ | √
+LocaleProvider | √ | 
+
 ## 安装
 
 ``` 
@@ -59,6 +115,16 @@ import { Alert } from "antd-mobile-vue";
   }
 })
 ```
+
+### cdn引入 ###
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+<link rel="stylesheet" href="https://public-file.aegis-info.com/antd-mobile-vue/0.3.0/antdm.css.gz">
+<script src="https://public-file.aegis-info.com/antd-mobile-vue/0.3.0/antdm.umd.min.js.gz"></script>
+```
+
+> cdn没有打包vue，因此需要独立引入vue的cdn资源
 
 ### 开发环境启动
 ```

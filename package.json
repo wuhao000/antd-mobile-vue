@@ -79,6 +79,8 @@
     "omit.js": "^1.0.2",
     "portal-vue": "^2.1.1",
     "raf": "^3.4.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "resize-observer-polyfill": "^1.5.1",
     "rmc-notification": "^1.0.0",
     "shallowequal": "^1.1.0",

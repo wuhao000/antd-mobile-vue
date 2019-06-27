@@ -1,10 +1,12 @@
 import App from '@/views/app.vue';
+import * as antd from 'antd-mobile';
 import 'highlight.js/styles/atelier-cave-dark.css';
-import zhCn from './packages/moment-zh_CN';
 import Vue from 'vue';
+import AegisUI from './packages/index';
+import zhCn from './packages/moment-zh_CN';
 import router from './router';
 import store from './store';
-import AegisUI from './packages/index';
+
 moment.updateLocale('zh-cn', zhCn);
 
 Vue.use(AegisUI);
