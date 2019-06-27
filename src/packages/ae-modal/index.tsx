@@ -1,28 +1,32 @@
 import Vue from 'vue';
-import {plugin, value as ValueWrapper} from 'vue-function-api';
+import Component from 'vue-class-component';
+import {Prop} from 'vue-property-decorator';
 import {AeAlert, AePrompt, ModalOptions} from '../../../types/components/ae-modal';
+import BaseInputComponent from '../../mixins/base-input-component';
 import DButton from '../d-button';
 import DForm from '../d-form';
 import DInput from '../d-input';
 import AeModal from './src';
 
-Vue.use(plugin);
 const Modal = window.antd.Modal;
 const defaultConfirmOptions: ModalOptions = {
   centered: true,
   okText: '确认',
   cancelText: '取消'
 };
-const PromptInput = {
-  props: {
-    value: String,
-    rules: Array
-  },
-  setup(props) {
-    const currentValue = ValueWrapper(props.value);
-    return {currentValue};
-  },
-  render(this: any) {
+
+@Component({
+  name: 'PromptInput'
+})
+class PromptInput extends BaseInputComponent {
+
+  @Prop({type: String})
+  public value: string;
+  @Prop({type: Array})
+  public rules: any[];
+  public currentValue = this.value || '';
+
+  public render(this: any) {
     // @ts-ignore
     return <DForm
       props={{
@@ -33,13 +37,15 @@ const PromptInput = {
         {
           // @ts-ignore
           <DInput onChange={(value) => {
-            this.$emit('input', value);
+            if (typeof value === 'string') {
+              this.$emit('input', value);
+            }
           }} vModel={this.currentValue}/>
         }
       </DForm.Item>
     </DForm>;
   }
-};
+}
 
 
 function createPromptContent(copyOptions: {} & ModalOptions, onChange?) {

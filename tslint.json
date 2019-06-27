@@ -6,7 +6,8 @@
   "rules": {
     "quotemark": {
       "options": [
-        "single"
+        "single",
+        "jsx-double"
       ]
     },
     "indent": true,

@@ -60,6 +60,7 @@ import {MPickerComponent} from './components/m-picker';
 import {MPopupComponent} from './components/m-popup';
 import {MPullRefreshComponent} from './components/m-pull-refresh';
 import {MRadioComponent} from './components/m-radio';
+import {MResultComponent} from './components/m-result';
 import {MSearchBarComponent} from './components/m-search-bar';
 import {MStepsComponent} from './components/m-steps';
 import {MSwitchComponent} from './components/m-switch';
@@ -194,6 +195,8 @@ export class MPopup extends MPopupComponent {
 export class MPullRefresh extends MPullRefreshComponent {
 }
 export class MRadio extends MRadioComponent {
+}
+export class MResult extends MResultComponent {
 }
 export class MSearchBar extends MSearchBarComponent {
 }

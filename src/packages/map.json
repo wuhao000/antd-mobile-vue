@@ -375,6 +375,12 @@
     "name": "m-radio",
     "chineseName": "单选"
   },
+  "m-result": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-result",
+    "chineseName": "结果页"
+  },
   "m-search-bar": {
     "type": "component",
     "componentType": "mobile",

@@ -85,6 +85,10 @@ export default [{
   name: 'MRadio 单选',
   component: () => import('@/generated/m-radio/index.vue')
 }, {
+  path: 'm-result',
+  name: 'MResult 结果页',
+  component: () => import('@/generated/m-result/index.vue')
+}, {
   path: 'm-search-bar',
   name: 'MSearchBar 搜索框',
   component: () => import('@/generated/m-search-bar/index.vue')
