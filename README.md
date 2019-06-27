@@ -15,7 +15,7 @@ antd-mobile 共有 <code>49</code>个组件，本项目截至现在移植了<cod
 --- | :---: | :---: | ---
 Accordion | √ | √
 ActionSheet | √ | √
-ActivityIndicator | √ | 
+ActivityIndicator | √ | √
 Badge | √ | √
 Button | √ | √
 Calendar | √ | √
