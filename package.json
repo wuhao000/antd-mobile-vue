@@ -24,7 +24,7 @@
     "build": "tsc -p build && npm run docs && vue-cli-service build",
     "api": "tsc -p build | node build/generate-api.js",
     "lint": "vue-cli-service lint",
-    "lib": "npm run docs && vue-cli-service build --target lib --name aegis --dest lib src/packages/index.ts",
+    "lib": "npm run docs && vue-cli-service build --target lib --name antd --dest lib src/packages/index.ts",
     "remove": "tsc -p build && node build/remove.js && npm run docs",
     "publish": "npm run lib"
   },

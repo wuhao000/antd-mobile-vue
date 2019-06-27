@@ -1,5 +1,14 @@
-module.exports =
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory(require("Vue"), require("axios"));
+	else if(typeof define === 'function' && define.amd)
+		define(["Vue", "axios"], factory);
+	else if(typeof exports === 'object')
+		exports["antd-mobile-vue"] = factory(require("Vue"), require("axios"));
+	else
+		root["antd-mobile-vue"] = factory(root["Vue"], root["axios"]);
+})((typeof self !== 'undefined' ? self : this), function(__WEBPACK_EXTERNAL_MODULE__8bbf__, __WEBPACK_EXTERNAL_MODULE_cebe__) {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -6603,7 +6612,7 @@ module.exports = {
 /***/ "8bbf":
 /***/ (function(module, exports) {
 
-module.exports = require("Vue");
+module.exports = __WEBPACK_EXTERNAL_MODULE__8bbf__;
 
 /***/ }),
 
@@ -8864,7 +8873,7 @@ module.exports = function (KEY, exec) {
 /***/ "cebe":
 /***/ (function(module, exports) {
 
-module.exports = require("axios");
+module.exports = __WEBPACK_EXTERNAL_MODULE_cebe__;
 
 /***/ }),
 
@@ -37167,4 +37176,5 @@ __webpack_require__("7075")('Map');
 /***/ })
 
 /******/ });
-//# sourceMappingURL=aegis.common.js.map
+});
+//# sourceMappingURL=antd-mobile-vue.umd.js.map

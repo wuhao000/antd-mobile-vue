@@ -31,28 +31,20 @@ export default class Result extends Vue {
   public buttonText?: string;
   @Prop({default: ''})
   public buttonType?: 'primary' | 'ghost';
-  @Prop({
-    default: () => {
-      return () => {
-      };
-    }
-  })
-  public onButtonClick?: () => void;
   public static install: (Vue) => void;
 
   public render() {
     const {
       prefixCls,
-      img,
       imgUrl,
-      title,
-      message,
       buttonText,
-      onButtonClick,
       buttonType
     } = this;
 
     let imgContent: JSX.Element | null = null;
+    const img = this.$slots.img || this.img;
+    const title = this.$slots.title || this.title;
+    const message = this.$slots.message || this.message;
     if (img) {
       imgContent = <div class={`${prefixCls}-pic`}>{img}</div>;
     } else if (imgUrl) {
@@ -78,7 +70,10 @@ export default class Result extends Vue {
           <div class={`${prefixCls}-button`}>
             {
               // @ts-ignore
-              <Button type={buttonType} onClick={onButtonClick}>
+              <Button type={buttonType}
+                      onClick={() => {
+                        this.$emit('click');
+                      }}>
                 {buttonText}
               </Button>
             }
