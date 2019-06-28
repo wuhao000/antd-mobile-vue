@@ -77,6 +77,10 @@ export default [{
   name: 'MNavBar 导航栏',
   component: () => import('@/generated/m-nav-bar/index.vue')
 }, {
+  path: 'm-notice-bar',
+  name: 'MNoticeBar 通告栏',
+  component: () => import('@/generated/m-notice-bar/index.vue')
+}, {
   path: 'm-picker',
   name: 'MPicker 选择器',
   component: () => import('@/generated/m-picker/index.vue')

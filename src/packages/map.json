@@ -124,6 +124,12 @@
     "name": "m-nav-bar",
     "chineseName": "导航栏"
   },
+  "m-notice-bar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-notice-bar",
+    "chineseName": "通告栏"
+  },
   "m-picker": {
     "type": "component",
     "componentType": "mobile",
