@@ -75,7 +75,7 @@ export default function operation(
         onClose={close}
         footer={footer}
         maskTransitionName={'am-fade'}
-        className={'am-modal-operation'}
+        class={'am-modal-operation'}
         platform={platform}
         wrapProps={{onTouchStart: onWrapTouchStart}}
       >{this.$slots.default}</Modal>;

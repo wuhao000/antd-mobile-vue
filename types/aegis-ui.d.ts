@@ -20,6 +20,7 @@ import {MListComponent} from './components/m-list';
 import {MModalComponent} from './components/m-modal';
 import {MNavBarComponent} from './components/m-nav-bar';
 import {MNoticeBarComponent} from './components/m-notice-bar';
+import {MPaginationComponent} from './components/m-pagination';
 import {MPickerComponent} from './components/m-picker';
 import {MPopupComponent} from './components/m-popup';
 import {MPullRefreshComponent} from './components/m-pull-refresh';
@@ -79,6 +80,8 @@ export class MModal extends MModalComponent {
 export class MNavBar extends MNavBarComponent {
 }
 export class MNoticeBar extends MNoticeBarComponent {
+}
+export class MPagination extends MPaginationComponent {
 }
 export class MPicker extends MPickerComponent {
 }

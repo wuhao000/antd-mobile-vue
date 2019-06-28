@@ -26,6 +26,7 @@ import MList from './m-list';
 import MModal from './m-modal';
 import MNavBar from './m-nav-bar';
 import MNoticeBar from './m-notice-bar';
+import MPagination from './m-pagination';
 import MPicker from './m-picker';
 import MPopup from './m-popup';
 import MPullRefresh from './m-pull-refresh';
@@ -76,6 +77,7 @@ const components = [
 	MModal,
 	MNavBar,
 	MNoticeBar,
+	MPagination,
 	MPicker,
 	MPopup,
 	MPullRefresh,
@@ -132,6 +134,7 @@ export {
 	MModal,
 	MNavBar,
 	MNoticeBar,
+	MPagination,
 	MPicker,
 	MPopup,
 	MPullRefresh,
@@ -176,6 +179,7 @@ export default {
 	MModal,
 	MNavBar,
 	MNoticeBar,
+	MPagination,
 	MPicker,
 	MPopup,
 	MPullRefresh,

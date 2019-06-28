@@ -85,6 +85,10 @@ export default [{
   name: 'MNoticeBar 通告栏',
   component: () => import('@/generated/m-notice-bar/index.vue')
 }, {
+  path: 'm-pagination',
+  name: 'MPagination 分页器',
+  component: () => import('@/generated/m-pagination/index.vue')
+}, {
   path: 'm-picker',
   name: 'MPicker 选择器',
   component: () => import('@/generated/m-picker/index.vue')

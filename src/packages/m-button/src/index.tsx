@@ -131,4 +131,4 @@ class Button extends Vue {
   }
 }
 
-export default Button;
+export default Button as any;

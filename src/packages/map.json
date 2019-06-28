@@ -136,6 +136,12 @@
     "name": "m-notice-bar",
     "chineseName": "通告栏"
   },
+  "m-pagination": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-pagination",
+    "chineseName": "分页器"
+  },
   "m-picker": {
     "type": "component",
     "componentType": "mobile",
