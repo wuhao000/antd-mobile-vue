@@ -14,6 +14,7 @@ import MButton from './m-button';
 import MCalendar from './m-calendar';
 import MCard from './m-card';
 import MCarousel from './m-carousel';
+import MChart from './m-chart';
 import MCheckbox from './m-checkbox';
 import MDatePicker from './m-date-picker';
 import MDrawer from './m-drawer';
@@ -63,6 +64,7 @@ const components = [
 	MCalendar,
 	MCard,
 	MCarousel,
+	MChart,
 	MCheckbox,
 	MDatePicker,
 	MDrawer,
@@ -118,6 +120,7 @@ export {
 	MCalendar,
 	MCard,
 	MCarousel,
+	MChart,
 	MCheckbox,
 	MDatePicker,
 	MDrawer,
@@ -161,6 +164,7 @@ export default {
 	MCalendar,
 	MCard,
 	MCarousel,
+	MChart,
 	MCheckbox,
 	MDatePicker,
 	MDrawer,

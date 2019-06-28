@@ -64,6 +64,12 @@
     "name": "m-carousel",
     "chineseName": "走马灯"
   },
+  "m-chart": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-chart",
+    "chineseName": "图表"
+  },
   "m-checkbox": {
     "type": "component",
     "componentType": "mobile",

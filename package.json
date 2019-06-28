@@ -1,6 +1,6 @@
 {
   "name": "ant-design-mobile-vue",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "基于Vue和ant-desing的及PC端综合组件库",
   "main": "src/packages/index.ts",
   "keyword": "antd antd-mobile vue",
@@ -51,6 +51,7 @@
   "dependencies": {
     "@ant-design/icons": "^1.2.1",
     "@ant-design/icons-vue": "^1.0.1",
+    "@antv/f2": "^3.3.9",
     "@types/axios": "^0.14.0",
     "aegis-ui-desktop": "^1.0.0",
     "antd-mobile": "^2.2.14",
