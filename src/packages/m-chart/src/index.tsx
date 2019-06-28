@@ -17,7 +17,7 @@ import VTooltip from './tooltip';
 @Component({
   name: 'VChart'
 })
-export default class VChart extends Vue {
+class VChart extends Vue {
   @Prop({type: String, default: 'mchart-'})
   public prefixCls: string;
   @Prop(Number)
@@ -290,8 +290,8 @@ export default class VChart extends Vue {
     if (typeof autoAlignXAxis === 'undefined') {
       autoAlignXAxis = true;
     }
-    const parentWidth = this.$parent.$el.clientWidth;
-    const parentHeight = this.$parent.$el.clientHeight;
+    const parentWidth = (this.$refs.wrapper as HTMLDivElement).clientWidth;
+    const parentHeight = (this.$refs.wrapper as HTMLDivElement).clientHeight;
     const chart = new F2.Chart({
       el: this.$refs.chart,
       width: this.width || parentWidth,
@@ -303,24 +303,43 @@ export default class VChart extends Vue {
       this.$emit('on-render', {chart});
       return;
     }
-
     if (!this.data || !this.data.length) {
       return;
     }
     chart.source(this.currentData);
-
     this.getFields();
-
     chart.scale(this.xField, this.currentXFieldOptions);
     chart.scale(this.yField, this.currentYFieldOptions);
+    this.renderLegend(chart);
+    this.renderTooltip(chart);
+    this.setAutoAlignXAxis(chart, autoAlignXAxis);
+    this.renderLine(chart);
+    this.renderGuide(chart);
+    this.renderArea(chart);
+    this.renderBar(chart);
+    this.renderAxis(chart);
+    this.renderPie(chart);
+    this.renderPoint(chart);
+    chart.render();
+    this.chart = chart;
+  }
 
-    if (this.legendOptions) {
-      if (this.legendOptions.disabled) {
-        chart.legend(false);
-      } else {
-        chart.legend(this.legendOptions);
-      }
-    }
+  public render() {
+    const style = {
+      backgroundColor: this.backgroundColor,
+      width: this.width + 'px',
+      height: this.height + 'px'
+    };
+    return <div style={style}
+                ref="wrapper"
+                onTouchstart={this.onTouchstart}>
+      <canvas class={`${this.prefixCls}-no-select`}
+              ref="chart"/>
+      {this.$slots.default}
+    </div>;
+  }
+
+  private renderTooltip(chart) {
     if (this.tooltipOptions) {
       if (this.barOptions) {
         this.tooltipOptions.showCrosshairs = false;
@@ -366,22 +385,10 @@ export default class VChart extends Vue {
         showCrosshairs: !this.barOption
       });
     }
-    if (autoAlignXAxis) {
-      chart.axis(this.xField, {
-        label(text, index, total) {
-          const textCfg: any = {};
-          if (index === 0) {
-            textCfg.textAlign = 'left';
-          }
-          if (index === total - 1) {
-            textCfg.textAlign = 'right';
-          }
-          return textCfg;
-        }
-      });
-    }
-    if (this.lineOptions) {
+  }
 
+  private renderLine(chart: F2.Chart) {
+    if (this.lineOptions) {
       const {shape, adjust} = this.lineOptions;
       const seriesField = this.lineOptions.seriesField || '';
       const colors = this.buildColor(this.lineOptions.colors);
@@ -401,12 +408,17 @@ export default class VChart extends Vue {
         rs.adjust(adjust);
       }
     }
+  }
 
+  private renderGuide(chart: F2.Chart) {
     if (this.guides.length) {
       this.guides.forEach(guide => {
         chart.guide()[guide.type](guide.options);
       });
     }
+  }
+
+  private renderArea(chart: F2.Chart) {
     if (this.areaOptions) {
       const {adjust, seriesField} = this.areaOptions;
       const color = this.buildColor(this.areaOptions.colors);
@@ -421,7 +433,9 @@ export default class VChart extends Vue {
         rs.adjust(adjust);
       }
     }
+  }
 
+  private renderBar(chart: F2.Chart) {
     if (this.barOptions) {
       const {adjust, seriesField} = this.barOptions;
       const color = this.buildColor(this.barOptions.colors);
@@ -441,19 +455,29 @@ export default class VChart extends Vue {
         rs.adjust(adjust);
       }
     }
+  }
 
-    ['x', 'y'].forEach(axis => {
-      if (this[`${axis}AxisOptions`]) {
-        chart.axis(this[`${axis}Field`], this[`${axis}Field`].disabled ? false : this[`${axis}AxisOptions`]);
-      }
-    });
+  private renderAxis(chart: F2.Chart) {
+    if (['x', 'y'].find(axis => this[`${axis}AxisOptions`])) {
+      ['x', 'y'].forEach(axis => {
+        if (this[`${axis}AxisOptions`]) {
+          chart.axis(this[`${axis}Field`], this[`${axis}Field`].disabled ? false : this[`${axis}AxisOptions`]);
+        }
+      });
+    } else {
+      chart.axis(false);
+    }
+  }
 
+  private renderPie(chart: F2.Chart) {
     if (this.pieOptions) {
       chart.coord(this.pieOptions.coord, this.pieOptions);
       chart.axis(false);
       chart.interval()
         .position('a*percent')
-        .color(this.pieOptions.seriesField, (this.pieOptions.colors && this.pieOptions.colors.length) ? this.pieOptions.colors : '')
+        .color(this.pieOptions.seriesField,
+          (this.pieOptions.colors && this.pieOptions.colors.length)
+            ? this.pieOptions.colors : '')
         .adjust('stack')
         .style({
           lineWidth: 1,
@@ -468,7 +492,9 @@ export default class VChart extends Vue {
           }
         });
     }
+  }
 
+  private renderPoint(chart: F2.Chart) {
     if (this.pointOptions) {
       const {seriesField} = this.pointOptions;
       const rs = chart.point().position(this.buildPosition()).style(this.pointOptions.styles);
@@ -480,23 +506,36 @@ export default class VChart extends Vue {
         rs.color(seriesField || '', color);
       }
     }
-    chart.render();
-    this.chart = chart;
   }
 
-  public render() {
-    const style = {
-      backgroundColor: this.backgroundColor,
-      width: this.width + 'px',
-      height: this.height + 'px'
-    };
-    return <div style={style}
-                onTouchstart={this.onTouchstart}>
-      <canvas class={`${this.prefixCls}-no-select`}
-              height="260"
-              ref="chart"/>
-      {this.$slots.default}
-    </div>;
+  private setAutoAlignXAxis(chart: F2.Chart, autoAlignXAxis: any) {
+    if (autoAlignXAxis) {
+      if (this.xAxisOptions) {
+        chart.axis(this.xField, {
+          label(text, index, total) {
+            const textCfg: any = {};
+            if (index === 0) {
+              textCfg.textAlign = 'left';
+            }
+            if (index === total - 1) {
+              textCfg.textAlign = 'right';
+            }
+            return textCfg;
+          }
+        });
+      }
+    }
   }
 
+  private renderLegend(chart: F2.Chart) {
+    if (this.legendOptions) {
+      if (this.legendOptions.disabled) {
+        chart.legend(false);
+      } else {
+        chart.legend(this.legendOptions);
+      }
+    }
+  }
 }
+
+export default VChart as any;
