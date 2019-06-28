@@ -1,3 +1,16 @@
+<script lang="ts">
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+  import MIcon from '../../index';
+
+  Vue.use(MIcon);
+  @Component({
+    name: 'Demo1'
+  })
+  export default class Demo1 extends Vue {
+    // TODO
+  }
+</script>
 <template>
   <div>
     <div>
@@ -13,18 +26,5 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
-  import MIcon from '../../index';
-
-  Vue.use(MIcon);
-  @Component({
-    name: 'Demo1'
-  })
-  export default class Demo1 extends Vue {
-    // TODO
-  }
-</script>
 <style scoped lang="less">
 </style>

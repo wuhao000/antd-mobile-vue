@@ -1,5 +1,6 @@
 <template>
   <div>
+    <m-nav-bar icon="left" left-content="返回"/>
   </div>
 </template>
 <script lang="ts">

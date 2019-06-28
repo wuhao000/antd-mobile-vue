@@ -37,6 +37,10 @@ export default [{
   name: 'MCarousel 走马灯',
   component: () => import('@/generated/m-carousel/index.vue')
 }, {
+  path: 'm-chart',
+  name: 'MChart 图表',
+  component: () => import('@/generated/m-chart/index.vue')
+}, {
   path: 'm-checkbox',
   name: 'MCheckbox 复选框',
   component: () => import('@/generated/m-checkbox/index.vue')

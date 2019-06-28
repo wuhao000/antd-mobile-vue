@@ -11,6 +11,8 @@
 
 antd-mobile 共有 <code>49</code>个组件，本项目截至现在移植了<code>30</code>个
 
+* 新增chart组件
+
 组件名称 | antd-mobile | antd-mobile-vue | 说明
 --- | :---: | :---: | ---
 Accordion | √ | √

@@ -8,6 +8,7 @@ import {MButtonComponent} from './components/m-button';
 import {MCalendarComponent} from './components/m-calendar';
 import {MCardComponent} from './components/m-card';
 import {MCarouselComponent} from './components/m-carousel';
+import {MChartComponent} from './components/m-chart';
 import {MCheckboxComponent} from './components/m-checkbox';
 import {MDatePickerComponent} from './components/m-date-picker';
 import {MDrawerComponent} from './components/m-drawer';
@@ -53,6 +54,8 @@ export class MCalendar extends MCalendarComponent {
 export class MCard extends MCardComponent {
 }
 export class MCarousel extends MCarouselComponent {
+}
+export class MChart extends MChartComponent {
 }
 export class MCheckbox extends MCheckboxComponent {
 }
