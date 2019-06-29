@@ -42,10 +42,11 @@ export default class Range extends Vue {
           <RcRange props={this.$props}
                    on={
                      {
+                       ...this.$listeners,
                        change: (value) => {
                          this.$emit('input', value);
-                       },
-                       ...this.$listeners
+                         this.$emit('change', value);
+                       }
                      }
                    }/>
         </div>

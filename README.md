@@ -34,7 +34,7 @@ ImagePicker | √ |
 InputItem | √ | √
 List | √ | √
 ListView | √ | 
-Menu | √ | 
+Menu | √ | √
 Modal | √ | √
 NavBar | √ | √
 NoticeBar | √ | √
@@ -48,7 +48,7 @@ PullToRefresh | √ | √
 Result | √ | √
 SearchBar | √ | √
 SegmentedControl | √ | 
-Slider | √ | 
+Slider | √ | √
 Range | √ | √
 Stepper | √ | 
 Steps | √ | √

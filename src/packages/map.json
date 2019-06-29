@@ -238,6 +238,12 @@
     "name": "menu",
     "chineseName": "菜单"
   },
+  "slider": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "slider",
+    "chineseName": "滑动输入条"
+  },
   "time-directive": {
     "name": "time",
     "chineseName": "时间展示",

@@ -37,6 +37,7 @@ import {MToastComponent} from './components/m-toast';
 import {MWhiteSpaceComponent} from './components/m-white-space';
 import {MWingBlankComponent} from './components/m-wing-blank';
 import {MenuComponent} from './components/menu';
+import {SliderComponent} from './components/slider';
 import {TimeDirectiveComponent} from './components/time-directive';
 
 export class LoadingDirective extends LoadingDirectiveComponent {
@@ -116,6 +117,8 @@ export class MWhiteSpace extends MWhiteSpaceComponent {
 export class MWingBlank extends MWingBlankComponent {
 }
 export class Menu extends MenuComponent {
+}
+export class Slider extends SliderComponent {
 }
 export class TimeDirective extends TimeDirectiveComponent {
 }

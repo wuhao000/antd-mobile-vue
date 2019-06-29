@@ -16,5 +16,14 @@
     // TODO
   }
 </script>
-<style lang="less" scoped>
+<style lang="less">
+  .top-nav-bar {
+    position: relative;
+    background-color: #008AE6;
+    color: #FFF;
+  }
+
+  .am-navbar-title {
+    color: white !important;
+  }
 </style>

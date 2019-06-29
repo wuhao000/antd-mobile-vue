@@ -1,7 +1,7 @@
 import {RouteConfig} from 'vue-router';
 
 export default [{
-  path: 'menu',
-  name: 'Menu 菜单',
-  component: () => import('@/generated/menu/index.vue')
+  path: 'slider',
+  name: 'Slider 滑动输入条',
+  component: () => import('@/generated/slider/index.vue')
 }] as RouteConfig[];

@@ -137,21 +137,11 @@ if (args.length !== 3) {
   if (type === 'ui') {
     type = 'component';
   }
-  let componentType = null;
-  if (type === 'component') {
-    if (name.startsWith('ae-')) {
-      componentType = 'general';
-    } else if (name.startsWith('d-')) {
-      componentType = 'desktop';
-    } else if (name.startsWith('m-')) {
-      componentType = 'mobile';
-    }
-  }
   const options: Options = {
     name,
     chineseName: args[1],
     type,
-    componentType
+    componentType: 'mobile'
   };
   if (!options.type) {
     throw Error('type参数不正确，参数值仅支持：ui, ' + types.join(', '));
