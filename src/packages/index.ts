@@ -31,6 +31,7 @@ import MPicker from './m-picker';
 import MPopup from './m-popup';
 import MPullRefresh from './m-pull-refresh';
 import MRadio from './m-radio';
+import MRange from './m-range';
 import MResult from './m-result';
 import MSearchBar from './m-search-bar';
 import MSteps from './m-steps';
@@ -82,6 +83,7 @@ const components = [
 	MPopup,
 	MPullRefresh,
 	MRadio,
+	MRange,
 	MResult,
 	MSearchBar,
 	MSteps,
@@ -139,6 +141,7 @@ export {
 	MPopup,
 	MPullRefresh,
 	MRadio,
+	MRange,
 	MResult,
 	MSearchBar,
 	MSteps,
@@ -184,6 +187,7 @@ export default {
 	MPopup,
 	MPullRefresh,
 	MRadio,
+	MRange,
 	MResult,
 	MSearchBar,
 	MSteps,

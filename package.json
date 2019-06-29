@@ -54,6 +54,7 @@
     "@antv/f2": "^3.3.9",
     "@types/axios": "^0.14.0",
     "aegis-ui-desktop": "^1.0.0",
+    "ant-design-vue": "^1.3.10",
     "antd-mobile": "^2.2.14",
     "async-validator": "^1.11.0",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",

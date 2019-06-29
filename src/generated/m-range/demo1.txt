@@ -1,21 +1,18 @@
 <template>
   <div>
-    <m-pagination v-model="current" :total="3"/>
-    <m-pagination :value="current" :total="3" mode="number"/>
-    <m-pagination :value="current" :total="3" mode="pointer"/>
   </div>
 </template>
 <script lang="ts">
-  import MPagination from '../../index';
+  import MRange from '../../index';
   import Vue from 'vue';
   import Component from 'vue-class-component';
 
-  Vue.use(MPagination);
+  Vue.use(MRange);
   @Component({
     name: 'Demo1'
   })
   export default class Demo1 extends Vue {
-    public current = 1;
+    // TODO
   }
 </script>
 <style lang="less" scoped>

@@ -49,7 +49,7 @@ Result | √ | √
 SearchBar | √ | √
 SegmentedControl | √ | 
 Slider | √ | 
-Range | √ | 
+Range | √ | √
 Stepper | √ | 
 Steps | √ | √
 SwipeAction | √ | 

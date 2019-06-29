@@ -93,19 +93,19 @@ export default function createFile(options: Options) {
       className: toLine(options.name),
       componentClassName: toCamel(options.name)
     });
-    fs.writeFileSync(`${basePath}/${folderName}/src/index.ts`, srcIndexVue);
+    fs.writeFileSync(`${basePath}/${folderName}/src/index.tsx`, srcIndexVue);
   }
   if (options.type === 'directive') {
     /**
      * 获取templates文件夹下需要的src-directive-index.ts.tmpl模板  该模板应用于 src目录 并且 type为 directive
      */
     const srcIndexDirective = renderTemplate(resolve(`../src/templates/src-directive-index.ts.tmpl`), {});
-    fs.writeFileSync(`${basePath}/${folderName}/src/index.ts`, srcIndexDirective);
+    fs.writeFileSync(`${basePath}/${folderName}/src/index.tsx`, srcIndexDirective);
   }
   if (options.type === 'tool') {
     const srcIndexTool = `export default {};
 `;
-    fs.writeFileSync(`${basePath}/${folderName}/src/index.ts`, srcIndexTool);
+    fs.writeFileSync(`${basePath}/${folderName}/src/index.tsx`, srcIndexTool);
   }
   /**
    * 改写 map.json文件

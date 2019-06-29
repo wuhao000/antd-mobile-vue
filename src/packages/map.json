@@ -166,6 +166,12 @@
     "name": "m-radio",
     "chineseName": "单选"
   },
+  "m-range": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "m-range",
+    "chineseName": "区域选择"
+  },
   "m-result": {
     "type": "component",
     "componentType": "mobile",

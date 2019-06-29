@@ -105,6 +105,10 @@ export default [{
   name: 'MRadio 单选',
   component: () => import('@/generated/m-radio/index.vue')
 }, {
+  path: 'm-range',
+  name: 'MRange 区域选择',
+  component: () => import('@/generated/m-range/index.vue')
+}, {
   path: 'm-result',
   name: 'MResult 结果页',
   component: () => import('@/generated/m-result/index.vue')

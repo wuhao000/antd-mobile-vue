@@ -7,3 +7,4 @@ prefixCls||string|
 prevText||string|
 simple||boolean|false
 total||number|0
+value||number|1

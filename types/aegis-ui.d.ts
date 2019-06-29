@@ -25,6 +25,7 @@ import {MPickerComponent} from './components/m-picker';
 import {MPopupComponent} from './components/m-popup';
 import {MPullRefreshComponent} from './components/m-pull-refresh';
 import {MRadioComponent} from './components/m-radio';
+import {MRangeComponent} from './components/m-range';
 import {MResultComponent} from './components/m-result';
 import {MSearchBarComponent} from './components/m-search-bar';
 import {MStepsComponent} from './components/m-steps';
@@ -90,6 +91,8 @@ export class MPopup extends MPopupComponent {
 export class MPullRefresh extends MPullRefreshComponent {
 }
 export class MRadio extends MRadioComponent {
+}
+export class MRange extends MRangeComponent {
 }
 export class MResult extends MResultComponent {
 }
