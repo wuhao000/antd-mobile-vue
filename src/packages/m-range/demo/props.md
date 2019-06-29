@@ -2,14 +2,14 @@
 ------ | ------ | ------ | ---
 defaultValue||number|
 disabled||boolean|
-handleStyle||React.CSSProperties[]|
+handleStyle||any|
 max||number|
 min||number|
 onAfterChange||(value?: number) => void|
 onChange||(value?: number) => void|
 prefixCls||string|
-railStyle||React.CSSProperties|
+railStyle||any|
 step||number|
-tipFormatter||((value?: number) => React.ReactNode)|
-trackStyle||React.CSSProperties[]|
-value||number|
+tipFormatter||((value?: number) => VNode)|
+trackStyle||any|
+value||number[]|

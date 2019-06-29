@@ -131,7 +131,7 @@ if (args.length !== 3) {
   throw Error('参数数量不正确');
 } else {
   const nameReg = /^[a-z]+(-[a-z]+)*$/g;
-  const componentNameReg = /^(m-|d-|ae-)[a-z]+((-[a-z]+)+)?$/g;
+  const componentNameReg = /^[a-z]+((-[a-z]+)+)?$/g;
   const name = args[0];
   let type = args[2];
   if (type === 'ui') {

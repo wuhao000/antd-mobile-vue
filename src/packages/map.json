@@ -232,6 +232,12 @@
     "name": "m-wing-blank",
     "chineseName": "两翼留白"
   },
+  "menu": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "menu",
+    "chineseName": "菜单"
+  },
   "time-directive": {
     "name": "time",
     "chineseName": "时间展示",

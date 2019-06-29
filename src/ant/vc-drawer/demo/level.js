@@ -151,7 +151,7 @@ export default {
           Button,
           {
             on: {
-              'click': this.onClick.bind(this).bind(this).bind(this).bind(this)
+              'click': this.onClick.bind(this).bind(this).bind(this).bind(this).bind(this)
             }
           },
           [this.level ? '切换成空 level' : '切换成标题和内容跟随动']

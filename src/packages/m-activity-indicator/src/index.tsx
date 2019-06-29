@@ -6,7 +6,7 @@ import {Prop} from 'vue-property-decorator';
 @Component({
   name: 'ActivityIndicator'
 })
-export default class ActivityIndicator extends Vue {
+class ActivityIndicator extends Vue {
   @Prop({
     type: String,
     default: 'am-activity-indicator'
@@ -73,3 +73,4 @@ export default class ActivityIndicator extends Vue {
     }
   }
 }
+export default ActivityIndicator as any;

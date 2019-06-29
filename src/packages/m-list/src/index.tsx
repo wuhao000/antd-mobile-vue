@@ -8,7 +8,7 @@ import Item from './list-item';
 @Component({
   name: 'MList'
 })
-export default class List extends Vue {
+class List extends Vue {
   /**
    * 是否分区样式
    */
@@ -64,3 +64,4 @@ export default class List extends Vue {
     );
   }
 }
+export default List as any;

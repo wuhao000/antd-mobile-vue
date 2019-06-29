@@ -42,6 +42,7 @@ import MTextarea from './m-textarea';
 import MToast from './m-toast';
 import MWhiteSpace from './m-white-space';
 import MWingBlank from './m-wing-blank';
+import Menu from './menu';
 import TimeDirective from './time-directive';
 // 注册moment中文国际化文案
 if (moment) {
@@ -94,6 +95,7 @@ const components = [
 	MToast,
 	MWhiteSpace,
 	MWingBlank,
+	Menu,
 	TimeDirective
 ];
 
@@ -152,6 +154,7 @@ export {
 	MToast,
 	MWhiteSpace,
 	MWingBlank,
+	Menu,
 	TimeDirective
 };
 export default {
@@ -198,5 +201,6 @@ export default {
 	MToast,
 	MWhiteSpace,
 	MWingBlank,
+	Menu,
 	TimeDirective
 };

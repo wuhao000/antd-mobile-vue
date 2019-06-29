@@ -2743,7 +2743,7 @@ ClassList.prototype.contains = function(name){
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_10_oneOf_1_0_node_modules_css_loader_index_js_ref_10_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_10_oneOf_1_2_node_modules_less_loader_dist_cjs_js_ref_10_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_style_index_0_id_063aa87e_lang_less_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("931e");
 /* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_10_oneOf_1_0_node_modules_css_loader_index_js_ref_10_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_10_oneOf_1_2_node_modules_less_loader_dist_cjs_js_ref_10_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_style_index_0_id_063aa87e_lang_less_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_10_oneOf_1_0_node_modules_css_loader_index_js_ref_10_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_10_oneOf_1_2_node_modules_less_loader_dist_cjs_js_ref_10_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_style_index_0_id_063aa87e_lang_less_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_10_oneOf_1_0_node_modules_css_loader_index_js_ref_10_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_10_oneOf_1_2_node_modules_less_loader_dist_cjs_js_ref_10_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_style_index_0_id_063aa87e_lang_less_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_mini_css_extract_plugin_dist_loader_js_ref_10_oneOf_1_0_node_modules_css_loader_index_js_ref_10_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_10_oneOf_1_2_node_modules_less_loader_dist_cjs_js_ref_10_oneOf_1_3_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_index_vue_vue_type_style_index_0_id_063aa87e_lang_less_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a);
 
 /***/ }),
 
@@ -2940,7 +2940,7 @@ exports.nextTick = function nextTick(fn) {
 	setTimeout(fn, 0);
 };
 
-exports.platform = exports.arch = 
+exports.platform = exports.arch =
 exports.execPath = exports.title = 'browser';
 exports.pid = 1;
 exports.browser = true;
@@ -2961,9 +2961,9 @@ exports.binding = function (name) {
     };
 })();
 
-exports.exit = exports.kill = 
-exports.umask = exports.dlopen = 
-exports.uptime = exports.memoryUsage = 
+exports.exit = exports.kill =
+exports.umask = exports.dlopen =
+exports.uptime = exports.memoryUsage =
 exports.uvCounters = function() {};
 exports.features = {};
 
@@ -14161,7 +14161,7 @@ var Notification = {
         },
         on: {
           close: close,
-          click: notice.onClick.bind(notice).bind(notice) && notice.onClick.bind(notice).bind(notice).bind(notice) || Notification_noop
+          click: notice.onClick.bind(notice).bind(notice).bind(notice) && notice.onClick.bind(notice).bind(notice).bind(notice).bind(notice) || Notification_noop
         },
         style: style,
         'class': className,
@@ -17130,7 +17130,7 @@ srcvue_type_script_lang_ts_MAnimate = __decorate([vue_class_component_common_def
 })], srcvue_type_script_lang_ts_MAnimate);
 /* harmony default export */ var srcvue_type_script_lang_ts_ = (srcvue_type_script_lang_ts_MAnimate);
 // CONCATENATED MODULE: ./src/packages/m-animate/src/index.vue?vue&type=script&lang=ts&
- /* harmony default export */ var m_animate_srcvue_type_script_lang_ts_ = (srcvue_type_script_lang_ts_); 
+ /* harmony default export */ var m_animate_srcvue_type_script_lang_ts_ = (srcvue_type_script_lang_ts_);
 // EXTERNAL MODULE: ./src/packages/m-animate/src/index.vue?vue&type=style&index=0&id=063aa87e&lang=less&scoped=true&
 var srcvue_type_style_index_0_id_063aa87e_lang_less_scoped_true_ = __webpack_require__("3f12");
 
@@ -17246,7 +17246,7 @@ var component = normalizeComponent(
   null,
   "063aa87e",
   null
-  
+
 )
 
 /* harmony default export */ var m_animate_src = (component.exports);
@@ -22556,7 +22556,7 @@ function (_BaseInputComponent) {
           "title": this.title
         },
         "on": {
-          "click": this.onClick
+          "click": this.onClick.bind(this)
         }
       }, [// @ts-ignore
       h(m_calendar_src, helper_default()([{}, {
@@ -23025,7 +23025,7 @@ function (_IDecoratorProps) {
       return h("button", {
         "style": this.getButtonStyles(this.currentSlide === 0 && !this.wrapAround),
         "on": {
-          "click": this.handleClick.bind(this)
+          "click": this.handleClick.bind(this).bind(this)
         }
       }, ["PREV"]);
     }
@@ -23075,7 +23075,7 @@ function (_IDecoratorProps2) {
       return h("button", {
         "style": this.getButtonStyles(this.currentSlide + this.slidesToScroll >= this.slideCount && !this.wrapAround),
         "on": {
-          "click": this.handleClick.bind(this)
+          "click": this.handleClick.bind(this).bind(this)
         }
       }, ["NEXT"]);
     }
@@ -23531,7 +23531,7 @@ function (_Vue) {
         "on": _objectSpread({}, this.getTouchEvents(), this.getMouseEvents())
       }, {
         "on": {
-          "click": this.handleClick.bind(this)
+          "click": this.handleClick.bind(this).bind(this)
         }
       }]), [h("ul", {
         "class": 'slider-list',
@@ -24589,7 +24589,7 @@ function (_Vue2) {
       return h(ReactCarousel2, helper_default()([{}, {
         "props": _objectSpread({}, newProps, {
           decorators: Decorators,
-          afterSlide: this.onChange
+          afterSlide: this.onChange.bind(this)
         })
       }, {
         "class": wrapCls
@@ -24846,7 +24846,7 @@ var babel_helper_vue_jsx_merge_props_default = /*#__PURE__*/__webpack_require__.
       attrs: globalProps,
       on: extends_default()({}, this.$listeners, {
         change: this.handleChange,
-        click: this.onClick.bind(this).bind(this).bind(this)
+        click: this.onClick.bind(this).bind(this).bind(this).bind(this)
       })
     }])), h('span', {
       'class': prefixCls + '-inner'
@@ -24947,7 +24947,7 @@ function (_Vue) {
       }, {
         "style": this.thumbStyle,
         "on": {
-          "change": this.onChange
+          "change": this.onChange.bind(this)
         }
       }]));
       return (// @ts-ignore
@@ -24955,7 +24955,7 @@ function (_Vue) {
           "attrs": _objectSpread({}, restProps)
         }, {
           "on": {
-            "click": this.onClick
+            "click": this.onClick.bind(this)
           },
           "attrs": {
             "prefixCls": listPrefixCls,
@@ -25086,7 +25086,7 @@ function (_Vue) {
         "class": wrapCls
       }, [h(vc_checkbox_src, helper_default()([{
         "on": {
-          "click": this.onClick
+          "click": this.onClick.bind(this)
         },
         "attrs": {
           "checked": this.value
@@ -25101,7 +25101,7 @@ function (_Vue) {
 
       return h(vc_checkbox_src, helper_default()([{
         "on": {
-          "click": this.onClick
+          "click": this.onClick.bind(this)
         },
         "attrs": {
           "checked": this.value
@@ -25555,7 +25555,7 @@ function (_OptionsBasedComponen) {
       }, ["\u6E05\u9664"]);
       return h(Item, {
         "on": {
-          "click": this.onClick
+          "click": this.onClick.bind(this)
         },
         "attrs": {
           "touchFeedback": !this.readOnly && !this.disabled,
@@ -25582,7 +25582,7 @@ function (_OptionsBasedComponen) {
           "maxHeightPercentage": 0.7
         },
         "on": {
-          "change": this.onChange
+          "change": this.onChange.bind(this)
         }
       }]))]), h("span", {
         "slot": 'extra'
@@ -28064,7 +28064,7 @@ function (_Vue) {
       var maxLength = this.maxLength;
       var value = this.value; // tslint:disable-next-line:no-this-assignment
 
-      var onChange = this.onChange;
+      var onChange = this.onChange.bind(this);
       var valueAfterChange; // 删除键
 
       if (KeyboardItemValue === 'delete') {
@@ -30120,7 +30120,7 @@ var Dialog_initDefaultProps = function initDefaultProps(propTypes, defaultProps)
       },
       on: {
         'keydown': this.onKeydown,
-        'click': maskClosable ? this.onMaskClick : Dialog_noop
+        'click': maskClosable ? this.onMaskClick.bind(this) : Dialog_noop
       },
       'class': prefixCls + '-wrap ' + (wrapClassName || ''),
       ref: 'wrap',
@@ -31383,7 +31383,7 @@ function (_Vue) {
       }, {
         "on": {
           "dismiss": this.onDismiss,
-          "change": this.onChange,
+          "change": this.onChange.bind(this),
           "ok": this.onOk
         }
       }]), [h("template", {
@@ -31520,7 +31520,7 @@ function (_Vue) {
         value = this.scrollValue;
       }
 
-      if (this.onChange) {
+      if (this.onChange.bind(this)) {
         this.onChange(value);
       }
 
@@ -32295,7 +32295,7 @@ function (_Vue) {
       var mark = h("label", {
         "class": wrapCls,
         "on": {
-          "click": this.onClick
+          "click": this.onClick.bind(this)
         }
       }, [h(vc_checkbox_src, helper_default()([{}, {
         "props": this.$props
@@ -32428,8 +32428,8 @@ function (_Vue) {
           "value": this.value
         },
         "on": {
-          "click": this.onClick,
-          "change": this.onChange
+          "click": this.onClick.bind(this),
+          "change": this.onChange.bind(this)
         }
       }]));
       return h(radio_item_ListItem, helper_default()([{}, {
@@ -32673,7 +32673,7 @@ function (_OptionsBasedComponen) {
       }, ["\u6E05\u9664"]);
       return h(Item, {
         "on": {
-          "click": this.onClick
+          "click": this.onClick.bind(this)
         },
         "attrs": {
           "touchFeedback": !this.readOnly && !this.disabled,
@@ -32702,7 +32702,7 @@ function (_OptionsBasedComponen) {
         }
       }, {
         "on": {
-          change: this.onChange
+          change: this.onChange.bind(this)
         }
       }]))]), h("span", {
         "slot": "extra"
@@ -33146,8 +33146,8 @@ function (_Vue) {
           "value": value
         },
         "on": {
-          "input": this.onChange,
-          "change": this.onChange,
+          "input": this.onChange.bind(this),
+          "change": this.onChange.bind(this),
           "focus": this.onFocus,
           "blur": this.onBlur
         },
@@ -33758,7 +33758,7 @@ function (_Vue) {
           "value": this.stateValue ? 'on' : 'off'
         },
         "on": {
-          "change": this.onChange
+          "change": this.onChange.bind(this)
         }
       }, !disabled ? {
         onClick: this.onClick.bind(this)
@@ -33882,8 +33882,8 @@ function (_Vue) {
           "value": this.value
         },
         "on": {
-          "click": this.onClick,
-          "change": this.onChange
+          "click": this.onClick.bind(this),
+          "change": this.onChange.bind(this)
         }
       }]));
       return h(switch_item_ListItem, helper_default()([{}, {
@@ -35986,7 +35986,7 @@ function (_Vue) {
       var iconColor = selected ? tintColor : unselectedTintColor;
       return h("div", helper_default()([{}, this.dataAttrs, {
         "on": {
-          "click": this.onClick
+          "click": this.onClick.bind(this)
         },
         "class": "".concat(prefixCls)
       }]), [h("div", {
@@ -36606,7 +36606,7 @@ function (_Vue) {
         },
         "on": {
           "input": this.onInput,
-          "change": this.onChange,
+          "change": this.onChange.bind(this),
           "blur": this.onBlur,
           "focus": this.onFocus
         }

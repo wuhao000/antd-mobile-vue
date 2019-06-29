@@ -148,4 +148,8 @@ export default [{
   path: 'm-wing-blank',
   name: 'MWingBlank 两翼留白',
   component: () => import('@/generated/m-wing-blank/index.vue')
+}, {
+  path: 'menu',
+  name: 'Menu 菜单',
+  component: () => import('@/generated/menu/index.vue')
 }] as RouteConfig[];

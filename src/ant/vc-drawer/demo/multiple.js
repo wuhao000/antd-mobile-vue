@@ -51,7 +51,7 @@ export default {
         Button,
         {
           on: {
-            'click': this.onClick.bind(this).bind(this).bind(this).bind(this)
+            'click': this.onClick.bind(this).bind(this).bind(this).bind(this).bind(this)
           }
         },
         ['\u6253\u5F00\u62BD\u5C49']
@@ -67,7 +67,7 @@ export default {
           placement: 'right'
         },
         on: {
-          'maskClick': this.onClick.bind(this).bind(this).bind(this).bind(this)
+          'maskClick': this.onClick.bind(this).bind(this).bind(this).bind(this).bind(this)
         },
 
         'class': 'drawer1' },

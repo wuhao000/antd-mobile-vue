@@ -7,7 +7,7 @@ import Icon from '../../m-icon';
 @Component({
   name: 'NavBar'
 })
-export default class NavBar extends Vue {
+class NavBar extends Vue {
   @Prop({
     type: String,
     default: 'am-navbar'
@@ -43,6 +43,7 @@ export default class NavBar extends Vue {
               role="button"
               onClick={(e) => {
                 this.$emit('left-click', e);
+                this.$emit('leftClick', e);
               }}
           >
             {icon ? (
@@ -58,3 +59,5 @@ export default class NavBar extends Vue {
     );
   }
 }
+
+export default NavBar as any;
