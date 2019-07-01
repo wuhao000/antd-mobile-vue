@@ -120,7 +120,7 @@ export default class Calendar extends CalendarProps {
             timePickerTitle: +newDate >= +startDate ? locale.selectEndTime : locale.selectStartTime,
             disConfirmBtn: false,
             endDate: (pickTime && !useDateTime && +newDate >= +startDate) ?
-              new Date(+mergeDateTime(newDate, startDate) + 3600000) : newDate
+                new Date(+mergeDateTime(newDate, startDate) + 3600000) : newDate
           };
         }
         break;
@@ -223,88 +223,89 @@ export default class Calendar extends CalendarProps {
       locale,
       showClear: !!startDate
     };
+    const height = document.body.clientHeight;
     return (
-      // @ts-ignore
-      <Popup value={this.state.visible}
-             onClose={this.onClose}
-             attrs={{
-               height: '500px'
-             }}>
-        <div class={`${prefixCls}`}>
-          {
-            // @ts-ignore
-            <div style={this.state.contentStyle} class={'content'}>
-              {
-                renderHeader ? renderHeader(headerProps) :
+        // @ts-ignore
+        <Popup value={this.state.visible}
+               onClose={this.onClose}
+               attrs={{
+                 height: height + 'px'
+               }}>
+          <div class={`${prefixCls}`}>
+            {
+              // @ts-ignore
+              <div style={this.state.contentStyle} class={'content'}>
+                {
+                  renderHeader ? renderHeader(headerProps) :
+                      // @ts-ignore
+                      <Header attrs={
+                        {...headerProps}
+                      } onClear={this.onCancel} onCancel={this.onCancel}/>
+                }
+                {
                   // @ts-ignore
-                  <Header attrs={
-                    {...headerProps}
-                  } onClear={this.onCancel} onCancel={this.onCancel}/>
-              }
-              {
-                // @ts-ignore
-                <DatePicker
-                  locale={locale}
-                  type={type}
-                  prefixCls={prefixCls}
-                  infiniteOpt={infiniteOpt}
-                  initialMonths={initialMonths}
-                  currentStartDate={this.state.startDate}
-                  currentEndDate={this.state.endDate}
-                  defaultDate={defaultDate}
-                  minDate={minDate}
-                  maxDate={maxDate}
-                  getDateExtra={getDateExtra}
-                  onCellClick={this.onSelectedDate}
-                  onSelectHasDisableDate={this.onSelectHasDisableDate}
-                  onLayout={this.setClientHeight}
-                  startDate={startDate}
-                  endDate={endDate}
-                  rowSize={rowSize}
-                />
-              }
-              {
-                showTimePicker &&
-                // @ts-ignore
-                <TimePicker
-                    prefixCls={timePickerPrefixCls}
-                    pickerPrefixCls={timePickerPickerPrefixCls}
-                    locale={locale}
-                    title={timePickerTitle}
-                    defaultValue={defaultTimeValue}
-                    value={endDate ? endDate : startDate}
-                    onChange={this.onTimeChange}
-                    minDate={minDate}
-                    maxDate={maxDate}
-                    clientHeight={clientHeight}
-                />
-              }
-              {
-                showShortcut && !showTimePicker &&
-                (
-                  renderShortcut ?
-                    renderShortcut(this.shortcutSelect) :
-                    // @ts-ignore
-                    <ShortcutPanel locale={locale} onSelect={this.shortcutSelect}/>
-                )
-              }
-              {
-                startDate &&
-                // @ts-ignore
-                <ConfirmPanel
-                    type={type}
-                    locale={locale}
-                    startDateTime={startDate}
-                    endDateTime={endDate}
-                    onConfirm={this.onConfirm}
-                    disableBtn={disConfirmBtn}
-                    formatStr={pickTime ? locale.dateTimeFormat : locale.dateFormat}
-                />
-              }
-            </div>
-          }
-        </div>
-      </Popup>
+                  <DatePicker
+                      locale={locale}
+                      type={type}
+                      prefixCls={prefixCls}
+                      infiniteOpt={infiniteOpt}
+                      initialMonths={initialMonths}
+                      currentStartDate={this.state.startDate}
+                      currentEndDate={this.state.endDate}
+                      defaultDate={defaultDate}
+                      minDate={minDate}
+                      maxDate={maxDate}
+                      getDateExtra={getDateExtra}
+                      onCellClick={this.onSelectedDate}
+                      onSelectHasDisableDate={this.onSelectHasDisableDate}
+                      onLayout={this.setClientHeight}
+                      startDate={startDate}
+                      endDate={endDate}
+                      rowSize={rowSize}
+                  />
+                }
+                {
+                  showTimePicker &&
+                  // @ts-ignore
+                  <TimePicker
+                      prefixCls={timePickerPrefixCls}
+                      pickerPrefixCls={timePickerPickerPrefixCls}
+                      locale={locale}
+                      title={timePickerTitle}
+                      defaultValue={defaultTimeValue}
+                      value={endDate ? endDate : startDate}
+                      onChange={this.onTimeChange}
+                      minDate={minDate}
+                      maxDate={maxDate}
+                      clientHeight={clientHeight}
+                  />
+                }
+                {
+                  showShortcut && !showTimePicker &&
+                  (
+                      renderShortcut ?
+                          renderShortcut(this.shortcutSelect) :
+                          // @ts-ignore
+                          <ShortcutPanel locale={locale} onSelect={this.shortcutSelect}/>
+                  )
+                }
+                {
+                  startDate &&
+                  // @ts-ignore
+                  <ConfirmPanel
+                      type={type}
+                      locale={locale}
+                      startDateTime={startDate}
+                      endDateTime={endDate}
+                      onConfirm={this.onConfirm}
+                      disableBtn={disConfirmBtn}
+                      formatStr={pickTime ? locale.dateTimeFormat : locale.dateFormat}
+                  />
+                }
+              </div>
+            }
+          </div>
+        </Popup>
     );
   }
 }
