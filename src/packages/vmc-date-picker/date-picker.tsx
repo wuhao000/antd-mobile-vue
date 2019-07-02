@@ -167,6 +167,7 @@ class DatePicker extends DatePickerProps {
   public onScrollChange(values, index) {
     const newValue = this.getNewDate(values, index);
     this.$emit('scroll-change', newValue, values, index);
+    this.$emit('scrollChange', newValue, values, index);
   }
 
   public setHours(date, hour) {
@@ -545,4 +546,4 @@ class DatePicker extends DatePickerProps {
   }
 }
 
-export default DatePicker;
+export default DatePicker as any;

@@ -4,6 +4,12 @@
     "name": "api-proxy",
     "chineseName": "接口代理工具"
   },
+  "date-picker-view": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "date-picker-view",
+    "chineseName": "日期选择器"
+  },
   "loading-directive": {
     "type": "directive",
     "componentType": null,

@@ -4,6 +4,7 @@ import HttpMethod from './http-method';
 import VueIcon from '@ant-design/icons-vue';
 import zhCn from './moment-zh_CN';
 import ApiProxy from './api-proxy';
+import DatePickerView from './date-picker-view';
 import LoadingDirective from './loading-directive';
 import MAccordion from './m-accordion';
 import MActionSheet from './m-action-sheet';
@@ -57,7 +58,8 @@ if (window.AntDesignIcons) {
 }
 // 存储组件列表
 const components = [
-  LoadingDirective,
+  DatePickerView,
+	LoadingDirective,
 	MAccordion,
 	MActionSheet,
 	MActivityIndicator,
@@ -116,6 +118,7 @@ export {
   Global,
   HttpMethod,
   ApiProxy,
+	DatePickerView,
 	LoadingDirective,
 	MAccordion,
 	MActionSheet,
@@ -163,6 +166,7 @@ export default {
   Global,
   HttpMethod,
   ApiProxy,
+	DatePickerView,
 	LoadingDirective,
 	MAccordion,
 	MActionSheet,

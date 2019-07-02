@@ -1,6 +1,13 @@
 import {RouteConfig} from 'vue-router';
 
 export default [{
+  path: 'date-picker-view',
+  name: 'DatePickerView 日期选择器',
+  meta: {
+    tag: '其他'
+  },
+  component: () => import('@/generated/date-picker-view/index.vue')
+}, {
   path: 'm-accordion',
   name: 'MAccordion 手风琴',
   meta: {

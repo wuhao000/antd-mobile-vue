@@ -5,7 +5,9 @@ import AegisUI from './packages/index';
 import zhCn from './packages/moment-zh_CN';
 import router from './router';
 import store from './store';
+import {plugin} from 'vue-function-api';
 
+Vue.use(plugin);
 moment.updateLocale('zh-cn', zhCn);
 
 Vue.use(AegisUI);

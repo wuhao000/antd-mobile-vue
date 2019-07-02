@@ -34,7 +34,7 @@ interface IDatePickerProps {
 class DatePickerProps extends Vue<IDatePickerProps> {
   @Prop({})
   public date?: any;
-  @Prop({})
+  @Prop({default: () => new Date()})
   public defaultDate?: any;
   @Prop({})
   public minDate?: any;

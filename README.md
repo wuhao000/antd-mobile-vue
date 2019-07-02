@@ -25,7 +25,7 @@ Card | √ | √
 Carousel | √ | √
 Checkbox | √ | √
 DatePicker | √ | √
-DatePickerView | √ | 
+DatePickerView | √ | √
 Drawer | √ | √
 Flex | √ | √
 Grid | √ | √

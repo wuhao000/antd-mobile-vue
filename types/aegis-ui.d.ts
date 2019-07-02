@@ -1,3 +1,4 @@
+import {DatePickerViewComponent} from './components/date-picker-view';
 import {LoadingDirectiveComponent} from './components/loading-directive';
 import {MAccordionComponent} from './components/m-accordion';
 import {MActionSheetComponent} from './components/m-action-sheet';
@@ -39,6 +40,8 @@ import {MenuComponent} from './components/menu';
 import {SliderComponent} from './components/slider';
 import {TimeDirectiveComponent} from './components/time-directive';
 
+export class DatePickerView extends DatePickerViewComponent {
+}
 export class LoadingDirective extends LoadingDirectiveComponent {
 }
 export class MAccordion extends MAccordionComponent {

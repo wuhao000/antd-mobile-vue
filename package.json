@@ -53,6 +53,7 @@
     "@ant-design/icons-vue": "^1.0.1",
     "@antv/f2": "^3.3.9",
     "@types/axios": "^0.14.0",
+    "@vue/cli": "^3.8.4",
     "aegis-ui-desktop": "^1.0.0",
     "ant-design-vue": "^1.3.10",
     "antd-mobile": "^2.2.14",

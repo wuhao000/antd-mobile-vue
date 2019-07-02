@@ -1,6 +1,7 @@
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
+import locale from './locale/zh_CN';
 
 @Component({
   name: 'DatePickerProps'
@@ -16,7 +17,7 @@ export default class DatePickerProps extends Vue<IDatePickerPropsType> {
   public maxDate?: Date;
   @Prop({type: Boolean})
   public visible?: boolean;
-  @Prop({})
+  @Prop({type: Object, default: () => locale})
   public locale?: {
     okText: string;
     dismissText: string;
