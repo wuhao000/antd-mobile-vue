@@ -1,11 +1,14 @@
 <template>
   <div>
     <m-list title="abc">
+      {{value}}
       <m-input clearable
+               v-model="value"
                placeholder="请输入内容"
                title="标题"
                :label-position="'top'"
                :text-align="'right'"></m-input>
+      {{value2}}
       <m-input v-model="value2"
                type="bankCard">银行卡
       </m-input>
@@ -39,6 +42,7 @@
     name: 'Demo1'
   })
   export default class Demo1 extends Vue {
+    public value = '你好';
     public value2 = '2222222222222';
   }
 </script>

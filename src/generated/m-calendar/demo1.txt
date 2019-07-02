@@ -4,9 +4,13 @@
       <m-list-item arrow="horizontal"
                    @click="value = !value">测试
       </m-list-item>
-      <m-calendar-item title="日期范围选择"/>
-      <m-calendar-item pick-time title="时间范围选择"/>
-      <m-calendar-item show-shortcut title="时间范围选择"/>
+      <d-button @click="setValue">设置值</d-button>
+      <m-calendar-item v-model="dateRange"
+                       title="日期范围选择"/>
+      <m-calendar-item pick-time
+                       title="时间范围选择"/>
+      <m-calendar-item show-shortcut
+                       title="时间范围选择"/>
       <m-calendar-item title="时间选择"
                        type="one"/>
       <m-calendar-item row-size="xk"
@@ -34,10 +38,16 @@
     name: 'Demo1'
   })
   export default class Demo1 extends Vue {
+    public dateRange = [];
     public defaultValue = [new Date(2019, 3, 1, 0, 0, 0), new Date()];
     public maxDate = new Date(Date.now() + 31536000000);
     public minDate = new Date(Date.now() - 5184000000);
     public value = false;
+
+
+    public setValue() {
+      this.dateRange = [new Date(), new Date()];
+    }
   }
 </script>
 <style scoped lang="less">

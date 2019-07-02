@@ -23,8 +23,8 @@ export abstract class ModalComponent extends Vue {
                          type?: string, defaultValue?: string, placeholders?: string[], platform?: string) => ({ close: () => void } | Promise<any>);
 
   public static operation: (
-      actions: Array<Action<any>>,
-      platform?: string
+    actions: Array<Action<any>>,
+    platform?: string
   ) => { close: () => void };
 }
 
@@ -113,17 +113,17 @@ export default class Modal extends ModalComponent {
     };
 
     return (
-        // @ts-ignore
-        <TouchFeedback activeClassName={`${prefixCls}-button-active`} key={i}>
-          <a
-              class={`${prefixCls}-button`}
-              role={'button'}
-              style={buttonStyle}
-              onClick={onClickFn}
-          >
-            {button.text || `Button`}
-          </a>
-        </TouchFeedback>
+      // @ts-ignore
+      <TouchFeedback activeClassName={`${prefixCls}-button-active`} key={i}>
+        <a
+          class={`${prefixCls}-button`}
+          role={'button'}
+          style={buttonStyle}
+          onClick={onClickFn}
+        >
+          {button.text || `Button`}
+        </a>
+      </TouchFeedback>
     );
   }
 
@@ -144,18 +144,18 @@ export default class Modal extends ModalComponent {
     } = this.$props;
 
     const btnGroupClass = classnames(
-        `${prefixCls}-button-group-${
-            footer.length === 2 && !operation ? 'h' : 'v'
-            }`,
-        `${prefixCls}-button-group-${operation ? 'operation' : 'normal'}`
+      `${prefixCls}-button-group-${
+        footer.length === 2 && !operation ? 'h' : 'v'
+        }`,
+      `${prefixCls}-button-group-${operation ? 'operation' : 'normal'}`
     );
     const footerDom = footer.length ? (
-        <div class={btnGroupClass} role={'group'}>
-          {footer.map((button, i) =>
-              // tslint:disable-next-line:jsx-no-multiline-js
-              this.renderFooterButton(button, prefixCls, i)
-          )}
-        </div>
+      <div class={btnGroupClass} role={'group'}>
+        {footer.map((button, i) =>
+          // tslint:disable-next-line:jsx-no-multiline-js
+          this.renderFooterButton(button, prefixCls, i)
+        )}
+      </div>
     ) : null;
 
     let transName;
@@ -169,7 +169,7 @@ export default class Modal extends ModalComponent {
       }
       if (popup) {
         transName =
-            animationType === 'slide-up' ? 'am-slide-up' : 'am-slide-down';
+          animationType === 'slide-up' ? 'am-slide-up' : 'am-slide-down';
         maskTransName = 'am-fade';
       }
     }
@@ -180,28 +180,29 @@ export default class Modal extends ModalComponent {
     const cls = classnames(this.className, {
       [`${prefixCls}-transparent`]: transparent,
       [`${prefixCls}-popup`]: popup,
+      [`${prefixCls}-operation`]: operation,
       [`${prefixCls}-popup-${animationType}`]: popup && animationType,
       [`${prefixCls}-android`]: platform === 'android'
     });
     return (
-        // @ts-ignore
-        <Dialog
-            attrs={{...restProps}}
-            maskClosable={this.maskClosable}
-            visible={this.visible}
-            prefixCls={prefixCls}
-            title={this.title}
-            closable={this.closable}
-            class={cls}
-            onClose={this.onClose || ((e) => {
-              this.$emit('change', false);
-              this.$emit('close', e);
-            })}
-            wrapClassName={wrapCls}
-            transitionName={transitionName || transName}
-            maskTransitionName={maskTransitionName || maskTransName}
-            footer={footerDom}
-        >{this.$slots.default}</Dialog>
+      // @ts-ignore
+      <Dialog
+        attrs={{...restProps}}
+        maskClosable={this.maskClosable}
+        visible={this.visible}
+        prefixCls={prefixCls}
+        title={this.title}
+        closable={this.closable}
+        class={cls}
+        onClose={this.onClose || ((e) => {
+          this.$emit('change', false);
+          this.$emit('close', e);
+        })}
+        wrapClassName={wrapCls}
+        transitionName={transitionName || transName}
+        maskTransitionName={maskTransitionName || maskTransName}
+        footer={footerDom}
+      >{this.$slots.default}</Dialog>
     );
   }
 }

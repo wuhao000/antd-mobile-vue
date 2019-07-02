@@ -32,12 +32,10 @@ export default class Input extends Vue {
 
   public onInputBlur(e) {
     const value = (e.target as any).value;
-    this.inputRef.blur();
     this.$emit('blur', value);
   }
 
   public onInputFocus(e) {
-    this.inputRef.focus();
     this.$emit('focus');
   }
 
@@ -49,22 +47,21 @@ export default class Input extends Vue {
 
   public render() {
     const value = this.currentValue + '';
-    return (
-      <input ref={'input'}
-             value={value}
-             oninput={e => {
-               this.$emit('change', e);
-             }}
-             type={this.type}
-             disabled={this.disabled}
-             readonly={this.readonly}
-             placeholder={this.placeholder}
-             onblur={this.onInputBlur}
-             onfocus={this.onInputFocus}
-             style={{textAlign: this.textAlign}}
-             {...this.$props}
-             {...this.$attrs}
-      />
-    );
+    const type = this.type === 'number' ? 'text' : this.type;
+    return <input value={value}
+                  ref={'input'}
+                  type={type}
+                  disabled={this.disabled}
+                  readonly={this.readonly}
+                  placeholder={this.placeholder}
+                  onblur={(e) => {
+                    this.onInputBlur(e);
+                  }}
+                  style={{textAlign: this.textAlign}}
+                  {...this.$props}
+                  {...this.$attrs}
+                  oninput={e => {
+                    this.$emit('change', e);
+                  }}/>;
   }
 }
