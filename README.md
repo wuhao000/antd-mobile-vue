@@ -9,7 +9,7 @@
 
 **与antd-mobile的组件对比**
 
-antd-mobile 共有 <code>49</code>个组件，本项目截至现在移植了<code>33</code>个
+antd-mobile 共有 <code>47</code>个组件，本项目截至现在移植了<code>37</code>个
 
 * 新增chart组件
 
@@ -57,10 +57,8 @@ Switch | √ | √
 TabBar | √ | √
 Tabs | √ | √
 Tag | √ | 
-Text | √ | 
 TextareaItem | √ | √
 Toast | √ | √
-View | √ | 
 WhiteSpace | √ | √
 WingBlank | √ | √
 LocaleProvider | √ | 

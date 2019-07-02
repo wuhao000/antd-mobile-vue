@@ -18672,7 +18672,7 @@ function (_DatePickerProps) {
           firstDate = _this$getMonthDate.firstDate,
           lastDate = _this$getMonthDate.lastDate;
 
-      var weeks = this.genWeekData(firstDate);
+      var weeks = this.genWeekData(firstDate, this.minDate, this.maxDate);
       var title = util_formatDate(firstDate, locale ? locale.monthTitle : 'yyyy/MM', this.locale);
       var data = {
         title: title,

@@ -81,3 +81,62 @@ export function shallowEqual(objA: any, objB: any, exclude: string[] = []): bool
 
   return true;
 }
+
+export const getMonthDate = (date = new Date(), addMonth = 0) => {
+  const y = date.getFullYear();
+  const m = date.getMonth();
+  return {
+    firstDate: new Date(y, m + addMonth, 1),
+    lastDate: new Date(y, m + 1 + addMonth, 0)
+  };
+};
+
+export const getDateWithoutTime = (date?: Date) => {
+  if (!date) {
+    return 0;
+  }
+  return +new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+  );
+};
+
+
+
+export const genWeekData = (firstDate: Date, minDate?: Date, maxDate?: Date) => {
+  const minDateTime = getDateWithoutTime(minDate);
+  const maxDateTime = getDateWithoutTime(maxDate) || Number.POSITIVE_INFINITY;
+
+  const weeks: Models.CellData[][] = [];
+  const nextMonth = getMonthDate(firstDate, 1).firstDate;
+  let currentDay = firstDate;
+  let currentWeek: Models.CellData[] = [];
+  weeks.push(currentWeek);
+
+  const startWeekday = currentDay.getDay();
+  if (startWeekday > 0) {
+    for (let i = 0; i < startWeekday; i++) {
+      currentWeek.push({} as Models.CellData);
+    }
+  }
+  while (currentDay < nextMonth) {
+    if (currentWeek.length === 7) {
+      currentWeek = [];
+      weeks.push(currentWeek);
+    }
+    const dayOfMonth = currentDay.getDate();
+    const tick = +currentDay;
+    currentWeek.push({
+      tick,
+      dayOfMonth,
+      selected: Models.SelectType.None,
+      isFirstOfMonth: dayOfMonth === 1,
+      isLastOfMonth: false,
+      outOfDate: tick < minDateTime || tick > maxDateTime
+    });
+    currentDay = new Date(currentDay.getTime() + 3600 * 24 * 1000);
+  }
+  currentWeek[currentWeek.length - 1].isLastOfMonth = true;
+  return weeks;
+};
