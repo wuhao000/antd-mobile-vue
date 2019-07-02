@@ -45,6 +45,7 @@ import MWhiteSpace from './m-white-space';
 import MWingBlank from './m-wing-blank';
 import Menu from './menu';
 import Slider from './slider';
+import Tag from './tag';
 import TimeDirective from './time-directive';
 // 注册moment中文国际化文案
 if (moment) {
@@ -100,6 +101,7 @@ const components = [
 	MWingBlank,
 	Menu,
 	Slider,
+	Tag,
 	TimeDirective
 ];
 
@@ -161,6 +163,7 @@ export {
 	MWingBlank,
 	Menu,
 	Slider,
+	Tag,
 	TimeDirective
 };
 export default {
@@ -210,5 +213,6 @@ export default {
 	MWingBlank,
 	Menu,
 	Slider,
+	Tag,
 	TimeDirective
 };

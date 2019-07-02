@@ -280,4 +280,11 @@ export default [{
     tag: '数据入口'
   },
   component: () => import('@/generated/slider/index.vue')
+}, {
+  path: 'tag',
+  name: 'Tag 标签',
+  meta: {
+    tag: '其他'
+  },
+  component: () => import('@/generated/tag/index.vue')
 }] as RouteConfig[];

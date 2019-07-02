@@ -149,7 +149,7 @@ export default {
         attrs: globalProps,
         on: _extends({}, this.$listeners, {
           change: this.handleChange,
-          click: this.onClick.bind(this).bind(this).bind(this).bind(this)
+          click: this.onClick.bind(this).bind(this).bind(this).bind(this).bind(this)
         })
       }])), h('span', { 'class': prefixCls + '-inner' })]
     );

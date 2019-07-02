@@ -14161,7 +14161,7 @@ var Notification = {
         },
         on: {
           close: close,
-          click: notice.onClick.bind(notice).bind(notice).bind(notice) && notice.onClick.bind(notice).bind(notice).bind(notice).bind(notice) || Notification_noop
+          click: notice.onClick.bind(notice).bind(notice).bind(notice).bind(notice) && notice.onClick.bind(notice).bind(notice).bind(notice).bind(notice).bind(notice) || Notification_noop
         },
         style: style,
         'class': className,
@@ -22556,7 +22556,7 @@ function (_BaseInputComponent) {
           "title": this.title
         },
         "on": {
-          "click": this.onClick.bind(this)
+          "click": this.onClick.bind(this).bind(this)
         }
       }, [// @ts-ignore
       h(m_calendar_src, helper_default()([{}, {
@@ -24846,7 +24846,7 @@ var babel_helper_vue_jsx_merge_props_default = /*#__PURE__*/__webpack_require__.
       attrs: globalProps,
       on: extends_default()({}, this.$listeners, {
         change: this.handleChange,
-        click: this.onClick.bind(this).bind(this).bind(this).bind(this)
+        click: this.onClick.bind(this).bind(this).bind(this).bind(this).bind(this)
       })
     }])), h('span', {
       'class': prefixCls + '-inner'
@@ -24955,7 +24955,7 @@ function (_Vue) {
           "attrs": _objectSpread({}, restProps)
         }, {
           "on": {
-            "click": this.onClick.bind(this)
+            "click": this.onClick.bind(this).bind(this)
           },
           "attrs": {
             "prefixCls": listPrefixCls,
@@ -25086,7 +25086,7 @@ function (_Vue) {
         "class": wrapCls
       }, [h(vc_checkbox_src, helper_default()([{
         "on": {
-          "click": this.onClick.bind(this)
+          "click": this.onClick.bind(this).bind(this)
         },
         "attrs": {
           "checked": this.value
@@ -25101,7 +25101,7 @@ function (_Vue) {
 
       return h(vc_checkbox_src, helper_default()([{
         "on": {
-          "click": this.onClick.bind(this)
+          "click": this.onClick.bind(this).bind(this)
         },
         "attrs": {
           "checked": this.value
@@ -25555,7 +25555,7 @@ function (_OptionsBasedComponen) {
       }, ["\u6E05\u9664"]);
       return h(Item, {
         "on": {
-          "click": this.onClick.bind(this)
+          "click": this.onClick.bind(this).bind(this)
         },
         "attrs": {
           "touchFeedback": !this.readOnly && !this.disabled,
@@ -32295,7 +32295,7 @@ function (_Vue) {
       var mark = h("label", {
         "class": wrapCls,
         "on": {
-          "click": this.onClick.bind(this)
+          "click": this.onClick.bind(this).bind(this)
         }
       }, [h(vc_checkbox_src, helper_default()([{}, {
         "props": this.$props
@@ -32428,7 +32428,7 @@ function (_Vue) {
           "value": this.value
         },
         "on": {
-          "click": this.onClick.bind(this),
+          "click": this.onClick.bind(this).bind(this),
           "change": this.onChange.bind(this)
         }
       }]));
@@ -32673,7 +32673,7 @@ function (_OptionsBasedComponen) {
       }, ["\u6E05\u9664"]);
       return h(Item, {
         "on": {
-          "click": this.onClick.bind(this)
+          "click": this.onClick.bind(this).bind(this)
         },
         "attrs": {
           "touchFeedback": !this.readOnly && !this.disabled,
@@ -33882,7 +33882,7 @@ function (_Vue) {
           "value": this.value
         },
         "on": {
-          "click": this.onClick.bind(this),
+          "click": this.onClick.bind(this).bind(this),
           "change": this.onChange.bind(this)
         }
       }]));
@@ -35986,7 +35986,7 @@ function (_Vue) {
       var iconColor = selected ? tintColor : unselectedTintColor;
       return h("div", helper_default()([{}, this.dataAttrs, {
         "on": {
-          "click": this.onClick.bind(this)
+          "click": this.onClick.bind(this).bind(this)
         },
         "class": "".concat(prefixCls)
       }]), [h("div", {

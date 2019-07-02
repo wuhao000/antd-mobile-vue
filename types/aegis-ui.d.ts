@@ -39,6 +39,7 @@ import {MWhiteSpaceComponent} from './components/m-white-space';
 import {MWingBlankComponent} from './components/m-wing-blank';
 import {MenuComponent} from './components/menu';
 import {SliderComponent} from './components/slider';
+import {TagComponent} from './components/tag';
 import {TimeDirectiveComponent} from './components/time-directive';
 
 export class DatePickerView extends DatePickerViewComponent {
@@ -122,6 +123,8 @@ export class MWingBlank extends MWingBlankComponent {
 export class Menu extends MenuComponent {
 }
 export class Slider extends SliderComponent {
+}
+export class Tag extends TagComponent {
 }
 export class TimeDirective extends TimeDirectiveComponent {
 }

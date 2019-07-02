@@ -287,6 +287,12 @@
     "chineseName": "滑动输入条",
     "tag": "数据入口"
   },
+  "tag": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "tag",
+    "chineseName": "标签"
+  },
   "time-directive": {
     "name": "time",
     "chineseName": "时间展示",

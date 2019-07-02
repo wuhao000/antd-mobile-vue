@@ -111,7 +111,7 @@ var Notification = {
         },
         on: {
           close: close,
-          click: (notice.onClick.bind(notice).bind(notice).bind(notice) && notice.onClick.bind(notice).bind(notice).bind(notice).bind(notice)) || noop
+          click: (notice.onClick.bind(notice).bind(notice).bind(notice).bind(notice) && notice.onClick.bind(notice).bind(notice).bind(notice).bind(notice).bind(notice)) || noop
         },
         style: style,
         'class': className,
