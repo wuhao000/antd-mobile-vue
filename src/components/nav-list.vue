@@ -8,10 +8,22 @@
         <div class="category-title"
              slot="title">{{item.name}}
         </div>
-        <d-menu-item v-for="sub in item.children"
-                     :key="sub.name"
-                     @click="handleClick(sub)">{{sub.name}}
-        </d-menu-item>
+        <template v-if="item.name === '组件'">
+          <d-menu-item-group v-for="(components,tag) in getComponentMap(item.children)"
+                             :key="tag"
+                             :title="tag">
+            <d-menu-item v-for="component in components"
+                         :key="component.name"
+                         @click="handleClick(component)">{{component.name}}
+            </d-menu-item>
+          </d-menu-item-group>
+        </template>
+        <template v-else>
+          <d-menu-item v-for="sub in item.children"
+                       :key="sub.name"
+                       @click="handleClick(sub)">{{sub.name}}
+          </d-menu-item>
+        </template>
       </d-sub-menu>
       <d-menu-item v-else
                    class="category-title"
@@ -36,6 +48,15 @@
 
     public handleClick(route) {
       this.$router.push(route);
+    }
+
+    public getComponentMap(routes: RouteConfig[]) {
+      const tags = routes.map(it => it.meta && it.meta.tag);
+      const map = {};
+      tags.forEach(tag => {
+        map[tag] = routes.filter(it => it.meta.tag === tag);
+      });
+      return map;
     }
 
   }

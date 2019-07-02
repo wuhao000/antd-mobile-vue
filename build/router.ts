@@ -18,24 +18,35 @@ function distinct(strings: string[]) {
 
 types.forEach(type => {
   const typeComponents = components.filter(it => it.type === type);
-  if (type !== 'component') {
-    createRoutesForType(type, typeComponents);
-  } else {
-    const componentTypes = distinct(typeComponents.map(it => it.componentType));
-    componentTypes.forEach(componentType => {
-      const uiTypeComponents = typeComponents.filter(it => it.componentType === componentType);
-      createRoutesForType(componentType + '-component', uiTypeComponents);
-    });
-  }
+  createRoutesForType(type, typeComponents);
 });
 
-function createRoutesForType(type: string, typeComponents: Component[]) {
-  const route = typeComponents.map((it: Component) => {
-    return `{
+function getTags(typeComponents: Component[]) {
+  const tags = [];
+  typeComponents.forEach(comp => {
+    if (comp.tag && !tags.includes(comp.tag)) {
+      tags.push(comp.tag);
+    }
+  });
+  tags.push(undefined);
+  return tags;
+}
+
+function createRouteStr(it: Component) {
+  return `{
   path: '${it.dir}',
   name: '${it.upperCase} ${it.zhName}',
+  meta: {
+    tag: '${it.tag || '其他'}'
+  },
   component: () => import('@/generated/${it.dir}/index.vue')
 }`;
+}
+
+function createRoutesForType(type: string, typeComponents: Component[]) {
+  let route = '';
+  route = typeComponents.map((it: Component) => {
+    return createRouteStr(it);
   }).join(', ');
   const routerTmpl = renderTemplate(`src/templates/router.ts.tmpl`, {
     routers: `[${route}]`

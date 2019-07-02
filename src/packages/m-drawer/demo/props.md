@@ -12,5 +12,6 @@ position||'left' \| 'right' \| 'top' \| 'bottom'|
 prefixCls||string|
 sidebar||VNode|
 sidebarStyle|抽屉内容容器样式|any|
-touch||boolean|
+touch||boolean|true
 transitions||boolean|
+value||boolean|

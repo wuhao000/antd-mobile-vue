@@ -8,7 +8,6 @@ import LoadingDirective from './loading-directive';
 import MAccordion from './m-accordion';
 import MActionSheet from './m-action-sheet';
 import MActivityIndicator from './m-activity-indicator';
-import MAnimate from './m-animate';
 import MBadge from './m-badge';
 import MButton from './m-button';
 import MCalendar from './m-calendar';
@@ -62,7 +61,6 @@ const components = [
 	MAccordion,
 	MActionSheet,
 	MActivityIndicator,
-	MAnimate,
 	MBadge,
 	MButton,
 	MCalendar,
@@ -122,7 +120,6 @@ export {
 	MAccordion,
 	MActionSheet,
 	MActivityIndicator,
-	MAnimate,
 	MBadge,
 	MButton,
 	MCalendar,
@@ -170,7 +167,6 @@ export default {
 	MAccordion,
 	MActionSheet,
 	MActivityIndicator,
-	MAnimate,
 	MBadge,
 	MButton,
 	MCalendar,

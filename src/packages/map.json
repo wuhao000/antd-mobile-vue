@@ -14,139 +14,155 @@
     "type": "component",
     "componentType": "mobile",
     "name": "m-accordion",
-    "chineseName": "手风琴"
+    "chineseName": "手风琴",
+    "tag": "数据展示"
   },
   "m-action-sheet": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-action-sheet",
-    "chineseName": "动作面板"
+    "chineseName": "动作面板",
+    "tag": "反馈"
   },
   "m-activity-indicator": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-activity-indicator",
-    "chineseName": "活动指示器"
-  },
-  "m-animate": {
-    "type": "component",
-    "componentType": "mobile",
-    "name": "m-animate",
-    "chineseName": "动画"
+    "chineseName": "活动指示器",
+    "tag": "反馈"
   },
   "m-badge": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-badge",
-    "chineseName": "徽标"
+    "chineseName": "徽标",
+    "tag": "数据展示"
   },
   "m-button": {
     "name": "m-button",
     "componentType": "mobile",
     "chineseName": "按钮",
-    "type": "component"
+    "type": "component",
+    "tag": "数据入口"
   },
   "m-calendar": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-calendar",
-    "chineseName": "日历"
+    "chineseName": "日历",
+    "tag": "数据入口"
   },
   "m-card": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-card",
-    "chineseName": "卡片"
+    "chineseName": "卡片",
+    "tag": "数据展示"
   },
   "m-carousel": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-carousel",
-    "chineseName": "走马灯"
+    "chineseName": "走马灯",
+    "tag": "数据展示"
   },
   "m-chart": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-chart",
-    "chineseName": "图表"
+    "chineseName": "图表",
+    "tag": "数据展示"
   },
   "m-checkbox": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-checkbox",
-    "chineseName": "复选框"
+    "chineseName": "复选框",
+    "tag": "数据入口"
   },
   "m-date-picker": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-date-picker",
-    "chineseName": "日期选择"
+    "chineseName": "日期选择",
+    "tag": "数据入口"
   },
   "m-drawer": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-drawer",
-    "chineseName": "抽屉"
+    "chineseName": "抽屉",
+    "tag": "导航"
   },
   "m-flex": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-flex",
-    "chineseName": "弹性布局"
+    "chineseName": "弹性布局",
+    "tag": "布局"
   },
   "m-grid": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-grid",
-    "chineseName": "宫格"
+    "chineseName": "宫格",
+    "tag": "数据展示"
   },
   "m-icon": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-icon",
-    "chineseName": "图标"
+    "chineseName": "图标",
+    "tag": "数据展示"
   },
   "m-input": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-input",
-    "chineseName": "输入框"
+    "chineseName": "输入框",
+    "tag": "数据入口"
   },
   "m-list": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-list",
-    "chineseName": "列表"
+    "chineseName": "列表",
+    "tag": "数据展示"
   },
   "m-modal": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-modal",
-    "chineseName": "模态框"
+    "chineseName": "模态框",
+    "tag": "反馈"
   },
   "m-nav-bar": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-nav-bar",
-    "chineseName": "导航栏"
+    "chineseName": "导航栏",
+    "tag": "导航"
   },
   "m-notice-bar": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-notice-bar",
-    "chineseName": "通告栏"
+    "chineseName": "通告栏",
+    "tag": "数据展示"
   },
   "m-pagination": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-pagination",
-    "chineseName": "分页器"
+    "chineseName": "分页器",
+    "tag": "导航"
   },
   "m-picker": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-picker",
-    "chineseName": "选择器"
+    "chineseName": "选择器",
+    "tag": "数据入口"
   },
   "m-popup": {
     "type": "component",
@@ -158,91 +174,106 @@
     "type": "component",
     "componentType": "mobile",
     "name": "m-pull-refresh",
-    "chineseName": "下拉刷新"
+    "chineseName": "下拉刷新",
+    "tag": "手势"
   },
   "m-radio": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-radio",
-    "chineseName": "单选"
+    "chineseName": "单选",
+    "tag": "数据入口"
   },
   "m-range": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-range",
-    "chineseName": "区域选择"
+    "chineseName": "区域选择",
+    "tag": "数据入口"
   },
   "m-result": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-result",
-    "chineseName": "结果页"
+    "chineseName": "结果页",
+    "tag": "组合"
   },
   "m-search-bar": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-search-bar",
-    "chineseName": "搜索框"
+    "chineseName": "搜索框",
+    "tag": "数据入口"
   },
   "m-steps": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-steps",
-    "chineseName": "步骤条"
+    "chineseName": "步骤条",
+    "tag": "数据展示"
   },
   "m-switch": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-switch",
-    "chineseName": "开关"
+    "chineseName": "开关",
+    "tag": "数据入口"
   },
   "m-tab-bar": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-tab-bar",
-    "chineseName": "标签栏"
+    "chineseName": "标签栏",
+    "tag": "导航"
   },
   "m-tabs": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-tabs",
-    "chineseName": "标签页"
+    "chineseName": "标签页",
+    "tag": "导航"
   },
   "m-textarea": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-textarea",
-    "chineseName": "文本框"
+    "chineseName": "文本框",
+    "tag": "数据入口"
   },
   "m-toast": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-toast",
-    "chineseName": "轻提示"
+    "chineseName": "轻提示",
+    "tag": "反馈"
   },
   "m-white-space": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-white-space",
-    "chineseName": "上下留白"
+    "chineseName": "上下留白",
+    "tag": "布局"
   },
   "m-wing-blank": {
     "type": "component",
     "componentType": "mobile",
     "name": "m-wing-blank",
-    "chineseName": "两翼留白"
+    "chineseName": "两翼留白",
+    "tag": "布局"
   },
   "menu": {
     "type": "component",
     "componentType": "mobile",
     "name": "menu",
-    "chineseName": "菜单"
+    "chineseName": "菜单",
+    "tag": "导航"
   },
   "slider": {
     "type": "component",
     "componentType": "mobile",
     "name": "slider",
-    "chineseName": "滑动输入条"
+    "chineseName": "滑动输入条",
+    "tag": "数据入口"
   },
   "time-directive": {
     "name": "time",

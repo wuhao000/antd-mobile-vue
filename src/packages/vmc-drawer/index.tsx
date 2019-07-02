@@ -1,3 +1,6 @@
+import {getPanDirection} from '@/packages/m-tabs/src';
+import {setPxStyle} from '@/packages/m-tabs/src/utils';
+import {IGestureStatus} from '@/packages/vmc-gesture';
 import classNames from 'classnames';
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
@@ -93,6 +96,14 @@ export default class Index extends Vue {
   })
   public onOpenChange: any;
 
+  get contentRef() {
+    return this.$refs.content;
+  }
+
+  get overlayRef(): any {
+    return this.$refs.overlay;
+  }
+
   public state = {
     // the detected width of the sidebar in pixels
     sidebarWidth: 0,
@@ -136,7 +147,7 @@ export default class Index extends Vue {
     // filter out if a user starts swiping with a second finger
     if (!this.isTouching()) {
       const touch = ev.targetTouches[0];
-      this.state.touchIdentifier = !this.state.notTouch ? touch.identifier : null;
+      this.state.touchIdentifier = this.state.notTouch ? touch.identifier : null;
       this.state.touchStartX = touch.clientX;
       this.state.touchStartY = touch.clientY;
       this.state.touchCurrentX = touch.clientX;
@@ -165,15 +176,15 @@ export default class Index extends Vue {
       const touchWidth = this.touchSidebarWidth();
 
       if (this.open && touchWidth < this.state.sidebarWidth - this.dragToggleDistance ||
-          !this.open && touchWidth > this.dragToggleDistance) {
+        !this.open && touchWidth > this.dragToggleDistance) {
         this.$emit('open', !this.open);
       }
 
       const touchHeight = this.touchSidebarHeight();
 
       if (this.open &&
-          touchHeight < this.state.sidebarHeight - this.dragToggleDistance ||
-          !this.open && touchHeight > this.dragToggleDistance) {
+        touchHeight < this.state.sidebarHeight - this.dragToggleDistance ||
+        !this.open && touchHeight > this.dragToggleDistance) {
         this.$emit('open', !this.open);
       }
 
@@ -200,20 +211,20 @@ export default class Index extends Vue {
     switch (this.position) {
       case 'right':
         cancelDistanceOnScroll = Math.abs(this.state.touchCurrentX - this.state.touchStartX) <
-            CANCEL_DISTANCE_ON_SCROLL;
+          CANCEL_DISTANCE_ON_SCROLL;
         break;
       case 'bottom':
         cancelDistanceOnScroll = Math.abs(this.state.touchCurrentY - this.state.touchStartY) <
-            CANCEL_DISTANCE_ON_SCROLL;
+          CANCEL_DISTANCE_ON_SCROLL;
         break;
       case 'top':
         cancelDistanceOnScroll = Math.abs(this.state.touchStartY - this.state.touchCurrentY) <
-            CANCEL_DISTANCE_ON_SCROLL;
+          CANCEL_DISTANCE_ON_SCROLL;
         break;
       case 'left':
       default:
         cancelDistanceOnScroll = Math.abs(this.state.touchStartX - this.state.touchCurrentX) <
-            CANCEL_DISTANCE_ON_SCROLL;
+          CANCEL_DISTANCE_ON_SCROLL;
     }
     return cancelDistanceOnScroll;
   }
@@ -274,7 +285,7 @@ export default class Index extends Vue {
     // otherwise we will move the sidebar to be below the finger.
     if (this.position === 'bottom') {
       if (this.open &&
-          window.innerHeight - this.state.touchStartY < this.state.sidebarHeight) {
+        window.innerHeight - this.state.touchStartY < this.state.sidebarHeight) {
         if (this.state.touchCurrentY > this.state.touchStartY) {
           return this.state.sidebarHeight + this.state.touchStartY - this.state.touchCurrentY;
         }
@@ -292,7 +303,7 @@ export default class Index extends Vue {
         return this.state.sidebarHeight - this.state.touchStartY + this.state.touchCurrentY;
       }
       return Math.min(this.state.touchCurrentY - this.state.dragHandleTop,
-          this.state.sidebarHeight);
+        this.state.sidebarHeight);
     }
   }
 
@@ -343,6 +354,56 @@ export default class Index extends Vue {
     }
   }
 
+  public isMoving = false;
+
+  get onPan() {
+    let lastOffset: number | string = 0;
+    let finalOffset = 0;
+    let panDirection: string;
+
+    const getLastOffset = () => {
+      let offset = +`${lastOffset}`.replace('%', '');
+      if (`${lastOffset}`.indexOf('%') >= 0) {
+        offset /= 100;
+        offset *= this.overlayRef.clientWidth;
+      }
+      return offset;
+    };
+
+    return {
+      onPanStart: (status: IGestureStatus) => {
+        panDirection = getPanDirection(status.direction);
+        this.isMoving = true;
+      },
+      onPanMove: (status: IGestureStatus) => {
+        if (!status.moveStatus) {
+          return;
+        }
+        let offset = getLastOffset();
+        offset += panDirection === 'vertical' ? 0 : status.moveStatus.x;
+        const canScrollOffset =
+          -this.overlayRef.scrollWidth + this.overlayRef.clientWidth;
+        offset = Math.min(offset, 0);
+        offset = Math.max(offset, canScrollOffset);
+        setPxStyle(this.overlayRef, offset, 'px', false, false);
+        finalOffset = offset;
+      },
+
+      onPanEnd: () => {
+        lastOffset = finalOffset;
+        // const offsetIndex = this.getOffsetIndex(finalOffset, this.overlayRef.clientWidth);
+        this.isMoving = false;
+      },
+      setCurrentOffset: (offset: number | string) => lastOffset = offset
+    };
+  }
+
+  public startX = 0;
+  public startY = 0;
+  public touchOffsetX = 0;
+  public touchOffsetY = 0;
+  public transformOffset = 0;
+
   public render() {
     const {
       prefixCls, position, transitions,
@@ -384,42 +445,42 @@ export default class Index extends Vue {
     let dragHandle = null;
     if (this.state.touchSupported && touch) {
       if (open) {
-        rootProps.onTouchStart = (ev) => {
+        rootProps.touchstart = (ev) => {
           this.state.notTouch = true;
           this.onTouchStart(ev);
         };
-        rootProps.onTouchMove = this.onTouchMove;
-        rootProps.onTouchEnd = this.onTouchEnd;
-        rootProps.onTouchCancel = this.onTouchEnd;
-        rootProps.onScroll = this.onScroll;
+        rootProps.touchmove = this.onTouchMove;
+        rootProps.touchend = this.onTouchEnd;
+        rootProps.touchcancel = this.onTouchEnd;
+        rootProps.scroll = this.onScroll;
       } else if (enableDragHandle) {
         dragHandle = (
-            <div class={`${prefixCls}-draghandle`} style={this.dragHandleStyle}
-                 onTouchStart={this.onTouchStart.bind(this)} onTouchMove={this.onTouchMove.bind(this)}
-                 onTouchEnd={this.onTouchEnd.bind(this)} onTouchCancel={this.onTouchEnd.bind(this)}
-                 ref={'dragHandle'}
-            />);
+          <div class={`${prefixCls}-draghandle`} style={this.dragHandleStyle}
+               onTouchStart={this.onTouchStart.bind(this)} onTouchMove={this.onTouchMove.bind(this)}
+               onTouchEnd={this.onTouchEnd.bind(this)} onTouchCancel={this.onTouchEnd.bind(this)}
+               ref={'dragHandle'}
+          />);
       }
     }
     return (
-        <div class={classNames(rootCls)}
-             {...rootProps}>
-          <div class={`${prefixCls}-sidebar`} style={sidebarStyle}
-               ref={'sidebar'}>
-            {sidebar}
-          </div>
-          <div class={`${prefixCls}-overlay`}
-               style={overlayStyle}
-               role={'presentation'}
-               ref={'overlay'}
-               onClick={this.onOverlayClicked.bind(this)}
-          />
-          <div class={`${prefixCls}-content`} style={contentStyle}
-               ref={'content'}>
-            {dragHandle}
-            {this.$slots.default}
-          </div>
+      <div class={classNames(rootCls)}
+           on={rootProps}>
+        <div class={`${prefixCls}-sidebar`} style={sidebarStyle}
+             ref={'sidebar'}>
+          {sidebar}
         </div>
+        <div class={`${prefixCls}-overlay`}
+             style={overlayStyle}
+             role={'presentation'}
+             ref={'overlay'}
+             onclick={this.onOverlayClicked.bind(this)}
+        />
+        <div class={`${prefixCls}-content`} style={contentStyle}
+             ref={'content'}>
+          {dragHandle}
+          {this.$slots.default}
+        </div>
+      </div>
     );
   }
 }

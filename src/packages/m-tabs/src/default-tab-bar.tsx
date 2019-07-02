@@ -254,10 +254,9 @@ export default class DefaultTabBar extends Vue {
       class: `${prefixCls}-underline`
     };
 
-    const Gesture2 = Gesture as any;
     return <div class={`${cls} ${prefixCls}-${tabBarPosition}`} style={style}>
       {showPrev && <div class={`${prefixCls}-prevpage`}/>}
-      <Gesture2 {...onPan}
+      <Gesture {...onPan}
                 direction={isTabBarVertical ? 'vertical' : 'horizontal'}>
         <div role={'tablist'} class={`${prefixCls}-content`} style={transformStyle}
              ref={'layout'}>
@@ -266,7 +265,7 @@ export default class DefaultTabBar extends Vue {
             renderUnderline ? <div {...underlineProps}/> : ''
           }
         </div>
-      </Gesture2>
+      </Gesture>
       {showNext && <div class={`${prefixCls}-nextpage`}/>}
     </div>;
   }

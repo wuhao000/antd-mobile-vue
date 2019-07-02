@@ -2,7 +2,6 @@ import {LoadingDirectiveComponent} from './components/loading-directive';
 import {MAccordionComponent} from './components/m-accordion';
 import {MActionSheetComponent} from './components/m-action-sheet';
 import {MActivityIndicatorComponent} from './components/m-activity-indicator';
-import {MAnimateComponent} from './components/m-animate';
 import {MBadgeComponent} from './components/m-badge';
 import {MButtonComponent} from './components/m-button';
 import {MCalendarComponent} from './components/m-calendar';
@@ -47,8 +46,6 @@ export class MAccordion extends MAccordionComponent {
 export class MActionSheet extends MActionSheetComponent {
 }
 export class MActivityIndicator extends MActivityIndicatorComponent {
-}
-export class MAnimate extends MAnimateComponent {
 }
 export class MBadge extends MBadgeComponent {
 }

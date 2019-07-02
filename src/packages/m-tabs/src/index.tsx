@@ -11,7 +11,7 @@ import {getTransformPropValue, setPxStyle, setTransform} from './utils';
 
 let instanceId: number = 0;
 
-const getPanDirection = (direction: number | undefined) => {
+export const getPanDirection = (direction: number | undefined) => {
   switch (direction) {
     case DIRECTION_LEFT:
     case DIRECTION_RIGHT:

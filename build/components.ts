@@ -8,7 +8,8 @@ export interface Component {
   componentType: string;
   dir: string;
   name: string;
-  type: ComponentType,
+  type: ComponentType;
+  tag?: string;
   upperCase: string;
   zhName: string;
 }
@@ -24,7 +25,8 @@ const resolveComponents = () => {
       componentType: packageMap[name].componentType,
       zhName: packageMap[name].chineseName,
       upperCase: componentName,
-      type: packageMap[name].type
+      type: packageMap[name].type,
+      tag: packageMap[name].tag
     });
   });
   return componentList;

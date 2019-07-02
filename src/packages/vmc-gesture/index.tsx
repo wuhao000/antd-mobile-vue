@@ -146,7 +146,7 @@ const directionMap = {
 @Component({
   name: 'Gesture'
 })
-export default class Gesture extends Vue {
+class Gesture extends Vue {
   @Prop({type: Boolean, default: false})
   public enableRotate: boolean;
   @Prop({type: Boolean, default: false})
@@ -616,3 +616,5 @@ export default class Gesture extends Vue {
     });
   }
 }
+
+export default Gesture as any;

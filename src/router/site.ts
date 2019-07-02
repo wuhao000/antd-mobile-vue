@@ -1,7 +1,5 @@
-import desktopComponent from '@/router/desktop-component';
 import directive from '@/router/directive';
-import generalComponent from '@/router/general-component';
-import mobileComponent from '@/router/mobile-component';
+import components from '@/router/component';
 import tool from '@/router/tool';
 import Home from '@/views/home.vue';
 import Site from '../views/site.vue';
@@ -33,9 +31,9 @@ export default {
     },
     {
       path: '/mobile-components',
-      name: '移动组件',
+      name: '组件',
       component: () => import('@/components/components.vue'),
-      children: mobileComponent
+      children: components
     },
     {
       path: '/tools',
@@ -48,6 +46,6 @@ export default {
       name: '指令',
       component: () => import('@/components/components.vue'),
       children: directive
-    },
+    }
   ]
 };

@@ -24,7 +24,7 @@ export default class Drawer extends Vue {
   public docked?: boolean;
   @Prop({type: Boolean})
   public transitions?: boolean;
-  @Prop({type: Boolean})
+  @Prop({type: Boolean, default: true})
   public touch?: boolean;
   @Prop({type: Number})
   public dragToggleDistance?: number;
@@ -36,7 +36,7 @@ export default class Drawer extends Vue {
   @Prop({})
   public sidebar?: VNode;
   @Prop({type: Boolean})
-  public open?: boolean;
+  public value?: boolean;
   @Prop({type: String, default: 'left'})
   public position?: 'left' | 'right' | 'top' | 'bottom';
   public static install: (Vue) => void;
@@ -44,14 +44,21 @@ export default class Drawer extends Vue {
   public render() {
     // @ts-ignore
     return <RmcDrawer
-        attrs={
-          {
-            ...this.$props,
-            ...this.$attrs,
-            sidebar: this.$slots.content || this.content
-          }
+      attrs={
+        {
+          ...this.$props,
+          ...this.$attrs,
+          sidebar: this.$slots.content || this.content
         }
-        on={this.$listeners}>
+      }
+      open={this.value}
+      on={{
+        ...this.$listeners,
+        open: (value) => {
+          this.$emit('input', value);
+          this.$emit('open', value);
+        }
+      }}>
       {this.$slots.default}
     </RmcDrawer>;
   }
