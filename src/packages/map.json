@@ -10,6 +10,12 @@
     "name": "date-picker-view",
     "chineseName": "日期选择器"
   },
+  "image-picker": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "image-picker",
+    "chineseName": "图片选择器"
+  },
   "loading-directive": {
     "type": "directive",
     "componentType": null,

@@ -8,6 +8,13 @@ export default [{
   },
   component: () => import('@/generated/date-picker-view/index.vue')
 }, {
+  path: 'image-picker',
+  name: 'ImagePicker 图片选择器',
+  meta: {
+    tag: '其他'
+  },
+  component: () => import('@/generated/image-picker/index.vue')
+}, {
   path: 'm-accordion',
   name: 'MAccordion 手风琴',
   meta: {

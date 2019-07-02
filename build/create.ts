@@ -61,9 +61,9 @@ export default function createFile(options: Options) {
   /*
   获取templates文件夹下需要的{type}-index.ts.tmpl模板
   */
-
+  const camelName = toCamel(options.name);
   const indexTsTemplate = renderTemplate(resolve(`../src/templates/${options.type}-index.ts.tmpl`), {
-    name: toCamel(options.name),
+    name: 'M' + camelName,
     directiveName: toLine(options.name)
   });
 

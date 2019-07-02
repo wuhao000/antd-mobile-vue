@@ -5,7 +5,7 @@ import {Prop} from 'vue-property-decorator';
 @Component({
   name: 'TouchFeedback'
 })
-export default class TouchFeedback extends Vue {
+class TouchFeedback extends Vue {
   @Prop({type: Boolean, default: false})
   public disabled?: boolean;
   @Prop({type: String})
@@ -92,3 +92,4 @@ export default class TouchFeedback extends Vue {
     return child;
   }
 }
+export default TouchFeedback as any;

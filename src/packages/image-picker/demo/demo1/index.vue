@@ -1,21 +1,23 @@
 <template>
   <div>
-    <demo1-component/>
+    <m-image-picker v-model="files"/>
   </div>
 </template>
 <script lang="ts">
   import Vue from 'vue';
   import Component from 'vue-class-component';
-  import DatePickerView from '../../index';
-  import Demo1Component from './demo1';
+  import ImagePicker from '../../index';
 
-  Vue.use(DatePickerView);
+  Vue.use(ImagePicker);
   @Component({
-    name: 'Demo1',
-    components: {Demo1Component}
+    name: 'Demo1'
   })
   export default class Demo1 extends Vue {
-    // TODO
+    public files = [];
+
+    public onChange(files) {
+      this.files = files;
+    }
   }
 </script>
 <style scoped lang="less">
