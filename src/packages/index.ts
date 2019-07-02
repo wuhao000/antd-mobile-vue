@@ -44,6 +44,8 @@ import MToast from './m-toast';
 import MWhiteSpace from './m-white-space';
 import MWingBlank from './m-wing-blank';
 import Menu from './menu';
+import Progress from './progress';
+import SegmentedControl from './segmented-control';
 import Slider from './slider';
 import Tag from './tag';
 import TimeDirective from './time-directive';
@@ -100,6 +102,8 @@ const components = [
 	MWhiteSpace,
 	MWingBlank,
 	Menu,
+	Progress,
+	SegmentedControl,
 	Slider,
 	Tag,
 	TimeDirective
@@ -162,6 +166,8 @@ export {
 	MWhiteSpace,
 	MWingBlank,
 	Menu,
+	Progress,
+	SegmentedControl,
 	Slider,
 	Tag,
 	TimeDirective
@@ -212,6 +218,8 @@ export default {
 	MWhiteSpace,
 	MWingBlank,
 	Menu,
+	Progress,
+	SegmentedControl,
 	Slider,
 	Tag,
 	TimeDirective

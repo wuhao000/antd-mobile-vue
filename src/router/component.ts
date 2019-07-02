@@ -274,6 +274,20 @@ export default [{
   },
   component: () => import('@/generated/menu/index.vue')
 }, {
+  path: 'progress',
+  name: 'Progress 进度条',
+  meta: {
+    tag: '其他'
+  },
+  component: () => import('@/generated/progress/index.vue')
+}, {
+  path: 'segmented-control',
+  name: 'SegmentedControl 分段器',
+  meta: {
+    tag: '其他'
+  },
+  component: () => import('@/generated/segmented-control/index.vue')
+}, {
   path: 'slider',
   name: 'Slider 滑动输入条',
   meta: {

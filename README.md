@@ -9,7 +9,7 @@
 
 **与antd-mobile的组件对比**
 
-antd-mobile 共有 <code>47</code>个组件，本项目截至现在移植了<code>40</code>个
+antd-mobile 共有 <code>47</code>个组件，本项目截至现在移植了<code>42</code>个
 
 * 新增chart组件
 
@@ -42,12 +42,12 @@ Pagination | √ | √
 Picker | √ | √
 PickerView | √ | √
 Popover | √ | 
-Progress | √ | 
+Progress | √ | √
 Radio | √ | √
 PullToRefresh | √ | √
 Result | √ | √
 SearchBar | √ | √
-SegmentedControl | √ | 
+SegmentedControl | √ | √
 Slider | √ | √
 Range | √ | √
 Stepper | √ | 

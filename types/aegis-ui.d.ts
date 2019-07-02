@@ -38,6 +38,8 @@ import {MToastComponent} from './components/m-toast';
 import {MWhiteSpaceComponent} from './components/m-white-space';
 import {MWingBlankComponent} from './components/m-wing-blank';
 import {MenuComponent} from './components/menu';
+import {ProgressComponent} from './components/progress';
+import {SegmentedControlComponent} from './components/segmented-control';
 import {SliderComponent} from './components/slider';
 import {TagComponent} from './components/tag';
 import {TimeDirectiveComponent} from './components/time-directive';
@@ -121,6 +123,10 @@ export class MWhiteSpace extends MWhiteSpaceComponent {
 export class MWingBlank extends MWingBlankComponent {
 }
 export class Menu extends MenuComponent {
+}
+export class Progress extends ProgressComponent {
+}
+export class SegmentedControl extends SegmentedControlComponent {
 }
 export class Slider extends SliderComponent {
 }

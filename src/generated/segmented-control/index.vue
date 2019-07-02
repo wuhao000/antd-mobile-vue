@@ -40,11 +40,11 @@
   
   import Vue from 'vue';
   import Component from 'vue-class-component';
-  import Tag from '@/packages/tag';
-  import title from '../../packages/tag/demo/README.md';
-  import props from '../../packages/tag/demo/props.md';
+  import SegmentedControl from '@/packages/segmented-control';
+  import title from '../../packages/segmented-control/demo/README.md';
+  import props from '../../packages/segmented-control/demo/props.md';
 
-  Vue.use(Tag);
+  Vue.use(SegmentedControl);
   @Component({
     name: 'ComponentDemo',
     components: {

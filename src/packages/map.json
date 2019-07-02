@@ -280,6 +280,18 @@
     "chineseName": "菜单",
     "tag": "导航"
   },
+  "progress": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "progress",
+    "chineseName": "进度条"
+  },
+  "segmented-control": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "segmented-control",
+    "chineseName": "分段器"
+  },
   "slider": {
     "type": "component",
     "componentType": "mobile",
