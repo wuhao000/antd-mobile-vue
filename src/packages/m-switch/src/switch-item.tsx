@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {Prop, Watch} from 'vue-property-decorator';
 import List from '../../m-list';
 import Switch from './switch';
 
@@ -27,9 +27,21 @@ export default class SwitchItem extends Vue {
   public value: boolean;
   @Prop({type: String})
   public title: string;
+  public state = {
+    value: this.value
+  };
 
-  public onChange(value: boolean) {
-    this.$emit('change', value);
+  @Watch('value')
+  public valueChanged(value: boolean) {
+    this.state.value = value;
+  }
+
+  @Watch('state.value')
+  public stateValueChanged(value: boolean, oldValue: boolean) {
+    this.$emit('input', value);
+    if (value !== oldValue) {
+      this.$emit('change', value);
+    }
   }
 
   public onClick(e) {
@@ -58,6 +70,7 @@ export default class SwitchItem extends Vue {
     });
     // @ts-ignore
     const extra = <Switch
+      vModel={this.state.value}
       attrs={
         {
           ...switchProps,
@@ -65,9 +78,7 @@ export default class SwitchItem extends Vue {
           ...this.$attrs
         }
       }
-      value={this.value}
       onClick={this.onClick}
-      onChange={this.onChange}
     />;
     return (
       <ListItem

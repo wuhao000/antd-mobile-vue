@@ -1,9 +1,9 @@
 <template>
   <div style="background: lightgray">
-    <m-drawer docked
-              class="my-drawer"
+    <m-drawer class="my-drawer"
               :content-style="{ color : '#A6A6A6', textAlign : 'center', paddingTop : 42 }"
               :open="open"
+              position="right"
               :style="drawerStyle"
               @open="onOpenChange">
       <m-list slot="content"

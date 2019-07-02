@@ -43,7 +43,7 @@
   export default class Demo1 extends Vue {
     public options1 = [];
     public options2 = [];
-    public value1 = 1;
+    public value1 = null;
     public value2 = 0;
 
     public created() {

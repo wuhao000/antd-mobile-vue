@@ -1,6 +1,7 @@
 <template>
   <div>
     <demo/>
+    <div>这是一段话</div>
   </div>
 </template>
 <script lang="ts">

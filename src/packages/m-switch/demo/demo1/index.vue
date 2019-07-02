@@ -15,6 +15,7 @@
         <m-switch v-model="value"/>
         {{value}}
       </m-list-item>
+      <m-switch-item title="开关" v-model="value"></m-switch-item>
     </m-list>
   </div>
 </template>
