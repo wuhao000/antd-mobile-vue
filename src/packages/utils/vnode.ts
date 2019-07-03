@@ -52,14 +52,14 @@ export function cloneVNode(vnode, deep) {
   }
 
   const cloned = new vnode.constructor(
-    vnode.tag,
-    data ? {...data, on} : data,
-    vnode.children,
-    vnode.text,
-    vnode.elm,
-    vnode.context,
-    componentOptions ? {...componentOptions, listeners} : componentOptions,
-    vnode.asyncFactory
+      vnode.tag,
+      data ? {...data, on} : data,
+      vnode.children,
+      vnode.text,
+      vnode.elm,
+      vnode.context,
+      componentOptions ? {...componentOptions, listeners} : componentOptions,
+      vnode.asyncFactory
   );
   cloned.ns = vnode.ns;
   cloned.isStatic = vnode.isStatic;
@@ -111,7 +111,7 @@ export function setProps(vnode: VNode, nodeProps: any = {}) {
   }
 }
 
-export function cloneElement(n, nodeProps: any = {}, deep?) {
+export function cloneElement(n: VNode, nodeProps: any = {}, deep?) {
   let ele = n;
   if (Array.isArray(n)) {
     ele = filterEmpty(n)[0];
@@ -166,7 +166,6 @@ export function cloneElement(n, nodeProps: any = {}, deep?) {
     scopedSlots: {...data.scopedSlots, ...scopedSlots},
     directives: [...(data.directives || []), ...directives]
   });
-
   if (node.componentOptions) {
     node.componentOptions.propsData = node.componentOptions.propsData || {};
     node.componentOptions.listeners = node.componentOptions.listeners || {};

@@ -1,20 +1,6 @@
 import {RouteConfig} from 'vue-router';
 
 export default [{
-  path: 'date-picker-view',
-  name: 'DatePickerView 日期选择器',
-  meta: {
-    tag: '其他'
-  },
-  component: () => import('@/generated/date-picker-view/index.vue')
-}, {
-  path: 'image-picker',
-  name: 'ImagePicker 图片选择器',
-  meta: {
-    tag: '其他'
-  },
-  component: () => import('@/generated/image-picker/index.vue')
-}, {
   path: 'accordion',
   name: 'Accordion 手风琴',
   meta: {
@@ -92,6 +78,13 @@ export default [{
   },
   component: () => import('@/generated/date-picker/index.vue')
 }, {
+  path: 'date-picker-view',
+  name: 'DatePickerView 日期选择器',
+  meta: {
+    tag: '其他'
+  },
+  component: () => import('@/generated/date-picker-view/index.vue')
+}, {
   path: 'drawer',
   name: 'Drawer 抽屉',
   meta: {
@@ -120,6 +113,13 @@ export default [{
   },
   component: () => import('@/generated/icon/index.vue')
 }, {
+  path: 'image-picker',
+  name: 'ImagePicker 图片选择器',
+  meta: {
+    tag: '其他'
+  },
+  component: () => import('@/generated/image-picker/index.vue')
+}, {
   path: 'input',
   name: 'Input 输入框',
   meta: {
@@ -133,6 +133,20 @@ export default [{
     tag: '数据展示'
   },
   component: () => import('@/generated/list/index.vue')
+}, {
+  path: 'list-view',
+  name: 'ListView 长列表',
+  meta: {
+    tag: '其他'
+  },
+  component: () => import('@/generated/list-view/index.vue')
+}, {
+  path: 'menu',
+  name: 'Menu 菜单',
+  meta: {
+    tag: '导航'
+  },
+  component: () => import('@/generated/menu/index.vue')
 }, {
   path: 'modal',
   name: 'Modal 模态框',
@@ -176,6 +190,13 @@ export default [{
   },
   component: () => import('@/generated/popup/index.vue')
 }, {
+  path: 'progress',
+  name: 'Progress 进度条',
+  meta: {
+    tag: '其他'
+  },
+  component: () => import('@/generated/progress/index.vue')
+}, {
   path: 'pull-refresh',
   name: 'PullRefresh 下拉刷新',
   meta: {
@@ -211,6 +232,20 @@ export default [{
   },
   component: () => import('@/generated/search-bar/index.vue')
 }, {
+  path: 'segmented-control',
+  name: 'SegmentedControl 分段器',
+  meta: {
+    tag: '其他'
+  },
+  component: () => import('@/generated/segmented-control/index.vue')
+}, {
+  path: 'slider',
+  name: 'Slider 滑动输入条',
+  meta: {
+    tag: '数据入口'
+  },
+  component: () => import('@/generated/slider/index.vue')
+}, {
   path: 'steps',
   name: 'Steps 步骤条',
   meta: {
@@ -239,6 +274,13 @@ export default [{
   },
   component: () => import('@/generated/tabs/index.vue')
 }, {
+  path: 'tag',
+  name: 'Tag 标签',
+  meta: {
+    tag: '其他'
+  },
+  component: () => import('@/generated/tag/index.vue')
+}, {
   path: 'textarea',
   name: 'Textarea 文本框',
   meta: {
@@ -266,39 +308,4 @@ export default [{
     tag: '布局'
   },
   component: () => import('@/generated/wing-blank/index.vue')
-}, {
-  path: 'menu',
-  name: 'Menu 菜单',
-  meta: {
-    tag: '导航'
-  },
-  component: () => import('@/generated/menu/index.vue')
-}, {
-  path: 'progress',
-  name: 'Progress 进度条',
-  meta: {
-    tag: '其他'
-  },
-  component: () => import('@/generated/progress/index.vue')
-}, {
-  path: 'segmented-control',
-  name: 'SegmentedControl 分段器',
-  meta: {
-    tag: '其他'
-  },
-  component: () => import('@/generated/segmented-control/index.vue')
-}, {
-  path: 'slider',
-  name: 'Slider 滑动输入条',
-  meta: {
-    tag: '数据入口'
-  },
-  component: () => import('@/generated/slider/index.vue')
-}, {
-  path: 'tag',
-  name: 'Tag 标签',
-  meta: {
-    tag: '其他'
-  },
-  component: () => import('@/generated/tag/index.vue')
 }] as RouteConfig[];

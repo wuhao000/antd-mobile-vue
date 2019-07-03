@@ -519,12 +519,12 @@ var Drawer = {
        */
       var t = currentTarget.scrollTop;
       var l = currentTarget.scrollLeft;
-      if (currentTarget.scrollTo.bind(currentTarget)) {
+      if (currentTarget.scrollTo.bind(currentTarget).bind(currentTarget)) {
         currentTarget.scrollTo(currentTarget.scrollLeft + 1, currentTarget.scrollTop + 1);
       }
       var currentT = currentTarget.scrollTop;
       var currentL = currentTarget.scrollLeft;
-      if (currentTarget.scrollTo.bind(currentTarget)) {
+      if (currentTarget.scrollTo.bind(currentTarget).bind(currentTarget)) {
         currentTarget.scrollTo(currentTarget.scrollLeft - 1, currentTarget.scrollTop - 1);
       }
       if (isY && (!scrollY || !(currentT - t) || scrollY && (currentTarget.scrollTop >= scrollY && differY < 0 || currentTarget.scrollTop <= 0 && differY > 0)) || isX && (!scrollX || !(currentL - l) || scrollX && (currentTarget.scrollLeft >= scrollX && differX < 0 || currentTarget.scrollLeft <= 0 && differX > 0))) {

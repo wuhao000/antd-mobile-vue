@@ -20112,7 +20112,7 @@ function (_mixins) {
       indicatorRef.style.top = "".concat(itemHeight * num, "px");
       maskRef.style.backgroundSize = "100% ".concat(itemHeight * num, "px");
       this.scrollHanders.setDisabled(this.disabled);
-      this.select(this.state.selectedValue, this.itemHeight, this.scrollTo.bind(this));
+      this.select(this.state.selectedValue, this.itemHeight, this.scrollTo.bind(this).bind(this));
       var passiveSupported = this.passiveSupported();
       var willPreventDefault = passiveSupported ? {
         passive: false
@@ -20161,7 +20161,7 @@ function (_mixins) {
     value: function selectedValueChanged(value) {
       if (this.state.selectedValue !== value) {
         this.state.selectedValue = value;
-        this.select(this.state.selectedValue, this.itemHeight, this.noAnimate ? this.scrollToWithoutAnimation.bind(this) : this.scrollTo.bind(this));
+        this.select(this.state.selectedValue, this.itemHeight, this.noAnimate ? this.scrollToWithoutAnimation.bind(this) : this.scrollTo.bind(this).bind(this));
       }
     }
   }, {
