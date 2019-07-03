@@ -47,7 +47,7 @@
 <style lang="less">
   @import "../assets/styles/common";
   @import "../assets/styles/custom";
-  @import "../packages/style/themes/default";
+  @import "~ant-design-vue/es/style/themes/default";
 
   body {
     background: @body-background;

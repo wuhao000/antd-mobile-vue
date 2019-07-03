@@ -3,8 +3,8 @@ import {Prop} from 'vue-property-decorator';
 import Component from 'vue-class-component';
 /* eslint no-nested-ternary:0 */
 import Menu from '../../index';
-import ActivityIndicator from '../../../m-activity-indicator';
-import NavBar from '../../../m-nav-bar';
+import ActivityIndicator from '../../../activity-indicator';
+import NavBar from '../../../nav-bar';
 
 const data = [
   {

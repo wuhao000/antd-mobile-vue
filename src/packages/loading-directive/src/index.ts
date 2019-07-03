@@ -1,5 +1,5 @@
 import {VNode, VNodeDirective} from 'vue';
-import Toast from '../../m-toast';
+import Toast from '../../toast';
 
 const map = new Map();
 export default {

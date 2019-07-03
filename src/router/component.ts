@@ -15,257 +15,257 @@ export default [{
   },
   component: () => import('@/generated/image-picker/index.vue')
 }, {
-  path: 'm-accordion',
-  name: 'MAccordion 手风琴',
+  path: 'accordion',
+  name: 'Accordion 手风琴',
   meta: {
     tag: '数据展示'
   },
-  component: () => import('@/generated/m-accordion/index.vue')
+  component: () => import('@/generated/accordion/index.vue')
 }, {
-  path: 'm-action-sheet',
-  name: 'MActionSheet 动作面板',
+  path: 'action-sheet',
+  name: 'ActionSheet 动作面板',
   meta: {
     tag: '反馈'
   },
-  component: () => import('@/generated/m-action-sheet/index.vue')
+  component: () => import('@/generated/action-sheet/index.vue')
 }, {
-  path: 'm-activity-indicator',
-  name: 'MActivityIndicator 活动指示器',
+  path: 'activity-indicator',
+  name: 'ActivityIndicator 活动指示器',
   meta: {
     tag: '反馈'
   },
-  component: () => import('@/generated/m-activity-indicator/index.vue')
+  component: () => import('@/generated/activity-indicator/index.vue')
 }, {
-  path: 'm-badge',
-  name: 'MBadge 徽标',
+  path: 'badge',
+  name: 'Badge 徽标',
   meta: {
     tag: '数据展示'
   },
-  component: () => import('@/generated/m-badge/index.vue')
+  component: () => import('@/generated/badge/index.vue')
 }, {
-  path: 'm-button',
-  name: 'MButton 按钮',
+  path: 'button',
+  name: 'Button 按钮',
   meta: {
     tag: '数据入口'
   },
-  component: () => import('@/generated/m-button/index.vue')
+  component: () => import('@/generated/button/index.vue')
 }, {
-  path: 'm-calendar',
-  name: 'MCalendar 日历',
+  path: 'calendar',
+  name: 'Calendar 日历',
   meta: {
     tag: '数据入口'
   },
-  component: () => import('@/generated/m-calendar/index.vue')
+  component: () => import('@/generated/calendar/index.vue')
 }, {
-  path: 'm-card',
-  name: 'MCard 卡片',
+  path: 'card',
+  name: 'Card 卡片',
   meta: {
     tag: '数据展示'
   },
-  component: () => import('@/generated/m-card/index.vue')
+  component: () => import('@/generated/card/index.vue')
 }, {
-  path: 'm-carousel',
-  name: 'MCarousel 走马灯',
+  path: 'carousel',
+  name: 'Carousel 走马灯',
   meta: {
     tag: '数据展示'
   },
-  component: () => import('@/generated/m-carousel/index.vue')
+  component: () => import('@/generated/carousel/index.vue')
 }, {
-  path: 'm-chart',
-  name: 'MChart 图表',
+  path: 'chart',
+  name: 'Chart 图表',
   meta: {
     tag: '数据展示'
   },
-  component: () => import('@/generated/m-chart/index.vue')
+  component: () => import('@/generated/chart/index.vue')
 }, {
-  path: 'm-checkbox',
-  name: 'MCheckbox 复选框',
+  path: 'checkbox',
+  name: 'Checkbox 复选框',
   meta: {
     tag: '数据入口'
   },
-  component: () => import('@/generated/m-checkbox/index.vue')
+  component: () => import('@/generated/checkbox/index.vue')
 }, {
-  path: 'm-date-picker',
-  name: 'MDatePicker 日期选择',
+  path: 'date-picker',
+  name: 'DatePicker 日期选择',
   meta: {
     tag: '数据入口'
   },
-  component: () => import('@/generated/m-date-picker/index.vue')
+  component: () => import('@/generated/date-picker/index.vue')
 }, {
-  path: 'm-drawer',
-  name: 'MDrawer 抽屉',
+  path: 'drawer',
+  name: 'Drawer 抽屉',
   meta: {
     tag: '导航'
   },
-  component: () => import('@/generated/m-drawer/index.vue')
+  component: () => import('@/generated/drawer/index.vue')
 }, {
-  path: 'm-flex',
-  name: 'MFlex 弹性布局',
+  path: 'flex',
+  name: 'Flex 弹性布局',
   meta: {
     tag: '布局'
   },
-  component: () => import('@/generated/m-flex/index.vue')
+  component: () => import('@/generated/flex/index.vue')
 }, {
-  path: 'm-grid',
-  name: 'MGrid 宫格',
+  path: 'grid',
+  name: 'Grid 宫格',
   meta: {
     tag: '数据展示'
   },
-  component: () => import('@/generated/m-grid/index.vue')
+  component: () => import('@/generated/grid/index.vue')
 }, {
-  path: 'm-icon',
-  name: 'MIcon 图标',
+  path: 'icon',
+  name: 'Icon 图标',
   meta: {
     tag: '数据展示'
   },
-  component: () => import('@/generated/m-icon/index.vue')
+  component: () => import('@/generated/icon/index.vue')
 }, {
-  path: 'm-input',
-  name: 'MInput 输入框',
+  path: 'input',
+  name: 'Input 输入框',
   meta: {
     tag: '数据入口'
   },
-  component: () => import('@/generated/m-input/index.vue')
+  component: () => import('@/generated/input/index.vue')
 }, {
-  path: 'm-list',
-  name: 'MList 列表',
+  path: 'list',
+  name: 'List 列表',
   meta: {
     tag: '数据展示'
   },
-  component: () => import('@/generated/m-list/index.vue')
+  component: () => import('@/generated/list/index.vue')
 }, {
-  path: 'm-modal',
-  name: 'MModal 模态框',
+  path: 'modal',
+  name: 'Modal 模态框',
   meta: {
     tag: '反馈'
   },
-  component: () => import('@/generated/m-modal/index.vue')
+  component: () => import('@/generated/modal/index.vue')
 }, {
-  path: 'm-nav-bar',
-  name: 'MNavBar 导航栏',
+  path: 'nav-bar',
+  name: 'NavBar 导航栏',
   meta: {
     tag: '导航'
   },
-  component: () => import('@/generated/m-nav-bar/index.vue')
+  component: () => import('@/generated/nav-bar/index.vue')
 }, {
-  path: 'm-notice-bar',
-  name: 'MNoticeBar 通告栏',
+  path: 'notice-bar',
+  name: 'NoticeBar 通告栏',
   meta: {
     tag: '数据展示'
   },
-  component: () => import('@/generated/m-notice-bar/index.vue')
+  component: () => import('@/generated/notice-bar/index.vue')
 }, {
-  path: 'm-pagination',
-  name: 'MPagination 分页器',
+  path: 'pagination',
+  name: 'Pagination 分页器',
   meta: {
     tag: '导航'
   },
-  component: () => import('@/generated/m-pagination/index.vue')
+  component: () => import('@/generated/pagination/index.vue')
 }, {
-  path: 'm-picker',
-  name: 'MPicker 选择器',
+  path: 'picker',
+  name: 'Picker 选择器',
   meta: {
     tag: '数据入口'
   },
-  component: () => import('@/generated/m-picker/index.vue')
+  component: () => import('@/generated/picker/index.vue')
 }, {
-  path: 'm-popup',
-  name: 'MPopup 弹出层',
+  path: 'popup',
+  name: 'Popup 弹出层',
   meta: {
     tag: '其他'
   },
-  component: () => import('@/generated/m-popup/index.vue')
+  component: () => import('@/generated/popup/index.vue')
 }, {
-  path: 'm-pull-refresh',
-  name: 'MPullRefresh 下拉刷新',
+  path: 'pull-refresh',
+  name: 'PullRefresh 下拉刷新',
   meta: {
     tag: '手势'
   },
-  component: () => import('@/generated/m-pull-refresh/index.vue')
+  component: () => import('@/generated/pull-refresh/index.vue')
 }, {
-  path: 'm-radio',
-  name: 'MRadio 单选',
+  path: 'radio',
+  name: 'Radio 单选',
   meta: {
     tag: '数据入口'
   },
-  component: () => import('@/generated/m-radio/index.vue')
+  component: () => import('@/generated/radio/index.vue')
 }, {
-  path: 'm-range',
-  name: 'MRange 区域选择',
+  path: 'range',
+  name: 'Range 区域选择',
   meta: {
     tag: '数据入口'
   },
-  component: () => import('@/generated/m-range/index.vue')
+  component: () => import('@/generated/range/index.vue')
 }, {
-  path: 'm-result',
-  name: 'MResult 结果页',
+  path: 'result',
+  name: 'Result 结果页',
   meta: {
     tag: '组合'
   },
-  component: () => import('@/generated/m-result/index.vue')
+  component: () => import('@/generated/result/index.vue')
 }, {
-  path: 'm-search-bar',
-  name: 'MSearchBar 搜索框',
+  path: 'search-bar',
+  name: 'SearchBar 搜索框',
   meta: {
     tag: '数据入口'
   },
-  component: () => import('@/generated/m-search-bar/index.vue')
+  component: () => import('@/generated/search-bar/index.vue')
 }, {
-  path: 'm-steps',
-  name: 'MSteps 步骤条',
+  path: 'steps',
+  name: 'Steps 步骤条',
   meta: {
     tag: '数据展示'
   },
-  component: () => import('@/generated/m-steps/index.vue')
+  component: () => import('@/generated/steps/index.vue')
 }, {
-  path: 'm-switch',
-  name: 'MSwitch 开关',
+  path: 'switch',
+  name: 'Switch 开关',
   meta: {
     tag: '数据入口'
   },
-  component: () => import('@/generated/m-switch/index.vue')
+  component: () => import('@/generated/switch/index.vue')
 }, {
-  path: 'm-tab-bar',
-  name: 'MTabBar 标签栏',
+  path: 'tab-bar',
+  name: 'TabBar 标签栏',
   meta: {
     tag: '导航'
   },
-  component: () => import('@/generated/m-tab-bar/index.vue')
+  component: () => import('@/generated/tab-bar/index.vue')
 }, {
-  path: 'm-tabs',
-  name: 'MTabs 标签页',
+  path: 'tabs',
+  name: 'Tabs 标签页',
   meta: {
     tag: '导航'
   },
-  component: () => import('@/generated/m-tabs/index.vue')
+  component: () => import('@/generated/tabs/index.vue')
 }, {
-  path: 'm-textarea',
-  name: 'MTextarea 文本框',
+  path: 'textarea',
+  name: 'Textarea 文本框',
   meta: {
     tag: '数据入口'
   },
-  component: () => import('@/generated/m-textarea/index.vue')
+  component: () => import('@/generated/textarea/index.vue')
 }, {
-  path: 'm-toast',
-  name: 'MToast 轻提示',
+  path: 'toast',
+  name: 'Toast 轻提示',
   meta: {
     tag: '反馈'
   },
-  component: () => import('@/generated/m-toast/index.vue')
+  component: () => import('@/generated/toast/index.vue')
 }, {
-  path: 'm-white-space',
-  name: 'MWhiteSpace 上下留白',
+  path: 'white-space',
+  name: 'WhiteSpace 上下留白',
   meta: {
     tag: '布局'
   },
-  component: () => import('@/generated/m-white-space/index.vue')
+  component: () => import('@/generated/white-space/index.vue')
 }, {
-  path: 'm-wing-blank',
-  name: 'MWingBlank 两翼留白',
+  path: 'wing-blank',
+  name: 'WingBlank 两翼留白',
   meta: {
     tag: '布局'
   },
-  component: () => import('@/generated/m-wing-blank/index.vue')
+  component: () => import('@/generated/wing-blank/index.vue')
 }, {
   path: 'menu',
   name: 'Menu 菜单',

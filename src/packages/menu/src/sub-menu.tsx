@@ -4,9 +4,9 @@ import React from 'react';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import Checkbox from '../../m-checkbox';
-import List from '../../m-list';
-import Radio from '../../m-radio';
+import Checkbox from '../../checkbox';
+import List from '../../list';
+import Radio from '../../radio';
 import {DataItem} from './props-type';
 
 @Component({

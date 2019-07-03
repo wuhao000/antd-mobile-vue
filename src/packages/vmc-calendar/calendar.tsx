@@ -1,6 +1,6 @@
 import Component from 'vue-class-component';
 import {Provide, Watch} from 'vue-property-decorator';
-import Popup from '../m-popup';
+import Popup from '../popup';
 import CalendarProps from './calendar-props';
 import ConfirmPanel from './calendar/confirm-panel';
 import Header from './calendar/header';

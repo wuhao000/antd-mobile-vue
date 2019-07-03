@@ -15,15 +15,14 @@ export default Vue.extend({
   },
   render() {
     const {value2, value} = this;
-    console.log(value2 && value2.getTime());
     return (<div>
       <div class="sub-title">Start datetime</div>
-      {value2 && value2.getTime()}
+      <div vTime={value2}/>
       <DatePickerView
           vModel={this.value2}
       />
       <div class="sub-title">End datetime</div>
-      {value && value.getTime()}
+      <div vTime={value}/>
       <DatePickerView
           vModel={this.value}
       />

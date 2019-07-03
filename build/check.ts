@@ -14,11 +14,14 @@ function getCheckFiles(dir: string) {
 }
 
 components.forEach(comp => {
-  const componentRoot = 'src/packages/' + comp.dir;
-  const srcPath = componentRoot + '/src';
-  const files = fs.readdirSync(componentRoot);
+  const componentRootPath = 'src/packages/' + comp.dir;
+  const srcPath = componentRootPath + '/src';
+  if (!fs.existsSync(componentRootPath)) {
+    fs.mkdirSync(componentRootPath);
+  }
+  const files = fs.readdirSync(componentRootPath);
   let checkFiles = files.filter(name => checkSuffix.some(it => name.endsWith(it)))
-    .map(it => componentRoot + '/' + it);
+    .map(it => componentRootPath + '/' + it);
   checkFiles = checkFiles.concat(getCheckFiles(srcPath));
   checkDirs.forEach((dir) => {
     checkFiles = checkFiles.concat(getCheckFiles('src/' + dir));

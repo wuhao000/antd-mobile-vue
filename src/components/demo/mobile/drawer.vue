@@ -11,7 +11,7 @@
   </ae-layout>
 </template>
 <script lang="ts">
-  import Radio from '@/packages/m-radio';
+  import Radio from '@/packages/radio';
   import Vue from 'vue';
   import Component from 'vue-class-component';
 

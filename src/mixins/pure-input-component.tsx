@@ -2,8 +2,18 @@ import {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {mixins} from 'vue-class-component/lib/util';
 import {Prop, Watch} from 'vue-property-decorator';
-import hasProp, {hasListener} from '../packages/utils/props-util';
 import Emitter from './emitter';
+
+const hasListener = (instance, listener) => {
+  const listeners = instance.$listeners || {};
+  return Object.keys(listeners).includes(listener);
+};
+
+const hasProp = (instance, prop) => {
+  const $options = instance.$options || {};
+  const propsData = $options.propsData || {};
+  return prop in propsData;
+};
 
 @Component({
   name: 'PureInputComponent'

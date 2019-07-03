@@ -17,6 +17,7 @@ const productionGzipExtensions = ['js', 'css'];
 const analyze = false;
 module.exports = {
   css: {
+    modules: true,
     loaderOptions: {
       less: {
         javascriptEnabled: true
@@ -32,7 +33,6 @@ module.exports = {
         port: 8021
       };
     }
-    ``;
     config.resolve.alias['@ant-design/icons/lib/dist'] = path.resolve(__dirname, './src/icons.ts');
     config.module.rules.push({
       test: /\.md$/,

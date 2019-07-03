@@ -1,42 +1,42 @@
 import {DatePickerViewComponent} from './components/date-picker-view';
 import {ImagePickerComponent} from './components/image-picker';
 import {LoadingDirectiveComponent} from './components/loading-directive';
-import {MAccordionComponent} from './components/m-accordion';
-import {MActionSheetComponent} from './components/m-action-sheet';
-import {MActivityIndicatorComponent} from './components/m-activity-indicator';
-import {MBadgeComponent} from './components/m-badge';
-import {MButtonComponent} from './components/m-button';
-import {MCalendarComponent} from './components/m-calendar';
-import {MCardComponent} from './components/m-card';
-import {MCarouselComponent} from './components/m-carousel';
-import {MChartComponent} from './components/m-chart';
-import {MCheckboxComponent} from './components/m-checkbox';
-import {MDatePickerComponent} from './components/m-date-picker';
-import {MDrawerComponent} from './components/m-drawer';
-import {MFlexComponent} from './components/m-flex';
-import {MGridComponent} from './components/m-grid';
-import {MIconComponent} from './components/m-icon';
-import {MInputComponent} from './components/m-input';
-import {MListComponent} from './components/m-list';
-import {MModalComponent} from './components/m-modal';
-import {MNavBarComponent} from './components/m-nav-bar';
-import {MNoticeBarComponent} from './components/m-notice-bar';
-import {MPaginationComponent} from './components/m-pagination';
-import {MPickerComponent} from './components/m-picker';
-import {MPopupComponent} from './components/m-popup';
-import {MPullRefreshComponent} from './components/m-pull-refresh';
-import {MRadioComponent} from './components/m-radio';
-import {MRangeComponent} from './components/m-range';
-import {MResultComponent} from './components/m-result';
-import {MSearchBarComponent} from './components/m-search-bar';
-import {MStepsComponent} from './components/m-steps';
-import {MSwitchComponent} from './components/m-switch';
-import {MTabBarComponent} from './components/m-tab-bar';
-import {MTabsComponent} from './components/m-tabs';
-import {MTextareaComponent} from './components/m-textarea';
-import {MToastComponent} from './components/m-toast';
-import {MWhiteSpaceComponent} from './components/m-white-space';
-import {MWingBlankComponent} from './components/m-wing-blank';
+import {AccordionComponent} from './components/accordion';
+import {ActionSheetComponent} from './components/action-sheet';
+import {ActivityIndicatorComponent} from './components/activity-indicator';
+import {BadgeComponent} from './components/badge';
+import {ButtonComponent} from './components/button';
+import {CalendarComponent} from './components/calendar';
+import {CardComponent} from './components/card';
+import {CarouselComponent} from './components/carousel';
+import {ChartComponent} from './components/chart';
+import {CheckboxComponent} from './components/checkbox';
+import {DatePickerComponent} from './components/date-picker';
+import {DrawerComponent} from './components/drawer';
+import {FlexComponent} from './components/flex';
+import {GridComponent} from './components/grid';
+import {IconComponent} from './components/icon';
+import {InputComponent} from './components/input';
+import {ListComponent} from './components/list';
+import {ModalComponent} from './components/modal';
+import {NavBarComponent} from './components/nav-bar';
+import {NoticeBarComponent} from './components/notice-bar';
+import {PaginationComponent} from './components/pagination';
+import {PickerComponent} from './components/picker';
+import {PopupComponent} from './components/popup';
+import {PullRefreshComponent} from './components/pull-refresh';
+import {RadioComponent} from './components/radio';
+import {RangeComponent} from './components/range';
+import {ResultComponent} from './components/result';
+import {SearchBarComponent} from './components/search-bar';
+import {StepsComponent} from './components/steps';
+import {SwitchComponent} from './components/switch';
+import {TabBarComponent} from './components/tab-bar';
+import {TabsComponent} from './components/tabs';
+import {TextareaComponent} from './components/textarea';
+import {ToastComponent} from './components/toast';
+import {WhiteSpaceComponent} from './components/white-space';
+import {WingBlankComponent} from './components/wing-blank';
 import {MenuComponent} from './components/menu';
 import {ProgressComponent} from './components/progress';
 import {SegmentedControlComponent} from './components/segmented-control';
@@ -50,77 +50,77 @@ export class ImagePicker extends ImagePickerComponent {
 }
 export class LoadingDirective extends LoadingDirectiveComponent {
 }
-export class MAccordion extends MAccordionComponent {
+export class Accordion extends AccordionComponent {
 }
-export class MActionSheet extends MActionSheetComponent {
+export class ActionSheet extends ActionSheetComponent {
 }
-export class MActivityIndicator extends MActivityIndicatorComponent {
+export class ActivityIndicator extends ActivityIndicatorComponent {
 }
-export class MBadge extends MBadgeComponent {
+export class Badge extends BadgeComponent {
 }
-export class MButton extends MButtonComponent {
+export class Button extends ButtonComponent {
 }
-export class MCalendar extends MCalendarComponent {
+export class Calendar extends CalendarComponent {
 }
-export class MCard extends MCardComponent {
+export class Card extends CardComponent {
 }
-export class MCarousel extends MCarouselComponent {
+export class Carousel extends CarouselComponent {
 }
-export class MChart extends MChartComponent {
+export class Chart extends ChartComponent {
 }
-export class MCheckbox extends MCheckboxComponent {
+export class Checkbox extends CheckboxComponent {
 }
-export class MDatePicker extends MDatePickerComponent {
+export class DatePicker extends DatePickerComponent {
 }
-export class MDrawer extends MDrawerComponent {
+export class Drawer extends DrawerComponent {
 }
-export class MFlex extends MFlexComponent {
+export class Flex extends FlexComponent {
 }
-export class MGrid extends MGridComponent {
+export class Grid extends GridComponent {
 }
-export class MIcon extends MIconComponent {
+export class Icon extends IconComponent {
 }
-export class MInput extends MInputComponent {
+export class Input extends InputComponent {
 }
-export class MList extends MListComponent {
+export class List extends ListComponent {
 }
-export class MModal extends MModalComponent {
+export class Modal extends ModalComponent {
 }
-export class MNavBar extends MNavBarComponent {
+export class NavBar extends NavBarComponent {
 }
-export class MNoticeBar extends MNoticeBarComponent {
+export class NoticeBar extends NoticeBarComponent {
 }
-export class MPagination extends MPaginationComponent {
+export class Pagination extends PaginationComponent {
 }
-export class MPicker extends MPickerComponent {
+export class Picker extends PickerComponent {
 }
-export class MPopup extends MPopupComponent {
+export class Popup extends PopupComponent {
 }
-export class MPullRefresh extends MPullRefreshComponent {
+export class PullRefresh extends PullRefreshComponent {
 }
-export class MRadio extends MRadioComponent {
+export class Radio extends RadioComponent {
 }
-export class MRange extends MRangeComponent {
+export class Range extends RangeComponent {
 }
-export class MResult extends MResultComponent {
+export class Result extends ResultComponent {
 }
-export class MSearchBar extends MSearchBarComponent {
+export class SearchBar extends SearchBarComponent {
 }
-export class MSteps extends MStepsComponent {
+export class Steps extends StepsComponent {
 }
-export class MSwitch extends MSwitchComponent {
+export class Switch extends SwitchComponent {
 }
-export class MTabBar extends MTabBarComponent {
+export class TabBar extends TabBarComponent {
 }
-export class MTabs extends MTabsComponent {
+export class Tabs extends TabsComponent {
 }
-export class MTextarea extends MTextareaComponent {
+export class Textarea extends TextareaComponent {
 }
-export class MToast extends MToastComponent {
+export class Toast extends ToastComponent {
 }
-export class MWhiteSpace extends MWhiteSpaceComponent {
+export class WhiteSpace extends WhiteSpaceComponent {
 }
-export class MWingBlank extends MWingBlankComponent {
+export class WingBlank extends WingBlankComponent {
 }
 export class Menu extends MenuComponent {
 }

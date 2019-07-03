@@ -9,7 +9,7 @@
                        title="示例"/>
         <d-anchor-link href="#demo1"
                        title="基本用法"/>
-        <d-anchor-link v-show="false" href="#props"
+        <d-anchor-link v-show="true" href="#props"
                        title="属性"/>
         <d-anchor-link v-show="false" href="#events"
                        title="事件"/>
@@ -27,7 +27,11 @@
       <h2>示例代码</h2>
     </div>
     <demo1 id="demo1"/>
-    
+    <div class="markdown-body" id="props">
+      <span></span>
+      <h2>属性说明</h2>
+    </div>
+    <markdown :source="props"/>
  </div>
 </template>
 
@@ -38,6 +42,7 @@
   import Component from 'vue-class-component';
   import Progress from '@/packages/progress';
   import title from '../../packages/progress/demo/README.md';
+  import props from '../../packages/progress/demo/props.md';
 
   Vue.use(Progress);
   @Component({
@@ -48,6 +53,7 @@
   })
   export default class ComponentDemo extends Vue {
     public title = title;
+    public props = props;
 
     public getContainer() {
       return document.getElementById('app-content');

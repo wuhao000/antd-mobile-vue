@@ -2,9 +2,9 @@
   <router-view/>
 </template>
 <script lang="ts">
-  import PullRefresh from '@/packages/m-pull-refresh';
+  import PullRefresh from '@/packages/pull-refresh';
   import AegisUI from '@/packages';
-  import MTabs from '@/packages/m-tabs';
+  import MTabs from '@/packages/tabs';
   import Vue from 'vue';
   import Component from 'vue-class-component';
 

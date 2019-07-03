@@ -4,10 +4,10 @@ import React from 'react';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
-import Button from '../../m-button';
-import Flex from '../../m-flex';
-import List from '../../m-list';
-import {getComponentLocale} from '../../mutils/getLocale';
+import Button from '../../button';
+import Flex from '../../flex';
+import List from '../../list';
+import {getComponentLocale} from '../../utils/getLocale';
 import {DataItem, ValueType} from './props-type';
 import SubMenu from './sub-menu';
 

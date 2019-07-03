@@ -26,8 +26,8 @@
   </div>
 </template>
 <script lang="ts">
-  import PullRefresh from '@/packages/m-pull-refresh';
-  import MTabs from '@/packages/m-tabs';
+  import PullRefresh from '@/packages/pull-refresh';
+  import MTabs from '@/packages/tabs';
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import {Watch} from 'vue-property-decorator';

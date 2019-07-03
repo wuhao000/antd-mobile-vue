@@ -3,11 +3,11 @@ import {RouteConfig} from 'vue-router';
 export default [{
   path: 'm-accordion',
   name: 'MAccordion 手风琴',
-  component: () => import('@/generated/m-accordion/index.vue')
+  component: () => import('@/generated/accordion/index.vue')
 }, {
   path: 'm-action-sheet',
   name: 'MActionSheet 动作面板',
-  component: () => import('@/generated/m-action-sheet/index.vue')
+  component: () => import('@/generated/action-sheet/index.vue')
 }, {
   path: 'm-activity-indicator',
   name: 'MActivityIndicator 活动指示器',

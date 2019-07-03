@@ -7,42 +7,42 @@ import ApiProxy from './api-proxy';
 import DatePickerView from './date-picker-view';
 import ImagePicker from './image-picker';
 import LoadingDirective from './loading-directive';
-import MAccordion from './m-accordion';
-import MActionSheet from './m-action-sheet';
-import MActivityIndicator from './m-activity-indicator';
-import MBadge from './m-badge';
-import MButton from './m-button';
-import MCalendar from './m-calendar';
-import MCard from './m-card';
-import MCarousel from './m-carousel';
-import MChart from './m-chart';
-import MCheckbox from './m-checkbox';
-import MDatePicker from './m-date-picker';
-import MDrawer from './m-drawer';
-import MFlex from './m-flex';
-import MGrid from './m-grid';
-import MIcon from './m-icon';
-import MInput from './m-input';
-import MList from './m-list';
-import MModal from './m-modal';
-import MNavBar from './m-nav-bar';
-import MNoticeBar from './m-notice-bar';
-import MPagination from './m-pagination';
-import MPicker from './m-picker';
-import MPopup from './m-popup';
-import MPullRefresh from './m-pull-refresh';
-import MRadio from './m-radio';
-import MRange from './m-range';
-import MResult from './m-result';
-import MSearchBar from './m-search-bar';
-import MSteps from './m-steps';
-import MSwitch from './m-switch';
-import MTabBar from './m-tab-bar';
-import MTabs from './m-tabs';
-import MTextarea from './m-textarea';
-import MToast from './m-toast';
-import MWhiteSpace from './m-white-space';
-import MWingBlank from './m-wing-blank';
+import Accordion from './accordion';
+import ActionSheet from './action-sheet';
+import ActivityIndicator from './activity-indicator';
+import Badge from './badge';
+import Button from './button';
+import Calendar from './calendar';
+import Card from './card';
+import Carousel from './carousel';
+import Chart from './chart';
+import Checkbox from './checkbox';
+import DatePicker from './date-picker';
+import Drawer from './drawer';
+import Flex from './flex';
+import Grid from './grid';
+import Icon from './icon';
+import Input from './input';
+import List from './list';
+import Modal from './modal';
+import NavBar from './nav-bar';
+import NoticeBar from './notice-bar';
+import Pagination from './pagination';
+import Picker from './picker';
+import Popup from './popup';
+import PullRefresh from './pull-refresh';
+import Radio from './radio';
+import Range from './range';
+import Result from './result';
+import SearchBar from './search-bar';
+import Steps from './steps';
+import Switch from './switch';
+import TabBar from './tab-bar';
+import Tabs from './tabs';
+import Textarea from './textarea';
+import Toast from './toast';
+import WhiteSpace from './white-space';
+import WingBlank from './wing-blank';
 import Menu from './menu';
 import Progress from './progress';
 import SegmentedControl from './segmented-control';
@@ -65,42 +65,42 @@ const components = [
   DatePickerView,
 	ImagePicker,
 	LoadingDirective,
-	MAccordion,
-	MActionSheet,
-	MActivityIndicator,
-	MBadge,
-	MButton,
-	MCalendar,
-	MCard,
-	MCarousel,
-	MChart,
-	MCheckbox,
-	MDatePicker,
-	MDrawer,
-	MFlex,
-	MGrid,
-	MIcon,
-	MInput,
-	MList,
-	MModal,
-	MNavBar,
-	MNoticeBar,
-	MPagination,
-	MPicker,
-	MPopup,
-	MPullRefresh,
-	MRadio,
-	MRange,
-	MResult,
-	MSearchBar,
-	MSteps,
-	MSwitch,
-	MTabBar,
-	MTabs,
-	MTextarea,
-	MToast,
-	MWhiteSpace,
-	MWingBlank,
+	Accordion,
+	ActionSheet,
+	ActivityIndicator,
+	Badge,
+	Button,
+	Calendar,
+	Card,
+	Carousel,
+	Chart,
+	Checkbox,
+	DatePicker,
+	Drawer,
+	Flex,
+	Grid,
+	Icon,
+	Input,
+	List,
+	Modal,
+	NavBar,
+	NoticeBar,
+	Pagination,
+	Picker,
+	Popup,
+	PullRefresh,
+	Radio,
+	Range,
+	Result,
+	SearchBar,
+	Steps,
+	Switch,
+	TabBar,
+	Tabs,
+	Textarea,
+	Toast,
+	WhiteSpace,
+	WingBlank,
 	Menu,
 	Progress,
 	SegmentedControl,
@@ -129,42 +129,42 @@ export {
 	DatePickerView,
 	ImagePicker,
 	LoadingDirective,
-	MAccordion,
-	MActionSheet,
-	MActivityIndicator,
-	MBadge,
-	MButton,
-	MCalendar,
-	MCard,
-	MCarousel,
-	MChart,
-	MCheckbox,
-	MDatePicker,
-	MDrawer,
-	MFlex,
-	MGrid,
-	MIcon,
-	MInput,
-	MList,
-	MModal,
-	MNavBar,
-	MNoticeBar,
-	MPagination,
-	MPicker,
-	MPopup,
-	MPullRefresh,
-	MRadio,
-	MRange,
-	MResult,
-	MSearchBar,
-	MSteps,
-	MSwitch,
-	MTabBar,
-	MTabs,
-	MTextarea,
-	MToast,
-	MWhiteSpace,
-	MWingBlank,
+	Accordion,
+	ActionSheet,
+	ActivityIndicator,
+	Badge,
+	Button,
+	Calendar,
+	Card,
+	Carousel,
+	Chart,
+	Checkbox,
+	DatePicker,
+	Drawer,
+	Flex,
+	Grid,
+	Icon,
+	Input,
+	List,
+	Modal,
+	NavBar,
+	NoticeBar,
+	Pagination,
+	Picker,
+	Popup,
+	PullRefresh,
+	Radio,
+	Range,
+	Result,
+	SearchBar,
+	Steps,
+	Switch,
+	TabBar,
+	Tabs,
+	Textarea,
+	Toast,
+	WhiteSpace,
+	WingBlank,
 	Menu,
 	Progress,
 	SegmentedControl,
@@ -181,42 +181,42 @@ export default {
 	DatePickerView,
 	ImagePicker,
 	LoadingDirective,
-	MAccordion,
-	MActionSheet,
-	MActivityIndicator,
-	MBadge,
-	MButton,
-	MCalendar,
-	MCard,
-	MCarousel,
-	MChart,
-	MCheckbox,
-	MDatePicker,
-	MDrawer,
-	MFlex,
-	MGrid,
-	MIcon,
-	MInput,
-	MList,
-	MModal,
-	MNavBar,
-	MNoticeBar,
-	MPagination,
-	MPicker,
-	MPopup,
-	MPullRefresh,
-	MRadio,
-	MRange,
-	MResult,
-	MSearchBar,
-	MSteps,
-	MSwitch,
-	MTabBar,
-	MTabs,
-	MTextarea,
-	MToast,
-	MWhiteSpace,
-	MWingBlank,
+	Accordion,
+	ActionSheet,
+	ActivityIndicator,
+	Badge,
+	Button,
+	Calendar,
+	Card,
+	Carousel,
+	Chart,
+	Checkbox,
+	DatePicker,
+	Drawer,
+	Flex,
+	Grid,
+	Icon,
+	Input,
+	List,
+	Modal,
+	NavBar,
+	NoticeBar,
+	Pagination,
+	Picker,
+	Popup,
+	PullRefresh,
+	Radio,
+	Range,
+	Result,
+	SearchBar,
+	Steps,
+	Switch,
+	TabBar,
+	Tabs,
+	Textarea,
+	Toast,
+	WhiteSpace,
+	WingBlank,
 	Menu,
 	Progress,
 	SegmentedControl,

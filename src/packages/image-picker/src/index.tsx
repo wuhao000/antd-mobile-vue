@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import Flex from '../../m-flex';
+import Flex from '../../flex';
 import TouchFeedback from '../../vmc-feedback';
 
 function noop() {

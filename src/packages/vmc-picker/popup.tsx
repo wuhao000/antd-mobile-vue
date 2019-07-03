@@ -1,4 +1,4 @@
-import Popup from '../m-popup';
+import Popup from '../popup';
 import PopupMixin from './popup-mixin';
 
 const getModal = (h, props, visible, {getContent, hide, onDismiss, onOk}) => {

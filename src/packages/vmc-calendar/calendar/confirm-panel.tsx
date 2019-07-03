@@ -3,7 +3,7 @@ import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
 import {Models} from '../date/data-types';
 import {formatDate} from '../util';
-import MButton from '../../m-button';
+import MButton from '../../button';
 
 @Component({
   name: 'ConfirmPanel'

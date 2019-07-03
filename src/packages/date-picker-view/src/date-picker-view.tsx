@@ -1,7 +1,7 @@
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import DatePickerProps from '../../m-date-picker/src/props-type';
-import {getComponentLocale} from '../../mutils/getLocale';
+import DatePickerProps from '../../date-picker/src/props-type';
+import {getComponentLocale} from '../../utils/getLocale';
 import RCDatePicker from '../../vmc-date-picker/date-picker';
 
 @Component({
