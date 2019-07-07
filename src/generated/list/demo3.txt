@@ -3,7 +3,8 @@
     <div style="background:#f8f8f8;">
       <m-list style="margin-bottom:15px;">
         <m-input v-model="form.text"
-                 title="文本"/>
+                 title="文本"
+                 :rules="rules.text"/>
         <m-textarea v-model="form.longText"
                     title="长文本"/>
         <m-checkbox-popup-list v-model="form.multiSelect"
@@ -33,6 +34,7 @@
   </div>
 </template>
 <script lang="ts">
+  import {ValidateRules} from 'async-validator';
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MList from '../../index';
@@ -56,6 +58,9 @@
     }, {
       label: '选项2', value: '2'
     }];
+    public rules: ValidateRules = {
+      text: [{required: true, message: '必须填'}]
+    };
   }
 </script>
 <style scoped lang="less">

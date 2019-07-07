@@ -156,7 +156,14 @@
   &.@{listPrefixCls}-item-error {
 
     .@{listPrefixCls}-line {
+      .@{listPrefixCls}-error-extra {
+        background-size: @icon-size-sm auto;
+        height: @icon-size-sm;
+        margin-left: @v-spacing-sm;
+        .encoded-svg-background('error');
 
+        width: @icon-size-sm;
+      }
       .@{listPrefixCls}-extra {
         color: #f50;
 

@@ -11,8 +11,12 @@
             </ul>
           </div>
         </m-list-item>
-        <m-list-item extra-position="left" extra="这是我的值">Extra Left</m-list-item>
-        <m-list-item extra-position="center" extra="这是我的值">Extra Center</m-list-item>
+        <m-list-item extra="这是我的值"
+                     extra-position="left">Extra Left
+        </m-list-item>
+        <m-list-item extra="这是我的值"
+                     extra-position="center">Extra Center
+        </m-list-item>
         <m-list-item extra="这是我的值">Extra Right</m-list-item>
       </m-list>
     </div>
@@ -28,7 +32,6 @@
     name: 'Demo1'
   })
   export default class Demo1 extends Vue {
-    // TODO
   }
 </script>
 <style scoped lang="less">

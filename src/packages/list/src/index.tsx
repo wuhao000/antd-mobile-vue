@@ -1,4 +1,5 @@
 /* tslint:disable:jsx-no-multiline-js */
+import {ValidateRules} from 'async-validator';
 import classnames from 'classnames';
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
@@ -27,7 +28,102 @@ class List extends Vue {
   public touchFeedback: boolean;
   @Provide('list')
   public list = this;
+  @Prop({type: Object})
+  public model: object;
+  @Prop({type: Object})
+  public rules: ValidateRules;
   public static install: (Vue) => void;
+  public fields: any[] = [];
+
+  public created() {
+    this.$on('d.form.addField', (field) => {
+      if (field) {
+        this.fields.push(field);
+      }
+    });
+    /* istanbul ignore next */
+    this.$on('d.form.removeField', (field) => {
+      if (field.prop) {
+        this.fields.splice(this.fields.indexOf(field), 1);
+      }
+    });
+  }
+
+  public clearValidate(props = []) {
+    const fields = props.length
+        ? (typeof props === 'string'
+                ? this.fields.filter(field => props === (field as any).prop)
+                : this.fields.filter(field => props.indexOf((field as any).prop) > -1)
+        ) : this.fields;
+    fields.forEach(field => {
+      (field as any).clearValidate();
+    });
+  }
+
+  public resetFields() {
+    if (!this.model) {
+      console.warn('[Element Warn][Form]model is required for resetFields to work.');
+      return;
+    }
+    this.fields.forEach(field => {
+      (field as any).resetField();
+    });
+  }
+
+  public validate(callback) {
+    if (!this.model) {
+      return;
+    }
+    let promise;
+    let copyCallback = callback;
+    // if no callback, return promise
+    if (typeof copyCallback !== 'function' && Promise) {
+      promise = new Promise((resolve, reject) => {
+        copyCallback = (valid) => {
+          const errorField = this.fields.find(it => it.validateStatus === 'error');
+          if (errorField) {
+            errorField.focus();
+          }
+          valid ? resolve(valid) : reject(valid);
+        };
+      });
+    }
+
+    let valid = true;
+    let count = 0;
+    // 如果需要验证的fields为空，调用验证时立刻返回callback
+    if (this.fields.length === 0 && copyCallback) {
+      copyCallback(true);
+    }
+    let invalidFields = {};
+    this.fields.forEach(field => {
+      field.validate('', (message, field) => {
+        if (message) {
+          valid = false;
+        }
+        invalidFields = Object.assign({}, invalidFields, field);
+        if (typeof copyCallback === 'function' && ++count === this.fields.length) {
+          copyCallback(valid, invalidFields);
+        }
+      });
+    });
+
+    if (promise) {
+      return promise;
+    }
+  }
+
+  public validateField(props, cb) {
+    const copyProps = [].concat(props);
+    const fields = this.fields.filter(field => copyProps.indexOf((field as any).prop) !== -1);
+    if (!fields.length) {
+      console.warn('[Element Warn]please pass correct props!');
+      return;
+    }
+    fields.forEach(field => {
+      (field as any).validate('', cb);
+    });
+  }
 
   public render() {
     const {prefixCls} = this;
@@ -50,18 +146,19 @@ class List extends Vue {
       });
     }
     return (
-      <div class={wrapCls}>
-        {this.$slots.title ? this.$slots.title : (
-          this.title ? <div class={`${prefixCls}-header`}>
-            {this.title}
-          </div> : null
-        )}
-        {children.length ? (
-          <div class={`${prefixCls}-body`}>{children}</div>
-        ) : null}
-        {this.$slots.footer ? this.$slots.footer : null}
-      </div>
+        <div class={wrapCls}>
+          {this.$slots.title ? this.$slots.title : (
+              this.title ? <div class={`${prefixCls}-header`}>
+                {this.title}
+              </div> : null
+          )}
+          {children.length ? (
+              <div class={`${prefixCls}-body`}>{children}</div>
+          ) : null}
+          {this.$slots.footer ? this.$slots.footer : null}
+        </div>
     );
   }
 }
+
 export default List as any;

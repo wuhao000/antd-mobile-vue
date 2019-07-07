@@ -16,9 +16,9 @@ export class Brief extends Vue {
 
   public render() {
     return (
-      <div class={'am-list-brief'}>
-        {this.$slots.default}
-      </div>
+        <div class={'am-list-brief'}>
+          {this.$slots.default}
+        </div>
     );
   }
 }
@@ -47,6 +47,8 @@ class ListItem extends Vue {
   public multipleLine: boolean;
   @Prop({type: Boolean, default: false})
   public error: false;
+  @Prop({type: String})
+  public errorMessage: string;
   @Prop({type: Boolean, default: false})
   public disabled: false;
   @Prop({type: String, default: 'middle'})
@@ -131,18 +133,18 @@ class ListItem extends Vue {
     const {coverRippleStyle, rippleClicked} = this;
     const section = this.$parent['section'];
     const wrapCls = classNames(`${prefixCls}-item`,
-      `${prefixCls}-item-label-` + this.labelPosition,
-      {
-        [`${prefixCls}-item-disabled`]: disabled,
-        [`${prefixCls}-item-error`]: error,
-        [`${prefixCls}-item-top`]: align === 'top',
-        [`${prefixCls}-item-middle`]: align === 'middle',
-        [`${prefixCls}-item-bottom`]: align === 'bottom',
-        [`${prefixCls}-item-section`]: section,
-        [`${prefixCls}-item-extra-left`]: this.extraPosition === 'left',
-        [`${prefixCls}-item-extra-center`]: this.extraPosition === 'center',
-        [`${prefixCls}-item-extra-right`]: this.extraPosition === 'right'
-      });
+        `${prefixCls}-item-label-` + this.labelPosition,
+        {
+          [`${prefixCls}-item-disabled`]: disabled,
+          [`${prefixCls}-item-error`]: error,
+          [`${prefixCls}-item-top`]: align === 'top',
+          [`${prefixCls}-item-middle`]: align === 'middle',
+          [`${prefixCls}-item-bottom`]: align === 'bottom',
+          [`${prefixCls}-item-section`]: section,
+          [`${prefixCls}-item-extra-left`]: this.extraPosition === 'left',
+          [`${prefixCls}-item-extra-center`]: this.extraPosition === 'center',
+          [`${prefixCls}-item-extra-right`]: this.extraPosition === 'right'
+        });
 
     const rippleCls = classNames(`${prefixCls}-ripple`, {
       [`${prefixCls}-ripple-animate`]: rippleClicked
@@ -159,37 +161,48 @@ class ListItem extends Vue {
       [`${prefixCls}-arrow-vertical-up`]: arrow === 'up'
     });
     const content = (
-      <div onClick={ev => {
-        this.onClick(ev);
-      }} class={wrapCls}>
-        {this.renderThumb()}
-        <div class={lineCls}>
-          {this.renderLabel()}
-          {this.renderExtra()}
-          {arrow && <div class={arrowCls}
-                         aria-hidden={'true'}/>}
+        <div onClick={ev => {
+          this.onClick(ev);
+        }} class={wrapCls}>
+          {this.renderThumb()}
+          <div class={lineCls}>
+            {this.renderLabel()}
+            {this.renderExtra()}
+            {this.error ? (
+                <div
+                    class={`${prefixCls}-error-extra`}
+                    onClick={(e) => {
+                      if (this.errorMessage && this.$toast) {
+                        this.$toast.info(this.errorMessage);
+                      }
+                      this.$emit('error-click', e);
+                    }}
+                />
+            ) : null}
+            {arrow && <div class={arrowCls}
+                           aria-hidden={'true'}/>}
+          </div>
+          <div style={coverRippleStyle} class={rippleCls}/>
         </div>
-        <div style={coverRippleStyle} class={rippleCls}/>
-      </div>
     );
 
     return (
-      // @ts-ignore
-      <TouchFeedback
-        disabled={disabled || !this.$listeners.click || !this.touchFeedback || (this.list && !this.list.touchFeedback)}
-        activeStyle={activeStyle}
-        activeClassName={`${prefixCls}-item-active`}>
-        {content}
-      </TouchFeedback>
+        // @ts-ignore
+        <TouchFeedback
+            disabled={disabled || !this.$listeners.click || !this.touchFeedback || (this.list && !this.list.touchFeedback)}
+            activeStyle={activeStyle}
+            activeClassName={`${prefixCls}-item-active`}>
+          {content}
+        </TouchFeedback>
     );
   }
 
   private renderExtra() {
     return (this.$slots.extra !== undefined || this.extra) ? (
-      <div style={this.extraStyle}
-           class={classNames(`${this.prefixCls}-extra`, {
-             [this.prefixCls + '-extra-text']: this.text
-           })}>{this.$slots.extra || this.extra}</div>
+        <div style={this.extraStyle}
+             class={classNames(`${this.prefixCls}-extra`, {
+               [this.prefixCls + '-extra-text']: this.text
+             })}>{this.$slots.extra || this.extra}</div>
     ) : null;
   }
 
@@ -209,13 +222,13 @@ class ListItem extends Vue {
   private renderLabel() {
     if (this.$slots.default !== undefined) {
       return (
-        <div class={`${this.prefixCls}-content`}
-             style={this.contentStyle}>{this.$slots.default}</div>
+          <div class={`${this.prefixCls}-content`}
+               style={this.contentStyle}>{this.$slots.default}</div>
       );
     } else if (this.title) {
       return (
-        <div class={`${this.prefixCls}-content`}
-             style={this.contentStyle}>{this.title}</div>
+          <div class={`${this.prefixCls}-content`}
+               style={this.contentStyle}>{this.title}</div>
       );
     } else {
       return null;

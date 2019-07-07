@@ -16,8 +16,7 @@ export default class BaseFormComponent extends mixins(PureInputComponent, FormCo
       ...this.getProps(),
       disabled: this.isDisabled,
       readOnly: this.isReadonly,
-      visible: this.stateValue,
-      size: this.componentSize
+      visible: this.stateValue
     };
   }
 
