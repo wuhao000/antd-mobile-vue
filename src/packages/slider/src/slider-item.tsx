@@ -1,12 +1,13 @@
-import RcSlider from 'ant-design-vue/es/vc-slider/src/Slider';
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
+import List from '../../list';
+import Slider from './index';
 
 @Component({
-  name: 'Slider'
+  name: 'SliderItem'
 })
-class Slider extends Vue {
+export default class SliderItem extends Vue {
   @Prop({
     type: String,
     default: 'am-slider'
@@ -42,21 +43,21 @@ class Slider extends Vue {
   public disabled?: boolean;
   @Prop({})
   public handle?: any;
+  @Prop({type: String})
+  public title: string;
   public static install: (Vue) => void;
 
   public render() {
     return (
-        <div class={`${this.prefixCls}-wrapper`}>
-          <RcSlider props={this.$props} on={{
+        <List.Item title={this.title}>
+          <Slider slot="extra" props={this.$props} on={{
             ...this.$listeners,
             change: (value) => {
               this.$emit('input', value);
               this.$emit('change', value);
             }
           }}/>
-        </div>
+        </List.Item>
     );
   }
 }
-
-export default Slider as any;

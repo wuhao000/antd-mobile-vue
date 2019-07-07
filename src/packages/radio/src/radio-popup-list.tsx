@@ -68,7 +68,7 @@ export default class MRadioPopupList extends OptionsBasedComponent {
               cancelButton={cancelButton}
               title={this.title}
               onOk={this.closePopup}
-              onClose={this.closePopup}>
+              onCancel={this.closePopup}>
         {
           // @ts-ignore
           <RadioList

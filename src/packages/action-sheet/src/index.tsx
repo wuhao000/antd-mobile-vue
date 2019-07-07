@@ -184,7 +184,7 @@ export default class ActionSheet extends Vue {
     // @ts-ignore
     return <Popup value={this.show}
                    wrapClassName={classes}
-                   onClose={this.cancelClick}>
+                   onCancel={this.cancelClick}>
       <div>
         {this.renderSheet()}
       </div>

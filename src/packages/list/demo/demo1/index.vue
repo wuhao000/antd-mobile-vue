@@ -13,7 +13,7 @@
         </m-list-item>
         <m-list-item extra-position="left" extra="这是我的值">Extra Left</m-list-item>
         <m-list-item extra-position="center" extra="这是我的值">Extra Center</m-list-item>
-        <m-list-item extra="这是我的值">列表项3</m-list-item>
+        <m-list-item extra="这是我的值">Extra Right</m-list-item>
       </m-list>
     </div>
   </div>

@@ -17,7 +17,6 @@ const productionGzipExtensions = ['js', 'css'];
 const analyze = false;
 module.exports = {
   css: {
-    modules: true,
     loaderOptions: {
       less: {
         javascriptEnabled: true

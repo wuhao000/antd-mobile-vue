@@ -2,7 +2,6 @@
   <div>
     <mobile-screen>
       <m-radio-popup-list clearable
-                          read-only
                           v-model="value1"
                           placeholder="请选择"
                           title="弹出选项"

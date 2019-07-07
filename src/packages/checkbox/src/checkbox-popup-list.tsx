@@ -65,7 +65,7 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
               cancelButton={cancelButton}
               title={this.title}
               onOk={this.closePopup}
-              onClose={this.closePopup}>
+              onCancel={this.closePopup}>
         <MCheckboxList
           attrs={
             listProps
