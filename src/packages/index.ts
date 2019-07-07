@@ -23,7 +23,6 @@ import Icon from './icon';
 import ImagePicker from './image-picker';
 import Input from './input';
 import List from './list';
-import ListView from './list-view';
 import LoadingDirective from './loading-directive';
 import Menu from './menu';
 import Modal from './modal';
@@ -82,7 +81,6 @@ const components = [
 	ImagePicker,
 	Input,
 	List,
-	ListView,
 	LoadingDirective,
 	Menu,
 	Modal,
@@ -147,7 +145,6 @@ export {
 	ImagePicker,
 	Input,
 	List,
-	ListView,
 	LoadingDirective,
 	Menu,
 	Modal,
@@ -200,7 +197,6 @@ export default {
 	ImagePicker,
 	Input,
 	List,
-	ListView,
 	LoadingDirective,
 	Menu,
 	Modal,

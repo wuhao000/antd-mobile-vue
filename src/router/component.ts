@@ -134,13 +134,6 @@ export default [{
   },
   component: () => import('@/generated/list/index.vue')
 }, {
-  path: 'list-view',
-  name: 'ListView 长列表',
-  meta: {
-    tag: '其他'
-  },
-  component: () => import('@/generated/list-view/index.vue')
-}, {
   path: 'menu',
   name: 'Menu 菜单',
   meta: {

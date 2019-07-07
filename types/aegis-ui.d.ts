@@ -17,7 +17,6 @@ import {IconComponent} from './components/icon';
 import {ImagePickerComponent} from './components/image-picker';
 import {InputComponent} from './components/input';
 import {ListComponent} from './components/list';
-import {ListViewComponent} from './components/list-view';
 import {LoadingDirectiveComponent} from './components/loading-directive';
 import {MenuComponent} from './components/menu';
 import {ModalComponent} from './components/modal';
@@ -82,8 +81,6 @@ export class ImagePicker extends ImagePickerComponent {
 export class Input extends InputComponent {
 }
 export class List extends ListComponent {
-}
-export class ListView extends ListViewComponent {
 }
 export class LoadingDirective extends LoadingDirectiveComponent {
 }
