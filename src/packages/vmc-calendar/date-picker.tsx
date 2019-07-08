@@ -1,5 +1,6 @@
 import {VNode} from 'vue';
 import Component, {mixins} from 'vue-class-component';
+import {Prop} from 'vue-property-decorator';
 import DatePickerBase from './date-picker-base';
 import {Models} from './date/data-types';
 import SingleMonth from './date/single-month';
@@ -9,6 +10,9 @@ import WeekPanel from './date/week-panel';
   name: 'DatePicker'
 })
 export default class DatePicker extends mixins(DatePickerBase) {
+
+  @Prop({type: Boolean, default: false})
+  public displayMode: boolean;
 
   public get panel(): HTMLDivElement {
     return this.$refs['panel'] as HTMLDivElement;
@@ -24,6 +28,7 @@ export default class DatePicker extends mixins(DatePickerBase) {
     return <SingleMonth key={data.title}
                         locale={this.locale || {} as Models.Locale}
                         monthData={data}
+                        displayMode={this.displayMode}
                         rowSize={this.rowSize}
                         onCellClick={(day) => {
                           this.onCellClick(day);

@@ -85,4 +85,9 @@ export default class CalendarProps extends Vue {
   /** 是否显示，default: false */
   @Prop({type: Boolean, default: false})
   public visible?: boolean;
+  /**
+   * 是否静态展示模式
+   */
+  @Prop({type: Boolean, default: false})
+  public displayMode: boolean;
 }

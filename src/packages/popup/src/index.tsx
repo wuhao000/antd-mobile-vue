@@ -1,6 +1,6 @@
 import {VNode} from 'vue';
 import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {Prop, Watch} from 'vue-property-decorator';
 import BaseFormComponent from '../../../mixins/base-input-component';
 import Touchable from '../../vmc-feedback/feedback';
 
@@ -45,6 +45,11 @@ export default class MPopup extends BaseFormComponent {
       this.stateValue = false;
     }
     this.$emit('ok');
+  }
+
+  @Watch('value')
+  public valueChanged(value: boolean) {
+    this.stateValue = value;
   }
 
   public getProps(): {} {

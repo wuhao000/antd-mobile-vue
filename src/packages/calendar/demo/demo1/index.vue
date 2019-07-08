@@ -1,5 +1,9 @@
 <template>
   <div>
+    <m-calendar-view :default-date="new Date()"
+                     :get-date-extra="getExtra"
+                     :maxDate="maxDate"
+                     :minDate="minDate"/>
     <m-list>
       <m-list-item arrow="horizontal"
                    @click="value = !value">测试
@@ -20,14 +24,11 @@
       <m-calendar-item default-value=""
                        title="默认时间"/>
     </m-list>
-    <m-calendar :default-date="new Date()"
-                :maxDate="maxDate"
-                :minDate="minDate"
-                :visible.sync="value"/>
   </div>
 </template>
 <script lang="ts">
   import List from '@/packages/list';
+  import {Models} from '@/packages/vmc-calendar/date/data-types';
   import Vue from 'vue';
   import Component from 'vue-class-component';
   import MCalendar from '../../index';
@@ -40,10 +41,19 @@
   export default class Demo1 extends Vue {
     public dateRange = [];
     public defaultValue = [new Date(2019, 3, 1, 0, 0, 0), new Date()];
-    public maxDate = new Date(Date.now() + 31536000000);
-    public minDate = new Date(Date.now() - 5184000000);
+    public maxDate = new Date(2019, 6, 31, 0, 0, 0);
+    public minDate = new Date(2019, 6, 1, 0, 0, 0);
     public value = false;
 
+
+    public getExtra(date: Date): Models.ExtraData {
+      if (isNaN(date.getTime())) {
+        return {};
+      }
+      return {
+        selected: true
+      };
+    }
 
     public setValue() {
       this.dateRange = [new Date(), new Date()];

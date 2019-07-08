@@ -7,6 +7,8 @@ import {Models} from './data-types';
   name: 'SingleMonth'
 })
 export default class SingleMonth extends Vue {
+  @Prop({type: Boolean, default: false})
+  public displayMode: boolean;
   @Inject('currentValue')
   public currentValue: Date[];
   @Prop({})
@@ -35,7 +37,7 @@ export default class SingleMonth extends Vue {
   }
 
   public genWeek(weeksData: Models.CellData[], index: number) {
-    const {getDateExtra, monthData, locale, rowSize} = this;
+    const {getDateExtra, displayMode, monthData, locale, rowSize} = this;
     let rowCls = 'row';
     if (rowSize === 'xl') {
       rowCls += ' row-xl';
@@ -63,7 +65,9 @@ export default class SingleMonth extends Vue {
             } else if (info) {
               cls += ' important';
             }
-
+            if (displayMode && extra.selected) {
+              cls += ' date-selected selected-single';
+            }
             if (day.selected) {
               cls += ' date-selected';
               let styleType = day.selected;
@@ -141,7 +145,9 @@ export default class SingleMonth extends Vue {
             return (
               <div key={dayOfWeek} class={`cell ${extra.cellCls || ''}`} onClick={() => {
                 if (!disable) {
-                  this.$emit('cellClick', day, monthData);
+                  if (!displayMode) {
+                    this.$emit('cellClick', day, monthData);
+                  }
                 }
               }}>
                 {

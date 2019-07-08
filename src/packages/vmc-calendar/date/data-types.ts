@@ -35,6 +35,10 @@ export namespace Models {
     disable?: boolean;
     /** 扩展信息 */
     info?: string;
+    /**
+     * 是否被选中，静态展示模式下有效
+     */
+    selected?: boolean;
   }
 
   export interface MonthData {
