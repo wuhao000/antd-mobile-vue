@@ -1,6 +1,7 @@
 <template>
   <div>
     <mobile-screen>
+      {{value1}}
       <m-checkbox-popup-list clearable
                              v-model="value1"
                              placeholder="请选择"

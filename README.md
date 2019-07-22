@@ -1,6 +1,6 @@
 该项目原本为公司内部项目，现放到github上开源，发布个时候项目名称改为antd-mobile-vue
 
-[查看文档](http://aegis-ui.aegis-info.com)
+[查看文档](https://antdmobilevue.aegis-info.com)
 
 
 # antd-mobile-vue

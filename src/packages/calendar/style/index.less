@@ -122,18 +122,24 @@
     height: 100%;
     left: 0;
     overflow-y: hidden;
+    padding: 0;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: @modal-zindex;
-    padding: 0;
   }
+
   &&-view {
     .content {
       position: static;
+
       .header {
         display: none;
       }
+    }
+
+    .week-panel {
+      padding: @h-spacing-md 2 * @hd;
     }
   }
 

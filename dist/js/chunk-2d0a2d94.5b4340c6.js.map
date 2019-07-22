@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./src/documents/change-log/0.2.1.md"],"names":["module","exports"],"mappings":"mGAAAA,EAAAC,QAAA","file":"js/chunk-2d0a2d94.5b4340c6.js","sourcesContent":["module.exports = \"<ul>\\n<li>malert、mconfirm、mprompt支持返回Promise</li>\\n</ul>\\n\";"],"sourceRoot":""}

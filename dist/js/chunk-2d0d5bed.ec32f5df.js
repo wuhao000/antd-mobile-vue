@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0d5bed"],{7031:function(i,n){i.exports="<p>初始化版本，包含以下组件：</p>\n<ul>\n<li>ae-codemirror 代码编辑组件</li>\n<li>m-button 移动端按钮组件</li>\n<li>time-directive 时间格式化指令</li>\n<li>codemirror-directive 代码高亮指令</li>\n</ul>\n"}}]);
+//# sourceMappingURL=chunk-2d0d5bed.ec32f5df.js.map

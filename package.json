@@ -28,9 +28,6 @@
     "remove": "tsc -p build && node build/remove.js && npm run docs",
     "publish": "npm run lib"
   },
-  "bin": {
-    "generate-api": "./build/generate-api.js"
-  },
   "files": [
     "dist",
     "packages",

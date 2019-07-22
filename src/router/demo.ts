@@ -31,4 +31,8 @@ export default [{
   path: 'm-drawer',
   name: 'm-drawer',
   component: () => import('@/components/demo/mobile/drawer.vue')
+}, {
+  path: 'calendar-view',
+  name: 'calendar-view',
+  component: () => import('@/components/demo/mobile/calendar-view.vue')
 }];

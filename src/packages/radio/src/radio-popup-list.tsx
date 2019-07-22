@@ -36,7 +36,6 @@ export default class MRadioPopupList extends OptionsBasedComponent {
 
   get optionText() {
     const options = this.getOptions() as any;
-    // @ts-ignore
     const value = this.stateValue;
     const selectedOption = options.find(it => value === it.value);
     return selectedOption && selectedOption.label;

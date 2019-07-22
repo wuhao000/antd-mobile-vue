@@ -4,7 +4,7 @@
       <div class="ant-col-xs-24 ant-col-sm-24 ant-col-md-6 ant-col-lg-5 ant-col-xl-5 ant-col-xxl-4 header-left">
         <router-link id="logo"
                      to="/">
-          <span>Aegis UI</span>
+          <span>Ant Design Mobile Vue</span>
         </router-link>
       </div>
     </ae-row>

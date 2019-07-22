@@ -17,11 +17,6 @@ export default class MCheckboxList extends OptionsBasedComponent {
   @Prop({type: Number})
   public maxHeightPercentage: number;
 
-  @Watch('value')
-  public valueChanged(value: any[]) {
-    this.stateValue = value;
-  }
-
   public mounted() {
     if (this.maxHeightPercentage) {
       const windowHeight = document.body.clientHeight;
