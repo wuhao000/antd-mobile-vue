@@ -3,6 +3,7 @@
     <m-chart prevent-default
              :width="400"
              :data="data">
+      <m-chart-axis x field="date"/>
       <m-chart-scale x
                      :tick-count="3"/>
       <m-chart-tooltip show-x-value

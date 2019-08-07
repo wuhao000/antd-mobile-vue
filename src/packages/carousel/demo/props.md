@@ -4,11 +4,12 @@ afterChange||(current: number) => void|
 autoplay||boolean|false
 autoplayInterval||number|
 beforeChange||(from: number, to: number) => void|
+cellAlign||string|
 cellSpacing||number|
 className||string|
 currentSlide||number|
-dotActiveStyle||object|
 dotActiveStyle||any|
+dotActiveStyle||object|
 dots||boolean|true
 dotStyle||any|
 dotStyle||object|

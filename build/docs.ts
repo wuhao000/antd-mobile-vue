@@ -7,6 +7,7 @@ const basePath = 'src/packages';
 const renderTemplate = require('./tmpl').render;
 
 interface DemoDescriptor {
+  fileName: string;
   markdownFileContent: string;
   name: string;
   /** 标题 */
@@ -16,16 +17,16 @@ interface DemoDescriptor {
 
 console.log('生成文档中……');
 
-function createDemoFile(component: Component, componentDemoRootPath, demoName, vueContent) {
+function createDemoFile(component: Component, componentDemoRootPath, demoName, fileName, vueContent) {
   const name = demoName.substring(0, 1).toUpperCase() + demoName.substring(1);
   const content = renderTemplate('src/templates/demo-index.vue.tmpl', {
-    name, demoName, dir: component.dir
+    name, demoName, dir: component.dir, fileName
   });
   const componentGeneratedFilePath = 'src/generated/' + component.dir;
   if (!fs.existsSync(componentGeneratedFilePath)) {
     fs.mkdirSync(componentGeneratedFilePath);
   }
-  const demoDir = 'src/components/demo/' + component.dir;
+  const demoDir = `src/packages/${component.name}/demo`;
   if (!fs.existsSync(demoDir)) {
     fs.mkdirSync(demoDir);
   }
@@ -44,7 +45,7 @@ function createDemoFile(component: Component, componentDemoRootPath, demoName, v
 </script>`);
   }
   fs.writeFileSync(`${componentGeneratedFilePath}/${demoName}.txt`, vueContent);
-  fs.writeFileSync(`${componentGeneratedFilePath}/${demoName}.vue`, content);
+  fs.writeFileSync(`${componentGeneratedFilePath}/${fileName}`, content);
 }
 
 const titleMap = {
@@ -81,8 +82,8 @@ function createDemoTemplate(demos: DemoDescriptor[], options) {
 }
 
 function createDemoIndex(component: Component, componentDemoRootPath, demos: DemoDescriptor[]) {
-  const demoImports = demos.map(it => it.name).map(it => `  import ${it} from './${it}.vue';`)
-    .join('\n');
+  const demoImports = demos.map(it => `  import ${it.name} from './${it.fileName}';`)
+      .join('\n');
   const options = {
     title: fs.existsSync(componentDemoRootPath + '/README.md'),
     props: fs.existsSync(componentDemoRootPath + '/props.md'),
@@ -91,13 +92,13 @@ function createDemoIndex(component: Component, componentDemoRootPath, demos: Dem
     slots: fs.existsSync(componentDemoRootPath + '/slots.md')
   };
   const mdImports = Object.keys(options)
-    .map(it => options[it] ? `import ${it} from '../../packages/${component.dir}/demo/${it === 'title' ? 'README' : it}.md';` : '')
-    .filter(it => it.length > 0)
-    .join('\n  ');
+      .map(it => options[it] ? `import ${it} from '../../packages/${component.dir}/demo/${it === 'title' ? 'README' : it}.md';` : '')
+      .filter(it => it.length > 0)
+      .join('\n  ');
   const mdProps = Object.keys(options)
-    .map(it => options[it] ? `public ${it} = ${it};` : '')
-    .filter(it => it.length > 0)
-    .join('\n    ');
+      .map(it => options[it] ? `public ${it} = ${it};` : '')
+      .filter(it => it.length > 0)
+      .join('\n    ');
 
   function generateDecorator(demos: DemoDescriptor[]) {
     if (demos.length) {
@@ -148,7 +149,19 @@ ${mdProps ? `    ${mdProps}` : ''}
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
   }
+  const demoPageContent = renderTemplate('src/templates/demo.tmpl', {
+    tmpl: demos.map(demo => {
+      return `<demo-wrapper title="${demo.title}">
+      <${demo.name}/>
+    </demo-wrapper>`;
+    }).join('\n\t\t'),
+    imports: demos.map(demo => {
+      return `import ${demo.name} from '@/packages/${component.name}/demo/${demo.fileName}';`;
+    }).join('\n  '),
+    components: demos.length ? demos.map(demo => demo.name).join(', ') + ',' : ''
+  });
   fs.writeFileSync('src/generated/' + component.dir + '/index.vue', content);
+  fs.writeFileSync('src/generated/' + component.dir + '/demo.vue', demoPageContent);
 }
 
 function resolveDemo(component) {
@@ -156,29 +169,24 @@ function resolveDemo(component) {
   const componentDemoRootPath = `${basePath}/${component.dir}/demo`;
   if (fs.existsSync(componentDemoRootPath)) {
     const paths = fs.readdirSync(componentDemoRootPath);
-    const demoDirs = paths.filter(it => !it.includes('.'));
+    const demoFiles = paths.filter(it => it.startsWith('demo') && (it.endsWith('.vue') || it.endsWith('.ts') || it.endsWith('.tsx')));
     const demos: DemoDescriptor[] = [];
-    const demoNames: string[] = [];
-    demoDirs.forEach(demoName => {
-      const demoDir = `${componentDemoRootPath}/${demoName}`;
-      const vuePath = demoDir + '/index.vue';
-      const hasVueFile = fs.existsSync(vuePath);
-      const markdownPath = demoDir + '/index.md';
-      const hasMarkdownFile = fs.existsSync(markdownPath);
-      if (hasVueFile && hasMarkdownFile) {
-        const vueContent = fs.readFileSync(demoDir + '/index.vue').toString();
-        createDemoFile(component, componentDemoRootPath,
-          demoName, vueContent);
-        const markdownContent = fs.readFileSync(markdownPath).toString();
-        const firstLine = markdownContent.split('\n')[0];
-        demos.push({
-          name: demoName,
-          title: firstLine ? (firstLine.startsWith('####') ? firstLine.substring(4).trim() : firstLine.trim()) : '',
-          markdownFileContent: markdownContent,
-          vueFileContent: fs.readFileSync(vuePath).toString()
-        });
-        demoNames.push(demoName);
-      }
+    demoFiles.forEach(fileName => {
+      const demoName = fileName.substr(0, fileName.lastIndexOf('.'));
+      const demoFile = `${componentDemoRootPath}/${fileName}`;
+      const vueContent = fs.readFileSync(demoFile).toString();
+      const markdownPath = componentDemoRootPath + '/' + demoName + '.md';
+      createDemoFile(component, componentDemoRootPath,
+          demoName, fileName, vueContent);
+      const markdownContent = fs.existsSync(markdownPath) ? fs.readFileSync(markdownPath).toString() : '';
+      const firstLine = markdownContent.split('\n')[0];
+      demos.push({
+        name: fileName.substr(0, fileName.lastIndexOf('.')),
+        fileName: fileName,
+        title: firstLine ? (firstLine.startsWith('####') ? firstLine.substring(4).trim() : firstLine.trim()) : '',
+        markdownFileContent: markdownContent,
+        vueFileContent: fs.readFileSync(demoFile).toString()
+      });
     });
     createDemoIndex(component, componentDemoRootPath, demos);
   }

@@ -1,40 +1,40 @@
 <template>
-  <div>
-    <m-accordion :active-key="['2']">
-      <m-accordion-panel key="1" header="Title 1">
+  <div style="margin: 10px 0;">
+    <m-accordion class="my-accordion"
+                 :defaultActiveKey="0"
+                 @change="onChange">
+      <m-accordion-panel header="Title 1">
         <m-list class="my-list">
           <m-list-item>content 1</m-list-item>
           <m-list-item>content 2</m-list-item>
           <m-list-item>content 3</m-list-item>
         </m-list>
       </m-accordion-panel>
-      <m-accordion-panel key="2" header="Title 2">
-        <m-list class="my-list">
-          <m-list-item>content 2</m-list-item>
-        </m-list>
+      <m-accordion-panel class="pad"
+                         header="Title 2">this is panel content2 or other
       </m-accordion-panel>
-      <m-accordion-panel key="3" header="Title 3">
-        <m-list class="my-list">
-          <m-list-item>content 3</m-list-item>
-        </m-list>
+      <m-accordion-panel class="pad"
+                         header="Title 3">
+        text text text text text text text text text text text text text text text
       </m-accordion-panel>
     </m-accordion>
   </div>
 </template>
 <script lang="ts">
-  import List from '@/packages/list';
   import Vue from 'vue';
   import Component from 'vue-class-component';
-  import MAccordion from '../../index';
 
-  Vue.use(List);
-  Vue.use(MAccordion);
   @Component({
-    name: 'Demo1'
+    name: 'MobileAccordionDemo1'
   })
-  export default class Demo1 extends Vue {
-    // TODO
+  export default class MobileAccordionDemo1 extends Vue {
+    public onChange(key) {
+      console.log(key);
+    }
   }
 </script>
-<style scoped lang="less">
+<style lang="less">
+  .my-accordion .pad .am-accordion-content-box {
+    padding: 10px;
+  }
 </style>

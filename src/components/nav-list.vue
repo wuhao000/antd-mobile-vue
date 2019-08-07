@@ -9,10 +9,10 @@
              slot="title">{{item.name}}
         </div>
         <template v-if="item.name === '组件'">
-          <d-menu-item-group v-for="(components,tag) in getComponentMap(item.children)"
-                             :key="tag"
-                             :title="tag">
-            <d-menu-item v-for="component in components"
+          <d-menu-item-group v-for="(item) in getComponentMap(item.children)"
+                             :key="item.tag"
+                             :title="item.tag">
+            <d-menu-item v-for="component in item.components"
                          :key="component.name"
                          @click="handleClick(component)">{{component.name}}
             </d-menu-item>
@@ -37,6 +37,7 @@
   import {Component, Prop, Vue} from 'vue-property-decorator';
   import {RouteConfig} from 'vue-router';
 
+  const tagNames = ['布局', '导航', '数据入口', '数据展示', '反馈', '手势', '组合', '其他'];
   @Component
   export default class NavList extends Vue {
     @Prop({
@@ -46,17 +47,27 @@
 
     public openKeys: string[] = [];
 
-    public handleClick(route) {
-      this.$router.push(route);
-    }
-
     public getComponentMap(routes: RouteConfig[]) {
       const tags = routes.map(it => it.meta && it.meta.tag);
       const map = {};
       tags.forEach(tag => {
         map[tag] = routes.filter(it => it.meta.tag === tag);
       });
-      return map;
+      const tagComponentsList = [];
+      Object.keys(map).forEach(key => {
+        tagComponentsList.push({
+          tag: key,
+          components: map[key]
+        });
+      });
+      tagComponentsList.sort((a, b) => {
+        return tagNames.indexOf(a.tag) - tagNames.indexOf(b.tag);
+      });
+      return tagComponentsList;
+    }
+
+    public handleClick(route) {
+      this.$router.push(route);
     }
 
   }

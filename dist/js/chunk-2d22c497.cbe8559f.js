@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d22c497"],{f31e:function(n,i){n.exports="<ul>\n<li>➕ d-description-list 详情页组件 (移植自ant-design-pro)</li>\n<li>➕ d-divider 分割线组件</li>\n</ul>\n"}}]);
+//# sourceMappingURL=chunk-2d22c497.cbe8559f.js.map

@@ -1,29 +1,17 @@
 <template xmlns:v-clipboard="http://www.w3.org/1999/xhtml">
-  <div class="code-box">
-    <section class="code-box-demo">
-      <slot name="demo"/>
-    </section>
+  <div class="code-box code-box-target">
     <markdown class="code-box-meta"
               :source="markdown"></markdown>
+    <ae-icon v-clipboard:copy="code"
+             v-clipboard:success="copied"
+             class="copy-btn"
+             type="copy"></ae-icon>
     <pre v-hljs
-         v-show="showCode"
          class="code-box-code markdown-body clearfix">
       <ae-layout>
-        <ae-icon v-clipboard:copy="code"
-                 v-clipboard:success="copied"
-                 class="copy-btn"
-                 type="copy"></ae-icon>
         <code v-text="code"></code>
       </ae-layout>
     </pre>
-    <div class="show-code-btn">
-      <d-button block
-                icon="plus"
-                style="border:none;"
-                @click="showCode = !showCode">
-        <span v-text="showCode ? '隐藏代码' : '显示代码'"></span>
-      </d-button>
-    </div>
   </div>
 </template>
 <script lang="ts">
@@ -55,6 +43,11 @@
     position: relative;
     margin: 0 0 16px;
     transition: all 0.2s;
+
+    &.code-box-target {
+      -webkit-box-shadow: 0 0 4px rgba(16, 142, 233, .5);
+      box-shadow: 0 0 4px rgba(16, 142, 233, .5);
+    }
   }
 
   .code-box-demo {
@@ -63,21 +56,22 @@
     color: rgba(0, 0, 0, 0.65);
   }
 
+  .copy-btn {
+    position: absolute;
+    cursor: pointer;
+    right: 30px;
+    top: 20px;
+  }
+
   .code-box-code {
     padding: 0 22px;
     position: relative;
 
-    .copy-btn {
-      position: absolute;
-      cursor: pointer;
-      right: 30px;
-      top: 0;
-    }
 
-    & > code {
-      position: absolute;
+    code {
       width: 100%;
       top: 0;
+      max-height: 220px;
     }
   }
 
@@ -91,15 +85,10 @@
   }
 
   .code-box-meta > h4 {
-    position: absolute;
-    top: -14px;
-    padding: 1px 8px;
-    margin-left: -8px;
+    font-size: 16px;
     color: #777;
-    border-radius: 2px 2px 0 0;
-    background: #fff;
-    font-size: 14px;
-    width: auto;
+    -webkit-transition: all .4s ease;
+    transition: all .4s ease;
   }
 
   .markdown-body {

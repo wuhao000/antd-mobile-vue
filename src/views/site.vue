@@ -12,8 +12,7 @@
       <ae-layout-content :id="(!$route.meta || $route.meta.hideNav !== true) ? 'app-content' : ''">
         <router-view/>
       </ae-layout-content>
-      <ae-layout-sider style="padding: 0 100px;"
-                       width="600px">
+      <ae-layout-sider style="padding: 0 0 0 10px;">
         <iframe v-if="componentName"
                 height="812px"
                 width="375px"
@@ -108,7 +107,7 @@
 
   #app-content {
     background: white;
-    padding: @padding-sm 200px 144px @padding-lg;
+    padding: @padding-sm 30px 144px @padding-lg;
   }
 
   p {
