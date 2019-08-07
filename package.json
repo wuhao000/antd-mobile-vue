@@ -1,6 +1,6 @@
 {
   "name": "antd-mobile-vue",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "基于Vue和ant-desing的及PC端综合组件库",
   "main": "src/packages/index.ts",
   "keyword": "antd antd-mobile vue",
@@ -33,9 +33,7 @@
     "packages",
     "src",
     "README.md",
-    "types",
-    "build/generate-api.js",
-    "build/api"
+    "types"
   ],
   "publishConfig": {
     "registry": "http://registry.npmjs.org"

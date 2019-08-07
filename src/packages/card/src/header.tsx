@@ -20,6 +20,8 @@ export default class Header extends Vue {
   public thumb?: string;
   @Prop({type: String})
   public extra?: string;
+  @Prop({type: String})
+  public title?: string;
 
   public render() {
     const {
@@ -27,7 +29,7 @@ export default class Header extends Vue {
       thumb,
       thumbStyle,
       extra,
-      ...restProps
+      title,
     } = this;
     const wrapCls = `${prefixCls}-header`;
 
@@ -39,7 +41,7 @@ export default class Header extends Vue {
           ) : (
             this.thumb ? <img style={thumbStyle} src={thumb}/> : null
           )}
-          {this.$slots.default}
+          {this.$slots.default ? this.$slots.default : title}
         </div>
         {(this.$slots.extra || extra) ? (
           // tslint:disable-next-line:jsx-no-multiline-js

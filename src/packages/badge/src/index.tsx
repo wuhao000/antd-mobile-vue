@@ -37,8 +37,8 @@ export default class Badge extends Vue {
   /**
    * 展示的数字或文案，当为数字时候，大于 overflowCount <br/> 时显示为 ${overflowCount}+，为 0 时隐藏
    */
-  @Prop({type: String})
-  public text?: any;
+  @Prop({type: [String, Number]})
+  public text?: string | number;
   /**
    * 文本样式
    */
@@ -59,9 +59,9 @@ export default class Badge extends Vue {
     } = this;
     overflowCount = overflowCount as number;
     text =
-        typeof text === 'number' && text > overflowCount
-            ? `${overflowCount}+`
-            : text;
+      typeof text === 'number' && text > overflowCount
+        ? `${overflowCount}+`
+        : text;
     // dot mode don't need text
     if (dot) {
       text = '';
@@ -83,15 +83,15 @@ export default class Badge extends Vue {
     });
 
     return (
-        <span class={badgeCls}>
+      <span class={badgeCls}>
           {this.$slots.default}
-          {(text || dot) && (
-              // tslint:disable-next-line:jsx-no-multiline-js
-              <sup class={scrollNumberCls}
-                   style={this.textStyle}>
-                {text}
-              </sup>
-          )}
+        {(text || dot) && (
+          // tslint:disable-next-line:jsx-no-multiline-js
+          <sup class={scrollNumberCls}
+               style={this.textStyle}>
+            {text}
+          </sup>
+        )}
         </span>
     );
   }

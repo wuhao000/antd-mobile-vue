@@ -25,6 +25,24 @@ function createDemoFile(component: Component, componentDemoRootPath, demoName, v
   if (!fs.existsSync(componentGeneratedFilePath)) {
     fs.mkdirSync(componentGeneratedFilePath);
   }
+  const demoDir = 'src/components/demo/' + component.dir;
+  if (!fs.existsSync(demoDir)) {
+    fs.mkdirSync(demoDir);
+  }
+  const demoIndex = demoDir + '/index.vue';
+  if (!fs.existsSync(demoIndex)) {
+    fs.writeFileSync(demoIndex, `<template></template>
+<script lang="ts">
+  import Vue from 'vue';
+  import Component from 'vue-class-component';
+
+  @Component({
+    name: '${component.upperCase}Demo'
+  })
+  export default class ActionSheetDemo extends Vue {
+  }
+</script>`);
+  }
   fs.writeFileSync(`${componentGeneratedFilePath}/${demoName}.txt`, vueContent);
   fs.writeFileSync(`${componentGeneratedFilePath}/${demoName}.vue`, content);
 }
@@ -54,10 +72,7 @@ function createDemoTemplate(demos: DemoDescriptor[], options) {
     title,
     demoComponents,
     mdComponents,
-    anchors: demos.map(it => {
-      return `        <d-anchor-link href="#${it.name}"
-                       title="${it.title}"/>`;
-    }).join('\n'),
+    anchors: '',
     propsExists: options['props'] || false,
     eventsExists: options['events'] || false,
     functionsExists: options['functions'] || false,
@@ -67,7 +82,7 @@ function createDemoTemplate(demos: DemoDescriptor[], options) {
 
 function createDemoIndex(component: Component, componentDemoRootPath, demos: DemoDescriptor[]) {
   const demoImports = demos.map(it => it.name).map(it => `  import ${it} from './${it}.vue';`)
-      .join('\n');
+    .join('\n');
   const options = {
     title: fs.existsSync(componentDemoRootPath + '/README.md'),
     props: fs.existsSync(componentDemoRootPath + '/props.md'),
@@ -76,13 +91,13 @@ function createDemoIndex(component: Component, componentDemoRootPath, demos: Dem
     slots: fs.existsSync(componentDemoRootPath + '/slots.md')
   };
   const mdImports = Object.keys(options)
-      .map(it => options[it] ? `import ${it} from '../../packages/${component.dir}/demo/${it === 'title' ? 'README' : it}.md';` : '')
-      .filter(it => it.length > 0)
-      .join('\n  ');
+    .map(it => options[it] ? `import ${it} from '../../packages/${component.dir}/demo/${it === 'title' ? 'README' : it}.md';` : '')
+    .filter(it => it.length > 0)
+    .join('\n  ');
   const mdProps = Object.keys(options)
-      .map(it => options[it] ? `public ${it} = ${it};` : '')
-      .filter(it => it.length > 0)
-      .join('\n    ');
+    .map(it => options[it] ? `public ${it} = ${it};` : '')
+    .filter(it => it.length > 0)
+    .join('\n    ');
 
   function generateDecorator(demos: DemoDescriptor[]) {
     if (demos.length) {
@@ -153,7 +168,7 @@ function resolveDemo(component) {
       if (hasVueFile && hasMarkdownFile) {
         const vueContent = fs.readFileSync(demoDir + '/index.vue').toString();
         createDemoFile(component, componentDemoRootPath,
-            demoName, vueContent);
+          demoName, vueContent);
         const markdownContent = fs.readFileSync(markdownPath).toString();
         const firstLine = markdownContent.split('\n')[0];
         demos.push({

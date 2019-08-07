@@ -1,18 +1,5 @@
 <template>
   <div>
-    <m-carousel infinite :autoplay="false">
-      <a v-for="val in data"
-         href="http://www.alipay.com"
-         :key="val"
-         :style="{ display : 'inline-block', width : '100%', height : 'auto' }"
-      >
-        <img alt=""
-             :src="`https://zos.alipayobjects.com/rmsportal/${val}.png`"
-             :style="{ width : '100%', verticalAlign : 'top' }"
-             @load="load"
-        />
-      </a>
-    </m-carousel>
   </div>
 </template>
 <script lang="ts">
@@ -25,12 +12,6 @@
     name: 'Demo1'
   })
   export default class Demo1 extends Vue {
-    public data = ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'];
-
-    public load() {
-      // fire window resize event to change height
-      window.dispatchEvent(new Event('resize'));
-    }
   }
 </script>
 <style scoped lang="less">

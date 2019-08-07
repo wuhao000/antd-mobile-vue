@@ -4,16 +4,22 @@
       <ui-header/>
     </ae-layout-header>
     <ae-layout id="app-body">
-      <ae-layout>
-        <ae-layout-sider v-show="!isDemo"
-                         id="app-nav"
-                         width="220px">
-          <nav-list :menu-list="routersName"></nav-list>
-        </ae-layout-sider>
-        <ae-layout-content :id="(!$route.meta || $route.meta.hideNav !== true) ? 'app-content' : ''">
-          <router-view/>
-        </ae-layout-content>
-      </ae-layout>
+      <ae-layout-sider v-show="!isDemo"
+                       id="app-nav"
+                       width="220px">
+        <nav-list :menu-list="routersName"></nav-list>
+      </ae-layout-sider>
+      <ae-layout-content :id="(!$route.meta || $route.meta.hideNav !== true) ? 'app-content' : ''">
+        <router-view/>
+      </ae-layout-content>
+      <ae-layout-sider style="padding: 0 100px;"
+                       width="600px">
+        <iframe v-if="componentName"
+                height="812px"
+                width="375px"
+                :src="`/demo/mobile/${componentName}`">
+        </iframe>
+      </ae-layout-sider>
     </ae-layout>
   </ae-layout>
 </template>
@@ -23,7 +29,8 @@
   import UiHeader from '@/views/header.vue';
   import Vue from 'vue';
   import VueClipboard from 'vue-clipboard2';
-  import {Component} from 'vue-property-decorator';
+  import {Component, Watch} from 'vue-property-decorator';
+  import {RouteConfig} from 'vue-router';
 
   Vue.use(VueClipboard as any);
   @Component({
@@ -33,6 +40,7 @@
     }
   })
   export default class App extends Vue {
+    private componentName: string = null;
 
     get isDemo() {
       return this.$route.path.startsWith('/demo');
@@ -40,6 +48,15 @@
 
     get routersName() {
       return routes.find(it => it.name === 'site').children;
+    }
+
+    @Watch('$route', {immediate: true})
+    public routeChanged(route: RouteConfig) {
+      if (route.path.startsWith('/mobile-components')) {
+        this.componentName = 'm-' + route.path.replace('/mobile-components/', '');
+      } else {
+        this.componentName = null;
+      }
     }
 
   }
