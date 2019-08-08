@@ -1,1 +1,314 @@
-{"accordion":{"type":"component","componentType":"mobile","name":"accordion","chineseName":"手风琴","tag":"数据展示"},"action-sheet":{"type":"component","componentType":"mobile","name":"action-sheet","chineseName":"动作面板","tag":"反馈"},"activity-indicator":{"type":"component","componentType":"mobile","name":"activity-indicator","chineseName":"活动指示器","tag":"反馈"},"api-proxy":{"type":"tool","name":"api-proxy","chineseName":"接口代理工具"},"badge":{"type":"component","componentType":"mobile","name":"badge","chineseName":"徽标","tag":"数据展示"},"button":{"name":"button","componentType":"mobile","chineseName":"按钮","type":"component","tag":"数据入口"},"calendar":{"type":"component","componentType":"mobile","name":"calendar","chineseName":"日历","tag":"数据入口"},"card":{"type":"component","componentType":"mobile","name":"card","chineseName":"卡片","tag":"数据展示"},"carousel":{"type":"component","componentType":"mobile","name":"carousel","chineseName":"走马灯","tag":"数据展示"},"chart":{"type":"component","componentType":"mobile","name":"chart","chineseName":"图表","tag":"数据展示"},"checkbox":{"type":"component","componentType":"mobile","name":"checkbox","chineseName":"复选框","tag":"数据入口"},"date-picker":{"type":"component","componentType":"mobile","name":"date-picker","chineseName":"日期选择","tag":"数据入口"},"date-picker-view":{"type":"component","componentType":"mobile","name":"date-picker-view","chineseName":"日期选择器"},"drawer":{"type":"component","componentType":"mobile","name":"drawer","chineseName":"抽屉","tag":"导航"},"flex":{"type":"component","componentType":"mobile","name":"flex","chineseName":"弹性布局","tag":"布局"},"grid":{"type":"component","componentType":"mobile","name":"grid","chineseName":"宫格","tag":"数据展示"},"icon":{"type":"component","componentType":"mobile","name":"icon","chineseName":"图标","tag":"数据展示"},"image-picker":{"type":"component","componentType":"mobile","name":"image-picker","chineseName":"图片选择器"},"input":{"type":"component","componentType":"mobile","name":"input","chineseName":"输入框","tag":"数据入口"},"list":{"type":"component","componentType":"mobile","name":"list","chineseName":"列表","tag":"数据展示"},"loading-directive":{"type":"directive","componentType":null,"name":"loading-directive","chineseName":"加载中"},"menu":{"type":"component","componentType":"mobile","name":"menu","chineseName":"菜单","tag":"导航"},"modal":{"type":"component","componentType":"mobile","name":"modal","chineseName":"模态框","tag":"反馈"},"nav-bar":{"type":"component","componentType":"mobile","name":"nav-bar","chineseName":"导航栏","tag":"导航"},"notice-bar":{"type":"component","componentType":"mobile","name":"notice-bar","chineseName":"通告栏","tag":"数据展示"},"pagination":{"type":"component","componentType":"mobile","name":"pagination","chineseName":"分页器","tag":"导航"},"picker":{"type":"component","componentType":"mobile","name":"picker","chineseName":"选择器","tag":"数据入口"},"popup":{"type":"component","componentType":"mobile","name":"popup","chineseName":"弹出层"},"progress":{"type":"component","componentType":"mobile","name":"progress","chineseName":"进度条"},"pull-refresh":{"type":"component","componentType":"mobile","name":"pull-refresh","chineseName":"下拉刷新","tag":"手势"},"radio":{"type":"component","componentType":"mobile","name":"radio","chineseName":"单选","tag":"数据入口"},"range":{"type":"component","componentType":"mobile","name":"range","chineseName":"区域选择","tag":"数据入口"},"result":{"type":"component","componentType":"mobile","name":"result","chineseName":"结果页","tag":"组合"},"search-bar":{"type":"component","componentType":"mobile","name":"search-bar","chineseName":"搜索框","tag":"数据入口"},"segmented-control":{"type":"component","componentType":"mobile","name":"segmented-control","chineseName":"分段器"},"slider":{"type":"component","componentType":"mobile","name":"slider","chineseName":"滑动输入条","tag":"数据入口"},"steps":{"type":"component","componentType":"mobile","name":"steps","chineseName":"步骤条","tag":"数据展示"},"switch":{"type":"component","componentType":"mobile","name":"switch","chineseName":"开关","tag":"数据入口"},"tab-bar":{"type":"component","componentType":"mobile","name":"tab-bar","chineseName":"标签栏","tag":"导航"},"tabs":{"type":"component","componentType":"mobile","name":"tabs","chineseName":"标签页","tag":"导航"},"tag":{"type":"component","componentType":"mobile","name":"tag","chineseName":"标签"},"textarea":{"type":"component","componentType":"mobile","name":"textarea","chineseName":"文本框","tag":"数据入口"},"time-directive":{"name":"time","chineseName":"时间展示","type":"directive"},"toast":{"type":"component","componentType":"mobile","name":"toast","chineseName":"轻提示","tag":"反馈"},"white-space":{"type":"component","componentType":"mobile","name":"white-space","chineseName":"上下留白","tag":"布局"},"wing-blank":{"type":"component","componentType":"mobile","name":"wing-blank","chineseName":"两翼留白","tag":"布局"}}
+{
+  "accordion": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "accordion",
+    "chineseName": "手风琴",
+    "tag": "数据展示"
+  },
+  "action-sheet": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "action-sheet",
+    "chineseName": "动作面板",
+    "tag": "反馈"
+  },
+  "activity-indicator": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "activity-indicator",
+    "chineseName": "活动指示器",
+    "tag": "反馈"
+  },
+  "api-proxy": {
+    "type": "tool",
+    "name": "api-proxy",
+    "chineseName": "接口代理工具"
+  },
+  "badge": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "badge",
+    "chineseName": "徽标",
+    "tag": "数据展示"
+  },
+  "button": {
+    "name": "button",
+    "componentType": "mobile",
+    "chineseName": "按钮",
+    "type": "component",
+    "tag": "数据入口"
+  },
+  "calendar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "calendar",
+    "chineseName": "日历",
+    "tag": "数据入口"
+  },
+  "card": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "card",
+    "chineseName": "卡片",
+    "tag": "数据展示"
+  },
+  "carousel": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "carousel",
+    "chineseName": "走马灯",
+    "tag": "数据展示"
+  },
+  "chart": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "chart",
+    "chineseName": "图表",
+    "tag": "数据展示"
+  },
+  "checkbox": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "checkbox",
+    "chineseName": "复选框",
+    "tag": "数据入口"
+  },
+  "date-picker": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "date-picker",
+    "chineseName": "日期选择",
+    "tag": "数据入口"
+  },
+  "date-picker-view": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "date-picker-view",
+    "chineseName": "日期选择器"
+  },
+  "drawer": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "drawer",
+    "chineseName": "抽屉",
+    "tag": "导航"
+  },
+  "flex": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "flex",
+    "chineseName": "弹性布局",
+    "tag": "布局"
+  },
+  "grid": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "grid",
+    "chineseName": "宫格",
+    "tag": "数据展示"
+  },
+  "icon": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "icon",
+    "chineseName": "图标",
+    "tag": "数据展示"
+  },
+  "image-picker": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "image-picker",
+    "chineseName": "图片选择器"
+  },
+  "input": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "input",
+    "chineseName": "输入框",
+    "tag": "数据入口"
+  },
+  "list": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "list",
+    "chineseName": "列表",
+    "tag": "数据展示"
+  },
+  "loading-directive": {
+    "type": "directive",
+    "componentType": null,
+    "name": "loading-directive",
+    "chineseName": "加载中"
+  },
+  "menu": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "menu",
+    "chineseName": "菜单",
+    "tag": "导航"
+  },
+  "modal": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "modal",
+    "chineseName": "模态框",
+    "tag": "反馈"
+  },
+  "nav-bar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "nav-bar",
+    "chineseName": "导航栏",
+    "tag": "导航"
+  },
+  "notice-bar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "notice-bar",
+    "chineseName": "通告栏",
+    "tag": "数据展示"
+  },
+  "pagination": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "pagination",
+    "chineseName": "分页器",
+    "tag": "导航"
+  },
+  "picker": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "picker",
+    "chineseName": "选择器",
+    "tag": "数据入口"
+  },
+  "popup": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "popup",
+    "chineseName": "弹出层"
+  },
+  "progress": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "progress",
+    "chineseName": "进度条"
+  },
+  "pull-refresh": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "pull-refresh",
+    "chineseName": "下拉刷新",
+    "tag": "手势"
+  },
+  "radio": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "radio",
+    "chineseName": "单选",
+    "tag": "数据入口"
+  },
+  "range": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "range",
+    "chineseName": "区域选择",
+    "tag": "数据入口"
+  },
+  "result": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "result",
+    "chineseName": "结果页",
+    "tag": "组合"
+  },
+  "search-bar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "search-bar",
+    "chineseName": "搜索框",
+    "tag": "数据入口"
+  },
+  "segmented-control": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "segmented-control",
+    "chineseName": "分段器",
+    "tag": "导航"
+  },
+  "slider": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "slider",
+    "chineseName": "滑动输入条",
+    "tag": "数据入口"
+  },
+  "steps": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "steps",
+    "chineseName": "步骤条",
+    "tag": "数据展示"
+  },
+  "switch": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "switch",
+    "chineseName": "开关",
+    "tag": "数据入口"
+  },
+  "tab-bar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "tab-bar",
+    "chineseName": "标签栏",
+    "tag": "导航"
+  },
+  "tabs": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "tabs",
+    "chineseName": "标签页",
+    "tag": "导航"
+  },
+  "tag": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "tag",
+    "chineseName": "标签"
+  },
+  "textarea": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "textarea",
+    "chineseName": "文本框",
+    "tag": "数据入口"
+  },
+  "time-directive": {
+    "name": "time",
+    "chineseName": "时间展示",
+    "type": "directive"
+  },
+  "toast": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "toast",
+    "chineseName": "轻提示",
+    "tag": "反馈"
+  },
+  "white-space": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "white-space",
+    "chineseName": "上下留白",
+    "tag": "布局"
+  },
+  "wing-blank": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "wing-blank",
+    "chineseName": "两翼留白",
+    "tag": "布局"
+  }
+}

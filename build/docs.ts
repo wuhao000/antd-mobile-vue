@@ -45,7 +45,7 @@ function createDemoFile(component: Component, componentDemoRootPath, demoName, f
 </script>`);
   }
   fs.writeFileSync(`${componentGeneratedFilePath}/${demoName}.txt`, vueContent);
-  fs.writeFileSync(`${componentGeneratedFilePath}/${fileName}`, content);
+  fs.writeFileSync(`${componentGeneratedFilePath}/${demoName}.vue`, content);
 }
 
 const titleMap = {
@@ -81,8 +81,14 @@ function createDemoTemplate(demos: DemoDescriptor[], options) {
   });
 }
 
+/**
+ * 生成组件的示例页和说明页
+ * @param {Component} component
+ * @param componentDemoRootPath
+ * @param {DemoDescriptor[]} demos
+ */
 function createDemoIndex(component: Component, componentDemoRootPath, demos: DemoDescriptor[]) {
-  const demoImports = demos.map(it => `  import ${it.name} from './${it.fileName}';`)
+  const demoImports = demos.map(it => `  import ${it.name} from './${it.name}.vue';`)
       .join('\n');
   const options = {
     title: fs.existsSync(componentDemoRootPath + '/README.md'),

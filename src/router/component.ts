@@ -228,7 +228,7 @@ export default [{
   path: 'segmented-control',
   name: 'SegmentedControl 分段器',
   meta: {
-    tag: '其他'
+    tag: '导航'
   },
   component: () => import('@/generated/segmented-control/index.vue')
 }, {

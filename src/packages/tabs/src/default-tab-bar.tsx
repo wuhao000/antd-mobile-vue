@@ -226,7 +226,6 @@ export default class DefaultTabBar extends Vue {
 
     const needScroll = tabs.length > page;
     const size = this.getTabSize(page, tabs.length);
-
     const Tabs = tabs.map((t, i) => {
       return this.nativeRenderTab(t, i, size, isTabBarVertical);
     });

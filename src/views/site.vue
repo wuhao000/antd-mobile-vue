@@ -14,7 +14,7 @@
       </ae-layout-content>
       <ae-layout-sider style="padding: 0 0 0 10px;">
         <iframe v-if="componentName"
-                height="812px"
+                height="512px"
                 width="375px"
                 :src="`/demo/mobile/${componentName}`">
         </iframe>

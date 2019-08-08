@@ -32,8 +32,8 @@ class NavBar extends Vue {
       mode,
       icon
     } = this;
-    const rightContent = this.$slots.rightContent || this.rightContent;
-    const leftContent = this.$slots.leftContent || this.leftContent;
+    const rightContent = this.$slots.rightContent || this.$slots['right-content'] || this.rightContent;
+    const leftContent = this.$slots.leftContent || this.$slots['left-content'] || this.leftContent;
     return (
         <div
             class={classnames(className, prefixCls, `${prefixCls}-${mode}`)}
@@ -50,7 +50,7 @@ class NavBar extends Vue {
                 <span class={`${prefixCls}-left-icon`} aria-hidden="true">
                   {typeof icon === 'string' ? <Icon type={icon}/> : icon}
                 </span>
-            ) : null}
+            ) : this.$slots.icon}
             {leftContent}
           </div>
           <div class={`${prefixCls}-title`}>{this.$slots.default}</div>

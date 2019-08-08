@@ -29,6 +29,7 @@ export const getPanDirection = (direction: number | undefined) => {
 })
 export default class Tabs extends Vue {
 
+  public static DefaultTabBar: any = DefaultTabBar;
   /**
    * 使用卡片样式
    */
@@ -49,7 +50,7 @@ export default class Tabs extends Vue {
   public contentPos: string = '';
   public isMoving = false;
   @Prop()
-  public renderTabBar: () => VNode;
+  public renderTabBar: (props: any) => VNode;
   /**
    * 标签数据
    */
@@ -130,9 +131,9 @@ export default class Tabs extends Vue {
     this.nextCurrentTab = this.currentTab;
     this.instanceId = instanceId++;
     this.contentPos = this.getContentPosByIndex(
-      this.getTabIndex(),
-      this.isTabVertical(this.tabDirection),
-      this.useLeftInsteadTransform
+        this.getTabIndex(),
+        this.isTabVertical(this.tabDirection),
+        this.useLeftInsteadTransform
     );
   }
 
@@ -330,8 +331,8 @@ export default class Tabs extends Vue {
           offset += panDirection === 'vertical' ? 0 : status.moveStatus.x;
         }
         const canScrollOffset = isVertical ?
-          -this.layout.scrollHeight + this.layout.clientHeight :
-          -this.layout.scrollWidth + this.layout.clientWidth;
+            -this.layout.scrollHeight + this.layout.clientHeight :
+            -this.layout.scrollWidth + this.layout.clientWidth;
         offset = Math.min(offset, 0);
         offset = Math.max(offset, canScrollOffset);
         setPxStyle(this.layout, offset, 'px', isVertical, useLeftInsteadTransform);
@@ -349,12 +350,12 @@ export default class Tabs extends Vue {
         if (offsetIndex === this.currentTab) {
           if (this.usePaged) {
             setTransform(
-              this.layout.style,
-              this.getContentPosByIndex(
-                offsetIndex,
-                this.isTabVertical(),
-                this.useLeftInsteadTransform
-              )
+                this.layout.style,
+                this.getContentPosByIndex(
+                    offsetIndex,
+                    this.isTabVertical(),
+                    this.useLeftInsteadTransform
+                )
             );
           }
         } else {
@@ -371,9 +372,9 @@ export default class Tabs extends Vue {
     if (usePaged) {
       newState = {
         contentPos: this.getContentPosByIndex(
-          index,
-          this.isTabVertical(tabDirection),
-          useLeftInsteadTransform
+            index,
+            this.isTabVertical(tabDirection),
+            useLeftInsteadTransform
         )
       };
     }
@@ -441,10 +442,10 @@ export default class Tabs extends Vue {
       contentCls += ` ${contentCls}-animated`;
     }
     const contentStyle: any = animated ? (
-      useLeftInsteadTransform ? {
-        position: 'relative',
-        ...this.isTabVertical() ? {top: contentPos} : {left: contentPos}
-      } : getTransformPropValue(contentPos)
+        useLeftInsteadTransform ? {
+          position: 'relative',
+          ...this.isTabVertical() ? {top: contentPos} : {left: contentPos}
+        } : getTransformPropValue(contentPos)
     ) : {
       position: 'relative',
       ...this.isTabVertical() ? {top: `${-currentTab * 100}%`} : {left: `${-currentTab * 100}%`}
@@ -454,7 +455,7 @@ export default class Tabs extends Vue {
                 style={contentStyle}
                 ref={'layout'}>
       {
-        tabs.map((tab, index) => {
+        tabs && tabs.map((tab, index) => {
           let cls = `${prefixCls}-pane-wrap`;
           if (this.currentTab === index) {
             cls += ` ${cls}-active`;
@@ -494,7 +495,7 @@ export default class Tabs extends Vue {
     const onPan = !isTabVertical && useOnPan ? this.onPan : {};
     const Gesture2 = Gesture as any;
     const content = [
-      this.renderTabBar ? this.renderTabBar() : <div key={'tabBar'} class={`${prefixCls}-tab-bar-wrap`}>
+      this.renderTabBar ? this.renderTabBar(this.$props) : <div key={'tabBar'} class={`${prefixCls}-tab-bar-wrap`}>
         <DefaultTabBar {...{
           props: tabBarProps,
           on: {

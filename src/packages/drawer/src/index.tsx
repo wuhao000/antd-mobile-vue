@@ -15,8 +15,6 @@ export default class Drawer extends Vue {
   @Prop({type: Object})
   public contentStyle?: any;
   @Prop({type: Object})
-  public content: VNode;
-  @Prop({type: Object})
   public overlayStyle?: any;
   @Prop({type: Object})
   public dragHandleStyle?: any;
@@ -48,7 +46,7 @@ export default class Drawer extends Vue {
         {
           ...this.$props,
           ...this.$attrs,
-          sidebar: this.$slots.content || this.content
+          sidebar: this.$slots.sidebar || this.sidebar
         }
       }
       open={this.value}

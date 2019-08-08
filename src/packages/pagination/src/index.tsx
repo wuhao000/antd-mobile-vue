@@ -72,14 +72,13 @@ export default class Pagination extends Vue {
     let markup = (
         <Flex>
           <Flex.Item
-              class={`${prefixCls}-wrap-btn ${prefixCls}-wrap-btn-prev`}
-          >
+              class={`${prefixCls}-wrap-btn ${prefixCls}-wrap-btn-prev`}>
             <Button
                 inline
                 disabled={current <= 1}
                 onClick={() => this.onChange(current - 1)}
             >
-              {prevText}
+              {this.$slots.prevText || this.$slots['prev-text'] || prevText}
             </Button>
           </Flex.Item>
           {this.$slots.default ? (
@@ -99,7 +98,7 @@ export default class Pagination extends Vue {
                 disabled={current >= total}
                 onClick={() => this.onChange(this.state.current + 1)}
             >
-              {nextText}
+              {this.$slots.nextText || this.$slots['next-text'] || nextText}
             </Button>
           </Flex.Item>
         </Flex>

@@ -451,7 +451,7 @@ export default {
         },
         on: {
           'keydown': this.onKeydown,
-          'click': maskClosable ? this.onMaskClick.bind(this) : noop
+          'click': maskClosable ? this.onMaskClick.bind(this).bind(this).bind(this).bind(this).bind(this) : noop
         },
 
         'class': prefixCls + '-wrap ' + (wrapClassName || ''),
