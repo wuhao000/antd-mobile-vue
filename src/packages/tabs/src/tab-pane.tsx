@@ -6,7 +6,7 @@ import {getPxStyle, getTransformPropValue} from './utils';
 @Component({
   name: 'TabPane'
 })
-export default class TabPane extends Vue {
+class TabPane extends Vue {
   public layout: HTMLDivElement;
   public offsetX = 0;
   public offsetY = 0;
@@ -48,3 +48,4 @@ export default class TabPane extends Vue {
     </div>;
   }
 }
+export default TabPane as any;

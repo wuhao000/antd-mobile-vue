@@ -1,5 +1,5 @@
 import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
+import {Prop} from 'vue-property-decorator';
 import OptionsBasedComponent from '../../../mixins/options-based-component';
 import List from '../../list';
 import CheckboxItem from './checkbox-item';
@@ -7,7 +7,7 @@ import CheckboxItem from './checkbox-item';
 @Component({
   name: 'MCheckboxList'
 })
-export default class MCheckboxList extends OptionsBasedComponent {
+class MCheckboxList extends OptionsBasedComponent {
 
   @Prop({type: Array})
   public value: any[];
@@ -37,9 +37,9 @@ export default class MCheckboxList extends OptionsBasedComponent {
   private renderOptions() {
     const options = this.getOptions();
     return options.map(option => {
-      // @ts-ignore
       return <CheckboxItem
         value={this.stateValue.includes(option.value)}
+        disabled={option.disabled}
         on={
           {
             change: (checkState) => {
@@ -80,3 +80,5 @@ export default class MCheckboxList extends OptionsBasedComponent {
     }
   }
 }
+
+export default MCheckboxList as any;

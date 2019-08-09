@@ -8,7 +8,7 @@ distanceToChangeTab|切换卡片的滑动距离，0-1之间|number|0
 page||number \| string|
 prefixCls|class前缀|string|
 prerenderingSiblingsNumber|与当前激活标签相邻的提前渲染的标签数量|number|1
-renderTabBar||() => VNode|
+renderTabBar||(props: any) => VNode|
 swipeable|是否支持手势|boolean|true
 tabBarActiveTextColor|激活的标签页文字颜色|string|
 tabBarBackgroundColor|标签页背景颜色|string|

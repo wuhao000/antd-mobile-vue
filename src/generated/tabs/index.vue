@@ -10,6 +10,9 @@
     <demo1 id="demo1"/>
     <demo2 id="demo2"/>
     <demo3 id="demo3"/>
+    <demo4 id="demo4"/>
+    <demo5 id="demo5"/>
+    <demo6 id="demo6"/>
     <div class="markdown-body" id="props">
       <span></span>
       <h2>属性说明</h2>
@@ -22,6 +25,9 @@
   import demo1 from './demo1.vue';
   import demo2 from './demo2.vue';
   import demo3 from './demo3.vue';
+  import demo4 from './demo4.vue';
+  import demo5 from './demo5.vue';
+  import demo6 from './demo6.vue';
   
   import Vue from 'vue';
   import Component from 'vue-class-component';
@@ -33,7 +39,7 @@
   @Component({
     name: 'ComponentDemo',
     components: {
-      demo1, demo2, demo3
+      demo1, demo2, demo3, demo4, demo5, demo6
     }
   })
   export default class ComponentDemo extends Vue {

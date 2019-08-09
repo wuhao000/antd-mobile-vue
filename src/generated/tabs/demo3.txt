@@ -17,7 +17,7 @@ export default class TabBarExample extends Vue {
     return <div>
       <m-white-space/>
       <m-tabs tabs={tabs} initialPage={2} animated={false} useOnPan={false}>
-        <div style={{
+        <div key="t1" style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -26,7 +26,7 @@ export default class TabBarExample extends Vue {
         }}>
           Content of first tab
         </div>
-        <div style={{
+        <div key="t2" style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -35,7 +35,7 @@ export default class TabBarExample extends Vue {
         }}>
           Content of second tab
         </div>
-        <div style={{
+        <div key="t3" style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

@@ -46,7 +46,6 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
 
   public render() {
     const MPopup = Popup as any;
-    const MCheckboxList = CheckboxList as any;
     const Item = List.Item as any;
     const listProps = {
       ...this.$attrs,
@@ -66,7 +65,7 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
               title={this.title}
               onOk={this.closePopup}
               onCancel={this.closePopup}>
-        <MCheckboxList
+        <CheckboxList
           attrs={
             listProps
           }
@@ -74,7 +73,7 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
           onChange={this.onChange}
         />
       </MPopup>
-      <span slot={'extra'}>{this['stateValue'].length ? this.optionText : this.placeholder}</span>
+      <span slot={'extra'}>{this.stateValue && this.stateValue.length ? this.optionText : this.placeholder}</span>
       <span>{this.title}</span>
     </Item>;
   }

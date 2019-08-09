@@ -1,14 +1,14 @@
-import {isVNode} from '../../utils/vnode';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
 import IconRes from '../../../mixins/icon-res';
 import Badge from '../../badge';
+import {isVNode} from '../../utils/vnode';
 
 @Component({
   name: 'Tab'
 })
-export default class Tab extends Vue {
+class Tab extends Vue {
   @Prop({type: Boolean})
   public dot?: boolean;
   @Prop({type: [String, Number]})
@@ -42,10 +42,9 @@ export default class Tab extends Vue {
       title,
       prefixCls
     } = this;
-    const IconRes2 = IconRes as any;
     const realIcon = selected ? selectedIcon : icon;
     const iconDom = realIcon ? (
-      isVNode(realIcon) ? realIcon : <IconRes2
+      isVNode(realIcon) ? realIcon : <IconRes
         class={`${prefixCls}-image`}
         props={
           {
@@ -89,8 +88,7 @@ export default class Tab extends Vue {
       <div
         {...this.dataAttrs}
         onClick={this.onClick}
-        class={`${prefixCls}`}
-      >
+        class={`${prefixCls}`}>
         <div class={`${prefixCls}-icon`} style={{color: iconColor}}>
           {this.renderIcon()}
         </div>
@@ -104,3 +102,5 @@ export default class Tab extends Vue {
     );
   }
 }
+
+export default Tab as any;

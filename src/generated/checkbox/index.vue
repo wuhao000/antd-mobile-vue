@@ -7,13 +7,17 @@
       <span></span>
       <h2>示例代码</h2>
     </div>
-
+    <demo1 id="demo1"/>
+    <demo2 id="demo2"/>
+    <demo3 id="demo3"/>
     
  </div>
 </template>
 
 <script lang="ts">
-
+  import demo1 from './demo1.vue';
+  import demo2 from './demo2.vue';
+  import demo3 from './demo3.vue';
   
   import Vue from 'vue';
   import Component from 'vue-class-component';
@@ -22,7 +26,10 @@
 
   Vue.use(Checkbox);
   @Component({
-    name: 'ComponentDemo'
+    name: 'ComponentDemo',
+    components: {
+      demo1, demo2, demo3
+    }
   })
   export default class ComponentDemo extends Vue {
     public title = title;

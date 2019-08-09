@@ -39,7 +39,7 @@ export default class Sticky extends Vue {
   public mounted() {
     if (!this.context.subscribe) {
       throw new TypeError(
-          'Expected Sticky to be mounted within StickyContainer'
+        'Expected Sticky to be mounted within StickyContainer'
       );
     }
     this.context.subscribe(this.handleContainerEvent);
@@ -51,7 +51,7 @@ export default class Sticky extends Vue {
 
   public updated() {
     this.placeholder.style.paddingBottom = this.disableCompensation
-        ? '0' : `${this.state.isSticky ? this.state.calculatedHeight : 0}px`;
+      ? '0' : `${this.state.isSticky ? this.state.calculatedHeight : 0}px`;
   }
 
   get placeholder(): HTMLDivElement {
@@ -64,14 +64,11 @@ export default class Sticky extends Vue {
                                 eventSource
                               }) {
     const parent = this.context.getParent();
-
     let preventingStickyStateChanges = false;
     let distanceFromTopCopy = distanceFromTop;
     if (this.relative) {
       preventingStickyStateChanges = eventSource !== parent;
-      distanceFromTopCopy =
-          -(eventSource.scrollTop + eventSource.offsetTop) +
-          this.placeholder.offsetTop;
+      distanceFromTopCopy = -(eventSource.scrollTop + eventSource.offsetTop) + this.placeholder.offsetTop;
     }
     let distanceFromBottomCopy = distanceFromBottom;
     const placeholderClientRect = this.placeholder.getBoundingClientRect();
@@ -79,32 +76,32 @@ export default class Sticky extends Vue {
     const calculatedHeight = contentClientRect.height;
 
     const bottomDifference =
-        distanceFromBottomCopy - this.bottomOffset - calculatedHeight;
+      distanceFromBottomCopy - this.bottomOffset - calculatedHeight;
 
     const wasSticky = this.state.isSticky;
     const isSticky = preventingStickyStateChanges
-        ? wasSticky
-        : distanceFromTopCopy <= -this.topOffset &&
-        distanceFromBottomCopy > -this.bottomOffset;
+      ? wasSticky
+      : distanceFromTopCopy <= -this.topOffset &&
+      distanceFromBottomCopy > -this.bottomOffset;
 
     distanceFromBottomCopy =
-        (this.relative
-            ? parent.scrollHeight - parent.scrollTop
-            : distanceFromBottomCopy) - calculatedHeight;
+      (this.relative
+        ? parent.scrollHeight - parent.scrollTop
+        : distanceFromBottomCopy) - calculatedHeight;
 
     const style: any = !isSticky
-        ? {}
-        : {
-          position: 'fixed',
-          top:
-              bottomDifference > 0
-                  ? this.relative
-                  ? parent.offsetTop - parent.offsetParent.scrollTop
-                  : 0
-                  : bottomDifference,
-          left: placeholderClientRect.left,
-          width: placeholderClientRect.width
-        };
+      ? {}
+      : {
+        position: 'fixed',
+        top:
+          bottomDifference > 0
+            ? this.relative
+            ? parent.offsetTop - parent.offsetParent.scrollTop
+            : 0
+            : bottomDifference,
+        left: placeholderClientRect.left,
+        width: placeholderClientRect.width
+      };
 
     if (!this.disableHardwareAcceleration) {
       style.transform = 'translateZ(0)';
@@ -129,10 +126,12 @@ export default class Sticky extends Vue {
 
   public render() {
     return (
-        <div>
-          <div ref="placeholder"/>
+      <div>
+        <div ref="placeholder"/>
+        <div style={Object.assign({zIndex: 1, width: '100%'}, this.state.style)}>
           {this.$slots.default}
         </div>
+      </div>
     );
   }
 }

@@ -48,11 +48,11 @@ export default class Container extends Vue {
         const {top, bottom} = this.node.getBoundingClientRect();
 
         this.subscribers.forEach(handler =>
-            handler({
-              distanceFromTop: top,
-              distanceFromBottom: bottom,
-              eventSource: currentTarget === window ? document.body : this.node
-            })
+          handler({
+            distanceFromTop: top,
+            distanceFromBottom: bottom,
+            eventSource: currentTarget === window ? document.body : this.node
+          })
         );
       });
       this.framePending = true;
@@ -68,9 +68,10 @@ export default class Container extends Vue {
   }
 
   public mounted() {
-    this.events.forEach(event =>
-        window.addEventListener(event, this.notifySubscribers)
-    );
+    this.events.forEach(event => {
+      window.addEventListener(event, this.notifySubscribers);
+      document.body.addEventListener(event, this.notifySubscribers);
+    });
   }
 
   public beforeDestroy() {
@@ -79,23 +80,28 @@ export default class Container extends Vue {
       this.rafHandle = null;
     }
 
-    this.events.forEach(event =>
-        window.removeEventListener(event, this.notifySubscribers)
-    );
+    this.events.forEach(event => {
+      window.removeEventListener(event, this.notifySubscribers);
+      document.body.removeEventListener(event, this.notifySubscribers);
+    });
   }
 
   public render() {
     return (
-        <div
-            {...this.$props}
-            ref="node"
-            onScroll={this.notifySubscribers}
-            onTouchStart={this.notifySubscribers}
-            onTouchMove={this.notifySubscribers}
-            onTouchEnd={this.notifySubscribers}
-        >
-          {this.$slots.default}
-        </div>
+      <div
+        {...this.$props}
+        ref="node"
+        on={
+          {
+            scroll: this.notifySubscribers
+          }
+        }
+        onTouchStart={this.notifySubscribers}
+        onTouchMove={this.notifySubscribers}
+        onTouchEnd={this.notifySubscribers}
+      >
+        {this.$slots.default}
+      </div>
     );
   }
 }

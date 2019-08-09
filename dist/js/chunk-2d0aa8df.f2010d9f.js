@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0aa8df"],{1208:function(n,i){n.exports="<ul>\n<li>➕ m-toast 移动端请提示组件</li>\n<li>ae-icon<ul>\n<li>✨ 增加mobile属性，设为true时使用ant-design-mobile的图标</li>\n<li>✨ 增加size属性</li>\n</ul>\n</li>\n</ul>\n"}}]);
-//# sourceMappingURL=chunk-2d0aa8df.f2010d9f.js.map

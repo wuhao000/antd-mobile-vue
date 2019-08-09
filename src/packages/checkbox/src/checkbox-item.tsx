@@ -10,7 +10,7 @@ const ListItem = List.Item;
 @Component({
   name: 'MCheckboxItem'
 })
-export default class CheckboxItem extends Vue {
+class CheckboxItem extends Vue {
   @Prop({type: Object, default: () => ({})})
   public thumbStyle: object;
   @Prop({type: String, default: 'am-list'})
@@ -52,7 +52,6 @@ export default class CheckboxItem extends Vue {
 
 
   public onChange(value: boolean) {
-
   }
 
   public onClick(e) {
@@ -84,7 +83,7 @@ export default class CheckboxItem extends Vue {
       attrs={{
         ...checkboxProps,
         ...extraProps,
-        value: this.value
+        value: this.state.value
       }}
       style={this.thumbStyle}
       onChange={this.onChange}/>;
@@ -94,6 +93,7 @@ export default class CheckboxItem extends Vue {
         attrs={{
           ...restProps
         }}
+        touchFeedback={!this.disabled}
         onClick={this.onClick}
         prefixCls={listPrefixCls}
         class={wrapCls}
@@ -103,3 +103,5 @@ export default class CheckboxItem extends Vue {
     );
   }
 }
+
+export default CheckboxItem as any;

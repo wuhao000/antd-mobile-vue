@@ -1,15 +1,16 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {Prop, Watch} from 'vue-property-decorator';
 import Gesture, {IGestureStatus} from '../../vmc-gesture';
 import {Models} from './models';
 import {getPxStyle, getTransformPropValue, setPxStyle} from './utils';
 
 let instanceId: number = 0;
+
 @Component({
   name: 'DefaultTabBar'
 })
-export default class DefaultTabBar extends Vue {
+class DefaultTabBar extends Vue {
 
   @Prop({type: Boolean})
   public card: boolean;
@@ -103,8 +104,8 @@ export default class DefaultTabBar extends Vue {
         const isVertical = this.isTabBarVertical();
         let offset = getLastOffset() + (isVertical ? status.moveStatus.y : status.moveStatus.x);
         const canScrollOffset = isVertical ?
-            -this.layout.scrollHeight + this.layout.clientHeight :
-            -this.layout.scrollWidth + this.layout.clientWidth;
+          -this.layout.scrollHeight + this.layout.clientHeight :
+          -this.layout.scrollWidth + this.layout.clientWidth;
         offset = Math.min(offset, 0);
         offset = Math.max(offset, canScrollOffset);
         setPxStyle(this.layout, offset, 'px', isVertical);
@@ -134,20 +135,9 @@ export default class DefaultTabBar extends Vue {
     this.instanceId = instanceId++;
   }
 
-  public beforeUpdate() {
-    if (
-        this.activeTab !== this.activeTab ||
-        this.tabs !== this.tabs ||
-        this.tabs.length !== this.tabs.length
-    ) {
-      this.getTransformByIndex();
-    }
-  }
-
   public getTransformByIndex() {
     const {activeTab, tabs, page = 0} = this;
     const isVertical = this.isTabBarVertical();
-
     const size = this.getTabSize(page, tabs.length);
     const center = page / 2;
     const pos = Math.min(activeTab, tabs.length - center - .5);
@@ -215,6 +205,16 @@ export default class DefaultTabBar extends Vue {
     return 100 / Math.min(page, tabLength);
   }
 
+  @Watch('activeTab')
+  public activeTabChanged() {
+    this.getTransformByIndex();
+  }
+
+  @Watch('tabs')
+  public tabsChanged() {
+    this.getTransformByIndex();
+  }
+
   public render() {
     const {
       prefixCls, animated, tabs = [], page = 0, activeTab = 0,
@@ -256,8 +256,9 @@ export default class DefaultTabBar extends Vue {
     return <div class={`${cls} ${prefixCls}-${tabBarPosition}`} style={style}>
       {showPrev && <div class={`${prefixCls}-prevpage`}/>}
       <Gesture {...onPan}
-                direction={isTabBarVertical ? 'vertical' : 'horizontal'}>
-        <div role={'tablist'} class={`${prefixCls}-content`} style={transformStyle}
+               direction={isTabBarVertical ? 'vertical' : 'horizontal'}>
+        <div role={'tablist'} class={`${prefixCls}-content`}
+             style={transformStyle}
              ref={'layout'}>
           {Tabs}
           {
@@ -269,3 +270,5 @@ export default class DefaultTabBar extends Vue {
     </div>;
   }
 }
+
+export default DefaultTabBar as any;

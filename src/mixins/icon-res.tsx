@@ -14,7 +14,7 @@ export interface IconResProps {
 @Component({
   name: 'IconRes'
 })
-export default class IconRes extends Vue {
+class IconRes extends Vue {
 
   @Prop({type: [String, Object]})
   public type: string | IconResProps | VNode;
@@ -39,3 +39,4 @@ export default class IconRes extends Vue {
     }
   }
 }
+export default IconRes as any;

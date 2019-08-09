@@ -9,7 +9,7 @@ import CheckboxItem from './checkbox-item';
 @Component({
   name: 'MCheckbox'
 })
-export default class Checkbox extends Vue {
+class Checkbox extends Vue {
   @Prop({default: 'am-checkbox'})
   public prefixCls?: string;
   @Prop({type: String})
@@ -64,3 +64,4 @@ export default class Checkbox extends Vue {
       props={this.$props}>{this.$slots.default}</RcCheckbox>;
   }
 }
+export default Checkbox as any;

@@ -131,9 +131,9 @@ export default class Tabs extends Vue {
     this.nextCurrentTab = this.currentTab;
     this.instanceId = instanceId++;
     this.contentPos = this.getContentPosByIndex(
-        this.getTabIndex(),
-        this.isTabVertical(this.tabDirection),
-        this.useLeftInsteadTransform
+      this.getTabIndex(),
+      this.isTabVertical(this.tabDirection),
+      this.useLeftInsteadTransform
     );
   }
 
@@ -331,8 +331,8 @@ export default class Tabs extends Vue {
           offset += panDirection === 'vertical' ? 0 : status.moveStatus.x;
         }
         const canScrollOffset = isVertical ?
-            -this.layout.scrollHeight + this.layout.clientHeight :
-            -this.layout.scrollWidth + this.layout.clientWidth;
+          -this.layout.scrollHeight + this.layout.clientHeight :
+          -this.layout.scrollWidth + this.layout.clientWidth;
         offset = Math.min(offset, 0);
         offset = Math.max(offset, canScrollOffset);
         setPxStyle(this.layout, offset, 'px', isVertical, useLeftInsteadTransform);
@@ -350,12 +350,12 @@ export default class Tabs extends Vue {
         if (offsetIndex === this.currentTab) {
           if (this.usePaged) {
             setTransform(
-                this.layout.style,
-                this.getContentPosByIndex(
-                    offsetIndex,
-                    this.isTabVertical(),
-                    this.useLeftInsteadTransform
-                )
+              this.layout.style,
+              this.getContentPosByIndex(
+                offsetIndex,
+                this.isTabVertical(),
+                this.useLeftInsteadTransform
+              )
             );
           }
         } else {
@@ -372,9 +372,9 @@ export default class Tabs extends Vue {
     if (usePaged) {
       newState = {
         contentPos: this.getContentPosByIndex(
-            index,
-            this.isTabVertical(tabDirection),
-            useLeftInsteadTransform
+          index,
+          this.isTabVertical(tabDirection),
+          useLeftInsteadTransform
         )
       };
     }
@@ -442,10 +442,10 @@ export default class Tabs extends Vue {
       contentCls += ` ${contentCls}-animated`;
     }
     const contentStyle: any = animated ? (
-        useLeftInsteadTransform ? {
-          position: 'relative',
-          ...this.isTabVertical() ? {top: contentPos} : {left: contentPos}
-        } : getTransformPropValue(contentPos)
+      useLeftInsteadTransform ? {
+        position: 'relative',
+        ...this.isTabVertical() ? {top: contentPos} : {left: contentPos}
+      } : getTransformPropValue(contentPos)
     ) : {
       position: 'relative',
       ...this.isTabVertical() ? {top: `${-currentTab * 100}%`} : {left: `${-currentTab * 100}%`}
@@ -464,23 +464,21 @@ export default class Tabs extends Vue {
           }
 
           const key = tab.key || `tab_${index}`;
-
           // update tab cache
           if (this.shouldRenderTab(index)) {
             this.tabCache[index] = this.getSubElement(tab, index);
           } else if (destroyInactiveTab) {
             this.tabCache[index] = undefined;
           }
-          const TabPane2 = TabPane as any;
-          return <TabPane2 key={key} class={cls}
-                           active={currentTab === index}
-                           role={'tabpanel'}
-                           aria-hidden={currentTab !== index}
-                           aria-labelledby={`m-tabs-${instanceId}-${index}`}
-                           fixX={isTabVertical} fixY={!isTabVertical}
+          return <TabPane key={key} class={cls}
+                          active={currentTab === index}
+                          role={'tabpanel'}
+                          aria-hidden={currentTab !== index}
+                          aria-labelledby={`m-tabs-${instanceId}-${index}`}
+                          fixX={isTabVertical} fixY={!isTabVertical}
           >
             {this.tabCache[index]}
-          </TabPane2>;
+          </TabPane>;
         })
       }
     </div>;
@@ -493,23 +491,23 @@ export default class Tabs extends Vue {
       ...this.getTabBarBaseProps()
     };
     const onPan = !isTabVertical && useOnPan ? this.onPan : {};
-    const Gesture2 = Gesture as any;
     const content = [
-      this.renderTabBar ? this.renderTabBar(this.$props) : <div key={'tabBar'} class={`${prefixCls}-tab-bar-wrap`}>
-        <DefaultTabBar {...{
-          props: tabBarProps,
-          on: {
-            tabClick: (tab, index) => {
-              this.onTabClick(tab, index);
-            }
-          }
-        }} />
+      <div key={'tabBar'} class={`${prefixCls}-tab-bar-wrap`}>
+        {
+          this.renderTabBar ? this.renderTabBar(tabBarProps)
+            : <DefaultTabBar attrs={tabBarProps}
+                             on={{
+                               tabClick: (tab, index) => {
+                                 this.onTabClick(tab, index);
+                               }
+                             }}/>
+        }
       </div>,
-      <Gesture2 key={'$content'}
-                onSwipe={this.onSwipe}
-                {...{props: onPan}}>
+      <Gesture key={'$content'}
+               onSwipe={this.onSwipe}
+               {...{props: onPan}}>
         {this.renderContent()}
-      </Gesture2>
+      </Gesture>
     ];
 
     return <div class={`${prefixCls} ${prefixCls}-${tabDirection} ${prefixCls}-${tabBarPosition}`}>

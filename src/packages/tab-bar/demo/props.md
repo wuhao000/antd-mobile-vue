@@ -11,7 +11,6 @@ noRenderContent||boolean|
 onPress||() => void|
 placeholder||string|
 prefixCls||string|
-prefixCls||string|
 prerenderingSiblingsNumber||number|1
 selected||boolean|undefined
 selectedIcon||any|

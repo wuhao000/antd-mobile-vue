@@ -26,9 +26,8 @@ export default class TabsExample extends Vue {
       <StickyContainer>
         <m-tabs tabs={tabs}
                 initialPage={'t2'}
-                renderTabBar={this.renderTabBar}
-        >
-          <div style={{
+                renderTabBar={this.renderTabBar}>
+          <div key="t1" style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -37,7 +36,7 @@ export default class TabsExample extends Vue {
           }}>
             Content of first tab
           </div>
-          <div style={{
+          <div key="t2" style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -46,7 +45,7 @@ export default class TabsExample extends Vue {
           }}>
             Content of second tab
           </div>
-          <div style={{
+          <div key="t3" style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

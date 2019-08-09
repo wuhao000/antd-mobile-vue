@@ -30,7 +30,6 @@ export default class AgreeItem extends Vue {
 
     return (
         <div {...getDataAttr(restProps)} class={wrapCls}>
-          // @ts-ignore
           <Checkbox {...restProps} class={`${prefixCls}-agree-label`}>
             {this.$slots.default}
           </Checkbox>

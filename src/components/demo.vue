@@ -2,8 +2,8 @@
   <router-view/>
 </template>
 <script lang="ts">
-  import PullRefresh from '@/packages/pull-refresh';
   import AegisUI from '@/packages';
+  import PullRefresh from '@/packages/pull-refresh';
   import MTabs from '@/packages/tabs';
   import Vue from 'vue';
   import Component from 'vue-class-component';
@@ -33,5 +33,9 @@
 <style lang="less" type="text/less">
   #app-content {
     padding: 0;
+  }
+
+  body, html {
+    font-family: PingFang SC, Helvetica Neue, Hiragino Sans GB, Helvetica, Microsoft YaHei, Arial
   }
 </style>
