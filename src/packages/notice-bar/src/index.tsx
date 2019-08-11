@@ -4,12 +4,6 @@ import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
 import Icon from '../../icon';
 import Marquee, {MarqueeProps} from './marquee';
-import {NoticeBarPropsType} from './props-type';
-
-export interface NoticeWebProps extends NoticeBarPropsType {
-  marqueeProps?: MarqueeProps;
-  prefixCls?: string;
-}
 
 @Component({
   name: 'NoticeBar'
