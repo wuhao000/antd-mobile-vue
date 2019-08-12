@@ -1,0 +1,32 @@
+/**
+* 滚动条样式
+ */
+.scrollBar {
+  ::-webkit-scrollbar-thumb:horizontal {
+    width: 5px;
+    background-color: #999;
+    -webkit-border-radius: 6px;
+  }
+  ::-webkit-scrollbar-track-piece {
+    background-color: transparent;
+    -webkit-border-radius: 0;
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 0;
+    // 隐藏横向滚动条
+  }
+  ::-webkit-scrollbar-thumb:vertical {
+    height: 50px;
+    background-color: #999;
+    -webkit-border-radius: 4px;
+    outline: 2px solid #fff;
+    outline-offset: -2px;
+    //border: 2px solid #fff;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    height: 50px;
+    background-color: #9f9f9f;
+    -webkit-border-radius: 4px;
+  }
+}

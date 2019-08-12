@@ -55,7 +55,6 @@ class Calendar extends CalendarProps {
     );
     const Header = VMCalendar.DefaultHeader;
     return (
-      // @ts-ignore
       <VMCalendar
         locale={locale}
         renderHeader={headerProps => (
@@ -71,7 +70,7 @@ class Calendar extends CalendarProps {
           this.$emit('select-has-disable-date', ...args);
         }}
         attrs={
-          {...this.$props}
+          this.$props
         }
         visible={this.state.visible}
       />

@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../src/packages/segmented-control/index.ts"],"names":[],"mappings":"AAAA,OAAO,kDAAkD,CAAC;AAC1D,OAAO,iBAAiB,MAAM,OAAO,CAAC;AAEtC,iBAAiB,CAAC,OAAO,GAAG,GAAG,CAAC,EAAE;IAChC,GAAG,CAAC,SAAS,CAAC,mBAAmB,EAAE,iBAAiB,CAAC,CAAC;AACxD,CAAC,CAAC;AAEF,eAAe,iBAAiB,CAAC"}

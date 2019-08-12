@@ -81,9 +81,9 @@ export default class MCalendarItem extends BaseInputComponent {
   public getDisplayValue() {
     const valueStrs = this.currentValue.map(it => {
       if (this.pickTime) {
-        return moment(it).format('YYYY-MM-DD HH:mm');
+        return moment(it).format('YYYY/MM/DD HH:mm');
       } else {
-        return moment(it).format('YYYY-MM-DD');
+        return moment(it).format('YYYY/MM/DD');
       }
     });
     if (this.type === 'range') {

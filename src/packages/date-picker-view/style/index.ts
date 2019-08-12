@@ -1,1 +1,1 @@
-import '../../picker-view/style/';
+import '../../picker-view/style';

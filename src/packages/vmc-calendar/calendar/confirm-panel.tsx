@@ -3,12 +3,11 @@ import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
 import {Models} from '../date/data-types';
 import {formatDate} from '../util';
-import MButton from '../../button';
 
 @Component({
   name: 'ConfirmPanel'
 })
-export default class ConfirmPanel extends Vue {
+class ConfirmPanel extends Vue {
   @Prop({})
   public type?: 'one' | 'range';
   @Prop({})
@@ -67,3 +66,5 @@ export default class ConfirmPanel extends Vue {
     );
   }
 }
+
+export default ConfirmPanel as any;

@@ -1,8 +1,7 @@
-/* tslint:disable:jsx-no-multiline-js */
-import {setProps} from '../../utils/vnode';
 import Component from 'vue-class-component';
 import {Prop, Provide} from 'vue-property-decorator';
 import {getComponentLocale} from '../../utils/getLocale';
+import {setProps} from '../../utils/vnode';
 import RCDatePicker from '../../vmc-date-picker/date-picker';
 import PopupDatePicker from '../../vmc-date-picker/popup';
 import DatePickerProps from './props-type';
@@ -134,6 +133,7 @@ export default class DatePicker extends DatePickerProps {
   }
 
   private onInput(v: any) {
+    this.$emit('change', v);
     this.$emit('input', v);
   }
 }

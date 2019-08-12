@@ -1,0 +1,1 @@
+//# sourceMappingURL=props-type.js.map

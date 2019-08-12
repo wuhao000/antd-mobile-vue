@@ -1,0 +1,26 @@
+.margin(@type) {
+  @{type}: 15px;
+  &-sm {
+    @{type}: 5px;
+  }
+  &-md {
+    @{type}: 10px;
+  }
+}
+
+
+.flex-1() {
+  -moz-box-flex: 1;
+  -ms-flex: 1;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+.flex() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}

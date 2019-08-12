@@ -3,7 +3,9 @@
 cancelButton||VNode|
 cancelText||string|
 height||string|
+placement||string|
 prefixCls||string|
 showCancel||boolean|false
 showOk||boolean|true
 title||string|
+width||string|

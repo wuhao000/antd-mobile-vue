@@ -1,6 +1,5 @@
 /* tslint:disable:jsx-no-multiline-js */
 import classnames from 'classnames';
-import React from 'react';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
@@ -71,4 +70,5 @@ class SubMenu extends Vue {
     );
   }
 }
+
 export default SubMenu as any;

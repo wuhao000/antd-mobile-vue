@@ -16,7 +16,7 @@ export interface PropsType {
 @Component({
   name: 'Header'
 })
-export default class Header extends Vue {
+class Header extends Vue {
   @Prop({type: String})
   public title?: string;
   @Prop({})
@@ -51,3 +51,4 @@ export default class Header extends Vue {
     );
   }
 }
+export default Header as any;

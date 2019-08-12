@@ -1,8 +1,7 @@
-import 'antd-mobile/es/image-picker/style/index.css';
 import ImagePicker from './src';
+import './style';
 
 ImagePicker.install = Vue => {
   Vue.component('MImagePicker', ImagePicker);
 };
-
 export default ImagePicker;

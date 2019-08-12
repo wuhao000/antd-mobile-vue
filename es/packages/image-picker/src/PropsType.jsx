@@ -1,0 +1,1 @@
+//# sourceMappingURL=PropsType.jsx.map

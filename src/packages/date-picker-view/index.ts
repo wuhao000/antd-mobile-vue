@@ -1,4 +1,4 @@
-import 'antd-mobile/es/date-picker-view/style/index';
+import './style';
 import DatePickerView from './src';
 
 DatePickerView.install = Vue => {

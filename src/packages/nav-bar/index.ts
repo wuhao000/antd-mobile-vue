@@ -1,4 +1,4 @@
-import 'antd-mobile/es/nav-bar/style/index.css';
+import './style';
 import MNavBar from './src';
 
 MNavBar.install = Vue => {

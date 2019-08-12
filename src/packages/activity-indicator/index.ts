@@ -1,5 +1,5 @@
 import MActivityIndicator from './src';
-import 'antd-mobile/es/activity-indicator/style/index.css';
+import './style';
 
 MActivityIndicator.install = Vue => {
   Vue.component('MActivityIndicator', MActivityIndicator);

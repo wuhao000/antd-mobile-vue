@@ -24,7 +24,7 @@ export interface PropsType {
 @Component({
   name: 'TimePicker'
 })
-export default class TimePicker extends Vue {
+class TimePicker extends Vue {
   @Prop()
   public locale: Models.Locale;
   @Prop(String)
@@ -110,3 +110,4 @@ export default class TimePicker extends Vue {
     );
   }
 }
+export default TimePicker as any;

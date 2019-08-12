@@ -1,5 +1,5 @@
 import MRange from './src';
-import 'antd-mobile/es/range/style/index.css';
+import './style';
 
 MRange.install = Vue => {
   Vue.component('MRange', MRange);

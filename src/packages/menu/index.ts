@@ -1,4 +1,4 @@
-import 'antd-mobile/es/menu/style/index.css';
+import './style';
 import Menu from './src';
 
 Menu.install = Vue => {

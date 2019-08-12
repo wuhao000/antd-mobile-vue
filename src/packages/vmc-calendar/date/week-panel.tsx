@@ -6,7 +6,7 @@ import {Models} from './data-types';
 @Component({
   name: 'WeekPanel'
 })
-export default class WeekPanel extends Vue {
+class WeekPanel extends Vue {
   @Prop({})
   public locale: Models.Locale;
 
@@ -26,3 +26,5 @@ export default class WeekPanel extends Vue {
     );
   }
 }
+
+export default WeekPanel as any;

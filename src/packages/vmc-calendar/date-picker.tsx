@@ -9,7 +9,7 @@ import WeekPanel from './date/week-panel';
 @Component({
   name: 'DatePicker'
 })
-export default class DatePicker extends mixins(DatePickerBase) {
+class DatePicker extends mixins(DatePickerBase) {
 
   @Prop({type: Boolean, default: false})
   public displayMode: boolean;
@@ -44,7 +44,7 @@ export default class DatePicker extends mixins(DatePickerBase) {
     />;
   }
 
-  public computeHeight(data: Models.MonthData, singleMonth: SingleMonth | null) {
+  public computeHeight(data: Models.MonthData, singleMonth) {
     if (singleMonth && singleMonth.wrapperDivDOM) {
       // preact, ref时dom有可能无height, offsetTop数据。
       if (!data.height && !singleMonth.wrapperDivDOM.clientHeight) {
@@ -150,38 +150,35 @@ export default class DatePicker extends mixins(DatePickerBase) {
       touchcancel: this.touchHandler.onTouchCancel
     };
     return (
-      <div class={`${prefixCls} date-picker`}>
-        {
-          // @ts-ignore
+        <div class={`${prefixCls} date-picker`}>
           <WeekPanel locale={locale}/>
-        }
-        <div
-          class={'wrapper'}
-          style={{
-            overflowX: 'hidden',
-            overflowY: 'visible'
-          }}
-          ref={'wrapper'}
-          on={wrapperEvents}
-        >
-          <div style={style} ref={'panel'}>
-            {
-              this.canLoadPrev() && <div class={'load-tip'}>{locale.loadPrevMonth}</div>
-            }
-            <div class={'months'}>
+          <div class={'wrapper'}
+               style={{
+                 overflowX: 'hidden',
+                 overflowY: 'visible'
+               }}
+               ref={'wrapper'}
+               on={wrapperEvents}>
+            <div style={style} ref={'panel'}>
               {
-                this.state.months.map((m) => {
-                  const hidden = m.height && this.visibleMonth.indexOf(m) < 0;
-                  if (hidden) {
-                    return <div key={m.title + '_shallow'} style={{height: m.height}}/>;
-                  }
-                  return m.component;
-                })
+                this.canLoadPrev() && <div class={'load-tip'}>{locale.loadPrevMonth}</div>
               }
+              <div class={'months'}>
+                {
+                  this.state.months.map((m) => {
+                    const hidden = m.height && this.visibleMonth.indexOf(m) < 0;
+                    if (hidden) {
+                      return <div key={m.title + '_shallow'} style={{height: m.height}}/>;
+                    }
+                    return m.component;
+                  })
+                }
+              </div>
             </div>
           </div>
         </div>
-      </div>
     );
   }
 }
+
+export default DatePicker as any;

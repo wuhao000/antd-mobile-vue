@@ -11,7 +11,6 @@ export default class PopupDatePicker extends Vue {
   public datePicker: VNode;
   @Prop()
   public date?: any;
-
   @Inject({from: 'store', default: undefined})
   public store: {
     value: Date,

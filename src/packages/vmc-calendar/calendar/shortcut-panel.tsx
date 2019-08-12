@@ -6,7 +6,7 @@ import {Models} from '../date/data-types';
 @Component({
   name: 'ShortcutPanel'
 })
-export default class ShortcutPanel extends Vue {
+class ShortcutPanel extends Vue {
   @Prop({})
   public locale: Models.Locale;
   @Prop({})
@@ -59,3 +59,5 @@ export default class ShortcutPanel extends Vue {
     );
   }
 }
+
+export default ShortcutPanel as any;

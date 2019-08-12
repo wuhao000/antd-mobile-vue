@@ -7,7 +7,7 @@ import Touchable from '../../vmc-feedback/feedback';
 @Component({
   name: 'MPopup'
 })
-export default class MPopup extends BaseFormComponent {
+class MPopup extends BaseFormComponent {
 
   @Prop({type: String, default: '取消'})
   public cancelText: string;
@@ -24,6 +24,10 @@ export default class MPopup extends BaseFormComponent {
   public static install: (Vue) => void;
   @Prop({type: String})
   public height: string;
+  @Prop({type: String})
+  public width: string;
+  @Prop({type: String, default: 'bottom'})
+  public placement: string;
 
   private onCancel(): any {
     // @ts-ignore
@@ -56,8 +60,8 @@ export default class MPopup extends BaseFormComponent {
     return {
       title: this.renderHeader(),
       height: this.height || 'auto',
-      placement: 'bottom',
-      // @ts-ignore
+      width: this.width || 'auto',
+      placement: this.placement,
       visible: this.stateValue
     };
   }
@@ -77,25 +81,32 @@ export default class MPopup extends BaseFormComponent {
   }
 
   private renderHeader() {
-    const MTouchable = Touchable as any;
     return <div class={this.prefixCls + '-title-wrap'}>
-      {this.showCancel ?
-        <MTouchable activeClassName={`${this.prefixCls}-item-active`}>
-          {
-            this.cancelButton ? this.cancelButton
-              : <div onclick={this.onCancel}
-                     class={`${this.prefixCls}-item ${this.prefixCls}-header-left`}>
-                {this.cancelText}
-              </div>
-          }
-        </MTouchable>
-        : null}
+      {this.renderCancel()}
       <div class={`${this.prefixCls}-item ${this.prefixCls}-title`}>{this.title}</div>
-      {this.showOk ?
-        <MTouchable activeClassName={`${this.prefixCls}-item-active`}>
-          <div onclick={this.onOk} class={`${this.prefixCls}-item ${this.prefixCls}-header-right`}>确定</div>
-        </MTouchable>
-        : null}
+      {this.renderOk()}
     </div>;
   }
+
+  private renderCancel() {
+    return this.showCancel ?
+        <Touchable activeClassName={`${this.prefixCls}-item-active`}>
+          {
+            this.cancelButton ? this.cancelButton
+                : <div onclick={this.onCancel}
+                       class={`${this.prefixCls}-item ${this.prefixCls}-header-left`}>
+                  {this.cancelText}
+                </div>
+          }
+        </Touchable> : null;
+  }
+
+  private renderOk() {
+    return this.showOk ?
+        <Touchable activeClassName={`${this.prefixCls}-item-active`}>
+          <div onclick={this.onOk} class={`${this.prefixCls}-item ${this.prefixCls}-header-right`}>确定</div>
+        </Touchable> : null;
+  }
 }
+
+export default MPopup as any;

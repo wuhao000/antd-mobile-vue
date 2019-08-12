@@ -30,20 +30,6 @@ function createDemoFile(component: Component, componentDemoRootPath, demoName, f
   if (!fs.existsSync(demoDir)) {
     fs.mkdirSync(demoDir);
   }
-  const demoIndex = demoDir + '/index.vue';
-  if (!fs.existsSync(demoIndex)) {
-    fs.writeFileSync(demoIndex, `<template></template>
-<script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
-
-  @Component({
-    name: '${component.upperCase}Demo'
-  })
-  export default class ActionSheetDemo extends Vue {
-  }
-</script>`);
-  }
   fs.writeFileSync(`${componentGeneratedFilePath}/${demoName}.txt`, vueContent);
   fs.writeFileSync(`${componentGeneratedFilePath}/${demoName}.vue`, content);
 }

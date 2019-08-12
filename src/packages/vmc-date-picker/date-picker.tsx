@@ -9,7 +9,7 @@ function getDaysInMonth(date) {
 }
 
 function pad(n) {
-  return n < 10 ? `0${n}` : n + '';
+  return n < 10 ? `0${n}` : n;
 }
 
 function cloneDate(date) {
@@ -274,8 +274,8 @@ class DatePicker extends DatePickerProps {
     const years: any[] = [];
     for (let i = minDateYear; i <= maxDateYear; i++) {
       years.push({
-        value: i + '',
-        label: i + locale.year + ''
+        value: i,
+        label: i + locale.year
       });
     }
     const yearCol = {key: 'year', props: {children: years}};
@@ -293,9 +293,9 @@ class DatePicker extends DatePickerProps {
       maxMonth = maxDateMonth;
     }
     for (let i = minMonth; i <= maxMonth; i++) {
-      const label = formatMonth ? formatMonth(i, date) : (i + 1 + locale.month + '');
+      const label = formatMonth ? formatMonth(i, date) : (i + 1 + locale.month);
       months.push({
-        value: i + '',
+        value: i,
         label
       });
     }
@@ -315,9 +315,9 @@ class DatePicker extends DatePickerProps {
       maxDay = maxDateDay;
     }
     for (let i = minDay; i <= maxDay; i++) {
-      const label = formatDay ? formatDay(i, date) : (i + locale.day + '');
+      const label = formatDay ? formatDay(i, date) : (i + locale.day);
       days.push({
-        value: i + '',
+        value: i,
         label
       });
     }
@@ -392,8 +392,8 @@ class DatePicker extends DatePickerProps {
     maxHour = this.getDisplayHour(maxHour);
     for (let i = minHour; i <= maxHour; i++) {
       hours.push({
-        value: i + '',
-        label: locale.hour ? i + locale.hour + '' : pad(i)
+        value: i,
+        label: locale.hour ? i + locale.hour : pad(i)
       });
     }
 
@@ -401,13 +401,13 @@ class DatePicker extends DatePickerProps {
     const selMinute = date.getMinutes();
     for (let i = minMinute; i <= maxMinute; i += minuteStep!) {
       minutes.push({
-        value: i + '',
-        label: locale.minute ? i + locale.minute + '' : pad(i)
+        value: i,
+        label: locale.minute ? i + locale.minute : pad(i)
       });
       if (selMinute > i && selMinute < i + minuteStep!) {
         minutes.push({
-          value: selMinute + '',
-          label: locale.minute ? selMinute + locale.minute + '' : pad(selMinute)
+          value: selMinute,
+          label: locale.minute ? selMinute + locale.minute : pad(selMinute)
         });
       }
     }
@@ -416,7 +416,7 @@ class DatePicker extends DatePickerProps {
       {key: 'minutes', props: {children: minutes}}
     ].concat(use12Hours ? [{
       key: 'ampm',
-      props: {children: [{value: '0', label: locale.am}, {value: '1', label: locale.pm}]}
+      props: {children: [{value: 0, label: locale.am}, {value: 1, label: locale.pm}]}
     }] : []);
     return {cols, selMinute};
   }
@@ -466,31 +466,31 @@ class DatePicker extends DatePickerProps {
     if (mode === YEAR) {
       return {
         cols: this.getDateData(),
-        value: [date.getFullYear() + '']
+        value: [date.getFullYear()]
       };
     }
 
     if (mode === MONTH) {
       return {
         cols: this.getDateData(),
-        value: [date.getFullYear() + '', date.getMonth() + '']
+        value: [date.getFullYear(), date.getMonth()]
       };
     }
 
     if (mode === DATETIME || mode === DATE) {
       cols = this.getDateData();
-      value = [date.getFullYear() + '', date.getMonth() + '', date.getDate() + ''];
+      value = [date.getFullYear(), date.getMonth(), date.getDate()];
     }
 
     if (mode === DATETIME || mode === TIME) {
       const time = this.getTimeData(date);
       cols = cols.concat(time.cols);
       const hour = date.getHours();
-      let dtValue = [hour + '', time.selMinute + ''];
+      let dtValue = [hour, time.selMinute];
       let nhour = hour;
       if (use12Hours) {
         nhour = hour === 0 ? 12 : (hour > 12 ? hour - 12 : hour);
-        dtValue = [nhour + '', time.selMinute + '', (hour >= 12 ? 1 : 0) + ''];
+        dtValue = [nhour, time.selMinute, (hour >= 12 ? 1 : 0)];
       }
       value = value.concat(dtValue);
     }
@@ -511,37 +511,37 @@ class DatePicker extends DatePickerProps {
       alignItems: 'center'
     };
     return (
-      // @ts-ignore
-      <MultiPicker
-        style={multiStyle}
-        rootNativeProps={rootNativeProps}
-        prefixCls={prefixCls}
-        selectedValue={value}
-        on={
-          {
-            input: this.onValueChange,
-            scrollChange: this.onScrollChange
-          }
-        }>
-        {cols.map(p => (
-          // @ts-ignore
-          <Picker attrs={{
-            disabled,
-            prefixCls: pickerPrefixCls,
-            itemStyle
-          }}
-                  style={{flex: 1}}
-                  key={p.key}>
-            {p.props.children.map(item => (
+        // @ts-ignore
+        <MultiPicker
+            style={multiStyle}
+            rootNativeProps={rootNativeProps}
+            prefixCls={prefixCls}
+            selectedValue={value}
+            on={
+              {
+                input: this.onValueChange,
+                scrollChange: this.onScrollChange
+              }
+            }>
+          {cols.map(p => (
               // @ts-ignore
-              <Picker.Item key={item.value}
-                           value={item.value}
-                           label={item.label}>
-              </Picker.Item>
-            ))}
-          </Picker>
-        ))}
-      </MultiPicker>
+              <Picker attrs={{
+                disabled,
+                prefixCls: pickerPrefixCls,
+                itemStyle
+              }}
+                      style={{flex: 1}}
+                      key={p.key}>
+                {p.props.children.map(item => (
+                    // @ts-ignore
+                    <Picker.Item key={item.value}
+                                 value={item.value}
+                                 label={item.label}>
+                    </Picker.Item>
+                ))}
+              </Picker>
+          ))}
+        </MultiPicker>
     );
   }
 }

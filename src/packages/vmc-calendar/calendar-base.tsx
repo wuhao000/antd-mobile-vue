@@ -111,7 +111,7 @@ export default class CalendarBase extends CalendarProps {
             timePickerTitle: +newDate >= +startDate ? locale.selectEndTime : locale.selectStartTime,
             disConfirmBtn: false,
             endDate: (pickTime && !useDateTime && +newDate >= +startDate) ?
-              new Date(+mergeDateTime(newDate, startDate) + 3600000) : newDate
+                new Date(+mergeDateTime(newDate, startDate) + 3600000) : newDate
           };
         }
         break;
@@ -162,19 +162,25 @@ export default class CalendarBase extends CalendarProps {
 
   public onTimeChange(timeValue: number[]) {
     const {startDate, endDate} = this.state;
-    let date = null;
+    let date: Date = null;
     if (endDate) {
-      date = this.state.endDate;
+      date = endDate;
     } else if (startDate) {
-      date = this.state.startDate;
+      date = startDate;
     }
     if (date) {
-      if (timeValue[2] === 0) {
-        date.setHours(timeValue[0]);
-      } else {
-        date.setHours(timeValue[0] + 12);
+      let hours = timeValue[0];
+      if (timeValue[2] === 1) {
+        hours += 12;
+        date.setUTCHours(timeValue[0]);
       }
-      date.setSeconds(timeValue[2]);
+      date = new Date(date.getFullYear(), date.getMonth(),
+          date.getDate(), timeValue[0], timeValue[1], 0);
+    }
+    if (endDate) {
+      this.state.endDate = date;
+    } else if (startDate) {
+      this.state.startDate = date;
     }
   }
 
@@ -215,82 +221,73 @@ export default class CalendarBase extends CalendarProps {
       showClear: !!startDate
     };
     return (
-      // @ts-ignore
-      <div class={`${prefixCls}`}>
-        {
-          // @ts-ignore
-          <div style={this.state.contentStyle} class={'content'}>
-            {
-              renderHeader ? renderHeader(headerProps) :
-                // @ts-ignore
-                <Header attrs={
-                  {...headerProps}
-                } onClear={this.onCancel} onCancel={this.onCancel}/>
-            }
-            {
-              // @ts-ignore
+        <div class={`${prefixCls}`}>
+          {
+            <div style={this.state.contentStyle} class="content">
+              {
+                renderHeader ? renderHeader(headerProps) :
+                    <Header attrs={
+                      {...headerProps}
+                    } onClear={this.onCancel} onCancel={this.onCancel}/>
+              }
               <DatePicker
-                locale={locale}
-                type={type}
-                displayMode={this.displayMode}
-                prefixCls={prefixCls}
-                infiniteOpt={infiniteOpt}
-                initialMonths={initialMonths}
-                currentStartDate={this.state.startDate}
-                currentEndDate={this.state.endDate}
-                defaultDate={defaultDate}
-                minDate={minDate}
-                maxDate={maxDate}
-                getDateExtra={getDateExtra}
-                onCellClick={this.onSelectedDate}
-                onSelectHasDisableDate={this.onSelectHasDisableDate}
-                onLayout={this.setClientHeight}
-                startDate={startDate}
-                endDate={endDate}
-                rowSize={rowSize}
-              />
-            }
-            {
-              !this.displayMode && showTimePicker &&
-              // @ts-ignore
-              <TimePicker
-                  prefixCls={timePickerPrefixCls}
-                  pickerPrefixCls={timePickerPickerPrefixCls}
                   locale={locale}
-                  title={timePickerTitle}
-                  defaultValue={defaultTimeValue}
-                  value={endDate ? endDate : startDate}
-                  onChange={this.onTimeChange}
+                  type={type}
+                  displayMode={this.displayMode}
+                  prefixCls={prefixCls}
+                  infiniteOpt={infiniteOpt}
+                  initialMonths={initialMonths}
+                  currentStartDate={this.state.startDate}
+                  currentEndDate={this.state.endDate}
+                  defaultDate={defaultDate}
                   minDate={minDate}
                   maxDate={maxDate}
-                  clientHeight={clientHeight}
+                  getDateExtra={getDateExtra}
+                  onCellClick={this.onSelectedDate}
+                  onSelectHasDisableDate={this.onSelectHasDisableDate}
+                  onLayout={this.setClientHeight}
+                  startDate={startDate}
+                  endDate={endDate}
+                  rowSize={rowSize}
               />
-            }
-            {
-              !this.displayMode && showShortcut && !showTimePicker &&
-              (
-                renderShortcut ?
-                  renderShortcut(this.shortcutSelect) :
-                  // @ts-ignore
-                  <ShortcutPanel locale={locale} onSelect={this.shortcutSelect}/>
-              )
-            }
-            {
-              startDate && !this.displayMode &&
-              // @ts-ignore
-              <ConfirmPanel
-                  type={type}
-                  locale={locale}
-                  startDateTime={startDate}
-                  endDateTime={endDate}
-                  onConfirm={this.onConfirm}
-                  disableBtn={disConfirmBtn}
-                  formatStr={pickTime ? locale.dateTimeFormat : locale.dateFormat}
-              />
-            }
-          </div>
-        }
-      </div>
+              {
+                !this.displayMode && showTimePicker &&
+                <TimePicker
+                    prefixCls={timePickerPrefixCls}
+                    pickerPrefixCls={timePickerPickerPrefixCls}
+                    locale={locale}
+                    title={timePickerTitle}
+                    defaultValue={defaultTimeValue}
+                    value={endDate ? endDate : startDate}
+                    onChange={this.onTimeChange}
+                    minDate={minDate}
+                    maxDate={maxDate}
+                    clientHeight={clientHeight}
+                />
+              }
+              {
+                !this.displayMode && showShortcut && !showTimePicker &&
+                (
+                    renderShortcut ?
+                        renderShortcut(this.shortcutSelect) :
+                        <ShortcutPanel locale={locale} onSelect={this.shortcutSelect}/>
+                )
+              }
+              {
+                startDate && !this.displayMode &&
+                <ConfirmPanel
+                    type={type}
+                    locale={locale}
+                    startDateTime={startDate}
+                    endDateTime={endDate}
+                    onConfirm={this.onConfirm}
+                    disableBtn={disConfirmBtn}
+                    formatStr={pickTime ? locale.dateTimeFormat : locale.dateFormat}
+                />
+              }
+            </div>
+          }
+        </div>
     );
   }
 }

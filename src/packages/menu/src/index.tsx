@@ -1,6 +1,5 @@
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';

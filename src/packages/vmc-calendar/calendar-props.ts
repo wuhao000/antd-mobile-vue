@@ -24,8 +24,13 @@ export default class CalendarProps extends Vue {
   /** 默认选择值，开始时间、结束时间 */
   @Prop({})
   public defaultValue?: SelectDateType;
+  /**
+   * 是否静态展示模式
+   */
+  @Prop({type: Boolean, default: false})
+  public displayMode: boolean;
   /** 入场方向，default: vertical，vertical: 垂直，horizontal: 水平 */
-  @Prop({})
+  @Prop({type: String, default: 'vertical'})
   public enterDirection?: 'horizontal' | 'vertical';
   /** 日期扩展数据 */
   @Prop({type: Function})
@@ -85,9 +90,4 @@ export default class CalendarProps extends Vue {
   /** 是否显示，default: false */
   @Prop({type: Boolean, default: false})
   public visible?: boolean;
-  /**
-   * 是否静态展示模式
-   */
-  @Prop({type: Boolean, default: false})
-  public displayMode: boolean;
 }

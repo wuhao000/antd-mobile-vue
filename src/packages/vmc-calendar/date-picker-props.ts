@@ -1,4 +1,4 @@
-import {Models} from '@/packages/vmc-calendar/date/data-types';
+import {Models} from './date/data-types';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';

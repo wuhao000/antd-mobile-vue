@@ -1,6 +1,6 @@
-import {getPanDirection} from '@/packages/tabs/src';
-import {setPxStyle} from '@/packages/tabs/src/utils';
-import {IGestureStatus} from '@/packages/vmc-gesture';
+import {getPanDirection} from '../tabs/src';
+import {setPxStyle} from '../tabs/src/utils';
+import {IGestureStatus} from '../vmc-gesture';
 import classNames from 'classnames';
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';

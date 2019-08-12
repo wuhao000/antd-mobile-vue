@@ -160,12 +160,9 @@ export default class Textarea extends Vue {
       count,
       labelNumber,
       title,
-      onErrorClick,
       autoHeight,
-      defaultValue,
-      ...otherProps
+      disabled
     } = this;
-    const {disabled} = otherProps;
     const {value, focus} = this.state;
     const hasCount = count! > 0 && this.rows! > 1;
 
