@@ -223,4 +223,4 @@ class CustomKeyboard extends Vue {
   }
 }
 
-export default CustomKeyboard;
+export default CustomKeyboard as any;

@@ -8,7 +8,7 @@ import RcCheckbox from '../../../ant/vc-checkbox';
 @Component({
   name: 'MRadio'
 })
-export default class Radio extends Vue {
+class Radio extends Vue {
   @Prop({type: String, default: 'am-radio'})
   public prefixCls?: string;
   @Prop({type: String})
@@ -43,7 +43,7 @@ export default class Radio extends Vue {
     const mark = (
       <label class={wrapCls}
              onClick={this.onClick}>
-        <RcCheckbox props={this.$props}
+        <RcCheckbox attrs={this.$props}
                     checked={this.value}
                     type={'radio'}/>
         {this.$slots.default}
@@ -52,6 +52,8 @@ export default class Radio extends Vue {
     if (this.wrapLabel) {
       return mark;
     }
-    return <RcCheckbox type={'radio'} checked={this.value} props={this.$props}>{this.$slots.default}</RcCheckbox>;
+    return <RcCheckbox type={'radio'} checked={this.value} attrs={this.$props}>{this.$slots.default}</RcCheckbox>;
   }
 }
+
+export default Radio as any;

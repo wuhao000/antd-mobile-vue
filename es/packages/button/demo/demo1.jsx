@@ -30,14 +30,14 @@ export default {
       <m-white-space />
       <m-button type="primary" inline style={{ marginRight: '4px' }}>inline primary</m-button>
       
-      <m-button type="ghost" inline style={{ marginRight: '4px' }} className="am-button-borderfix">inline ghost</m-button>
+      <m-button type="ghost" inline style={{ marginRight: '4px' }} class="am-button-borderfix">inline ghost</m-button>
       <m-white-space />
       <m-button type="primary" inline size="small" style={{ marginRight: '4px' }}>primary</m-button>
       <m-button type="primary" inline size="small" disabled>primary disabled</m-button>
       <m-white-space />
       <m-button type="ghost" inline size="small" style={{ marginRight: '4px' }}>ghost</m-button>
       
-      <m-button type="ghost" inline size="small" className="am-button-borderfix" disabled>ghost disabled</m-button>
+      <m-button type="ghost" inline size="small" class="am-button-borderfix" disabled>ghost disabled</m-button>
     </m-wing-blank>;
     }
 };

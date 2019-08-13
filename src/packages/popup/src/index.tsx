@@ -77,7 +77,7 @@ class MPopup extends BaseFormComponent {
   }
 
   public getInputComponent() {
-    return window.antd.Drawer;
+    return antd.Drawer;
   }
 
   private renderHeader() {

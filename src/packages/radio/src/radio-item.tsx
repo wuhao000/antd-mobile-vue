@@ -10,7 +10,7 @@ const ListItem = List.Item as any;
 @Component({
   name: 'MRadioItem'
 })
-export default class RadioItem extends Vue {
+class RadioItem extends Vue {
   @Prop({default: 'am-radio'})
   public prefixCls?: string;
   @Prop({default: 'am-list'})
@@ -79,3 +79,5 @@ export default class RadioItem extends Vue {
     );
   }
 }
+
+export default RadioItem as any;

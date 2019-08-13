@@ -10,7 +10,7 @@ let SegmentedControlExample = class SegmentedControlExample extends Vue {
         return console.log(value);
     }
     render() {
-        return (<m-wing-blank size="lg" className="sc-example">
+        return (<m-wing-blank size="lg" class="sc-example">
           <p class="sub-title">Simplest</p>
           <m-segmented-control values={['Segment1', 'Segment2']}/>
           <p class="sub-title">Disabled</p>

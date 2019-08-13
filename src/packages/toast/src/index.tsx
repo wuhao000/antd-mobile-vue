@@ -3,6 +3,7 @@ import Notification from '../../../ant/vc-notification';
 import Icon from '../../icon';
 
 const prefixCls = 'am-toast';
+
 function getMessageInstance(mask: boolean,
                             callback: (notification: any) => void) {
   (Notification as any).newInstance(
@@ -42,7 +43,9 @@ function notice(content: string, type: string,
     }
   };
   messageInstance.hide = () => {
-    messageInstance.destroy();
+    if (typeof messageInstance.destroy === 'function') {
+      messageInstance.destroy();
+    }
   };
   getMessageInstance(mask, notification => {
     messageInstance.$destroy = notification.destroy;
@@ -74,7 +77,9 @@ function notice(content: string, type: string,
         if (onClose) {
           onClose();
         }
-        notification.destroy();
+        if (typeof notification.destroy === 'function') {
+          notification.destroy();
+        }
         messageInstance.destroy = null;
       }
     });

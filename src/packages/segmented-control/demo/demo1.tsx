@@ -16,7 +16,7 @@ export default class SegmentedControlExample extends Vue {
 
   public render() {
     return (
-        <m-wing-blank size="lg" className="sc-example">
+        <m-wing-blank size="lg" class="sc-example">
           <p class="sub-title">Simplest</p>
           <m-segmented-control values={['Segment1', 'Segment2']}/>
           <p class="sub-title">Disabled</p>

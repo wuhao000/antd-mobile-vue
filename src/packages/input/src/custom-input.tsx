@@ -7,7 +7,7 @@ import CustomKeyboard from './custom-keyboard';
 import Portal from './portal';
 
 let instanceArr: any = [];
-let customNumberKeyboard: CustomKeyboard | null = null;
+let customNumberKeyboard: any = null;
 
 @Component({
   name: ''
@@ -59,12 +59,19 @@ class NumberInput extends Vue {
   }
 
   public onConfirm(value: any) {
-    this.$emit('virtual-keyboard-confirm', value);
+    this.$emit('confirm', value);
   }
 
   @Watch('value')
   public valueChanged(value: any) {
     this.currentValue = value;
+  }
+
+  @Watch('focus')
+  public focusChanged(focus: boolean) {
+    if (focus) {
+      this.onInputFocus();
+    }
   }
 
   public addBlurListener() {
@@ -83,7 +90,7 @@ class NumberInput extends Vue {
     this.unLinkInput();
   }
 
-  public saveRef(el: CustomKeyboard | null) {
+  public saveRef(el: any) {
     customNumberKeyboard = el;
     instanceArr.push({el, container: this.container});
   }
@@ -97,18 +104,17 @@ class NumberInput extends Vue {
       moneyKeyboardWrapProps,
       moneyKeyboardHeader
     } = this;
-    const CustomKeyboard2: any = CustomKeyboard;
     return (
-        <CustomKeyboard2
-            ref={'keyboard'}
-            onClick={this.onKeyboardClick.bind(this)}
-            prefixCls={keyboardPrefixCls}
-            confirmLabel={confirmLabel}
-            backspaceLabel={backspaceLabel}
-            cancelKeyboardLabel={cancelKeyboardLabel}
-            wrapProps={moneyKeyboardWrapProps}
-            header={moneyKeyboardHeader}
-        />
+      <CustomKeyboard
+        ref={'keyboard'}
+        onClick={this.onKeyboardClick.bind(this)}
+        prefixCls={keyboardPrefixCls}
+        confirmLabel={confirmLabel}
+        backspaceLabel={backspaceLabel}
+        cancelKeyboardLabel={cancelKeyboardLabel}
+        wrapProps={moneyKeyboardWrapProps}
+        header={moneyKeyboardHeader}
+      />
     );
   }
 
@@ -145,15 +151,15 @@ class NumberInput extends Vue {
 
   public unLinkInput() {
     if (
-        customNumberKeyboard &&
-        customNumberKeyboard.antmKeyboard &&
-        customNumberKeyboard.linkedInput &&
-        customNumberKeyboard.linkedInput === this
+      customNumberKeyboard &&
+      customNumberKeyboard.antmKeyboard &&
+      customNumberKeyboard.linkedInput &&
+      customNumberKeyboard.linkedInput === this
     ) {
       customNumberKeyboard.linkedInput = null;
       addClass(
-          customNumberKeyboard.antmKeyboard,
-          `${this.keyboardPrefixCls}-wrapper-hide`
+        customNumberKeyboard.antmKeyboard,
+        `${this.keyboardPrefixCls}-wrapper-hide`
       );
     }
     // for unmount
@@ -178,21 +184,21 @@ class NumberInput extends Vue {
       customNumberKeyboard.linkedInput = this;
       if (customNumberKeyboard.antmKeyboard) {
         removeClass(
-            customNumberKeyboard.antmKeyboard,
-            `${this.keyboardPrefixCls}-wrapper-hide`
+          customNumberKeyboard.antmKeyboard,
+          `${this.keyboardPrefixCls}-wrapper-hide`
         );
       }
       customNumberKeyboard.confirmDisabled = this.value === '';
       if (customNumberKeyboard.confirmKeyboardItem) {
         if (this.value === '') {
           addClass(
-              customNumberKeyboard.confirmKeyboardItem,
-              `${this.keyboardPrefixCls}-item-disabled`
+            customNumberKeyboard.confirmKeyboardItem,
+            `${this.keyboardPrefixCls}-item-disabled`
           );
         } else {
           removeClass(
-              customNumberKeyboard.confirmKeyboardItem,
-              `${this.keyboardPrefixCls}-item-disabled`
+            customNumberKeyboard.confirmKeyboardItem,
+            `${this.keyboardPrefixCls}-item-disabled`
           );
         }
       }
@@ -222,9 +228,9 @@ class NumberInput extends Vue {
       this.onInputBlur(valueAfterChange);
     } else {
       if (
-          maxLength !== undefined &&
-          +maxLength >= 0 &&
-          (value + KeyboardItemValue).length > maxLength
+        maxLength !== undefined &&
+        +maxLength >= 0 &&
+        (value + KeyboardItemValue).length > maxLength
       ) {
         valueAfterChange = (value + KeyboardItemValue).substr(0, maxLength);
         onChange({target: {value: valueAfterChange}});
@@ -238,13 +244,13 @@ class NumberInput extends Vue {
       if (customNumberKeyboard.confirmKeyboardItem) {
         if (valueAfterChange === '') {
           addClass(
-              customNumberKeyboard.confirmKeyboardItem,
-              `${this.keyboardPrefixCls}-item-disabled`
+            customNumberKeyboard.confirmKeyboardItem,
+            `${this.keyboardPrefixCls}-item-disabled`
           );
         } else {
           removeClass(
-              customNumberKeyboard.confirmKeyboardItem,
-              `${this.keyboardPrefixCls}-item-disabled`
+            customNumberKeyboard.confirmKeyboardItem,
+            `${this.keyboardPrefixCls}-item-disabled`
           );
         }
       }
@@ -268,15 +274,14 @@ class NumberInput extends Vue {
   }
 
   public renderPortal() {
-    const Portal2 = Portal as any;
     return (
-        <Portal2 props={
-          {
-            getContainer: () => this.getContainer()
-          }
-        }>
-          {this.getComponent()}
-        </Portal2>
+      <Portal props={
+        {
+          getContainer: () => this.getContainer()
+        }
+      }>
+        {this.getComponent()}
+      </Portal>
     );
   }
 
@@ -291,25 +296,23 @@ class NumberInput extends Vue {
     const fakeInputContainerCls = classnames('fake-input-container', {
       'fake-input-container-left': moneyKeyboardAlign === 'left'
     });
-
     return (
-        <div class={fakeInputContainerCls}>
-          {value === '' && (
-              // tslint:disable-next-line:jsx-no-multiline-js
-              <div class={'fake-input-placeholder'}>{placeholder}</div>
-          )}
-          <div
-              role={'textbox'}
-              aria-label={value || placeholder}
-              class={fakeInputCls}
-              ref={'input'}
-              onClick={preventKeyboard ? () => {
-              } : this.onFakeInputClick.bind(this)}
-          >
-            {value}
-          </div>
-          {this.renderPortal()}
+      <div class={fakeInputContainerCls}>
+        {value === '' && (
+          <div class="fake-input-placeholder">{placeholder}</div>
+        )}
+        <div
+          role="textbox"
+          aria-label={value || placeholder}
+          class={fakeInputCls}
+          ref="input"
+          onClick={preventKeyboard ? () => {
+          } : this.onFakeInputClick}
+        >
+          {value}
         </div>
+        {this.renderPortal()}
+      </div>
     );
   }
 }

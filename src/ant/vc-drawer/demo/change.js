@@ -42,7 +42,7 @@ export default {
       Drawer,
       {
         on: {
-          'change': this.onChange.bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this),
+          'change': this.onChange.bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this),
           'maskClick': this.onTouchEnd.bind(this).bind(this).bind(this)
         },
         attrs: {

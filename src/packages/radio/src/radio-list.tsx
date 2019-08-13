@@ -33,7 +33,6 @@ export default class MRadioList extends OptionsBasedComponent {
   }
 
   public render() {
-    // @ts-ignore
     return <List title={this.title}>
       {this.renderOptions()}
     </List>;
@@ -43,15 +42,15 @@ export default class MRadioList extends OptionsBasedComponent {
     const options = this.getOptions();
     if (options) {
       return options.map(option => {
-        // @ts-ignore
         return <RadioItem
+          attrs={{disabled: option.disabled}}
           value={this.stateValue === option.value}
           onChange={(checkState) => {
             this.onChange(checkState, option.value);
           }}>{option.label}</RadioItem>;
       });
     } else {
-
+      return [];
     }
   }
 

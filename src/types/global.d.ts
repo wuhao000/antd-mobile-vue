@@ -106,4 +106,6 @@ declare global {
   export const axios: any;
   export const hljs: any;
   export const aegis: any;
+  export const antd: any;
 }
+

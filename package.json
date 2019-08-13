@@ -111,6 +111,7 @@
     "@vue/cli-plugin-typescript": "^3.5.0",
     "@vue/cli-service": "^3.5.0",
     "add-dom-event-listener": "^1.1.0",
+    "antd-mobile-demo-data": "^0.3.0",
     "array-tree-filter": "^2.1.0",
     "babel-plugin-component": "^1.1.1",
     "babel-plugin-import": "^1.11.0",

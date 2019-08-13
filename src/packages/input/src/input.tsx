@@ -5,7 +5,7 @@ import {Prop, Watch} from 'vue-property-decorator';
 @Component({
   name: 'Input'
 })
-export default class Input extends Vue {
+class Input extends Vue {
 
   @Prop({type: [String, Number]})
   public value: string;
@@ -65,3 +65,5 @@ export default class Input extends Vue {
                   }}/>;
   }
 }
+
+export default Input as any;

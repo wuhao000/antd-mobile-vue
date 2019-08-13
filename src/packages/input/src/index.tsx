@@ -122,8 +122,8 @@ export default class InputItem extends FormComponent {
     this.state.placeholder = placeholder;
   }
 
-  get inputRef(): Input | CustomInput | null {
-    return this.$refs['input'] as any;
+  get inputRef(): any {
+    return this.$refs.input;
   }
 
   private debounceTimeout: any;
@@ -156,7 +156,7 @@ export default class InputItem extends FormComponent {
           ctrlValue = `${ctrlValue.substr(0, 3)} ${ctrlValue.substr(3)}`;
         } else if (valueLen >= 8) {
           ctrlValue = `${ctrlValue.substr(0, 3)} ${ctrlValue.substr(3, 4)} ${ctrlValue.substr(
-              7
+            7
           )}`;
         }
         break;
@@ -202,6 +202,7 @@ export default class InputItem extends FormComponent {
     if (this.inputRef.$forceUpdate) {
       this.inputRef.$forceUpdate();
     }
+    this.$forceUpdate();
   }
 
   public onInputFocus(value: string) {
@@ -240,7 +241,11 @@ export default class InputItem extends FormComponent {
 
   public focus() {
     if (this.inputRef) {
-      (this.inputRef as any).focus();
+      if (typeof this.inputRef.focus === 'function') {
+        this.inputRef.focus();
+      } else {
+        this.inputRef.focus = true;
+      }
     }
   }
 
@@ -272,14 +277,14 @@ export default class InputItem extends FormComponent {
       isReadonly,
       isDisabled,
       clearable,
-      extra,
       type,
+      currentValue,
       moneyKeyboardAlign,
       moneyKeyboardWrapProps,
       moneyKeyboardHeader,
       name, maxLength
     } = this;
-
+    const extra = this.$slots.extra || this.extra;
     const {
       confirmLabel,
       backspaceLabel,
@@ -296,15 +301,15 @@ export default class InputItem extends FormComponent {
     } = this;
 
     const wrapCls = classnames(
-        `${prefixListCls}-item`,
-        `${prefixCls}-item`,
-        `${prefixListCls}-item-middle`,
-        {
-          [`${prefixCls}-disabled`]: isDisabled,
-          [`${prefixCls}-error`]: this.isCurrentError,
-          [`${prefixCls}-focus`]: focus,
-          [`${prefixCls}-android`]: focus
-        }
+      `${prefixListCls}-item`,
+      `${prefixCls}-item`,
+      `${prefixListCls}-item-middle`,
+      {
+        [`${prefixCls}-disabled`]: isDisabled,
+        [`${prefixCls}-error`]: this.isCurrentError,
+        [`${prefixCls}-focus`]: focus,
+        [`${prefixCls}-android`]: focus
+      }
     );
 
     const controlCls = `${prefixCls}-control`;
@@ -332,88 +337,87 @@ export default class InputItem extends FormComponent {
       classNameProp = 'h5numInput';
     }
     return (
-        <div class={wrapCls}>
-          <div class={`${prefixListCls}-line`}>
-            {this.renderLabel()}
-            <div class={controlCls}>
-              {type === 'money' ? (
-                  // @ts-ignore
-                  <CustomInput
-                      attrs={
-                        {
-                          value: normalizeValue(this.currentValue),
-                          type,
-                          maxLength,
-                          placeholder,
-                          disabled: isDisabled,
-                          editable: !isReadonly,
-                          prefixCls,
-                          confirmLabel,
-                          backspaceLabel,
-                          cancelKeyboardLabel,
-                          moneyKeyboardAlign,
-                          moneyKeyboardWrapProps,
-                          moneyKeyboardHeader
-                        }
-                      }
-                      onChange={this.onInputChange}
-                      onFocus={this.onInputFocus}
-                      onBlur={this.onInputBlur}
-                      onVirtualKeyboardConfirm={() => {
-                        this.$emit('virtual-keyboard-confirm');
-                      }}
-                      ref={'input'}
-                  />
-              ) : (
-                  // @ts-ignore
-                  <Input
-                      props={
-                        {
-                          ...patternProps,
-                          value: normalizeValue(this.currentValue),
-                          defaultValue: undefined,
-                          textAlign: this.textAlign,
-                          type: inputType,
-                          maxLength,
-                          name,
-                          placeholder,
-                          readonly: isReadonly,
-                          disabled: isDisabled
-                        }
-                      }
-                      class={classNameProp}
-                      ref={'input'}
-                      on={
-                        {
-                          change: this.onInputChange,
-                          focus: this.onInputFocus,
-                          blur: this.onInputBlur
-                        }
-                      }
-                  />
-              )}
-            </div>
-            {clearable &&
-            !isReadonly &&
-            !isDisabled &&
-            (this.currentValue && `${this.currentValue}`.length > 0) ? (
-                // @ts-ignore
-                <TouchFeedback activeClassName={`${prefixCls}-clear-active`}>
-                  <div class={`${prefixCls}-clear`}
-                       onClick={this.clearInput}/>
-                </TouchFeedback>
-            ) : null}
-            {this.errorIcon}
-            {extra !== '' ? (
-                <div class={`${prefixCls}-extra`}
-                     onClick={(e) => {
-                       this.$emit('extra-click', e);
-                     }}>
-                  {extra}
-                </div>
-            ) : null}
+      <div class={wrapCls}>
+        <div class={`${prefixListCls}-line`}>
+          {this.renderLabel()}
+          <div class={controlCls}>
+            {type === 'money' ? (
+              // @ts-ignore
+              <CustomInput
+                attrs={
+                  {
+                    value: normalizeValue(currentValue),
+                    type,
+                    maxLength,
+                    placeholder,
+                    disabled: isDisabled,
+                    editable: !isReadonly,
+                    prefixCls,
+                    confirmLabel,
+                    backspaceLabel,
+                    cancelKeyboardLabel,
+                    moneyKeyboardAlign,
+                    moneyKeyboardWrapProps,
+                    moneyKeyboardHeader
+                  }
+                }
+                onChange={this.onInputChange}
+                onFocus={this.onInputFocus}
+                onBlur={this.onInputBlur}
+                onConfirm={(v) => {
+                  this.$emit('confirm', v);
+                }}
+                ref={'input'}
+              />
+            ) : (
+              <Input
+                props={
+                  {
+                    ...patternProps,
+                    value: normalizeValue(currentValue),
+                    defaultValue: undefined,
+                    textAlign: this.textAlign,
+                    type: inputType,
+                    maxLength,
+                    name,
+                    placeholder,
+                    readonly: isReadonly,
+                    disabled: isDisabled
+                  }
+                }
+                class={classNameProp}
+                ref={'input'}
+                on={
+                  {
+                    change: this.onInputChange,
+                    focus: this.onInputFocus,
+                    blur: this.onInputBlur
+                  }
+                }
+              />
+            )}
           </div>
+          {clearable &&
+          !isReadonly &&
+          !isDisabled &&
+          (currentValue && `${currentValue}`.length > 0) ? (
+            // @ts-ignore
+            <TouchFeedback activeClassName={`${prefixCls}-clear-active`}>
+              <div class={`${prefixCls}-clear`}
+                   onClick={this.clearInput}/>
+            </TouchFeedback>
+          ) : null}
+          {this.errorIcon}
+          {extra !== '' ? (
+            <div class={`${prefixCls}-extra`}
+                 onClick={(e) => {
+                   this.$emit('extra-click', e);
+                 }}>
+              {extra}
+            </div>
+          ) : null}
         </div>
+      </div>
     );
   }
 }

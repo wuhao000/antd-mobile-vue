@@ -5,4 +5,4 @@ MInput.install = Vue => {
   Vue.component('MInput', MInput);
 };
 
-export default MInput;
+export default MInput as any;

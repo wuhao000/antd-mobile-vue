@@ -5,7 +5,7 @@ import {Prop} from 'vue-property-decorator';
 @Component({
   name: 'Portal'
 })
-export default class Portal extends Vue {
+class Portal extends Vue {
   @Prop({required: true})
   public getContainer: () => Element;
   public container: Element;
@@ -22,3 +22,4 @@ export default class Portal extends Vue {
     return this.$slots.default;
   }
 }
+export default Portal as any;
