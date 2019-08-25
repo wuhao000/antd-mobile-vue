@@ -2,8 +2,7 @@ import classNames from 'classnames';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Inject, Prop} from 'vue-property-decorator';
-
-const Icon = aegis.AeIcon;
+import Icon from '../../icon';
 
 function isString(str) {
   return typeof str === 'string';
@@ -88,7 +87,6 @@ export default class Step extends Vue {
       iconNode = <span class={`${prefixCls}-icon`}>{
         <Icon style={iconStyle}
               size={this.iconSize}
-              mobile={true}
               type={icon}/>
       }</span>;
     } else if (icon || status === 'finish' || status === 'error') {

@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack:///./src/documents/change-log/0.3.8.md"],"names":["module","exports"],"mappings":"mGAAAA,EAAAC,QAAA","file":"js/chunk-2d0dac9b.022beb42.js","sourcesContent":["module.exports = \"<ul>\\n<li>bug修复</li>\\n</ul>\\n\";"],"sourceRoot":""}

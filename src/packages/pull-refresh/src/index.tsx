@@ -1,11 +1,12 @@
-import {getScrollEventTarget, getScrollTop} from './util';
 import classNames from 'classnames';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import {Indicator} from './prop-types';
 
-const Icon = aegis.AeIcon;
+import Icon from '../../icon';
+import {Indicator} from './prop-types';
+import {getScrollEventTarget, getScrollTop} from './util';
+
 function setTransform(nodeStyle: any, value: any) {
   nodeStyle.transform = value;
   nodeStyle.webkitTransform = value;

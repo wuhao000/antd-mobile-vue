@@ -6,7 +6,7 @@ import {Prop} from 'vue-property-decorator';
 @Component({
   name: 'Range'
 })
-export default class Range extends Vue {
+class Range extends Vue {
   @Prop({
     type: String,
     default: 'am-slider'
@@ -53,3 +53,5 @@ export default class Range extends Vue {
     );
   }
 }
+
+export default Range as any;

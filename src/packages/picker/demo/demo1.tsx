@@ -2,6 +2,7 @@ import {district, provinceLite} from 'antd-mobile-demo-data';
 import arrayTreeFilter from 'array-tree-filter';
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import {Prop} from 'vue-property-decorator';
 import List from '../../list';
 import WhiteSpace from '../../white-space';
 import Picker from '../index';
@@ -11,17 +12,26 @@ import Picker from '../index';
   name: 'CustomChildren'
 })
 class CustomChildren extends Vue {
+
+  @Prop()
+  public extra: any;
+
   public render() {
     return <div
-      onclick={(e) => {
-        this.$emit('click', e);
-      }}
-      style={{backgroundColor: '#fff', paddingLeft: 15}}
+        onclick={(e) => {
+          this.$emit('click', e);
+        }}
+        style={{backgroundColor: '#fff', paddingLeft: '15px'}}
     >
       <div class="test" style={{display: 'flex', height: '45px', lineHeight: '45px'}}>
         <div
-          style={{flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>{this.$slots.default}</div>
-        <div style={{textAlign: 'right', color: '#888', marginRight: 15}}>{this.$attrs.extra}</div>
+            style={{
+              flex: 1,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
+            }}>{this.$slots.default}</div>
+        <div style={{textAlign: 'right', color: '#888', marginRight: 15}}>{this.extra}</div>
       </div>
     </div>;
   }
@@ -58,12 +68,12 @@ const colorStyle = {
   marginRight: '10px'
 };
 
-
 @Component({
   name: 'PickerExample'
 })
 export default class PickerExample extends Vue {
   public state = {
+    value1: ['340000', '341500', '341502'],
     data: [],
     cols: 1,
     pickerValue: [],
@@ -74,6 +84,7 @@ export default class PickerExample extends Vue {
   };
 
   public onClick() {
+    console.log(1);
     setTimeout(() => {
       this.state.data = provinceLite;
     }, 120);
@@ -123,32 +134,32 @@ export default class PickerExample extends Vue {
     return [
       {
         label:
-          (<div>
-      <span
-        style={{...colorStyle, backgroundColor: '#FF0000'}}
-      />
-            <span>红色</span>
-          </div>),
+            (<div>
+              <span
+                  style={{...colorStyle, backgroundColor: '#FF0000'}}
+              />
+              <span>红色</span>
+            </div>),
         value: '#FF0000'
       },
       {
         label:
-          (<div>
-      <span
-        style={{...colorStyle, backgroundColor: '#00FF00'}}
-      />
-            <span>绿色</span>
-          </div>),
+            (<div>
+              <span
+                  style={{...colorStyle, backgroundColor: '#00FF00'}}
+              />
+              <span>绿色</span>
+            </div>),
         value: '#00FF00'
       },
       {
         label:
-          (<div>
-      <span
-        style={{...colorStyle, backgroundColor: '#0000FF'}}
-      />
-            <span>蓝色</span>
-          </div>),
+            (<div>
+              <span
+                  style={{...colorStyle, backgroundColor: '#0000FF'}}
+              />
+              <span>蓝色</span>
+            </div>),
         value: '#0000FF'
       }
     ];
@@ -174,20 +185,19 @@ export default class PickerExample extends Vue {
         <Picker extra="请选择(可选)"
                 data={district}
                 title="Areas"
-                value={['340000', '341500', '341502']}
+                vModel={this.state.value1}
                 onOk={e => console.log('ok', e)}
-                onDismiss={e => console.log('dismiss', e)}
-        >
+                onDismiss={e => console.log('dismiss', e)}>
           <List.Item arrow="horizontal">Multiple & cascader</List.Item>
         </Picker>
         <Picker
-          data={seasons}
-          title="选择季节"
-          cascade={false}
-          extra="请选择(可选)"
-          value={this.state.sValue}
-          onChange={v => this.state.sValue = v}
-          onOk={v => this.state.sValue = v}
+            data={seasons}
+            title="选择季节"
+            cascade={false}
+            extra="请选择(可选)"
+            value={this.state.sValue}
+            onChange={v => this.state.sValue = v}
+            onOk={v => this.state.sValue = v}
         >
           <List.Item arrow="horizontal">Multiple</List.Item>
         </Picker>
@@ -195,42 +205,40 @@ export default class PickerExample extends Vue {
           <List.Item arrow="horizontal">Single</List.Item>
         </Picker>
         <Picker
-          data={this.state.data}
-          cols={this.state.cols}
-          value={this.state.asyncValue}
-          onPickerChange={this.onPickerChange.bind(this)}
-          onOk={v => console.log(v)}
-        >
-          <List.Item arrow="horizontal" onClick={this.onClick.bind(this)}>Multiple & async</List.Item>
+            data={this.state.data}
+            cols={this.state.cols}
+            value={this.state.asyncValue}
+            onPickerChange={this.onPickerChange}
+            onOk={v => console.log(v)}>
+          <List.Item arrow="horizontal"
+                     onClick={this.onClick}>Multiple & async</List.Item>
         </Picker>
         <Picker
-          title="选择地区"
-          extra="请选择(可选)"
-          data={district}
-          value={this.state.pickerValue}
-          onChange={v => this.state.pickerValue = v}
-          onOk={v => this.state.pickerValue = v}
-        >
+            title="选择地区"
+            extra="请选择(可选)"
+            data={district}
+            value={this.state.pickerValue}
+            onChange={v => this.state.pickerValue = v}
+            onOk={v => this.state.pickerValue = v}>
           <CustomChildren>Customized children</CustomChildren>
         </Picker>
         <Picker
-          visible={this.state.visible}
-          data={district}
-          value={this.state.pickerValue}
-          onChange={v => this.state.pickerValue = v}
-          onOk={() => this.state.visible = false}
-          onDismiss={() => this.state.visible = false}
+            visible={this.state.visible}
+            data={district}
+            value={this.state.pickerValue}
+            onChange={v => this.state.pickerValue = v}
+            onOk={() => this.state.visible = false}
+            onDismiss={() => this.state.visible = false}
         >
           <List.Item extra={this.getSel()} onClick={() => this.state.visible = true}>
             Visible state
           </List.Item>
         </Picker>
         <Picker
-          data={this.colors}
-          value={this.state.colorValue}
-          cols={1}
-          onChange={this.onChangeColor.bind(this)}
-        >
+            data={this.colors}
+            value={this.state.colorValue}
+            cols={1}
+            onChange={this.onChangeColor.bind(this)}>
           <List.Item arrow="horizontal">Complex Labels</List.Item>
         </Picker>
       </List>

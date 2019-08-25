@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop, Provide} from 'vue-property-decorator';
-import Item from './list-item';
+import Item from './item';
 
 @Component({
   name: 'MList'
@@ -107,7 +107,6 @@ class List extends Vue {
         }
       });
     });
-
     if (promise) {
       return promise;
     }
