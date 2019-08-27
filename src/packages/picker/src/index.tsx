@@ -2,8 +2,8 @@
 import treeFilter from 'array-tree-filter';
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
-import {Prop, Provide} from 'vue-property-decorator';
-import {setProps} from '../../utils/vnode';
+import {Prop, Provide, Watch} from 'vue-property-decorator';
+import {cloneVNode, setProps} from '../../utils/vnode';
 import RMCCascader from '../../vmc-cascader/cascader';
 import {CascaderValue} from '../../vmc-cascader/cascader-types';
 import RMCPopupCascader from '../../vmc-cascader/popup';
@@ -58,6 +58,7 @@ export default class Picker extends Vue {
   public itemStyle?: any;
   @Prop()
   public indicatorStyle?: any;
+  public currentValue: any[] = [];
   public popupProps: {
     WrapComponent: 'div',
     transitionName: 'am-slide-up',
@@ -69,8 +70,19 @@ export default class Picker extends Vue {
     onOk: null
   };
 
+  @Watch('value', {immediate: true})
+  public valueChanged(v: any[]) {
+    if (v && v !== this.currentValue) {
+      this.currentValue = v;
+    }
+  }
+
+  private onClick(e) {
+    return this.$emit('click', e);
+  }
+
   public getSel() {
-    const value = this.value || [];
+    const value = this.currentValue || [];
     let treeChildren: PickerData[];
     const data = this.data;
     if (this.cascade) {
@@ -155,17 +167,16 @@ export default class Picker extends Vue {
 
   public onPickerChange(v: any, i) {
     this.setScrollValue(v);
-    this.$emit('picker-change', v, i);
+    this.$emit('pickerChange', v, i);
   }
 
   public onVisibleChange(visible: boolean) {
     this.setScrollValue(undefined);
-    this.$emit('visible-change', visible);
+    this.$emit('visibleChange', visible);
   }
 
   public render() {
     const {
-      value = [],
       popupPrefixCls,
       itemStyle,
       indicatorStyle,
@@ -181,16 +192,14 @@ export default class Picker extends Vue {
       ...restProps
     } = this.$props;
 
-
     let cascader;
     let popupMoreProps = {};
     if (cascade) {
       cascader = (
           // @ts-ignore
           <RMCCascader
-              slot={'cascader'}
+              slot="cascader"
               prefixCls={prefixCls}
-              ref={'fffffs'}
               pickerPrefixCls={pickerPrefixCls}
               data={data as PickerData[]}
               cols={cols}
@@ -200,14 +209,13 @@ export default class Picker extends Vue {
               onChange={this.onPickerChange}
               onScrollChange={this.setCasecadeScrollValue}
               pickerItemStyle={itemStyle}
-              indicatorStyle={indicatorStyle}
-          >{this.$slots.default}</RMCCascader>
+              indicatorStyle={indicatorStyle}/>
       );
     } else {
       cascader = (
           // @ts-ignore
           <RMCMultiPicker
-              slot={'cascader'}
+              slot="cascader"
               style={{flexDirection: 'row', alignItems: 'center'}}
               prefixCls={prefixCls}
               onInput={(v) => {
@@ -227,30 +235,39 @@ export default class Picker extends Vue {
       cascader,
       ...restProps,
       prefixCls: popupPrefixCls,
-      value,
+      value: this.currentValue,
       dismissText,
       okText,
       ...popupMoreProps
     };
-    const childExtra = this.getSel() || extra || this.getPlaceholder();
+    const childExtra = this.getSel() || extra || this.getPlaceholder() || '';
     return (
         // @ts-ignore
         <RMCPopupCascader
             attrs={props}>
           {cascader}
           {this.$slots.default && this.$slots.default.map(child => {
-            setProps(child, {
+            const node = cloneVNode(child, true);
+            setProps(node, {
               extra: childExtra,
               arrow: 'horizontal'
             });
-            return child;
+            return node;
           })}
         </RMCPopupCascader>
     );
   }
 
+  @Watch('currentValue')
+  public currentValueChanged(currentValue: any[]) {
+    if (currentValue !== this.value) {
+      this.$emit('input', currentValue);
+      this.$emit('change', currentValue);
+    }
+  }
+
   private onInput(v: any) {
-    this.$emit('input', v);
+    this.currentValue = v;
   }
 
   private getPlaceholder() {

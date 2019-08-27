@@ -240,9 +240,9 @@ class Picker extends mixins(PickerProps) {
     if (this.state.selectedValue !== value) {
       this.state.selectedValue = value;
       this.select(
-        this.state.selectedValue,
-        this.itemHeight,
-        this.noAnimate ? this.scrollToWithoutAnimation.bind(this) : this.scrollTo.bind(this)
+          this.state.selectedValue,
+          this.itemHeight,
+          this.noAnimate ? this.scrollToWithoutAnimation.bind(this) : this.scrollTo.bind(this)
       );
     }
   }
@@ -315,14 +315,13 @@ class Picker extends mixins(PickerProps) {
       const className = item.data && item.data.staticClass || '';
       const style = item.data && item.data.staticStyle;
       const value = item.componentOptions.propsData && item.componentOptions.propsData.value;
-      const label = item.componentOptions.propsData && item.componentOptions.propsData.label;
+      const label = item.componentOptions.propsData && item.componentOptions.propsData.label || item.componentOptions.children;
       return (
-        <div
-          style={{...itemStyle, ...style}}
-          class={`${selectedValue === value ? selectedItemClassName : itemClassName} ${className}`}
-          key={value}>
-          {label}
-        </div>
+          <div style={{...itemStyle, ...style}}
+               class={`${selectedValue === value ? selectedItemClassName : itemClassName} ${className}`}
+               key={value}>
+            {label}
+          </div>
       );
     };
     const items = this.$slots.default ? this.$slots.default.map(map) : [];
@@ -330,20 +329,20 @@ class Picker extends mixins(PickerProps) {
       [prefixCls as string]: true
     };
     return (
-      <div class={classNames(pickerCls)}
-           ref={'root'}>
-        <div class={`${prefixCls}-mask`}
-             ref={'mask'}/>
-        <div
-          class={`${prefixCls}-indicator ${indicatorClassName}`}
-          ref={'indicator'}
-          style={indicatorStyle}
-        />
-        <div class={`${prefixCls}-content`}
-             ref={'content'}>
-          {items}
+        <div class={classNames(pickerCls)}
+             ref={'root'}>
+          <div class={`${prefixCls}-mask`}
+               ref={'mask'}/>
+          <div
+              class={`${prefixCls}-indicator ${indicatorClassName}`}
+              ref={'indicator'}
+              style={indicatorStyle}
+          />
+          <div class={`${prefixCls}-content`}
+               ref={'content'}>
+            {items}
+          </div>
         </div>
-      </div>
     );
   }
 }

@@ -53,8 +53,10 @@ import WingBlank from './wing-blank';
 if (moment) {
   moment.updateLocale('zh-cn', zhCn);
 }
+// @ts-ignore
 if (window.AntDesignIcons) {
   // 注册 ant design icons, 共721个icon
+  // @ts-ignore
   const icons = window.AntDesignIcons;
   Object.keys(icons).forEach(icon => {
     VueIcon.add(icons[icon]);
@@ -118,8 +120,10 @@ const install = function(Vue) {
 };
 
 // 判断是否是直接引入文件
+// @ts-ignore
 if (typeof window !== 'undefined' && window.Vue) {
-   install(window.Vue);
+  // @ts-ignore
+  install(window.Vue);
 }
 export {
   // 以下是具体的组件列表

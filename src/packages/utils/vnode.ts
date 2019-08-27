@@ -95,7 +95,17 @@ export function setListeners(vnode: VNode, listeners: any = {}) {
       vnode.componentOptions.listeners = {};
     }
     Object.keys(listeners).forEach(key => {
-      vnode.componentOptions.listeners[key] = listeners[key];
+      const orgListener = vnode.componentOptions.listeners[key];
+      const newListener = listeners[key];
+      vnode.componentOptions.listeners[key] = (...args) => {
+        if (newListener) {
+          newListener(...args);
+        }
+        if (orgListener) {
+          orgListener(...args);
+        }
+      };
+
     });
   }
 }

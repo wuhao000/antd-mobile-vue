@@ -37,6 +37,7 @@ class Calendar extends CalendarProps {
     const locale = getComponentLocale(this.$props, {}, 'Calendar', () =>
       require('./locale/zh_CN')
     );
+    // @ts-ignore
     const Header = VMCalendar.DefaultHeader;
     return (
       // @ts-ignore

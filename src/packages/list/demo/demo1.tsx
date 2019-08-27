@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {List} from '../../index';
+import './index1.less';
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -15,12 +16,16 @@ export default class ListExample extends Vue {
   };
   public disabled: boolean = false;
 
+  public onClick() {
+    console.log('item clicked');
+  }
+
   public render() {
     return (<div>
-      <List renderHeader={() => 'Basic Style'} className="my-list">
-        <Item extra={'extra content'}>Title</Item>
+      <List renderHeader={() => 'Basic Style'} class="my-list">
+        <Item onClick={this.onClick} extra={'extra content'}>Title</Item>
       </List>
-      <List renderHeader={() => 'Subtitle'} className="my-list">
+      <List renderHeader={() => 'Subtitle'} class="my-list">
         <Item arrow="horizontal" multipleLine onClick={() => {
         }}>
           Title <Brief>subtitle</Brief>
@@ -45,7 +50,7 @@ export default class ListExample extends Vue {
           Title <Brief>subtitle</Brief>
         </Item>
       </List>
-      <List renderHeader={() => 'Customized Right Side（Empty Content / Text / Image）'} className="my-list">
+      <List renderHeader={() => 'Customized Right Side（Empty Content / Text / Image）'} class="my-list">
         <Item>Title</Item>
         <Item arrow="horizontal" onClick={() => {
         }}>Title</Item>
@@ -56,7 +61,7 @@ export default class ListExample extends Vue {
           Title <Brief>subtitle</Brief>
         </Item>
       </List>
-      <List renderHeader={() => 'Align Vertical Center'} className="my-list">
+      <List renderHeader={() => 'Align Vertical Center'} class="my-list">
         <Item multipleLine extra="extra content">
           Title <Brief>subtitle</Brief>
         </Item>
@@ -77,18 +82,18 @@ export default class ListExample extends Vue {
           My Cost Ratio
         </Item>
       </List>
-      <List renderHeader={() => 'Text Wrapping'} className="my-list">
+      <List renderHeader={() => 'Text Wrapping'} class="my-list">
         <Item data-seed="logId">Single line，long text will be hidden with ellipsis；</Item>
         <Item wrap>Multiple line，long text will wrap；Long Text Long Text Long Text Long Text Long Text Long Text</Item>
         <Item extra="extra content" multipleLine align="top" wrap>
           Multiple line and long text will wrap. Long Text Long Text Long Text
         </Item>
-        <Item extra="no arrow" arrow="empty" className="spe" wrap>
+        <Item extra="no arrow" arrow="empty" class="spe" wrap>
           In rare cases, the text of right side will wrap in the single line with long text. long text long text long
           text
         </Item>
       </List>
-      <List renderHeader={() => 'Other'} className="my-list">
+      <List renderHeader={() => 'Other'} class="my-list">
         <Item disabled={this.state.disabled} extra="" onClick={() => {
           console.log('click', this.state.disabled);
           this.disabled = true;

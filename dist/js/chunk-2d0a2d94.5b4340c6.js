@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0a2d94"],{"0053":function(n,o){n.exports="<ul>\n<li>malert、mconfirm、mprompt支持返回Promise</li>\n</ul>\n"}}]);
-//# sourceMappingURL=chunk-2d0a2d94.5b4340c6.js.map

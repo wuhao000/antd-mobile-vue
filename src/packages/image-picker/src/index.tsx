@@ -5,9 +5,6 @@ import {Prop} from 'vue-property-decorator';
 import Flex from '../../flex';
 import TouchFeedback from '../../vmc-feedback';
 
-function noop() {
-}
-
 @Component({
   name: 'ImagePicker'
 })
@@ -112,7 +109,6 @@ export default class ImagePicker extends Vue {
   }
 
   public addImage(imgItem: any) {
-    console.log(imgItem);
     const {value = []} = this;
     const newImages = value.concat(imgItem);
     this.$emit('input', newImages, 'add');

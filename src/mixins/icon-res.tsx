@@ -1,8 +1,8 @@
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
+import Icon from '../packages/icon';
 
-const Icon = aegis.AeIcon;
 const httpReg = /^http(s)?:\/\//;
 
 export interface IconResProps {
@@ -25,8 +25,7 @@ class IconRes extends Vue {
       if (httpReg.test(icon)) {
         return <img src={icon} alt={''}/>;
       } else {
-        return <Icon mobile={true}
-                     type={icon} size={'md'}/>;
+        return <Icon type={icon} size={'md'}/>;
       }
     } else if (typeof icon === 'object') {
       if (icon.context) {
@@ -39,4 +38,5 @@ class IconRes extends Vue {
     }
   }
 }
+
 export default IconRes as any;
