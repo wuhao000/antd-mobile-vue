@@ -160,7 +160,7 @@ export default class Picker extends Vue {
 
   public fixOnOk(cascader: any) {
     if (cascader && cascader.onOk !== this.onOk.bind(this)) {
-      cascader.onOk = this.onOk.bind(this);
+      cascader.onOk = this.onOk;
       cascader.forceUpdate();
     }
   }

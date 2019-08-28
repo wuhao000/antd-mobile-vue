@@ -2,6 +2,7 @@ import enUs from 'antd-mobile/lib/date-picker/locale/en_US';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
+import DatePicker from '../index';
 
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
@@ -64,12 +65,12 @@ export default class Demo extends Vue {
 
   public render() {
     return (
-        <m-list className="date-picker-list" style={{backgroundColor: 'white'}}>
-          <m-date-picker
+        <m-list class="date-picker-list" style={{backgroundColor: 'white'}}>
+          <DatePicker.Item
+              title="Datetime"
               value={this.state.date}
               onChange={date => this.state.date = date}>
-            <m-list-item arrow="horizontal">Datetime</m-list-item>
-          </m-date-picker>
+          </DatePicker.Item>
           <m-date-picker
               mode="date"
               title="Select Date"

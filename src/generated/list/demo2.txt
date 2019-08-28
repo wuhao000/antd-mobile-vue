@@ -9,6 +9,10 @@ const Item = List.Item;
 })
 export default class BasicInput extends Vue {
 
+  public data = {
+    account: null,
+    password: null
+  };
   public state = {
     value: 1
   };
@@ -18,9 +22,9 @@ export default class BasicInput extends Vue {
   }
 
   public onSubmit() {
-    this.form.validate().then((error) => {
-      if (!error) {
-        console.log(this.form.value);
+    this.form.validate().then(valid => {
+      if (valid) {
+        console.log(this.data);
       } else {
         alert('Validation failed');
       }
@@ -28,7 +32,7 @@ export default class BasicInput extends Vue {
   }
 
   public onReset() {
-    this.form.reset();
+    this.data = {account: null, password: null};
   }
 
   public validateAccount(rule, value, callback) {
@@ -40,32 +44,20 @@ export default class BasicInput extends Vue {
   }
 
   public render() {
-    const {getFieldProps, getFieldError} = this.form;
-
     return (<form>
       <List ref="form"
+            attrs={{model: this.data}}
             renderHeader={() => 'Form Validation'}
-            renderFooter={() => getFieldError('account') && getFieldError('account').join(',')}>
-        <Input
-            {...getFieldProps('account', {
-              // initialValue: 'little ant',
-              rules: [
-                {required: true, message: 'Please input account'},
-                {validator: this.validateAccount.bind(this)}
-              ]
-            })}
-            clear
-            error={!!getFieldError('account')}
-            onErrorClick={() => {
-              alert(getFieldError('account').join('、'));
-            }}
-            placeholder="please input account"
+            renderFooter={() => 'abc'}>
+        <Input clear vModel={this.data.account}
+               placeholder="please input account"
         >Account</Input>
-        <Input {...getFieldProps('password')} placeholder="please input password" type="password">
+        <Input vModel={this.data.password}
+               placeholder="please input password" type="password">
           Password
         </Input>
         <Item
-            extra={<Switch {...getFieldProps('1', {initialValue: true, valuePropName: 'checked'})} />}
+            extra={<Switch/>}
         >Confirm Infomation</Item>
         <Item>
           <div style={{padding: 7}}><Range defaultValue={[20, 80]}/></div>

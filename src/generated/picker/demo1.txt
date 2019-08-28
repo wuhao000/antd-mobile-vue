@@ -2,6 +2,7 @@ import {district, provinceLite} from 'antd-mobile-demo-data';
 import arrayTreeFilter from 'array-tree-filter';
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import {Prop} from 'vue-property-decorator';
 import List from '../../list';
 import WhiteSpace from '../../white-space';
 import Picker from '../index';
@@ -11,12 +12,16 @@ import Picker from '../index';
   name: 'CustomChildren'
 })
 class CustomChildren extends Vue {
+
+  @Prop()
+  public extra: any;
+
   public render() {
     return <div
         onclick={(e) => {
           this.$emit('click', e);
         }}
-        style={{backgroundColor: '#fff', paddingLeft: 15}}
+        style={{backgroundColor: '#fff', paddingLeft: '15px'}}
     >
       <div class="test" style={{display: 'flex', height: '45px', lineHeight: '45px'}}>
         <div
@@ -26,7 +31,7 @@ class CustomChildren extends Vue {
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap'
             }}>{this.$slots.default}</div>
-        <div style={{textAlign: 'right', color: '#888', marginRight: 15}}>{this.$attrs.extra}</div>
+        <div style={{textAlign: 'right', color: '#888', marginRight: 15}}>{this.extra}</div>
       </div>
     </div>;
   }
@@ -68,6 +73,7 @@ const colorStyle = {
 })
 export default class PickerExample extends Vue {
   public state = {
+    value1: ['340000', '341500', '341502'],
     data: [],
     cols: 1,
     pickerValue: [],
@@ -179,10 +185,9 @@ export default class PickerExample extends Vue {
         <Picker extra="请选择(可选)"
                 data={district}
                 title="Areas"
-                value={['340000', '341500', '341502']}
+                vModel={this.state.value1}
                 onOk={e => console.log('ok', e)}
-                onDismiss={e => console.log('dismiss', e)}
-        >
+                onDismiss={e => console.log('dismiss', e)}>
           <List.Item arrow="horizontal">Multiple & cascader</List.Item>
         </Picker>
         <Picker
@@ -214,8 +219,7 @@ export default class PickerExample extends Vue {
             data={district}
             value={this.state.pickerValue}
             onChange={v => this.state.pickerValue = v}
-            onOk={v => this.state.pickerValue = v}
-        >
+            onOk={v => this.state.pickerValue = v}>
           <CustomChildren>Customized children</CustomChildren>
         </Picker>
         <Picker
@@ -234,8 +238,7 @@ export default class PickerExample extends Vue {
             data={this.colors}
             value={this.state.colorValue}
             cols={1}
-            onChange={this.onChangeColor.bind(this)}
-        >
+            onChange={this.onChangeColor.bind(this)}>
           <List.Item arrow="horizontal">Complex Labels</List.Item>
         </Picker>
       </List>

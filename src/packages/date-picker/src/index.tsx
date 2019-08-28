@@ -10,7 +10,7 @@ import {formatFn} from './utils';
 @Component({
   name: 'MDatePicker'
 })
-export default class DatePicker extends DatePickerProps {
+class DatePicker extends DatePickerProps {
   @Prop({type: String, default: ''})
   public placeholder: string;
   @Prop({
@@ -41,6 +41,7 @@ export default class DatePicker extends DatePickerProps {
 
   private scrollValue: any;
   public static install: (Vue) => void;
+  public static Item: any;
 
   public setScrollValue(v: any) {
     this.scrollValue = v;
@@ -137,3 +138,4 @@ export default class DatePicker extends DatePickerProps {
     this.$emit('input', v);
   }
 }
+export default DatePicker as any;

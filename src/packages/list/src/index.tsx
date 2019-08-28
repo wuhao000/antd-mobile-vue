@@ -19,8 +19,8 @@ class List extends Vue {
   public prefixCls?: string;
   @Prop({type: String})
   public role?: string;
-  @Prop({type: String})
-  public title: string;
+  @Prop({type: [String, Object]})
+  public title: string | VNode;
   @Prop({type: Number, default: 8})
   public spaceBetweenSection: number;
   public static Item = Item;
@@ -51,10 +51,10 @@ class List extends Vue {
 
   public clearValidate(props = []) {
     const fields = props.length
-        ? (typeof props === 'string'
-                ? this.fields.filter(field => props === (field as any).prop)
-                : this.fields.filter(field => props.indexOf((field as any).prop) > -1)
-        ) : this.fields;
+      ? (typeof props === 'string'
+          ? this.fields.filter(field => props === (field as any).prop)
+          : this.fields.filter(field => props.indexOf((field as any).prop) > -1)
+      ) : this.fields;
     fields.forEach(field => {
       (field as any).clearValidate();
     });
@@ -145,17 +145,17 @@ class List extends Vue {
       });
     }
     return (
-        <div class={wrapCls}>
-          {this.$slots.title ? this.$slots.title : (
-              this.title ? <div class={`${prefixCls}-header`}>
-                {this.title}
-              </div> : null
-          )}
-          {children.length ? (
-              <div class={`${prefixCls}-body`}>{children}</div>
-          ) : null}
-          {this.$slots.footer ? this.$slots.footer : null}
-        </div>
+      <div class={wrapCls}>
+        {this.$slots.title ? this.$slots.title : (
+          this.title ? <div class={`${prefixCls}-header`}>
+            {this.title}
+          </div> : null
+        )}
+        {children.length ? (
+          <div class={`${prefixCls}-body`}>{children}</div>
+        ) : null}
+        {this.$slots.footer ? this.$slots.footer : null}
+      </div>
     );
   }
 }
