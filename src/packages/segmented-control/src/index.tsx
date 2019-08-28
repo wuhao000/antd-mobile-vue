@@ -115,4 +115,4 @@ class SegmentedControl extends Vue {
   }
 }
 
-export default SegmentedControl;
+export default SegmentedControl as any;

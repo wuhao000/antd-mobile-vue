@@ -57,6 +57,7 @@ export default class Demo extends Vue {
   public state = {
     date: now,
     time: now,
+    timestamp: Date.now(),
     utcDate: utcNow,
     dpValue: null,
     customChildValue: null,
@@ -69,6 +70,11 @@ export default class Demo extends Vue {
           <DatePicker.Item
               title="Datetime"
               value={this.state.date}
+              onChange={date => this.state.date = date}>
+          </DatePicker.Item>
+          <DatePicker.Item
+              title="Timestamp"
+              value={this.state.timestamp}
               onChange={date => this.state.date = date}>
           </DatePicker.Item>
           <m-date-picker

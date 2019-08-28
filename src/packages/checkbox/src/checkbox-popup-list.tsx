@@ -16,12 +16,15 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
   public placeholder: string;
   @Prop({type: Boolean, default: false})
   private clearable: boolean;
+  @Prop({type: String, default: '、'})
+  public separator: string;
 
   public popupVisible: boolean = false;
 
   private onChange(value: any[]) {
-    this.$emit('input', value);
-    this.$emit('change', value);
+    this.stateValue = value;
+    this.$emit('input', this.stateValue);
+    this.$emit('change', this.stateValue);
   }
 
   public onClick() {
@@ -34,8 +37,19 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
     const options = this.getOptions();
     // @ts-ignore
     const value = this.stateValue;
-    const selectedOptions = options.filter(it => value.includes(it.value));
-    return selectedOptions.map(it => it.label).join('、');
+    const array = [];
+    value.forEach((v, index) => {
+      const option = options.find(it => it.value === v);
+      if (option) {
+        array.push(option.label);
+      } else {
+        array.push(v);
+      }
+      if (index < value.length - 1) {
+        array.push(this.separator);
+      }
+    });
+    return array;
   }
 
   public onClear() {

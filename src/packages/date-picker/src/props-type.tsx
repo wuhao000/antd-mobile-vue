@@ -8,7 +8,7 @@ import locale from './locale/zh_CN';
 })
 export default class DatePickerProps extends Vue<IDatePickerPropsType> {
   @Prop({})
-  public value?: Date;
+  public value?: Date | number;
   @Prop({default: 'datetime'})
   public mode?: 'datetime' | 'date' | 'year' | 'month' | 'time';
   @Prop({})
@@ -52,7 +52,7 @@ export default class DatePickerProps extends Vue<IDatePickerPropsType> {
 }
 
 export interface IDatePickerPropsType {
-  value?: Date;
+  value?: Date | number;
   mode?: 'datetime' | 'date' | 'year' | 'month' | 'time';
   minDate?: Date;
   maxDate?: Date;

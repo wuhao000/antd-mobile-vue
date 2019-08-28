@@ -71,7 +71,7 @@ class DatePicker extends DatePickerProps {
     // tslint:disable-next-line:no-this-assignment
     const {value, popupPrefixCls} = this;
     const locale = getComponentLocale(this.$props, null, 'DatePicker', () =>
-        require('./locale/zh_CN')
+      require('./locale/zh_CN')
     );
     const {okText, dismissText, extra, DatePickerLocale} = locale;
 
@@ -90,46 +90,46 @@ class DatePicker extends DatePickerProps {
      *
      */
     const datePicker = (
-        // @ts-ignore
-        <RCDatePicker
-            minuteStep={this.minuteStep}
-            locale={DatePickerLocale}
-            minDate={this.minDate}
-            maxDate={this.maxDate}
-            mode={this.mode}
-            pickerPrefixCls={this.pickerPrefixCls}
-            prefixCls={this.prefixCls}
-            date={value || new Date()}
-            use12Hours={this.use12Hours}
-            onInput={(v) => {
-              this.onInput(v);
-            }}
-            onValueChange={(...args) => {
-              this.$emit('value-change', ...args);
-            }}
-            onScrollChange={this.setScrollValue}
-        />
+      // @ts-ignore
+      <RCDatePicker
+        minuteStep={this.minuteStep}
+        locale={DatePickerLocale}
+        minDate={this.minDate}
+        maxDate={this.maxDate}
+        mode={this.mode}
+        pickerPrefixCls={this.pickerPrefixCls}
+        prefixCls={this.prefixCls}
+        date={this.getDate()}
+        use12Hours={this.use12Hours}
+        onInput={(v) => {
+          this.onInput(v);
+        }}
+        onValueChange={(...args) => {
+          this.$emit('value-change', ...args);
+        }}
+        onScrollChange={this.setScrollValue}
+      />
     );
     const childExtra = value ? formatFn(this, value) : (this.extra || extra || this.placeholder);
     return (
-        <PopupDatePicker
-            datePicker={datePicker}
-            WrapComponent={'div'}
-            transitionName={'am-slide-up'}
-            maskTransitionName={'am-fade'}
-            {...this.$props as any}
-            title={this.title}
-            prefixCls={popupPrefixCls}
-            date={value || new Date()}
-            dismissText={this.dismissText || dismissText}
-            okText={this.okText || okText}
-            ref={this.fixOnOk}
-            onVisibleChange={this.onVisibleChange}>
-          {this.$slots.default && this.$slots.default.map(it => {
-            setProps(it, {extra: childExtra, arrow: 'horizontal'});
-            return it;
-          })}
-        </PopupDatePicker>
+      <PopupDatePicker
+        datePicker={datePicker}
+        WrapComponent={'div'}
+        transitionName={'am-slide-up'}
+        maskTransitionName={'am-fade'}
+        {...this.$props as any}
+        title={this.title}
+        prefixCls={popupPrefixCls}
+        date={this.getDate()}
+        dismissText={this.dismissText || dismissText}
+        okText={this.okText || okText}
+        ref={this.fixOnOk}
+        onVisibleChange={this.onVisibleChange}>
+        {this.$slots.default && this.$slots.default.map(it => {
+          setProps(it, {extra: childExtra, arrow: 'horizontal'});
+          return it;
+        })}
+      </PopupDatePicker>
     );
   }
 
@@ -137,5 +137,14 @@ class DatePicker extends DatePickerProps {
     this.$emit('change', v);
     this.$emit('input', v);
   }
+
+  private getDate() {
+    if (typeof this.value === 'number') {
+      return new Date(this.value);
+    } else {
+      return this.value || new Date();
+    }
+  }
 }
+
 export default DatePicker as any;

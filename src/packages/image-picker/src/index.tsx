@@ -8,7 +8,7 @@ import TouchFeedback from '../../vmc-feedback';
 @Component({
   name: 'ImagePicker'
 })
-export default class ImagePicker extends Vue {
+class ImagePicker extends Vue {
   @Prop({
     type: String,
     default: 'am-image-picker'
@@ -115,28 +115,28 @@ export default class ImagePicker extends Vue {
     this.$emit('change', newImages, 'add');
   }
 
-  public onImageClick(index: number) {
-    this.$emit('click', this.value);
+  public onImageClick(image: any, index: number) {
+
+    this.$emit('click', image, index);
   }
 
-  public onFileChange() {
-    const fileSelectorEl = this.fileSelectorInput;
-    if (fileSelectorEl && fileSelectorEl.files && fileSelectorEl.files.length) {
-      const files = fileSelectorEl.files;
+  public onFileChange(e) {
+    if (e && e.target && e.target.files && e.target.files.length) {
+      const files = e.target.files;
       const imageParsePromiseList = [];
       for (let i = 0; i < files.length; i++) {
         imageParsePromiseList.push(this.parseFile(files[i], i));
       }
       Promise.all(imageParsePromiseList)
-          .then(imageItems => this.addImage(imageItems))
-          .catch(
-              error => {
-                this.$emit('fail', error);
-              }
-          );
+        .then(imageItems => this.addImage(imageItems))
+        .catch(
+          error => {
+            this.$emit('fail', error);
+          }
+        );
     }
-    if (fileSelectorEl) {
-      fileSelectorEl.value = '';
+    if (e && e.target) {
+      e.target.value = '';
     }
   }
 
@@ -187,64 +187,62 @@ export default class ImagePicker extends Vue {
     const wrapCls = classnames(`${prefixCls}`);
 
     value.forEach((image: any, index: number) => {
-      const imgStyle = {
+      const imgStyle = typeof image === 'string' ? {
+        backgroundImage: `url(${image})`
+      } : {
         backgroundImage: `url(${image.url})`,
         transform: `rotate(${this.getRotation(image.orientation)}deg)`
       };
       const itemStyle = {};
-
       imgItemList.push(
-          <Flex.Item
-              key={`item-${index}`}
-              style={itemStyle}
-          >
-            <div key={index} class={`${prefixCls}-item`}>
-              <div
-                  class={`${prefixCls}-item-remove`}
-                  role="button"
-                  aria-label="Click and Remove this image"
-                  // tslint:disable-next-line:jsx-no-multiline-js
-                  onClick={() => {
-                    this.removeImage(index);
-                  }}
-              />
-              <div
-                  class={`${prefixCls}-item-content`}
-                  role="button"
-                  aria-label="Image can be clicked"
-                  // tslint:disable-next-line:jsx-no-multiline-js
-                  onClick={() => {
-                    this.onImageClick(index);
-                  }}
-                  style={imgStyle}
-              />
-            </div>
-          </Flex.Item>
+        <Flex.Item
+          key={`item-${index}`}
+          style={itemStyle}>
+          <div key={index} class={`${prefixCls}-item`}>
+            <div
+              class={`${prefixCls}-item-remove`}
+              role="button"
+              aria-label="Click and Remove this image"
+              // tslint:disable-next-line:jsx-no-multiline-js
+              onClick={() => {
+                this.removeImage(index);
+              }}
+            />
+            <div
+              class={`${prefixCls}-item-content`}
+              role="button"
+              aria-label="Image can be clicked"
+              // tslint:disable-next-line:jsx-no-multiline-js
+              onClick={() => {
+                this.onImageClick(image, index);
+              }}
+              style={imgStyle}
+            />
+          </div>
+        </Flex.Item>
       );
     });
 
     const selectEl = (
-        <Flex.Item key="select">
-          <TouchFeedback activeClassName={`${prefixCls}-upload-btn-active`}>
-            <div
-                class={`${prefixCls}-item ${prefixCls}-upload-btn`}
-                onClick={
-                  this.onImageClick
-                }
-                role="button"
-                aria-label="Choose and add image"
-            >
-              <input
-                  ref={'fileSelectorInput'}
-                  type="file"
-                  accept={accept}
-                  // tslint:disable-next-line:jsx-no-multiline-js
-                  onchange={this.onFileChange}
-                  multiple={multiple}
-              />
-            </div>
-          </TouchFeedback>
-        </Flex.Item>
+      <Flex.Item key="select">
+        <TouchFeedback activeClassName={`${prefixCls}-upload-btn-active`}>
+          <div
+            class={`${prefixCls}-item ${prefixCls}-upload-btn`}
+            onClick={this.onImageClick}
+            role="button"
+            aria-label="选择并添加图片">
+            <input
+              ref="fileSelectorInput"
+              type="file"
+              accept={accept}
+              onchange={(v) => {
+                this.onFileChange(v);
+              }}
+              multiple={multiple}
+            />
+          </div>
+        </TouchFeedback>
+      </Flex.Item>
     );
 
     let allEl = selectable ? imgItemList.concat([selectEl]) : imgItemList;
@@ -263,15 +261,21 @@ export default class ImagePicker extends Vue {
       flexEl.push(rowEl);
     }
     const renderEl = flexEl.map((item, index) => (
-        <Flex key={`flex-${index}`}>{item}</Flex>
+      <Flex key={`flex-${index}`}>{item}</Flex>
     ));
 
     return (
-        <div class={wrapCls}>
-          <div class={`${prefixCls}-list`} role="group">
-            {renderEl}
-          </div>
+      <div class={wrapCls}>
+        <div class={`${prefixCls}-list`} role="group">
+          {renderEl}
         </div>
+      </div>
     );
   }
+
+  get showSelector() {
+    return this.selectable && (!this.value || this.value.length < this.length);
+  }
 }
+
+export default ImagePicker as any;
