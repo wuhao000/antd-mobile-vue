@@ -96,8 +96,8 @@ module.exports = {
       'import',
       {
         libraryName: 'antd-mobile-vue',
-        libraryDirectory: 'es',
-        style: true
+        libraryDirectory: 'src/packages',
+        style: false
       },
       'antd-mobile-vue'
     ]
