@@ -82,7 +82,7 @@ var DialogWrap = {
         getContainer: this.getContainer2,
         children: function children(_ref) {
           var renderComponent = _ref.renderComponent,
-              removeContainer = _ref.removeContainer.bind(_ref);
+              removeContainer = _ref.removeContainer.bind(_ref).bind(_ref);
 
           _this.renderComponent = renderComponent;
           _this.removeContainer = removeContainer;

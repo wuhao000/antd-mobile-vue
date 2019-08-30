@@ -96,7 +96,7 @@ var Notification = {
       var content = notice.content,
           duration = notice.duration,
           closable = notice.closable,
-          onClose = notice.onClose.bind(notice),
+          onClose = notice.onClose.bind(notice).bind(notice),
           style = notice.style,
           className = notice['class'];
 

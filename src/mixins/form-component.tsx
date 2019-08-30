@@ -5,7 +5,6 @@ import debounce from 'lodash.debounce';
 import Component from 'vue-class-component';
 import {Inject, Prop, Watch} from 'vue-property-decorator';
 
-
 const noop = function noop(a?, b?) {
 };
 
@@ -56,7 +55,7 @@ export class FormComponent extends Emitter {
             class={`${this.prefixCls}-error-extra`}
             onClick={(e) => {
               if (this.currentErrorMessage && this.$toast) {
-                this.$toast.info(this.currentErrorMessage);
+                this.$toast.fail(this.currentErrorMessage);
               }
               this.$emit('error-click', e);
             }}

@@ -608,10 +608,10 @@ var Drawer = {
         getContainer: this.getSelfContainer,
         children: function children(_ref) {
           var renderComponent = _ref.renderComponent,
-              removeContainer = _ref.removeContainer.bind(_ref);
+              removeContainer = _ref.removeContainer.bind(_ref).bind(_ref);
 
           _this6.renderComponent = renderComponent;
-          _this6.removeContainer = removeContainer;
+          _this6.removeContainer.bind(_this6) = removeContainer;
           return null;
         }
       }

@@ -1,12 +1,9 @@
 属性 | 说明 | 类型 | 默认值 
 ------ | ------ | ------ | ---
-className||string|
-clear|是否支持清除内容|boolean|false
 clearable|是否支持清除内容|boolean|false
-defaultValue||string|
 disabled|是否禁用|boolean|false
 editable|是否可编辑|boolean|true
-error||boolean|false
+error|错误信息|boolean|false
 extra|右边注释|any|
 labelNumber||number|5
 labelPosition||'left' \| 'top'|5
