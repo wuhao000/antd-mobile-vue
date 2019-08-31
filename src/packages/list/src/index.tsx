@@ -1,4 +1,3 @@
-/* tslint:disable:jsx-no-multiline-js */
 import {ValidateRules} from 'async-validator';
 import classnames from 'classnames';
 import Vue, {VNode} from 'vue';
@@ -32,6 +31,10 @@ class List extends Vue {
   public model: object;
   @Prop({type: Object})
   public rules: ValidateRules;
+  @Prop({type: Boolean, default: false})
+  public disabled: boolean;
+  @Prop({type: Boolean, default: true})
+  public editable: boolean;
   public static install: (Vue) => void;
   public fields: any[] = [];
 

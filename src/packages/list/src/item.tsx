@@ -16,9 +16,9 @@ export class Brief extends Vue {
 
   public render() {
     return (
-        <div class={'am-list-brief'}>
-          {this.$slots.default}
-        </div>
+      <div class={'am-list-brief'}>
+        {this.$slots.default}
+      </div>
     );
   }
 }
@@ -57,8 +57,8 @@ class Item extends Vue {
   public wrap: boolean;
   @Prop({type: String})
   public arrow: 'horizontal' | 'down' | 'up' | 'empty' | '';
-  @Prop({type: String, default: ''})
-  public title: string;
+  @Prop({type: [String, Object], default: ''})
+  public title: string | VNode;
   @Prop({type: String, default: 'left'})
   public labelPosition: 'top' | 'left';
   public static Brief = Brief;
@@ -82,7 +82,12 @@ class Item extends Vue {
   })
   public extraStyle: object;
   @Prop({type: Boolean, default: true})
-  private touchFeedback: boolean;
+  public touchFeedback: boolean;
+  @Prop()
+  public suffix: VNode | undefined;
+  @Prop({type: String, default: 'text'})
+  private errorDisplayType: 'toast' | 'popover' | 'text';
+  private showErrorPopover: boolean = false;
 
   public beforeDestroy() {
     if (this.debounceTimeout) {
@@ -118,33 +123,49 @@ class Item extends Vue {
     this.$emit('click');
   }
 
+  get actualError() {
+    return this.error || this.$parent['error'];
+  }
+
+  get actualErrorMessage() {
+    return this.errorMessage || this.$parent['errorMessage'];
+  }
+
+  get actualDisabled() {
+    return this.disabled;
+  }
+
+  get actualErrorDisplayType() {
+    return this.errorDisplayType && this.$parent['errorDisplayType'];
+  }
+
   public render() {
     const {
       prefixCls,
       activeStyle,
-      error,
       align,
       wrap,
       disabled,
       multipleLine,
-      thumb,
       arrow
     } = this.$props;
     const {coverRippleStyle, rippleClicked} = this;
     const section = this.$parent['section'];
+    const actualError = this.actualError;
     const wrapCls = classNames(`${prefixCls}-item`,
-        `${prefixCls}-item-label-` + this.labelPosition,
-        {
-          [`${prefixCls}-item-disabled`]: disabled,
-          [`${prefixCls}-item-error`]: error,
-          [`${prefixCls}-item-top`]: align === 'top',
-          [`${prefixCls}-item-middle`]: align === 'middle',
-          [`${prefixCls}-item-bottom`]: align === 'bottom',
-          [`${prefixCls}-item-section`]: section,
-          [`${prefixCls}-item-extra-left`]: this.extraPosition === 'left',
-          [`${prefixCls}-item-extra-center`]: this.extraPosition === 'center',
-          [`${prefixCls}-item-extra-right`]: this.extraPosition === 'right'
-        });
+      `${prefixCls}-item-label-` + this.labelPosition,
+      {
+        [`${prefixCls}-item-disabled`]: this.actualDisabled,
+        [`${prefixCls}-item-error`]: actualError,
+        [`${prefixCls}-item-error-text`]: actualError && this.actualErrorDisplayType === 'text',
+        [`${prefixCls}-item-top`]: align === 'top',
+        [`${prefixCls}-item-middle`]: align === 'middle',
+        [`${prefixCls}-item-bottom`]: align === 'bottom',
+        [`${prefixCls}-item-section`]: section,
+        [`${prefixCls}-item-extra-left`]: this.extraPosition === 'left',
+        [`${prefixCls}-item-extra-center`]: this.extraPosition === 'center',
+        [`${prefixCls}-item-extra-right`]: this.extraPosition === 'right'
+      });
 
     const rippleCls = classNames(`${prefixCls}-ripple`, {
       [`${prefixCls}-ripple-animate`]: rippleClicked
@@ -161,46 +182,69 @@ class Item extends Vue {
       [`${prefixCls}-arrow-vertical-up`]: arrow === 'up'
     });
     const content = (
-        <div onClick={this.onClick} class={wrapCls}>
-          {this.renderThumb()}
-          <div class={lineCls}>
-            {this.renderLabel()}
-            {this.renderExtra()}
-            {this.error ? (
-                <div
-                    class={`${prefixCls}-error-extra`}
-                    onClick={(e) => {
-                      if (this.errorMessage && this.$toast) {
-                        this.$toast.info(this.errorMessage);
-                      }
-                      this.$emit('error-click', e);
-                    }}
-                />
-            ) : null}
-            {arrow && <div class={arrowCls}
-                           aria-hidden={'true'}/>}
-          </div>
-          <div style={coverRippleStyle} class={rippleCls}/>
+      <div onClick={this.onClick} class={wrapCls}>
+        {this.renderThumb()}
+        <div class={lineCls}>
+          {this.renderLabel()}
+          {this.renderExtra()}
+          {arrow && <div class={arrowCls}
+                         aria-hidden={'true'}/>}
+          {this.actualError && this.errorDisplayType !== 'text' ? (
+            <div
+              class={`${prefixCls}-error-extra`}
+              onClick={(e) => {
+                if (this.actualErrorMessage) {
+                  if (this.$toast && this.actualErrorDisplayType === 'toast') {
+                    this.$toast.fail(this.actualErrorMessage);
+                  }
+                  if (this.actualErrorDisplayType === 'popover' && !this.showErrorPopover) {
+                    this.showErrorPopover = true;
+                  }
+                }
+                this.$emit('error-click', e);
+                this.$emit('errorClick', e);
+              }}>
+              <m-popover vModel={this.showErrorPopover}
+                         mask={false}>
+                <m-popover-item slot="content">
+                  {this.errorMessage}
+                </m-popover-item>
+              </m-popover>
+            </div>
+
+          ) : null}
+          {this.$slots.suffix || this.suffix ? <div class={this.prefixCls + '-suffix'}>
+            {this.$slots.suffix || this.suffix}
+          </div> : null}
         </div>
+        <div style={coverRippleStyle} class={rippleCls}/>
+      </div>
     );
 
     return (
-        // @ts-ignore
-        <TouchFeedback
-            disabled={disabled || !this.$listeners.click || !this.touchFeedback || (this.list && !this.list.touchFeedback)}
-            activeStyle={activeStyle}
-            activeClassName={`${prefixCls}-item-active`}>
-          {content}
-        </TouchFeedback>
+      // @ts-ignore
+      <TouchFeedback
+        disabled={disabled || !this.$listeners.click || !this.touchFeedback || (this.list && !this.list.touchFeedback)}
+        activeStyle={activeStyle}
+        activeClassName={`${prefixCls}-item-active`}>
+        {content}
+      </TouchFeedback>
     );
   }
 
   private renderExtra() {
     return (this.$slots.extra !== undefined || this.extra) ? (
-        <div style={this.extraStyle}
-             class={classNames(`${this.prefixCls}-extra`, {
-               [this.prefixCls + '-extra-text']: this.text
-             })}>{this.$slots.extra || this.extra}</div>
+      <div style={this.extraStyle}
+           class={classNames(`${this.prefixCls}-extra`, {
+             [this.prefixCls + '-extra-text']: this.text
+           })}>{this.$slots.extra || this.extra}
+        {
+          this.errorDisplayType === 'text' && this.actualError && this.actualErrorMessage ?
+            <div>
+              {this.actualErrorMessage}
+            </div> : null
+        }
+      </div>
     ) : null;
   }
 
@@ -220,13 +264,13 @@ class Item extends Vue {
   private renderLabel() {
     if (this.$slots.default !== undefined) {
       return (
-          <div class={`${this.prefixCls}-content`}
-               style={this.contentStyle}>{this.$slots.default}</div>
+        <div class={`${this.prefixCls}-content`}
+             style={this.contentStyle}>{this.$slots.default}</div>
       );
     } else if (this.title) {
       return (
-          <div class={`${this.prefixCls}-content`}
-               style={this.contentStyle}>{this.title}</div>
+        <div class={`${this.prefixCls}-content`}
+             style={this.contentStyle}>{this.title}</div>
       );
     } else {
       return null;

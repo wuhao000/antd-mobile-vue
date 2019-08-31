@@ -13,8 +13,14 @@ export class SimpleFormComponent extends Vue {
   public disabled: boolean;
   @Prop({type: Boolean})
   public readOnly: boolean;
-  @Inject({from: 'form', default: undefined})
+  @Inject({from: 'list', default: undefined})
   public form: any;
+  @Prop({type: Boolean, default: false})
+  public error: boolean;
+  @Prop({type: String})
+  public errorMessage: string;
+  @Prop({type: String})
+  public errorDisplayType: string;
 
   get isDisabled() {
     let disabled = this.disabled;
@@ -40,7 +46,7 @@ export class SimpleFormComponent extends Vue {
     let isReadonly = this.readOnly;
     if (this.form) {
       if (!isReadonly) {
-        isReadonly = this.form.readOnly;
+        isReadonly = !this.form.editable;
       }
     }
     return isReadonly;

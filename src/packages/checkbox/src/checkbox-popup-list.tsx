@@ -59,7 +59,6 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
   }
 
   public render() {
-    const MPopup = Popup as any;
     const Item = List.Item as any;
     const listProps = {
       ...this.$attrs,
@@ -71,14 +70,15 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
                               class={`am-popup-item am-popup-header-left`}>清除</div>;
     return <Item onClick={this.onClick}
                  touchFeedback={!this.readOnly && !this.disabled}
-                 disabled={this.disabled}
+                 disabled={this.isDisabled}
                  extraStyle={{flexBasis: '60%'}}>
-      <MPopup value={this.popupVisible}
-              showCancel={this.clearable}
-              cancelButton={cancelButton}
-              title={this.title}
-              onOk={this.closePopup}
-              onCancel={this.closePopup}>
+      <Popup value={this.isDisabled ? false : this.popupVisible}
+             showCancel={this.clearable}
+             disabled={this.disabled || this.isReadonly}
+             cancelButton={cancelButton}
+             title={this.title}
+             onOk={this.closePopup}
+             onCancel={this.closePopup}>
         <CheckboxList
           attrs={
             listProps
@@ -86,7 +86,7 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
           maxHeightPercentage={0.7}
           onChange={this.onChange}
         />
-      </MPopup>
+      </Popup>
       <span slot={'extra'}>{this.stateValue && this.stateValue.length ? this.optionText : this.placeholder}</span>
       <span>{this.title}</span>
     </Item>;

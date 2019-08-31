@@ -1,12 +1,13 @@
 import RcSlider from 'ant-design-vue/es/vc-slider/src/Slider';
-import Vue, {VNode} from 'vue';
+import {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
+import {FormComponent} from '../../../mixins/form-component';
 
 @Component({
   name: 'Slider'
 })
-class Slider extends Vue {
+class Slider extends FormComponent {
   @Prop({
     type: String,
     default: 'am-slider'
@@ -19,10 +20,6 @@ class Slider extends Vue {
   @Prop({type: Boolean})
   public included?: boolean;
   @Prop({})
-  public maximumTrackStyle?: any;
-  @Prop({})
-  public minimumTrackStyle?: any;
-  @Prop({})
   public handleStyle?: any;
   @Prop({})
   public trackStyle?: any;
@@ -31,30 +28,27 @@ class Slider extends Vue {
   @Prop({})
   public tipFormatter?: (value?: string) => VNode;
   @Prop({type: Number})
-  public value?: number;
-  @Prop({type: Number})
   public min?: number;
   @Prop({type: Number})
   public max?: number;
   @Prop({type: Number})
   public step?: number;
-  @Prop({type: Boolean})
-  public disabled?: boolean;
   @Prop({})
   public handle?: any;
   public static install: (Vue) => void;
 
   public render() {
+    const props = Object.assign({}, this.$props, {disabled: this.isDisabled});
     return (
-        <div class={`${this.prefixCls}-wrapper`}>
-          <RcSlider props={this.$props} on={{
-            ...this.$listeners,
-            change: (value) => {
-              this.$emit('input', value);
-              this.$emit('change', value);
-            }
-          }}/>
-        </div>
+      <div class={`${this.prefixCls}-wrapper`}>
+        <RcSlider props={props}
+                  value={this.currentValue}
+                  on={{
+                    change: (value) => {
+                      this.currentValue = value;
+                    }
+                  }}/>
+      </div>
     );
   }
 }

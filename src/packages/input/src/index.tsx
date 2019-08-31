@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
 import {FormComponent} from '../../../mixins/form-component';
+import List from '../../list';
 import TouchFeedback from '../../vmc-feedback';
 import CustomInput from './custom-input';
 import Input from './input';
@@ -85,6 +86,8 @@ export default class InputItem extends FormComponent {
   public textAlign?: 'left' | 'center' | 'right';
   @Prop()
   public locale?: object;
+  @Prop({type: Boolean, default: false})
+  public android: boolean;
   public state = {
     placeholder: this.placeholder || ''
   };
@@ -155,7 +158,7 @@ export default class InputItem extends FormComponent {
           ctrlValue = `${ctrlValue.substr(0, 3)} ${ctrlValue.substr(3)}`;
         } else if (valueLen >= 8) {
           ctrlValue = `${ctrlValue.substr(0, 3)} ${ctrlValue.substr(3, 4)} ${ctrlValue.substr(
-              7
+            7
           )}`;
         }
         break;
@@ -300,15 +303,14 @@ export default class InputItem extends FormComponent {
     } = this;
 
     const wrapCls = classnames(
-        `${prefixListCls}-item`,
-        `${prefixCls}-item`,
-        `${prefixListCls}-item-middle`,
-        {
-          [`${prefixCls}-disabled`]: isDisabled,
-          [`${prefixCls}-error`]: this.isCurrentError,
-          [`${prefixCls}-focus`]: focus,
-          [`${prefixCls}-android`]: focus
-        }
+      `${prefixListCls}-item`,
+      `${prefixCls}-item`,
+      `${prefixListCls}-item-middle`,
+      {
+        [`${prefixCls}-disabled`]: isDisabled,
+        [`${prefixCls}-focus`]: focus,
+        [`${prefixCls}-android`]: this.android
+      }
     );
 
     const controlCls = `${prefixCls}-control`;
@@ -336,87 +338,87 @@ export default class InputItem extends FormComponent {
       classNameProp = 'h5numInput';
     }
     return (
-        <div class={wrapCls}>
-          <div class={`${prefixListCls}-line`}>
-            {this.renderLabel()}
-            <div class={controlCls}>
-              {type === 'money' ? (
-                  // @ts-ignore
-                  <CustomInput
-                      attrs={
-                        {
-                          value: normalizeValue(currentValue),
-                          type,
-                          maxLength,
-                          placeholder,
-                          disabled: isDisabled,
-                          editable: !isReadonly,
-                          prefixCls,
-                          confirmLabel,
-                          backspaceLabel,
-                          cancelKeyboardLabel,
-                          moneyKeyboardAlign,
-                          moneyKeyboardWrapProps,
-                          moneyKeyboardHeader
-                        }
-                      }
-                      onChange={this.onInputChange}
-                      onFocus={this.onInputFocus}
-                      onBlur={this.onInputBlur}
-                      onConfirm={(v) => {
-                        this.$emit('confirm', v);
-                      }}
-                      ref={'input'}
-                  />
-              ) : (
-                  <Input
-                      props={
-                        {
-                          ...patternProps,
-                          value: normalizeValue(currentValue),
-                          defaultValue: undefined,
-                          textAlign: this.textAlign,
-                          type: inputType,
-                          maxLength,
-                          name,
-                          placeholder,
-                          readonly: isReadonly,
-                          disabled: isDisabled
-                        }
-                      }
-                      class={classNameProp}
-                      ref={'input'}
-                      on={
-                        {
-                          change: this.onInputChange,
-                          focus: this.onInputFocus,
-                          blur: this.onInputBlur
-                        }
-                      }
-                  />
-              )}
-            </div>
-            {clearable &&
-            !isReadonly &&
-            !isDisabled &&
-            (currentValue && `${currentValue}`.length > 0) ? (
-                // @ts-ignore
-                <TouchFeedback activeClassName={`${prefixCls}-clear-active`}>
-                  <div class={`${prefixCls}-clear`}
-                       onClick={this.clearInput}/>
-                </TouchFeedback>
-            ) : null}
-            {this.errorIcon}
-            {extra !== '' ? (
-                <div class={`${prefixCls}-extra`}
-                     onClick={(e) => {
-                       this.$emit('extra-click', e);
-                     }}>
-                  {extra}
-                </div>
-            ) : null}
-          </div>
+      <List.Item title={this.renderLabel()}
+                 error={this.error}
+                 errorMessage={this.errorMessage}
+                 errorDisplayType={this.errorDisplayType}
+                 class={wrapCls}>
+        <div class={controlCls} slot="extra">
+          {type === 'money' ? (
+            // @ts-ignore
+            <CustomInput
+              attrs={
+                {
+                  value: normalizeValue(currentValue),
+                  type,
+                  maxLength,
+                  placeholder,
+                  disabled: isDisabled,
+                  editable: !isReadonly,
+                  prefixCls,
+                  confirmLabel,
+                  backspaceLabel,
+                  cancelKeyboardLabel,
+                  moneyKeyboardAlign,
+                  moneyKeyboardWrapProps,
+                  moneyKeyboardHeader
+                }
+              }
+              onChange={this.onInputChange}
+              onFocus={this.onInputFocus}
+              onBlur={this.onInputBlur}
+              onConfirm={(v) => {
+                this.$emit('confirm', v);
+              }}
+              ref={'input'}
+            />
+          ) : (
+            <Input
+              props={
+                {
+                  ...patternProps,
+                  value: normalizeValue(currentValue),
+                  defaultValue: undefined,
+                  textAlign: this.textAlign,
+                  type: inputType,
+                  maxLength,
+                  name,
+                  placeholder,
+                  readonly: isReadonly,
+                  disabled: isDisabled
+                }
+              }
+              class={classNameProp}
+              ref={'input'}
+              on={
+                {
+                  change: this.onInputChange,
+                  focus: this.onInputFocus,
+                  blur: this.onInputBlur
+                }
+              }
+            />
+          )}
         </div>
+        {clearable &&
+        !isReadonly &&
+        !isDisabled &&
+        (currentValue && `${currentValue}`.length > 0) ? (
+          // @ts-ignore
+          <TouchFeedback slot="suffix" activeClassName={`${prefixCls}-clear-active`}>
+            <div class={`${prefixCls}-clear`}
+                 onClick={this.clearInput}/>
+          </TouchFeedback>
+        ) : null}
+        {extra !== '' ? (
+          <div class={`${prefixCls}-extra`}
+               onClick={(e) => {
+                 this.$emit('extra-click', e);
+               }}>
+            {extra}
+          </div>
+        ) : null}
+      </List.Item>
     );
   }
 }

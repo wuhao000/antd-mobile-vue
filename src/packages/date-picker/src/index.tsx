@@ -68,7 +68,6 @@ class DatePicker extends DatePickerProps {
   }
 
   public render() {
-    // tslint:disable-next-line:no-this-assignment
     const {value, popupPrefixCls} = this;
     const locale = getComponentLocale(this.$props, null, 'DatePicker', () =>
       require('./locale/zh_CN')
@@ -111,6 +110,7 @@ class DatePicker extends DatePickerProps {
       />
     );
     const childExtra = value ? formatFn(this, value) : (this.extra || extra || this.placeholder);
+    const visible = (this.disabled || !this.editable) ? false : this.visible;
     return (
       <PopupDatePicker
         datePicker={datePicker}
@@ -119,6 +119,9 @@ class DatePicker extends DatePickerProps {
         maskTransitionName={'am-fade'}
         {...this.$props as any}
         title={this.title}
+        disabled={this.disabled}
+        editable={this.editable}
+        visible={visible}
         prefixCls={popupPrefixCls}
         date={this.getDate()}
         dismissText={this.dismissText || dismissText}

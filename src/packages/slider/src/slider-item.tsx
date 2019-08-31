@@ -1,13 +1,14 @@
-import Vue, {VNode} from 'vue';
+import {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
+import {FormComponent} from '../../../mixins/form-component';
 import List from '../../list';
 import Slider from './index';
 
 @Component({
   name: 'SliderItem'
 })
-export default class SliderItem extends Vue {
+export default class SliderItem extends FormComponent {
   @Prop({
     type: String,
     default: 'am-slider'
@@ -32,15 +33,11 @@ export default class SliderItem extends Vue {
   @Prop({})
   public tipFormatter?: (value?: string) => VNode;
   @Prop({type: Number})
-  public value?: number;
-  @Prop({type: Number})
   public min?: number;
   @Prop({type: Number})
   public max?: number;
   @Prop({type: Number})
   public step?: number;
-  @Prop({type: Boolean})
-  public disabled?: boolean;
   @Prop({})
   public handle?: any;
   @Prop({type: String})
@@ -49,15 +46,20 @@ export default class SliderItem extends Vue {
 
   public render() {
     return (
-        <List.Item title={this.title}>
-          <Slider slot="extra" props={this.$props} on={{
-            ...this.$listeners,
-            change: (value) => {
-              this.$emit('input', value);
-              this.$emit('change', value);
-            }
-          }}/>
-        </List.Item>
+      <List.Item multipleLine
+                 disabled={this.isDisabled}>
+        {this.title}
+        <List.Item.Brief style={{padding: '15px'}}>
+          <Slider props={this.$props}
+                  disabled={this.isDisabled}
+                  value={this.currentValue}
+                  on={{
+                    change: (v) => {
+                      this.currentValue = v;
+                    }
+                  }}/>
+        </List.Item.Brief>
+      </List.Item>
     );
   }
 }

@@ -11,6 +11,10 @@ export default class PopupDatePicker extends Vue {
   public datePicker: VNode;
   @Prop()
   public date?: any;
+  @Prop({type: Boolean, default: false})
+  public disabled: boolean;
+  @Prop({type: Boolean, default: true})
+  public editable: boolean;
   @Inject({from: 'store', default: undefined})
   public store: {
     value: Date,
@@ -44,6 +48,7 @@ export default class PopupDatePicker extends Vue {
           ...this.$attrs
         }
       }
+      disabled={this.disabled || !this.editable}
       onDismiss={this.onDismiss}
       onOk={this.onOk}
     >{this.$slots.default}</PopupPicker>);

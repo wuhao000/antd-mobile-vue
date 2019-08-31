@@ -1,9 +1,8 @@
-import Emitter from './emitter';
-import {getPropByPath} from './utils';
 import AsyncValidator, {ValidateRule} from 'async-validator';
-import debounce from 'lodash.debounce';
 import Component from 'vue-class-component';
 import {Inject, Prop, Watch} from 'vue-property-decorator';
+import Emitter from './emitter';
+import {getPropByPath} from './utils';
 
 const noop = function noop(a?, b?) {
 };
@@ -25,13 +24,12 @@ export class FormComponent extends Emitter {
   @Prop({type: String})
   public errorMessage: string;
   public currentErrorMessage = this.errorMessage;
-  public isCurrentError = this.error;
   @Inject({from: 'list', default: undefined})
   public list: any;
   @Prop({type: String})
   public prop: string;
-  @Prop({type: Boolean})
-  public readOnly: boolean;
+  @Prop({type: Boolean, default: true})
+  public editable: boolean;
   /**
    * 是否必须
    */
@@ -42,25 +40,14 @@ export class FormComponent extends Emitter {
   public validateStatus: '' | 'success' | 'warning' | 'error' | 'validating' = '';
   @Prop()
   public value: any;
+  @Prop(String)
+  public errorDisplayType: 'toast' | 'popover' | 'text' | undefined;
   public currentValue = this.value;
   private validateDisabled: boolean = true;
+  private isCurrentError: boolean = false;
 
   get fieldValue() {
     return this.currentValue;
-  }
-
-  get errorIcon() {
-    return this.isCurrentError ? (
-        <div
-            class={`${this.prefixCls}-error-extra`}
-            onClick={(e) => {
-              if (this.currentErrorMessage && this.$toast) {
-                this.$toast.fail(this.currentErrorMessage);
-              }
-              this.$emit('error-click', e);
-            }}
-        />
-    ) : null;
   }
 
   get isDisabled() {
@@ -74,11 +61,9 @@ export class FormComponent extends Emitter {
   }
 
   get isReadonly() {
-    let isReadonly = this.readOnly;
-    if (this.list) {
-      if (!isReadonly) {
-        isReadonly = this.list.readOnly;
-      }
+    let isReadonly = !this.editable;
+    if (this.list && !isReadonly) {
+      isReadonly = this.list.editable;
     }
     return isReadonly;
   }
@@ -87,12 +72,6 @@ export class FormComponent extends Emitter {
     if (this.list) {
       this.dispatch('DForm', 'd.form.addField', [this]);
     }
-    this.validate = debounce(this.validate, 300);
-  }
-
-  @Watch('error')
-  public errorChanged(error: boolean) {
-    this.isCurrentError = error;
   }
 
   @Watch('errorMessage')
@@ -121,14 +100,13 @@ export class FormComponent extends Emitter {
     const selfRules = this.rules;
     let requiredRule = this.required !== undefined ? {required: this.required} : [];
     if ((formRules && formRules.some(rule => rule.required !== undefined))
-        || (selfRules && selfRules.some(rule => rule.required !== undefined))) {
+      || (selfRules && selfRules.some(rule => rule.required !== undefined))) {
       requiredRule = [];
     }
     return [].concat(selfRules || formRules || []).concat(requiredRule);
   }
 
   public onFieldBlur() {
-    this.validate('blur');
   }
 
   public onFieldChange() {
@@ -136,7 +114,6 @@ export class FormComponent extends Emitter {
       this.validateDisabled = false;
       return;
     }
-    this.validate('change');
   }
 
   public validate(trigger, callback = noop) {
@@ -172,7 +149,15 @@ export class FormComponent extends Emitter {
 
   @Watch('value')
   public valueChanged(value: any) {
-    this.currentValue = value;
+    if (this.currentValue !== value) {
+      this.currentValue = value;
+    }
+  }
+
+  @Watch('currentValue')
+  public currentValueChanged(currentValue: number[]) {
+    this.$emit('input', currentValue);
+    this.$emit('change', currentValue);
   }
 
 }

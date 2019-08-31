@@ -60,9 +60,9 @@ export default class MRadioPopupList extends OptionsBasedComponent {
                               class={`am-popup-item am-popup-header-left`}>清除</div>;
     return <Item onClick={this.onClick}
                  touchFeedback={!this.readOnly && !this.disabled}
-                 disabled={this.disabled}
+                 disabled={this.isDisabled}
                  extraStyle={{flexBasis: '60%'}}>
-      <MPopup value={this.popupVisible}
+      <MPopup  value={this.isDisabled ? false : this.popupVisible}
               showCancel={this.clearable}
               cancelButton={cancelButton}
               title={this.title}

@@ -13,14 +13,19 @@ export default class DatePickerItem extends BaseInputComponent {
   public title: string;
 
   public render() {
-
     return <DatePicker attrs={this.$attrs}
+                       disabled={this.isDisabled}
+                       editable={!this.isReadonly}
                        value={this.stateValue}
                        scopedSlots={this.$scopedSlots}
                        slots={this.slots}
                        on={this.listeners}
                        style={this.cssStyle}>
       <List.Item title={this.title}
+                 disabled={this.isDisabled}
+                 error={this.error}
+                 errorDisplayType={this.errorDisplayType}
+                 errorMessage={this.errorMessage}
                  arrow="horizontal"/>
     </DatePicker>;
   }

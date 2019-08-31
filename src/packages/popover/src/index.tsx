@@ -31,7 +31,7 @@ function recursiveCloneChildren(
 @Component({
   name: 'MPopover'
 })
-export default class MPopover extends Vue {
+class MPopover extends Vue {
 
   /**
    * 是否显示气泡（v-model）
@@ -52,6 +52,7 @@ export default class MPopover extends Vue {
   public maskClosable: boolean;
   public currentValue = this.value;
   public static Item: any;
+  public static install: (Vue) => void;
 
   @Watch('value')
   public valueChanged(value: boolean) {
@@ -86,3 +87,4 @@ export default class MPopover extends Vue {
     </Popover>;
   }
 }
+export default MPopover as any;

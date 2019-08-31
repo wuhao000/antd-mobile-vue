@@ -9,6 +9,7 @@
     </div>
     <demo1 id="demo1"/>
     <demo2 id="demo2"/>
+    <demo3 id="demo3"/>
     <div class="markdown-body" id="props">
       <span></span>
       <h2>属性说明</h2>
@@ -20,6 +21,7 @@
 <script lang="ts">
   import demo1 from './demo1.vue';
   import demo2 from './demo2.vue';
+  import demo3 from './demo3.vue';
   
   import Vue from 'vue';
   import Component from 'vue-class-component';
@@ -31,7 +33,7 @@
   @Component({
     name: 'ComponentDemo',
     components: {
-      demo1, demo2
+      demo1, demo2, demo3
     }
   })
   export default class ComponentDemo extends Vue {

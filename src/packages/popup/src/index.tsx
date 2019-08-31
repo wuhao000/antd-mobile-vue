@@ -68,8 +68,9 @@ class MPopup extends BaseFormComponent {
       title: this.renderHeader(),
       height: this.height || 'auto',
       width: this.width || 'auto',
+      disabled: this.isDisabled,
       placement: this.placement,
-      visible: this.stateValue
+      visible: this.isDisabled ? false : this.stateValue
     };
   }
 

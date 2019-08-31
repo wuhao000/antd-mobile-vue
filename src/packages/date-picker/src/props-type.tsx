@@ -39,6 +39,8 @@ export default class DatePickerProps extends Vue<IDatePickerPropsType> {
   public minuteStep?: number;
   @Prop({type: Boolean})
   public disabled?: boolean;
+  @Prop({type: Boolean, default: true})
+  public editable?: boolean;
   @Prop({})
   public format?: string | ((value: Date) => string);
   @Prop({type: String})

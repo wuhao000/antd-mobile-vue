@@ -8,8 +8,28 @@
 .@{listPrefixCls}-item {
 
   &.@{inputPrefixCls}-item {
-    height: @list-item-height;
     padding-left: @h-spacing-lg;
+
+    .am-list-content {
+      flex: initial;
+    }
+
+    .am-list-extra {
+      flex: 1;
+    }
+  }
+
+  &.@{listPrefixCls}-item-error {
+
+    .@{listPrefixCls}-extra {
+
+      .@{inputPrefixCls}-control {
+
+        input {
+          color: #f50;
+        }
+      }
+    }
   }
 
   &:not(:last-child) {
@@ -118,25 +138,6 @@
     min-width: 0;
     overflow: hidden;
     padding-right: 0;
-  }
-
-  &.@{inputPrefixCls}-error {
-
-    .@{inputPrefixCls}-control {
-
-      input {
-        color: #f50;
-      }
-    }
-
-    .@{inputPrefixCls}-error-extra {
-      background-size: @icon-size-sm auto;
-      height: @icon-size-sm;
-      margin-left: @v-spacing-sm;
-      .encoded-svg-background('error');
-
-      width: @icon-size-sm;
-    }
   }
 
   &.@{inputPrefixCls}-disabled {

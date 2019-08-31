@@ -2,14 +2,13 @@ import classnames from 'classnames';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
+import {FormComponent} from '../../../mixins/form-component';
 
 @Component({
   name: 'MSwitch'
 })
-export default class Switch extends Vue {
+export default class Switch extends FormComponent {
 
-  @Prop({type: Boolean, default: false})
-  public disabled?: boolean;
   @Prop({type: String})
   public color?: string;
   @Prop({type: String})
@@ -18,23 +17,10 @@ export default class Switch extends Vue {
   public prefixCls?: string;
   @Prop({type: String, default: 'ios'})
   public platform: string;
-  @Prop({type: Boolean})
-  public value: boolean;
-  public stateValue: boolean = this.value;
 
-  @Watch('value')
-  public valueChanged(value: boolean) {
-    this.stateValue = value;
-  }
-
-  @Watch('stateValue')
-  public stateValueChanged(value: boolean) {
-    this.$emit('input', value);
-    this.$emit('change', value);
-  }
 
   public onChange(e) {
-    this.stateValue = e.target.checked;
+    this.currentValue = e.target.checked;
   }
 
   public onClick(e: any) {
@@ -45,7 +31,7 @@ export default class Switch extends Vue {
     } else {
       val = this.value;
     }
-    this.stateValue = val;
+    this.currentValue = val;
   }
 
   public render() {
@@ -79,7 +65,7 @@ export default class Switch extends Vue {
     }, {});
 
     const style: any = {};
-    if (color && this.stateValue) {
+    if (color && this.currentValue) {
       style.backgroundColor = color;
     }
 
@@ -90,16 +76,16 @@ export default class Switch extends Vue {
           name={name}
           class={`${prefixCls}-checkbox`}
           disabled={disabled}
-          checked={this.stateValue}
+          checked={this.currentValue}
           onChange={this.onChange}
-          value={this.stateValue ? 'on' : 'off'}
-          {...(!disabled ? {onClick: this.onClick.bind(this)} : {})}
+          value={this.currentValue ? 'on' : 'off'}
+          {...(!disabled ? {onClick: this.onClick} : {})}
           {...globalProps}
         />
         <div
           class={fackInputCls}
           style={style}
-          {...(disabled ? {onClick: this.onClick.bind(this)} : {})}
+          {...(disabled ? {onClick: this.onClick} : {})}
         />
       </label>
     );

@@ -3,10 +3,10 @@ import Item from './src/item';
 import './style';
 
 Popover.Item = Item;
-const Plugin: any = Popover;
 
-Plugin.install = Vue => {
+Popover.install = Vue => {
   Vue.component('MPopover', Popover);
+  Vue.component('MPopoverItem', Popover.Item);
 };
 
-export default Plugin;
+export default Popover;

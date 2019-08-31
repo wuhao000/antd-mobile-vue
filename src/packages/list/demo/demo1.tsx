@@ -4,7 +4,14 @@ import {List} from '../../index';
 import './index1.less';
 
 const Item = List.Item;
-const Brief = Item.Brief;
+
+const options = [{
+  label: '选项1', value: 1
+}, {
+  label: '选项2', value: 2
+}, {
+  label: '选项3', value: 3
+}];
 
 @Component({
   name: 'ListExample'
@@ -12,7 +19,14 @@ const Brief = Item.Brief;
 export default class ListExample extends Vue {
 
   public state = {
-    disabled: false
+    disabled: false,
+    slider: 5,
+    switch: false,
+    range: [0, 100],
+    readonly: true,
+    error: true,
+    errorMessage: '有错误',
+    errorDisplayType: 'text'
   };
   public disabled: boolean = false;
 
@@ -22,89 +36,43 @@ export default class ListExample extends Vue {
 
   public render() {
     return (<div>
-      <List renderHeader={() => 'Basic Style'} class="my-list">
-        <Item onClick={this.onClick} extra={'extra content'}>Title</Item>
+      <List title="状态控制">
+        <m-switch-item title="禁用" v-model={this.state.disabled}/>
+        <m-switch-item title="只读" v-model={this.state.readonly}/>
+        <m-switch-item title="错误状态" v-model={this.state.error}/>
       </List>
-      <List renderHeader={() => 'Subtitle'} class="my-list">
-        <Item arrow="horizontal" multipleLine onClick={() => {
-        }}>
-          Title <Brief>subtitle</Brief>
-        </Item>
-        <Item
-            arrow="horizontal"
-            multipleLine
-            onClick={() => {
-            }}
-            platform="android"
-        >
-          ListItem （Android）<Brief>There may have water ripple effect of <br/> material if you set the click
-          event.</Brief>
-        </Item>
-        <Item
-            arrow="horizontal"
-            thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
-            multipleLine
-            onClick={() => {
-            }}
-        >
-          Title <Brief>subtitle</Brief>
-        </Item>
-      </List>
-      <List renderHeader={() => 'Customized Right Side（Empty Content / Text / Image）'} class="my-list">
-        <Item>Title</Item>
-        <Item arrow="horizontal" onClick={() => {
-        }}>Title</Item>
-        <Item extra="extra content" arrow="horizontal" onClick={() => {
-        }}>Title</Item>
-        <Item extra="10:30" align="top" thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
-              multipleLine>
-          Title <Brief>subtitle</Brief>
-        </Item>
-      </List>
-      <List renderHeader={() => 'Align Vertical Center'} class="my-list">
-        <Item multipleLine extra="extra content">
-          Title <Brief>subtitle</Brief>
-        </Item>
-      </List>
-      <List renderHeader={() => 'Icon in the left'}>
-        <Item
-            thumb="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"
-            arrow="horizontal"
-            onClick={() => {
-            }}
-        >My wallet</Item>
-        <Item
-            thumb="https://zos.alipayobjects.com/rmsportal/UmbJMbWOejVOpxe.png"
-            onClick={() => {
-            }}
-            arrow="horizontal"
-        >
-          My Cost Ratio
-        </Item>
-      </List>
-      <List renderHeader={() => 'Text Wrapping'} class="my-list">
-        <Item data-seed="logId">Single line，long text will be hidden with ellipsis；</Item>
-        <Item wrap>Multiple line，long text will wrap；Long Text Long Text Long Text Long Text Long Text Long Text</Item>
-        <Item extra="extra content" multipleLine align="top" wrap>
-          Multiple line and long text will wrap. Long Text Long Text Long Text
-        </Item>
-        <Item extra="no arrow" arrow="empty" class="spe" wrap>
-          In rare cases, the text of right side will wrap in the single line with long text. long text long text long
-          text
-        </Item>
-      </List>
-      <List renderHeader={() => 'Other'} class="my-list">
-        <Item disabled={this.state.disabled} extra="" onClick={() => {
-          console.log('click', this.state.disabled);
-          this.disabled = true;
-        }}>Click to disable</Item>
-        <Item>
-          <select defaultValue="1">
-            <option value="1">Html select element</option>
-            <option value="2" disabled>Unable to select</option>
-            <option value="3">option 3</option>
-          </select>
-        </Item>
+      <List title="表单" disabled={this.state.disabled}
+            editable={!this.state.readonly}>
+        <m-input title="输入框" error={this.state.error} errorDisplayType={this.state.errorDisplayType}
+                 errorMessage={this.state.errorMessage}/>
+        <m-input title="数字" type="number" error={this.state.error} errorDisplayType={this.state.errorDisplayType}
+                 errorMessage={this.state.errorMessage}/>
+        <m-date-picker-item title="日期时间选择" value={new Date()} error={this.state.error}
+                            errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
+        <m-date-picker-item title="日期选择" mode="date" value={new Date()} error={this.state.error}
+                            errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
+        <m-date-picker-item title="年份选择" mode="year" value={new Date()} error={this.state.error}
+                            errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
+        <m-date-picker-item title="月份选择" mode="month" value={new Date()} error={this.state.error}
+                            errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
+        <m-date-picker-item title="时间选择" mode="time" value={new Date()} error={this.state.error}
+                            errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
+        <m-range-item title="范围选择" value={this.state.range} error={this.state.error}
+                      errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
+        <m-radio-popup-list title="弹出单选" options={options} error={this.state.error}
+                            errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
+        <m-checkbox-popup-list title="弹出多选" options={options} error={this.state.error}
+                               errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
+        <m-switch-item title="开关" v-model={this.state.switch} error={this.state.error}
+                       errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
+        <m-textarea rows={5} title="长文本" error={this.state.error} errorDisplayType={this.state.errorDisplayType}
+                    errorMessage={this.state.errorMessage}/>
+        <m-slider-item title="滑动输入条" v-model={this.state.slider} error={this.state.error}
+                       errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
+        <m-radio-list title="单选" options={options} error={this.state.error}
+                      errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
+        <m-checkbox-list title="多选" options={options} error={this.state.error}
+                         errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
       </List>
     </div>);
   }

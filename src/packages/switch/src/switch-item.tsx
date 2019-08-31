@@ -2,6 +2,7 @@ import classnames from 'classnames';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
+import {FormComponent} from '../../../mixins/form-component';
 import List from '../../list';
 import Switch from './switch';
 
@@ -10,7 +11,7 @@ const ListItem = List.Item as any;
 @Component({
   name: 'SwitchItem'
 })
-export default class SwitchItem extends Vue {
+export default class SwitchItem extends FormComponent {
   @Prop({default: 'am-switch'})
   public prefixCls?: string;
   @Prop({default: 'am-list'})
@@ -21,10 +22,6 @@ export default class SwitchItem extends Vue {
     }
   })
   public switchProps?: object;
-  @Prop({type: Boolean, default: false})
-  public disabled: boolean;
-  @Prop({type: Boolean, default: false})
-  public value: boolean;
   @Prop({type: String})
   public title: string;
   public state = {
@@ -78,6 +75,7 @@ export default class SwitchItem extends Vue {
           ...this.$attrs
         }
       }
+      disabled={this.isDisabled}
       onClick={this.onClick}
     />;
     return (
@@ -85,6 +83,7 @@ export default class SwitchItem extends Vue {
         attrs={
           {...otherProps}
         }
+        disabled={this.isDisabled}
         prefixCls={listPrefixCls}
         class={wrapCls}
         extra={extra}>

@@ -1,6 +1,6 @@
 export default [{
   path: 'home',
-  name: '演示',
+  name: '首页',
   props: true,
   component: () => import('@/components/demo/index.vue')
 }, {

@@ -39,7 +39,7 @@ class MCheckboxList extends OptionsBasedComponent {
     return options.map(option => {
       return <CheckboxItem
         value={this.stateValue.includes(option.value)}
-        disabled={option.disabled}
+        disabled={option.disabled || this.isDisabled}
         on={
           {
             change: (checkState) => {

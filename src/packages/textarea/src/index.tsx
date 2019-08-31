@@ -2,6 +2,8 @@ import classnames from 'classnames';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
+import {FormComponent} from '../../../mixins/form-component';
+import List from '../../list';
 import {IS_IOS} from '../../utils/exenv';
 import TouchFeedback from '../../vmc-feedback';
 
@@ -21,7 +23,7 @@ function countSymbols(text = '') {
 @Component({
   name: 'MTextarea'
 })
-export default class Textarea extends Vue {
+export default class Textarea extends FormComponent {
   @Prop({type: String, default: 'am-textarea'})
   public prefixCls?: string;
   @Prop({type: String, default: 'am-list'})
@@ -32,10 +34,6 @@ export default class Textarea extends Vue {
   public maxLength?: number;
   @Prop({type: String})
   public name?: string;
-  @Prop({type: String})
-  public value?: string;
-  @Prop({type: String})
-  public defaultValue?: string;
   @Prop({default: ''})
   public placeholder?: string;
   @Prop({type: Boolean, default: false})
@@ -45,13 +43,7 @@ export default class Textarea extends Vue {
   @Prop()
   public count?: number;
   @Prop({type: Boolean, default: false})
-  public error?: boolean;
-  @Prop({type: Boolean, default: false})
   public autoHeight?: boolean;
-  @Prop({type: Boolean, default: true})
-  public editable?: boolean;
-  @Prop({type: Boolean, default: false})
-  public disabled?: boolean;
   @Prop({type: Number, default: 5})
   public labelNumber?: number;
 
@@ -60,7 +52,7 @@ export default class Textarea extends Vue {
   }
 
   private debounceTimeout: any;
-  public state = {focus: false, value: this.value || this.defaultValue || ''};
+  public state = {focus: false, value: this.value || ''};
 
   public focus() {
     this.textareaRef.focus();
@@ -134,10 +126,6 @@ export default class Textarea extends Vue {
     this.$emit('focus', value);
   }
 
-  public onErrorClick() {
-    this.$emit('error-click');
-  }
-
   public clearInput() {
     this.state.value = '';
     this.$emit('change', '');
@@ -156,7 +144,6 @@ export default class Textarea extends Vue {
       prefixListCls,
       editable,
       clearable,
-      error,
       count,
       labelNumber,
       title,
@@ -172,7 +159,6 @@ export default class Textarea extends Vue {
       {
         [`${prefixCls}-disabled`]: disabled,
         [`${prefixCls}-item-single-line`]: this.rows === 1 && !autoHeight,
-        [`${prefixCls}-error`]: error,
         [`${prefixCls}-focus`]: focus,
         [`${prefixCls}-has-count`]: hasCount
       }
@@ -201,14 +187,15 @@ export default class Textarea extends Vue {
       }
     }
     return (
-      <div class={wrapCls}>
-        {title && <div class={labelCls}>{title}</div>}
-        <div class={`${prefixCls}-control`}>
+      <List.Item class={wrapCls}
+                 disabled={this.isDisabled}
+                 title={title}>
+        <div class={`${prefixCls}-control`} slot="extra">
           <textarea
             ref={'textarea'}
             {...lengthCtrlProps}
             rows={this.rows}
-            disabled={this.disabled}
+            disabled={this.isDisabled}
             name={this.name}
             placeholder={this.placeholder}
             value={value}
@@ -218,30 +205,25 @@ export default class Textarea extends Vue {
             onFocus={this.onFocus}
             readOnly={!editable}
           />
-        </div>
-        {clearable &&
-        editable &&
-        value &&
-        characterLength > 0 && (
-          // @ts-ignore
-          <TouchFeedback activeClassName={`${prefixCls}-clear-active`}>
-            <div
-              class={`${prefixCls}-clear`}
-              onclick={this.clearInput}
-            />
-          </TouchFeedback>
-        )}
-        {error && (
-          <div class={`${prefixCls}-error-extra`}
-               onClick={this.onErrorClick}
-          />
-        )}
-        {hasCount && (
-          <span class={`${prefixCls}-count`}>
+          {clearable &&
+          editable &&
+          value &&
+          characterLength > 0 && (
+            // @ts-ignore
+            <TouchFeedback activeClassName={`${prefixCls}-clear-active`}>
+              <div
+                class={`${prefixCls}-clear`}
+                onclick={this.clearInput}
+              />
+            </TouchFeedback>
+          )}
+          {hasCount && (
+            <span class={`${prefixCls}-count`}>
             <span>{value ? characterLength : 0}</span>/{count}
           </span>
-        )}
-      </div>
+          )}
+        </div>
+      </List.Item>
     );
   }
 }
