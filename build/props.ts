@@ -58,7 +58,7 @@ module.exports.resolveProps = (component) => {
     if (res) {
       const resolveProps = res.map(prop => resolveProp(prop));
       if (resolveProps.length) {
-        createPropsMarkdown(component, resolveProps);
+        // createPropsMarkdown(component, resolveProps);
       }
     }
     console.log(`为${component.name}生成props.md完成`);

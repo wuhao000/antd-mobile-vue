@@ -183,6 +183,13 @@ export default [{
   },
   component: () => import('@/generated/popup/index.vue')
 }, {
+  path: 'popover',
+  name: 'Popover 气泡',
+  meta: {
+    tag: '其他'
+  },
+  component: () => import('@/generated/popover/index.vue')
+}, {
   path: 'progress',
   name: 'Progress 进度条',
   meta: {

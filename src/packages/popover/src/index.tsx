@@ -1,111 +1,88 @@
-import Vue from 'vue';
-import {Prop} from 'vue-property-decorator';
+import {Popover} from 'ant-design-vue';
+import classNames from 'classnames';
+import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
-import Tooltip from '../../vmc-tooltip';
-import Item from 'popover/src/Item';
-import { PopoverPropsType } from './props-type';
+import {Prop, Watch} from 'vue-property-decorator';
+import {cloneElement} from '../../utils/vnode';
 
-export interface PopOverPropsType extends PopoverPropsType {
-  prefixCls?: string;
-  visible?: boolean;
-  onVisibleChange?: (visible: boolean) => void;
-  placement?:
-    | 'left'
-    | 'right'
-    | 'top'
-    | 'bottom'
-    | 'topLeft'
-    | 'topRight'
-    | 'bottomLeft'
-    | 'bottomRight';
-  mask?: boolean;
-}
 
 function recursiveCloneChildren(
-  children: any,
-  cb = (ch: React.ReactChild, _: number) => ch,
-): React.ReactChild[] {
-  return React.Children.map(children, (child, index) => {
+  children: VNode[],
+  cb = (ch: VNode, _: number) => ch
+): VNode[] {
+  return children.map((child, index) => {
     const newChild = cb(child, index);
     if (
       typeof newChild !== 'string' &&
       typeof newChild !== 'number' &&
       newChild &&
-      newChild.props &&
-      newChild.props.children
+      newChild.children
     ) {
-      return React.cloneElement(
+      return cloneElement(
         newChild,
         {},
-        recursiveCloneChildren(newChild.props.children, cb),
+        recursiveCloneChildren(newChild.children, cb)
       );
     }
     return newChild;
   });
 }
 
-export default @Component({
-  name: ''
+@Component({
+  name: 'MPopover'
 })
+export default class MPopover extends Vue {
 
-class Popover extends Vue {
-  @Prop({
-    type: String,
-    default: 'am-popover'
-  })
-  public prefixCls?: string;
-  @Prop({type: Boolean})
-  public visible?: boolean;
-  @Prop({})
-  public onVisibleChange?: (visible: boolean) => void;
-  @Prop({default: 'bottomRight'})
-  public placement?:
-      'left'
-  'right'
-  'top'
-  'bottom'
-  'topLeft'
-  'topRight'
-  'bottomLeft'
-  'bottomRight';
-  @Prop({type: Boolean})
-  public mask?: boolean;
-  @Prop({})
-  public onSelect?: (node: any, index?: number) => void;
-  @Prop({})
-  public overlay: VNode;
-  @Prop({type: Boolean})
-  public disabled?: boolean;
-  public static Item = Item;
+  /**
+   * 是否显示气泡（v-model）
+   */
+  @Prop({type: Boolean, default: false})
+  public value: boolean;
+  @Prop({type: String, default: 'am-popover'})
+  public prefixCls: string;
+  /**
+   * 是否显示遮罩
+   */
+  @Prop({type: Boolean, default: true})
+  public mask: boolean;
+  /**
+   * 是否允许点击遮罩层关闭
+   */
+  @Prop({type: Boolean, default: true})
+  public maskClosable: boolean;
+  public currentValue = this.value;
+  public static Item: any;
+
+  @Watch('value')
+  public valueChanged(value: boolean) {
+    this.currentValue = value;
+  }
+
+  @Watch('currentValue')
+  public currentValueChanged(currentValue: boolean) {
+    this.$emit('input', currentValue);
+    this.$emit('change', currentValue);
+  }
 
   public render() {
-    const {
-      overlay, onSelect = () => {
-      }, ...restProps
-    } = this;
-
-    const overlayNode = recursiveCloneChildren(overlay, (child, index) => {
-      const extraProps: any = {firstItem: false};
-      if (
-          child &&
-          typeof child !== 'string' &&
-          typeof child !== 'number' &&
-          child.type &&
-          // Fixme: not sure where the `myName` came from.
-          (child.type as any).myName === 'PopoverItem' &&
-          !child.props.disabled
-      ) {
-        extraProps.onClick = () => onSelect(child, index);
-        extraProps.firstItem = index === 0;
-        return React.cloneElement(child, extraProps);
-      }
-      return child;
+    const maskClass = classNames(this.prefixCls + '-mask', {
+      [this.prefixCls + '-mask-hidden']: !this.currentValue
     });
-    const wrapperNode = (
-        <div className={`${this.prefixCls}-inner-wrapper`}>
-          {overlayNode}
-        </div>
-    );
-    return <Tooltip {...restProps} overlay={wrapperNode}/>;
+    // @ts-ignore
+    return <Popover attrs={this.$attrs}
+                    prefixCls={this.prefixCls}
+                    vModel={this.currentValue}
+                    trigger="click"
+                    on={this.$listeners}
+                    scopedSlots={this.$scopedSlots}
+                    slots={this.$slots}>
+      {this.$slots.default}
+      {this.mask ? <div onClick={(e) => {
+        if (!this.maskClosable) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
+      }} class={maskClass}/> : null}
+    </Popover>;
   }
 }

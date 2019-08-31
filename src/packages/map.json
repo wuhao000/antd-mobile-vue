@@ -189,6 +189,12 @@
     "name": "popup",
     "chineseName": "弹出层"
   },
+  "popover": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "popover",
+    "chineseName": "气泡"
+  },
   "progress": {
     "type": "component",
     "componentType": "mobile",

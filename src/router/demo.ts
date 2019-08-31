@@ -108,6 +108,10 @@ export default [{
   name: 'm-popup',
   component: () => import('@/generated/popup/demo.vue')
 }, {
+  path: 'm-popover',
+  name: 'm-popover',
+  component: () => import('@/generated/popover/demo.vue')
+}, {
   path: 'm-progress',
   name: 'm-progress',
   component: () => import('@/generated/progress/demo.vue')

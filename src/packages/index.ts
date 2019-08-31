@@ -31,6 +31,7 @@ import NoticeBar from './notice-bar';
 import Pagination from './pagination';
 import Picker from './picker';
 import Popup from './popup';
+import Popover from './popover';
 import Progress from './progress';
 import PullRefresh from './pull-refresh';
 import Radio from './radio';
@@ -89,6 +90,7 @@ const components = [
 	Pagination,
 	Picker,
 	Popup,
+	Popover,
 	Progress,
 	PullRefresh,
 	Radio,
@@ -153,6 +155,7 @@ export {
 	Pagination,
 	Picker,
 	Popup,
+	Popover,
 	Progress,
 	PullRefresh,
 	Radio,
@@ -205,6 +208,7 @@ export default {
 	Pagination,
 	Picker,
 	Popup,
+	Popover,
 	Progress,
 	PullRefresh,
 	Radio,

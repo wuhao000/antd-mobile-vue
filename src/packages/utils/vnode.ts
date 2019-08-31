@@ -52,14 +52,14 @@ export function cloneVNode(vnode, deep) {
   }
 
   const cloned = new vnode.constructor(
-      vnode.tag,
-      data ? {...data, on} : data,
-      vnode.children,
-      vnode.text,
-      vnode.elm,
-      vnode.context,
-      componentOptions ? {...componentOptions, listeners} : componentOptions,
-      vnode.asyncFactory
+    vnode.tag,
+    data ? {...data, on} : data,
+    vnode.children,
+    vnode.text,
+    vnode.elm,
+    vnode.context,
+    componentOptions ? {...componentOptions, listeners} : componentOptions,
+    vnode.asyncFactory
   );
   cloned.ns = vnode.ns;
   cloned.isStatic = vnode.isStatic;
@@ -103,6 +103,29 @@ export function setListeners(vnode: VNode, listeners: any = {}) {
         }
         if (orgListener) {
           orgListener(...args);
+        }
+      };
+
+    });
+  } else if (vnode.data) {
+    if (!vnode.data.on) {
+      vnode.data.on = {};
+    }
+    Object.keys(listeners).forEach(key => {
+      const orgListener = vnode.data.on[key];
+      const newListener = listeners[key];
+      vnode.data.on[key] = (...args) => {
+        if (newListener) {
+          newListener(...args);
+        }
+        if (orgListener) {
+          if (typeof orgListener === 'function') {
+            orgListener(...args);
+          } else if (Array.isArray(orgListener)) {
+            orgListener.forEach(it => {
+              it(...args);
+            });
+          }
         }
       };
 

@@ -25,6 +25,7 @@ import {NoticeBarComponent} from './components/notice-bar';
 import {PaginationComponent} from './components/pagination';
 import {PickerComponent} from './components/picker';
 import {PopupComponent} from './components/popup';
+import {PopoverComponent} from './components/popover';
 import {ProgressComponent} from './components/progress';
 import {PullRefreshComponent} from './components/pull-refresh';
 import {RadioComponent} from './components/radio';
@@ -97,6 +98,8 @@ export class Pagination extends PaginationComponent {
 export class Picker extends PickerComponent {
 }
 export class Popup extends PopupComponent {
+}
+export class Popover extends PopoverComponent {
 }
 export class Progress extends ProgressComponent {
 }

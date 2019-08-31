@@ -41,7 +41,7 @@ export default class Result extends Vue {
       buttonType
     } = this;
 
-    let imgContent: JSX.Element | null = null;
+    let imgContent: VNode | null = null;
     const img = this.$slots.img || this.img;
     const title = this.$slots.title || this.title;
     const message = this.$slots.message || this.message;

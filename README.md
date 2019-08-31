@@ -41,7 +41,7 @@ NoticeBar | √ | √
 Pagination | √ | √
 Picker | √ | √
 PickerView | √ | √
-Popover | √ | 
+Popover | √ | √ 
 Progress | √ | √
 Radio | √ | √
 PullToRefresh | √ | √
