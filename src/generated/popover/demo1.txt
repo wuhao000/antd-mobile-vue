@@ -11,7 +11,10 @@ export default class PopoverExample extends Vue {
 
   public state = {
     visible: true,
-    selected: ''
+    selected: '',
+    maskClosable: true,
+    mask: true,
+    placement: 'bottomRight'
   };
 
   public onSelect(opt) {
@@ -38,8 +41,9 @@ export default class PopoverExample extends Vue {
         leftContent={this.state.visible.toString()}
         rightContent={
           <Popover
-            placement="bottomRight"
-            maskClosable={false}
+            mask={this.state.mask}
+            placement={this.state.placement}
+            maskClosable={this.state.maskClosable}
             vModel={this.state.visible}>
             <div slot="content">
               <Item key="4"
@@ -71,6 +75,20 @@ export default class PopoverExample extends Vue {
       >
         NavBar
       </NavBar>
+      <m-white-space/>
+      <m-switch-item title="是否点击遮罩层关闭" vModel={this.state.maskClosable}/>
+      <m-switch-item title="是否显示遮罩层" vModel={this.state.mask}/>
+      <m-radio-popup-list title="气泡显示的位置" v-model={this.state.placement} options={[
+        {label: '上', value: 'tpo'},
+        {label: '下', value: 'bottom'},
+        {label: '左', value: 'left'},
+        {label: '右', value: 'right'},
+        {label: '左上', value: 'topLeft'},
+        {label: '右上', value: 'topRight'},
+        {label: '左下', value: 'bottomLeft'},
+        {label: '右下', value: 'bottomRight'},
+      ]}>
+      </m-radio-popup-list>
     </div>);
   }
 }
