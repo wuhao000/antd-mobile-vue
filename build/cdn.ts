@@ -23,7 +23,6 @@ upload();
 
 function upload() {
   fileNames.forEach(name => {
-    const content = fs.readFileSync('lib/' + name);
     let ContentType = '';
     let realFileName = name;
     let encoding = null;
@@ -41,11 +40,10 @@ function upload() {
       Metadata['content-encoding'] = encoding;
     }
     const Key = `${projectName}/${pk.version}/${name}`;
-    console.log(Key);
     obs.putObject({
       Bucket: 'aegis-public-assets',
       Key,
-      Body: content,
+      SourceFile: 'lib/' + name,
       ContentType,
       Metadata
     }).then((res) => {

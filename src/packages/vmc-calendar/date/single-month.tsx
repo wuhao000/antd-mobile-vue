@@ -131,7 +131,7 @@ class SingleMonth extends Vue {
               }
 
               const defaultContent = [
-                <div key="wrapper'} class={'date-wrapper">
+                <div key="wrapper" class="date-wrapper">
                   <span class={lCls}/>
                   <div class={cls}>
                     {day.dayOfMonth}

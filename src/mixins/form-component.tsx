@@ -63,7 +63,7 @@ export class FormComponent extends Emitter {
   get isReadonly() {
     let isReadonly = !this.editable;
     if (this.list && !isReadonly) {
-      isReadonly = this.list.editable;
+      isReadonly = !this.list.editable;
     }
     return isReadonly;
   }
@@ -100,7 +100,7 @@ export class FormComponent extends Emitter {
     const selfRules = this.rules;
     let requiredRule = this.required !== undefined ? {required: this.required} : [];
     if ((formRules && formRules.some(rule => rule.required !== undefined))
-      || (selfRules && selfRules.some(rule => rule.required !== undefined))) {
+        || (selfRules && selfRules.some(rule => rule.required !== undefined))) {
       requiredRule = [];
     }
     return [].concat(selfRules || formRules || []).concat(requiredRule);

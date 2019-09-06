@@ -22,7 +22,6 @@ const pk = JSON.parse(json);
 upload();
 function upload() {
     fileNames.forEach(name => {
-        const content = fs_1.default.readFileSync('lib/' + name);
         let ContentType = '';
         let realFileName = name;
         let encoding = null;
@@ -44,7 +43,7 @@ function upload() {
         obs.putObject({
             Bucket: 'aegis-public-assets',
             Key,
-            Body: content,
+            SourceFile: 'lib/' + name,
             ContentType,
             Metadata
         }).then((res) => {
