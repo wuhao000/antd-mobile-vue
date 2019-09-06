@@ -21,7 +21,8 @@ component-name（示例）//组件名称
 │ 
 ├─src  // 组件代码文件夹  
 │  │   
-│  └─index.ts(x) 或 index.vue 必须提供
+│  └─index.ts(x) 或 index.vue
+ 必须提供
 │
 ├─demo  // 必须提供，示例文件夹，必须包含至少一个示例 
 │  │   

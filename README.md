@@ -7,11 +7,19 @@
 
 > 基于 Vue 的组件库，代码由antd-mobile转为Vue版本，目前已具备antd-mobile的绝大部分组件
 
+部分组件的示例已和 <code>ant design mobile</code> 官网同步
+
 **与antd-mobile的组件对比**
 
-antd-mobile 共有 <code>47</code>个组件，本项目截至现在移植了<code>42</code>个
+antd-mobile 共有 <code>47</code>个组件，本项目截至现在移植了<code>44</code>个, 组件完成度达到95%
 
-* 新增chart组件
+另外新增组件
+
+组件名称|用途
+---|---
+Chart| 图表组件
+
+## 与ant design mobile的组件比较
 
 组件名称 | antd-mobile | antd-mobile-vue | 说明
 --- | :---: | :---: | ---
@@ -23,6 +31,7 @@ Button | √ | √
 Calendar | √ | √
 Card | √ | √
 Carousel | √ | √
+Chart | [无] | √
 Checkbox | √ | √
 DatePicker | √ | √
 DatePickerView | √ | √
@@ -33,7 +42,7 @@ Icon | √ | √
 ImagePicker | √ | √
 InputItem | √ | √
 List | √ | √
-ListView | √ | 
+ListView | √ | [无] 
 Menu | √ | √
 Modal | √ | √
 NavBar | √ | √
@@ -52,7 +61,7 @@ Slider | √ | √
 Range | √ | √
 Stepper | √ | √ 
 Steps | √ | √
-SwipeAction | √ | 
+SwipeAction | √ |  [无] 
 Switch | √ | √
 TabBar | √ | √
 Tabs | √ | √
@@ -61,7 +70,7 @@ TextareaItem | √ | √
 Toast | √ | √
 WhiteSpace | √ | √
 WingBlank | √ | √
-LocaleProvider | √ | 
+LocaleProvider | √ |  [无] 
 
 ## 安装
 
@@ -121,7 +130,7 @@ import { Alert } from "antd-mobile-vue";
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
 <link rel="stylesheet" href="https://public-file.aegis-info.com/antd-mobile-vue/0.3.0/antdm.css.gz">
-<script src="https://public-file.aegis-info.com/antd-mobile-vue/0.3.0/antdm.umd.min.js.gz"></script>
+<script src="https://public-file.aegis-info.com/antd-mobile-vue/<version>/antdm.umd.min.js.gz"></script>
 ```
 
 > cdn没有打包vue，因此需要独立引入vue的cdn资源

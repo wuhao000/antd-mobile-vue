@@ -1,6 +1,6 @@
 {
   "name": "antd-mobile-vue",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "description": "基于Vue和ant-desing的及PC端综合组件库",
   "main": "src/packages/index.ts",
   "keyword": "antd antd-mobile vue",
