@@ -90,7 +90,7 @@ class Marquee extends Vue {
             role="marquee"
         >
           <div
-              ref={'textRef'}
+              ref="textRef"
               class={`${prefixCls}-marquee`}
               style={style}
           >

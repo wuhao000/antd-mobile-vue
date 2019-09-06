@@ -26,7 +26,7 @@ export default class SegmentedControlExample extends Vue {
           <p class="sub-title">TintColor</p>
           <m-segmented-control
               values={['Segment1', 'Segment2', 'Segment3']}
-              tintColor={'#ff0000'}
+              tintColor="#ff0000"
               style={{height: '40px', width: '250px'}}
           />
           <p class="sub-title">onChange/onValueChange</p>

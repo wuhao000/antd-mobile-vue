@@ -16,7 +16,7 @@ export class Brief extends Vue {
 
   public render() {
     return (
-      <div class={'am-list-brief'}>
+      <div class="am-list-brief">
         {this.$slots.default}
       </div>
     );
@@ -188,7 +188,7 @@ class Item extends Vue {
           {this.renderLabel()}
           {this.renderExtra()}
           {arrow && <div class={arrowCls}
-                         aria-hidden={'true'}/>}
+                         aria-hidden="true"/>}
           {this.actualError && this.errorDisplayType !== 'text' ? (
             <div
               class={`${prefixCls}-error-extra`}

@@ -453,7 +453,7 @@ export default class Tabs extends Vue {
     const {instanceId} = this.getTabBarBaseProps();
     return <div class={contentCls}
                 style={contentStyle}
-                ref={'layout'}>
+                ref="layout">
       {
         tabs && tabs.map((tab, index) => {
           let cls = `${prefixCls}-pane-wrap`;
@@ -472,7 +472,7 @@ export default class Tabs extends Vue {
           }
           return <TabPane key={key} class={cls}
                           active={currentTab === index}
-                          role={'tabpanel'}
+                          role="tabpanel"
                           aria-hidden={currentTab !== index}
                           aria-labelledby={`m-tabs-${instanceId}-${index}`}
                           fixX={isTabVertical} fixY={!isTabVertical}
@@ -492,7 +492,7 @@ export default class Tabs extends Vue {
     };
     const onPan = !isTabVertical && useOnPan ? this.onPan : {};
     const content = [
-      <div key={'tabBar'} class={`${prefixCls}-tab-bar-wrap`}>
+      <div key="tabBar" class={`${prefixCls}-tab-bar-wrap`}>
         {
           this.renderTabBar ? this.renderTabBar(tabBarProps)
             : <DefaultTabBar attrs={tabBarProps}
@@ -503,7 +503,7 @@ export default class Tabs extends Vue {
                              }}/>
         }
       </div>,
-      <Gesture key={'$content'}
+      <Gesture key="$content"
                onSwipe={this.onSwipe}
                {...{props: onPan}}>
         {this.renderContent()}

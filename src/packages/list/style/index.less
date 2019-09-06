@@ -218,9 +218,14 @@
 
     /* list左侧主内容*/
 
+    &.@{listPrefixCls}-line-multiple {
+      .@{listPrefixCls}-content {
+        flex: 1;
+      }
+    }
     .@{listPrefixCls}-content {
       color: @color-text-base;
-      flex: 1;
+      padding-right: 8px;
       min-width: 20%;
       font-size: @font-size-heading;
       line-height: @line-height-paragraph;
@@ -235,7 +240,7 @@
 
     .@{listPrefixCls}-extra {
       color: @color-text-caption;
-      flex-basis: auto;
+      flex: 1;
       font-size: @font-size-caption;
       line-height: @line-height-paragraph;
       padding-bottom: 7 * @hd;

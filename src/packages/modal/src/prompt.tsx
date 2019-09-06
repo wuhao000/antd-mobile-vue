@@ -131,7 +131,7 @@ export default function prompt(
                   <div class={`${prefixCls}-input`}>
                     <label>
                       <input
-                        type={'text'}
+                        type="text"
                         defaultValue={data.text}
                         ref={input => focusFn(input)}
                         onClick={onClick}
@@ -143,7 +143,7 @@ export default function prompt(
                   <div class={`${prefixCls}-input`}>
                     <label>
                       <input
-                        type={'password'}
+                        type="password"
                         defaultValue={data.password}
                         onClick={onClick}
                         onChange={onChange}
@@ -160,7 +160,7 @@ export default function prompt(
                   <div class={`${prefixCls}-input`}>
                     <label>
                       <input
-                        type={'password'}
+                        type="password"
                         defaultValue={data.password}
                         ref={input => focusFn(input)}
                         onClick={onClick}
@@ -179,9 +179,9 @@ export default function prompt(
                   <div class={`${prefixCls}-input`}>
                     <label>
                       <input
-                        type={'text'}
+                        type="text"
                         defaultValue={data.text}
-                        ref={'input'}
+                        ref="input"
                         hook={{
                           mounted: () => {
                             focusFn(this.$refs['input']);
@@ -213,9 +213,9 @@ export default function prompt(
           title={title}
           closable={false}
           maskClosable={false}
-          transitionName={'am-zoom'}
+          transitionName="am-zoom"
           footer={footer}
-          maskTransitionName={'am-fade'}
+          maskTransitionName="am-fade"
           platform={platform}
           wrapProps={{onTouchStart: onWrapTouchStart}}>
           <div class={`${prefixCls}-propmt-content`}>{this.createContent()}</div>

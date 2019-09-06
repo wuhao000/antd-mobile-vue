@@ -106,7 +106,7 @@ class NumberInput extends Vue {
     } = this;
     return (
       <CustomKeyboard
-        ref={'keyboard'}
+        ref="keyboard"
         onClick={this.onKeyboardClick.bind(this)}
         prefixCls={keyboardPrefixCls}
         confirmLabel={confirmLabel}

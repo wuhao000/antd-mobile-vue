@@ -330,16 +330,16 @@ class Picker extends mixins(PickerProps) {
     };
     return (
         <div class={classNames(pickerCls)}
-             ref={'root'}>
+             ref="root">
           <div class={`${prefixCls}-mask`}
-               ref={'mask'}/>
+               ref="mask"/>
           <div
               class={`${prefixCls}-indicator ${indicatorClassName}`}
-              ref={'indicator'}
+              ref="indicator"
               style={indicatorStyle}
           />
           <div class={`${prefixCls}-content`}
-               ref={'content'}>
+               ref="content">
             {items}
           </div>
         </div>

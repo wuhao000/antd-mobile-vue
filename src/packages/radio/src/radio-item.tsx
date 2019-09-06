@@ -32,7 +32,7 @@ class RadioItem extends Vue {
 
   public onClick(e) {
     if (!this.disabled) {
-      this.$emit('click');
+      this.$emit('click', e);
     }
   }
 

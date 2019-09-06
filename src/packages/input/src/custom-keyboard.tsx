@@ -56,7 +56,7 @@ export class KeyboardItem extends Vue {
               }
             }>
           <td
-              ref={'td'}
+              ref="td"
               // tslint:disable-next-line:jsx-no-multiline-js
               onclick={e => {
                 this.$emit('click', e, this.value);
@@ -65,7 +65,7 @@ export class KeyboardItem extends Vue {
               {...restProps}
           >
             {this.$slots.default}
-            {iconOnly && <i class={'sr-only'}>{label}</i>}
+            {iconOnly && <i class="sr-only">{label}</i>}
           </td>
         </TouchFeedback2>
     );
@@ -137,7 +137,7 @@ class CustomKeyboard extends Vue {
     );
     const KeyboardItem2: any = KeyboardItem;
     return (
-        <div class={wrapperCls} ref={'antmKeyboard'} {...wrapProps}>
+        <div class={wrapperCls} ref="antmKeyboard" {...wrapProps}>
           {header}
           <table>
             <tbody>
@@ -184,7 +184,7 @@ class CustomKeyboard extends Vue {
                         click: e => this.onKeyboardClick(e, 'confirm')
                       }
                     }
-                    tdRef={'td'}
+                    tdRef="td"
                 >
                   {confirmLabel}
                 </KeyboardItem2>

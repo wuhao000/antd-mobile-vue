@@ -117,7 +117,7 @@ export default class Modal extends ModalComponent {
       <TouchFeedback activeClassName={`${prefixCls}-button-active`} key={i}>
         <a
           class={`${prefixCls}-button`}
-          role={'button'}
+          role="button"
           style={buttonStyle}
           onClick={onClickFn}
         >
@@ -150,7 +150,7 @@ export default class Modal extends ModalComponent {
       `${prefixCls}-button-group-${operation ? 'operation' : 'normal'}`
     );
     const footerDom = footer.length ? (
-      <div class={btnGroupClass} role={'group'}>
+      <div class={btnGroupClass} role="group">
         {footer.map((button, i) =>
           // tslint:disable-next-line:jsx-no-multiline-js
           this.renderFooterButton(button, prefixCls, i)

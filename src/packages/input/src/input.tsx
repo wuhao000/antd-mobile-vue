@@ -49,7 +49,7 @@ class Input extends Vue {
     const value = this.currentValue + '';
     const type = this.type === 'number' ? 'text' : this.type;
     return <input value={value}
-                  ref={'input'}
+                  ref="input"
                   type={type}
                   disabled={this.disabled}
                   readonly={this.readonly}

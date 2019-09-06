@@ -25,7 +25,7 @@ export default class TabsExample extends Vue {
       <m-white-space/>
       <StickyContainer>
         <m-tabs tabs={tabs}
-                initialPage={'t2'}
+                initialPage="t2"
                 renderTabBar={this.renderTabBar}>
           <div key="t1" style={{
             display: 'flex',

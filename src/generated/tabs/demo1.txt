@@ -14,8 +14,8 @@ export default class TabBarExample extends Vue {
 
   get tabs() {
     return [
-      {title: <m-badge text={'3'}>First Tab</m-badge>},
-      {title: <m-badge text={'今日(20)'}>Second Tab</m-badge>},
+      {title: <m-badge text="3">First Tab</m-badge>},
+      {title: <m-badge text="今日(20)">Second Tab</m-badge>},
       {title: <m-badge dot>Third Tab</m-badge>}
     ];
   }

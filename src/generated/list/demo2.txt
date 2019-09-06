@@ -23,7 +23,7 @@ export default class ListExample extends Vue {
   public render() {
     return (<div>
       <List renderHeader={() => 'Basic Style'} class="my-list">
-        <Item onClick={this.onClick} extra={'extra content'}>Title</Item>
+        <Item onClick={this.onClick} extra="extra content">Title</Item>
       </List>
       <List renderHeader={() => 'Subtitle'} class="my-list">
         <Item arrow="horizontal" multipleLine onClick={() => {

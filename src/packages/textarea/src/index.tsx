@@ -192,7 +192,7 @@ export default class Textarea extends FormComponent {
                  title={title}>
         <div class={`${prefixCls}-control`} slot="extra">
           <textarea
-            ref={'textarea'}
+            ref="textarea"
             {...lengthCtrlProps}
             rows={this.rows}
             disabled={this.isDisabled}

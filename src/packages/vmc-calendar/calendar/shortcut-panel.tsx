@@ -50,11 +50,11 @@ class ShortcutPanel extends Vue {
     const {locale} = this;
 
     return (
-        <div class={'shortcut-panel'}>
-          <div class={'item'} onClick={() => this.onClick('today')}>{locale.today}</div>
-          <div class={'item'} onClick={() => this.onClick('yesterday')}>{locale.yesterday}</div>
-          <div class={'item'} onClick={() => this.onClick('lastweek')}>{locale.lastWeek}</div>
-          <div class={'item'} onClick={() => this.onClick('lastmonth')}>{locale.lastMonth}</div>
+        <div class="shortcut-panel">
+          <div class="item" onClick={() => this.onClick('today')}>{locale.today}</div>
+          <div class="item" onClick={() => this.onClick('yesterday')}>{locale.yesterday}</div>
+          <div class="item" onClick={() => this.onClick('lastweek')}>{locale.lastWeek}</div>
+          <div class="item" onClick={() => this.onClick('lastmonth')}>{locale.lastMonth}</div>
         </div>
     );
   }

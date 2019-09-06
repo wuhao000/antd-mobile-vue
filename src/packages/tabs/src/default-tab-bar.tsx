@@ -193,7 +193,7 @@ class DefaultTabBar extends Vue {
     return <div key={`t_${i}`}
                 style={style}
                 id={`m-tabs-${instanceId}-${i}`}
-                role={'tab'}
+                role="tab"
                 aria-selected={ariaSelected}
                 class={cls}
                 onClick={() => this.onPress(i)}>
@@ -257,9 +257,9 @@ class DefaultTabBar extends Vue {
       {showPrev && <div class={`${prefixCls}-prevpage`}/>}
       <Gesture {...onPan}
                direction={isTabBarVertical ? 'vertical' : 'horizontal'}>
-        <div role={'tablist'} class={`${prefixCls}-content`}
+        <div role="tablist" class={`${prefixCls}-content`}
              style={transformStyle}
-             ref={'layout'}>
+             ref="layout">
           {Tabs}
           {
             renderUnderline ? <div {...underlineProps}/> : ''

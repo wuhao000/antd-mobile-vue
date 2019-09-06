@@ -325,11 +325,11 @@ class CarouselBase extends Vue {
     ) : this.$slots.default;
     return (
       <div
-        class={'slider'}
-        ref={'slider'}
+        class="slider"
+        ref="slider"
         style={{...this.getSliderStyles()}}>
-        <div class={'slider-frame'}
-             ref={'frame'}
+        <div class="slider-frame"
+             ref="frame"
              style={this.getFrameStyles()}
              on={
                {
@@ -338,7 +338,7 @@ class CarouselBase extends Vue {
                }
              }
              onClick={this.handleClick.bind(this)}>
-          <ul class={'slider-list'} ref={'list'} style={this.getListStyles()}>
+          <ul class="slider-list'} ref={'list" style={this.getListStyles()}>
             {children}
           </ul>
         </div>
@@ -365,7 +365,7 @@ class CarouselBase extends Vue {
                 }/>
             </div>
           )) : null}
-        <style type={'text/css'} dangerouslySetInnerHTML={{__html: this.getStyleTagStyles()}}/>
+        <style type="text/css" dangerouslySetInnerHTML={{__html: this.getStyleTagStyles()}}/>
       </div>
     );
   }
@@ -771,7 +771,7 @@ class CarouselBase extends Vue {
   public formatChildren(children) {
     const positionValue = this.vertical ? this.getTweeningValue('top') : this.getTweeningValue('left');
     return children.map((child, index) => {
-      return <li class={'slider-slide'}
+      return <li class="slider-slide"
                  style={this.getSlideStyles(index, positionValue)}
                  key={index}>{child}</li>;
     });

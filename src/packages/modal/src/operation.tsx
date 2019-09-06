@@ -69,13 +69,13 @@ export default function operation(
         operation
         transparent
         prefixCls={prefixCls}
-        transitionName={'am-zoom'}
+        transitionName="am-zoom"
         closable={false}
         maskClosable={true}
         onClose={close}
         footer={footer}
-        maskTransitionName={'am-fade'}
-        class={'am-modal-operation'}
+        maskTransitionName="am-fade"
+        class="am-modal-operation"
         platform={platform}
         wrapProps={{onTouchStart: onWrapTouchStart}}
       >{this.$slots.default}</Modal>;

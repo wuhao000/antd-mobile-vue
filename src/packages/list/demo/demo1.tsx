@@ -65,7 +65,7 @@ export default class ListExample extends Vue {
                                errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
         <m-switch-item title="开关" v-model={this.state.switch} error={this.state.error}
                        errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
-        <m-textarea rows={5} title="长文本" error={this.state.error} errorDisplayType={this.state.errorDisplayType}
+        <m-textarea rows={5} title="长文本222222222" error={this.state.error} errorDisplayType={this.state.errorDisplayType}
                     errorMessage={this.state.errorMessage}/>
         <m-slider-item title="滑动输入条" v-model={this.state.slider} error={this.state.error}
                        errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>

@@ -23,8 +23,7 @@ export default class MRadioPopupList extends OptionsBasedComponent {
   }
 
   private onChange(value: any) {
-    this.$emit('input', value);
-    this.$emit('change', value);
+    this.stateValue = value;
     this.popupVisible = false;
   }
 
@@ -35,7 +34,7 @@ export default class MRadioPopupList extends OptionsBasedComponent {
   }
 
   get optionText() {
-    const options = this.getOptions() as any;
+    const options = this.getOptions();
     const value = this.stateValue;
     const selectedOption = options.find(it => value === it.value);
     return selectedOption && selectedOption.label;
@@ -48,41 +47,37 @@ export default class MRadioPopupList extends OptionsBasedComponent {
   }
 
   public render() {
-    const MPopup = Popup as any;
-    const Item = List.Item as any;
-    const listProps = {
+    const listProps: any = {
       ...this.$attrs,
       ...this.$props,
       options: this.getOptions()
     };
-    listProps['title'] = undefined;
+    listProps.title = undefined;
     const cancelButton = <div onclick={this.onClear}
                               class={`am-popup-item am-popup-header-left`}>清除</div>;
-    return <Item onClick={this.onClick}
-                 touchFeedback={!this.readOnly && !this.disabled}
-                 disabled={this.isDisabled}
-                 extraStyle={{flexBasis: '60%'}}>
-      <MPopup  value={this.isDisabled ? false : this.popupVisible}
-              showCancel={this.clearable}
-              cancelButton={cancelButton}
-              title={this.title}
-              onOk={this.closePopup}
-              onCancel={this.closePopup}>
+    const {optionText, placeholder, stateValue, closePopup, title, clearable, onClick, readOnly, isDisabled, disabled} = this;
+    return <List.Item onClick={onClick}
+                      text={!!optionText}
+                      touchFeedback={!readOnly && !disabled}
+                      disabled={isDisabled}
+                      extraStyle={{flexBasis: '60%'}}>
+      <Popup value={isDisabled ? false : this.popupVisible}
+             showCancel={clearable}
+             cancelButton={cancelButton}
+             title={title}
+             onOk={closePopup}
+             onCancel={closePopup}>
         {
           // @ts-ignore
           <RadioList
-            attrs={
-              listProps
-            }
+            attrs={listProps}
             maxHeightPercentage={0.7}
-            on={
-              {change: this.onChange}
-            }/>
+            onChange={this.onChange}/>
         }
-      </MPopup>
-      <span slot="extra">{(this['stateValue'] !== undefined && this['stateValue'] !== null) ? this.optionText : this.placeholder}</span>
-      <span>{this.title}</span>
-    </Item>;
+      </Popup>
+      <span slot="extra">{(stateValue !== undefined && stateValue !== null) ? optionText : placeholder}</span>
+      <span>{title}</span>
+    </List.Item>;
   }
 
   private closePopup() {

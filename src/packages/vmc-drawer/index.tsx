@@ -458,7 +458,7 @@ export default class Index extends Vue {
           <div class={`${prefixCls}-draghandle`} style={this.dragHandleStyle}
                onTouchStart={this.onTouchStart.bind(this)} onTouchMove={this.onTouchMove.bind(this)}
                onTouchEnd={this.onTouchEnd.bind(this)} onTouchCancel={this.onTouchEnd.bind(this)}
-               ref={'dragHandle'}
+               ref="dragHandle"
           />);
       }
     }
@@ -466,17 +466,17 @@ export default class Index extends Vue {
       <div class={classNames(rootCls)}
            on={rootProps}>
         <div class={`${prefixCls}-sidebar`} style={sidebarStyle}
-             ref={'sidebar'}>
+             ref="sidebar">
           {sidebar}
         </div>
         <div class={`${prefixCls}-overlay`}
              style={overlayStyle}
-             role={'presentation'}
-             ref={'overlay'}
+             role="presentation"
+             ref="overlay"
              onclick={this.onOverlayClicked.bind(this)}
         />
         <div class={`${prefixCls}-content`} style={contentStyle}
-             ref={'content'}>
+             ref="content">
           {dragHandle}
           {this.$slots.default}
         </div>

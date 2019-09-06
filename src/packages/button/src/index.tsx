@@ -115,7 +115,7 @@ class Button extends Vue {
           activeClassName || (activeStyle ? `${prefixCls}-active` : undefined)}
         disabled={disabled}
         activeStyle={activeStyle}>
-        <a role={'button'}
+        <a role="button"
            class={wrapCls}
            onClick={(e) => {
              if (!this.disabled) {

@@ -131,7 +131,7 @@ class SingleMonth extends Vue {
               }
 
               const defaultContent = [
-                <div key={'wrapper'} class={'date-wrapper'}>
+                <div key="wrapper'} class={'date-wrapper">
                   <span class={lCls}/>
                   <div class={cls}>
                     {day.dayOfMonth}
@@ -139,7 +139,7 @@ class SingleMonth extends Vue {
                   <span class={rCls}/>
                 </div>
                 ,
-                <div key={'info'} class={infoCls}>{info}</div>
+                <div key="info" class={infoCls}>{info}</div>
               ];
 
               return (
@@ -184,11 +184,11 @@ class SingleMonth extends Vue {
     const {weekComponents} = this.state;
 
     return (
-        <div class={'single-month'} ref={this.setWarpper.bind(this)}>
-          <div class={'month-title'}>
+        <div class="single-month" ref={this.setWarpper.bind(this)}>
+          <div class="month-title">
             {title}
           </div>
-          <div class={'date'}>
+          <div class="date">
             {weekComponents}
           </div>
         </div>

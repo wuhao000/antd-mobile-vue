@@ -378,7 +378,7 @@ export default class InputItem extends FormComponent {
               onConfirm={(v) => {
                 this.$emit('confirm', v);
               }}
-              ref={'input'}
+              ref="input"
             />
           ) : (
             <Input
@@ -397,7 +397,7 @@ export default class InputItem extends FormComponent {
                 }
               }
               class={classNameProp}
-              ref={'input'}
+              ref="input"
               on={
                 {
                   change: this.onInputChange,

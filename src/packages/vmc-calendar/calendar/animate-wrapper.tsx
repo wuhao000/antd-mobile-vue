@@ -15,8 +15,8 @@ export default class AnimateWrapper extends Vue {
     const {displayType, visible} = this;
 
     return <div
-        class={'animate'}
-        style={{display: visible ? displayType : 'none'}}>
+      class="animate"
+      style={{display: visible ? displayType : 'none'}}>
       {visible && this.$slots.default}
     </div>;
   }

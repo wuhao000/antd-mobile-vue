@@ -152,18 +152,18 @@ class DatePicker extends mixins(DatePickerBase) {
     return (
         <div class={`${prefixCls} date-picker`}>
           <WeekPanel locale={locale}/>
-          <div class={'wrapper'}
+          <div class="wrapper"
                style={{
                  overflowX: 'hidden',
                  overflowY: 'visible'
                }}
-               ref={'wrapper'}
+               ref="wrapper"
                on={wrapperEvents}>
-            <div style={style} ref={'panel'}>
+            <div style={style} ref="panel">
               {
-                this.canLoadPrev() && <div class={'load-tip'}>{locale.loadPrevMonth}</div>
+                this.canLoadPrev() && <div class="load-tip">{locale.loadPrevMonth}</div>
               }
-              <div class={'months'}>
+              <div class="months">
                 {
                   this.state.months.map((m) => {
                     const hidden = m.height && this.visibleMonth.indexOf(m) < 0;

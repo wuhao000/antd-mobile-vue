@@ -45,7 +45,7 @@ class Calendar extends CalendarProps {
         class={this.prefixCls + '-view'}
         locale={locale}
         renderHeader={headerProps => (
-          <Header {...headerProps} closeIcon={<Icon type={'cross'}/>}/>
+          <Header {...headerProps} closeIcon={<Icon type="cross"/>}/>
         )}
         onSelectHasDisableDate={(...args) => {
           this.$emit('select-has-disable-date', ...args);

@@ -51,7 +51,7 @@ class ConfirmPanel extends Vue {
     }
 
     return (
-        <div class={'confirm-panel'}>
+        <div class="confirm-panel">
           {
             type === 'range' &&
             <div class={'info'}>

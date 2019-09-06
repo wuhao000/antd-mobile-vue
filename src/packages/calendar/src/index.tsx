@@ -58,7 +58,7 @@ class Calendar extends CalendarProps {
       <VMCalendar
         locale={locale}
         renderHeader={headerProps => (
-          <Header {...headerProps} closeIcon={<Icon type={'cross'}/>}/>
+          <Header {...headerProps} closeIcon={<Icon type="cross"/>}/>
         )}
         onCancel={(...args) => {
           this.$emit('cancel', ...args);

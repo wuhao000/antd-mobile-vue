@@ -241,17 +241,17 @@ export default class SearchBar extends Vue {
       <form
         onSubmit={this.onSubmit}
         class={wrapCls}
-        ref={'inputContainer'}
-        action={'#'}
+        ref="inputContainer"
+        action="#"
       >
         <div class={`${prefixCls}-input`}>
           <div
             class={`${prefixCls}-synthetic-ph`}
-            ref={'syntheticPh'}
+            ref="syntheticPh"
           >
             <span
               class={`${prefixCls}-synthetic-ph-container`}
-              ref={'syntheticPhContainer'}
+              ref="syntheticPhContainer"
             >
               <i class={`${prefixCls}-synthetic-ph-icon`}/>
               <span
@@ -266,7 +266,7 @@ export default class SearchBar extends Vue {
             </span>
           </div>
           <input
-            type={'search'}
+            type="search"
             class={`${prefixCls}-value`}
             value={value}
             disabled={disabled}
@@ -275,7 +275,7 @@ export default class SearchBar extends Vue {
             onChange={this.onChange}
             onFocus={this.onFocus}
             onBlur={this.onBlur}
-            ref={'input'}
+            ref="input"
             maxLength={maxLength}
           />
           <TouchFeedback2 activeclass={`${prefixCls}-clear-active`}>
@@ -285,7 +285,7 @@ export default class SearchBar extends Vue {
         <div
           class={cancelCls}
           onClick={this.onCancel}
-          ref={'rightBtn'}>
+          ref="rightBtn">
           {this.cancelText || cancelText}
         </div>
       </form>

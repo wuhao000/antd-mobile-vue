@@ -86,8 +86,8 @@ class TimePicker extends Vue {
     const height = (clientHeight && clientHeight * 3 / 8 - 52) || Number.POSITIVE_INFINITY;
 
     return (
-      <div class={'time-picker'}>
-        <div class={'title'}>{title}</div>
+      <div class="time-picker">
+        <div class="title">{title}</div>
         {
           // @ts-ignore
           <DateTimePicker
@@ -97,7 +97,7 @@ class TimePicker extends Vue {
               height: height > 164 || height < 0 ? 164 : height,
               overflow: 'hidden'
             }}
-            mode={'time'}
+            mode="time"
             date={date}
             locale={locale}
             minDate={this.getMinTime(date)}

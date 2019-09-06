@@ -163,7 +163,7 @@ export default class Grid extends Vue {
         rowArr.push(itemEl);
       }
       rowsArr.push(
-        <Flex justify={'center'} align={'stretch'} key={`gridline-${i}`}>
+        <Flex justify="center'} align={'stretch" key={`gridline-${i}`}>
           {rowArr}
         </Flex>
       );
@@ -232,9 +232,9 @@ export default class Grid extends Vue {
     if (typeof icon === 'string') {
       if (icon.startsWith('http://') || icon.startsWith('https://')) {
         return <img class={`${prefixCls}-icon`}
-                    src={icon} alt={''}/>;
+                    src={icon} alt=""/>;
       } else {
-        return <Icon type={icon} size={'lg'}/>;
+        return <Icon type={icon} size="lg"/>;
       }
     } else if (typeof icon === 'object') {
       if (isVNode(icon)) {

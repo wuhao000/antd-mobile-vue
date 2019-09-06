@@ -45,14 +45,14 @@ class Radio extends Vue {
              onClick={this.onClick}>
         <RcCheckbox attrs={this.$props}
                     checked={this.value}
-                    type={'radio'}/>
+                    type="radio"/>
         {this.$slots.default}
       </label>
     );
     if (this.wrapLabel) {
       return mark;
     }
-    return <RcCheckbox type={'radio'} checked={this.value} attrs={this.$props}>{this.$slots.default}</RcCheckbox>;
+    return <RcCheckbox type="radio" checked={this.value} attrs={this.$props}>{this.$slots.default}</RcCheckbox>;
   }
 }
 

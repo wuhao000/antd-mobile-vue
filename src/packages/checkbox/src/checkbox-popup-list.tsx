@@ -38,17 +38,19 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
     // @ts-ignore
     const value = this.stateValue;
     const array = [];
-    value.forEach((v, index) => {
-      const option = options.find(it => it.value === v);
-      if (option) {
-        array.push(option.label);
-      } else {
-        array.push(v);
-      }
-      if (index < value.length - 1) {
-        array.push(this.separator);
-      }
-    });
+    if (value) {
+      value.forEach((v, index) => {
+        const option = options.find(it => it.value === v);
+        if (option) {
+          array.push(option.label);
+        } else {
+          array.push(v);
+        }
+        if (index < value.length - 1) {
+          array.push(this.separator);
+        }
+      });
+    }
     return array;
   }
 
@@ -59,19 +61,20 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
   }
 
   public render() {
-    const Item = List.Item as any;
-    const listProps = {
+    const listProps: any = {
       ...this.$attrs,
       ...this.$props,
       options: this.getOptions()
     };
-    listProps['title'] = undefined;
+    const {stateValue, optionText, placeholder} = this;
+    listProps.title = undefined;
     const cancelButton = <div onclick={this.onClear}
                               class={`am-popup-item am-popup-header-left`}>清除</div>;
-    return <Item onClick={this.onClick}
-                 touchFeedback={!this.readOnly && !this.disabled}
-                 disabled={this.isDisabled}
-                 extraStyle={{flexBasis: '60%'}}>
+    return <List.Item onClick={this.onClick}
+                      touchFeedback={!this.readOnly && !this.disabled}
+                      text={!!optionText}
+                      disabled={this.isDisabled}
+                      extraStyle={{flexBasis: '60%'}}>
       <Popup value={this.isDisabled ? false : this.popupVisible}
              showCancel={this.clearable}
              disabled={this.disabled || this.isReadonly}
@@ -87,9 +90,9 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
           onChange={this.onChange}
         />
       </Popup>
-      <span slot={'extra'}>{this.stateValue && this.stateValue.length ? this.optionText : this.placeholder}</span>
+      <span slot="extra">{stateValue && stateValue.length ? optionText : placeholder}</span>
       <span>{this.title}</span>
-    </Item>;
+    </List.Item>;
   }
 
   private closePopup() {

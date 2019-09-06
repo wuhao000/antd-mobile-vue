@@ -109,14 +109,15 @@ class DatePicker extends DatePickerProps {
         onScrollChange={this.setScrollValue}
       />
     );
-    const childExtra = value ? formatFn(this, value) : (this.extra || extra || this.placeholder);
+    const textValue = value ? formatFn(this, value) : null;
+    const childExtra = textValue ? textValue : (this.extra || extra || this.placeholder);
     const visible = (this.disabled || !this.editable) ? false : this.visible;
     return (
       <PopupDatePicker
         datePicker={datePicker}
-        WrapComponent={'div'}
-        transitionName={'am-slide-up'}
-        maskTransitionName={'am-fade'}
+        WrapComponent="div"
+        transitionName="am-slide-up"
+        maskTransitionName="am-fade"
         {...this.$props as any}
         title={this.title}
         disabled={this.disabled}
@@ -129,7 +130,11 @@ class DatePicker extends DatePickerProps {
         ref={this.fixOnOk}
         onVisibleChange={this.onVisibleChange}>
         {this.$slots.default && this.$slots.default.map(it => {
-          setProps(it, {extra: childExtra, arrow: 'horizontal'});
+          setProps(it, {
+            text: !!textValue,
+            extra: childExtra,
+            arrow: 'horizontal'
+          });
           return it;
         })}
       </PopupDatePicker>

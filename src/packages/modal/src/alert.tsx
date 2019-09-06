@@ -86,11 +86,11 @@ export default function alert(
           visible
           transparent
           title={title}
-          transitionName={'am-zoom'}
+          transitionName="am-zoom"
           closable={false}
           maskClosable={false}
           footer={footer}
-          maskTransitionName={'am-fade'}
+          maskTransitionName="am-fade"
           platform={platform}
           wrapProps={{onTouchStart: onWrapTouchStart}}>
           <div class={`${prefixCls}-alert-content`}>{message}</div>

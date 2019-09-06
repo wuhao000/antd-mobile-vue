@@ -120,7 +120,7 @@ export default class MCalendarItem extends BaseInputComponent {
         </Calendar>
       }
       <span>{this.title}</span>
-      <span slot={'extra'}>{this.displayValue || this.placeholder}</span>
+      <span slot="extra">{this.displayValue || this.placeholder}</span>
     </List.Item>;
   }
 

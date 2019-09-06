@@ -149,8 +149,8 @@ export default class ActionSheet extends Vue {
 
   public renderSheet() {
     if (this.theme === 'android') {
-      return <div class={'weui-skin_android'}>
-        <transition name={'vux-android-actionsheet'}
+      return <div class="weui-skin_android">
+        <transition name="vux-android-actionsheet"
                     onAfterEnter={() => {
                       this.$emit('after-show');
                     }}
@@ -158,17 +158,17 @@ export default class ActionSheet extends Vue {
                       this.$emit('after-hide');
                     }}>
           <div style={this.showStyle}
-               class={'weui-actionsheet'}>
-            <div class={'weui-actionsheet__menu'}>
+               class="weui-actionsheet">
+            <div class="weui-actionsheet__menu">
               {this.renderButtons()}
             </div>
           </div>
         </transition>
       </div>;
     } else {
-      return <div ref={'iOSMenu'}>
-        <div class={'am-action-sheet-content'}>
-          <div class={'am-action-sheet-body'}>
+      return <div ref="iOSMenu">
+        <div class="am-action-sheet-content">
+          <div class="am-action-sheet-body">
             <div>
               {this.renderTitle()}
               {this.renderButtons()}
@@ -196,7 +196,7 @@ export default class ActionSheet extends Vue {
   }
 
   private renderButtons() {
-    return (<div class={this.listClassPrefix} role={'group'}>
+    return (<div class={this.listClassPrefix} role="group">
       {this.menus.map(it => this.renderMenu(it))}
       {this.showCancel ? this.renderCancelButton() : null}
     </div>);
@@ -214,7 +214,7 @@ export default class ActionSheet extends Vue {
       [this.listClassPrefix + '-badge']: menu.badge
     };
     return <MTouchFeedback activeClassName={itemClassPrefix + '-active'}>
-      <div class={classes} role={'button'}>
+      <div class={classes} role="button">
         <span class={itemClassPrefix + '-content'}>{menu.label}</span>
         {this.renderBadge(menu.badge)}
       </div>
@@ -224,7 +224,7 @@ export default class ActionSheet extends Vue {
   private renderBadge(badge: string | boolean | number | undefined) {
     if (badge) {
       const supClass = typeof badge === 'boolean' ? 'am-badge-dot' : 'am-badge-text';
-      return badge ? <span class={'am-badge am-badge-not-a-wrapper'}>
+      return badge ? <span class="am-badge am-badge-not-a-wrapper">
           <sup class={supClass}>
             {typeof badge === 'boolean' ? null : badge}
           </sup>
@@ -237,7 +237,7 @@ export default class ActionSheet extends Vue {
     const itemClassPrefix = this.listClassPrefix + '-item';
     const classes = itemClassPrefix + ` ${this.prefixCls}-cancel-button`;
     return <MTouchFeedback activeClassName={itemClassPrefix + '-active'}>
-      <div class={classes} role={'button'}
+      <div class={classes} role="button"
            onClick={this.cancelClick}>
         <span class={itemClassPrefix + '-content'}>取消</span>
         <span class={this.prefixCls + '-cancel-button-mask'}/>

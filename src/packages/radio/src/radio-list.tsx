@@ -55,6 +55,7 @@ export default class MRadioList extends OptionsBasedComponent {
   }
 
   private onChange(checkState: any, value: any) {
+    console.log(checkState + '/' + value);
     if (checkState) {
       this.stateValue = value;
     }

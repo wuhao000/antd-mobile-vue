@@ -72,7 +72,7 @@ export default class Switch extends FormComponent {
     return (
       <label class={wrapCls}>
         <input
-          type={'checkbox'}
+          type="checkbox"
           name={name}
           class={`${prefixCls}-checkbox`}
           disabled={disabled}
