@@ -10,8 +10,6 @@ class TouchFeedback extends Vue {
   public disabled?: boolean;
   @Prop({type: String})
   public activeClassName?: string;
-  @Prop()
-  public activeStyle?: any;
   public active: boolean = false;
 
   public updated() {
@@ -29,6 +27,7 @@ class TouchFeedback extends Vue {
     if (isActive !== this.active) {
       this.active = isActive;
     }
+    this.$emit(type.toLowerCase(), ev);
   }
 
   public onTouchStart(e) {
@@ -61,7 +60,7 @@ class TouchFeedback extends Vue {
   }
 
   public render() {
-    const {disabled, activeClassName, activeStyle} = this;
+    const {disabled, activeClassName} = this;
     const events = disabled ? undefined : {
       touchstart: this.onTouchStart,
       touchmove: this.onTouchMove,
@@ -75,21 +74,22 @@ class TouchFeedback extends Vue {
     if (!disabled && this.active) {
       if (child.elm) {
         const elm = child.elm as HTMLElement;
-        if (!elm.classList.contains(this.activeClassName)) {
-          elm.classList.add(this.activeClassName);
+        if (!elm.classList.contains(activeClassName)) {
+          elm.classList.add(activeClassName);
         }
       }
     } else {
       if (child.elm) {
         const elm = child.elm as HTMLElement;
-        if (elm.classList.contains(this.activeClassName)) {
-          elm.classList.remove(this.activeClassName);
+        if (elm.classList.contains(activeClassName)) {
+          elm.classList.remove(activeClassName);
         }
       }
     }
-    child.data.on = child.data.on ?
-        Object.assign(child.data.on, events) : events;
+    const on = child.data.on;
+    child.data.on = on ? Object.assign(on, events) : events;
     return child;
   }
 }
+
 export default TouchFeedback as any;

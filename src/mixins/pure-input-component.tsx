@@ -1,6 +1,6 @@
 import {VNode} from 'vue';
 import Component from 'vue-class-component';
-import {mixins} from 'vue-class-component/lib/util';
+import {mixins} from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
 import Emitter from './emitter';
 

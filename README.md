@@ -50,7 +50,7 @@ SearchBar | √ | √
 SegmentedControl | √ | √
 Slider | √ | √
 Range | √ | √
-Stepper | √ | 
+Stepper | √ | √ 
 Steps | √ | √
 SwipeAction | √ | 
 Switch | √ | √

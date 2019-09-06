@@ -176,19 +176,19 @@ export default [{
   },
   component: () => import('@/generated/picker/index.vue')
 }, {
-  path: 'popup',
-  name: 'Popup 弹出层',
-  meta: {
-    tag: '其他'
-  },
-  component: () => import('@/generated/popup/index.vue')
-}, {
   path: 'popover',
   name: 'Popover 气泡',
   meta: {
     tag: '其他'
   },
   component: () => import('@/generated/popover/index.vue')
+}, {
+  path: 'popup',
+  name: 'Popup 弹出层',
+  meta: {
+    tag: '其他'
+  },
+  component: () => import('@/generated/popup/index.vue')
 }, {
   path: 'progress',
   name: 'Progress 进度条',
@@ -245,6 +245,13 @@ export default [{
     tag: '数据入口'
   },
   component: () => import('@/generated/slider/index.vue')
+}, {
+  path: 'stepper',
+  name: 'Stepper 步进器',
+  meta: {
+    tag: '其他'
+  },
+  component: () => import('@/generated/stepper/index.vue')
 }, {
   path: 'steps',
   name: 'Steps 步骤条',

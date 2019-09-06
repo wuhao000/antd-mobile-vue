@@ -162,7 +162,7 @@ export default {
             'value': this.placement
           },
           on: {
-            'change': this.onChange.bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this)
+            'change': this.onChange.bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this).bind(this)
           }
         },
         [h(

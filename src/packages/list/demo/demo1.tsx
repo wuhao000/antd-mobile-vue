@@ -24,8 +24,8 @@ export default class ListExample extends Vue {
     switch: false,
     range: [0, 100],
     readonly: true,
-    error: true,
-    errorMessage: '有错误',
+    error: false,
+    errorMessage: '',
     errorDisplayType: 'text'
   };
   public disabled: boolean = false;

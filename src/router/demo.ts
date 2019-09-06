@@ -1,6 +1,6 @@
 export default [{
   path: 'home',
-  name: '首页',
+  name: '演示',
   props: true,
   component: () => import('@/components/demo/index.vue')
 }, {
@@ -104,13 +104,13 @@ export default [{
   name: 'm-picker',
   component: () => import('@/generated/picker/demo.vue')
 }, {
-  path: 'm-popup',
-  name: 'm-popup',
-  component: () => import('@/generated/popup/demo.vue')
-}, {
   path: 'm-popover',
   name: 'm-popover',
   component: () => import('@/generated/popover/demo.vue')
+}, {
+  path: 'm-popup',
+  name: 'm-popup',
+  component: () => import('@/generated/popup/demo.vue')
 }, {
   path: 'm-progress',
   name: 'm-progress',
@@ -143,6 +143,10 @@ export default [{
   path: 'm-slider',
   name: 'm-slider',
   component: () => import('@/generated/slider/demo.vue')
+}, {
+  path: 'm-stepper',
+  name: 'm-stepper',
+  component: () => import('@/generated/stepper/demo.vue')
 }, {
   path: 'm-steps',
   name: 'm-steps',

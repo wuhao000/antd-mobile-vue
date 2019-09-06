@@ -1,4 +1,4 @@
-import CalendarBase from '@/packages/vmc-calendar/calendar-base';
+import CalendarBase from './calendar-base';
 import Component from 'vue-class-component';
 
 @Component({

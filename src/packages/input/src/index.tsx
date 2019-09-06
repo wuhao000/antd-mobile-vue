@@ -132,6 +132,13 @@ export default class InputItem extends FormComponent {
 
   public created() {
     this.currentValue = normalizeValue(((this.value || '') + ''));
+    if (this.value === undefined) {
+      this.$watch(() => this.value, (value, old) => {
+        if (old === undefined) {
+          this.$forceUpdate();
+        }
+      });
+    }
   }
 
   public beforeDestroy() {
@@ -250,6 +257,7 @@ export default class InputItem extends FormComponent {
       }
     }
   }
+
 
   public calcPos(prePos: number, preCtrlVal: string, rawVal: string, ctrlVal: string, placeholderChars: Array<string>, maskReg: RegExp) {
     const editLength = rawVal.length - preCtrlVal.length;

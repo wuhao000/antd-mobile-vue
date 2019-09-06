@@ -30,8 +30,8 @@ import NavBar from './nav-bar';
 import NoticeBar from './notice-bar';
 import Pagination from './pagination';
 import Picker from './picker';
-import Popup from './popup';
 import Popover from './popover';
+import Popup from './popup';
 import Progress from './progress';
 import PullRefresh from './pull-refresh';
 import Radio from './radio';
@@ -40,6 +40,7 @@ import Result from './result';
 import SearchBar from './search-bar';
 import SegmentedControl from './segmented-control';
 import Slider from './slider';
+import Stepper from './stepper';
 import Steps from './steps';
 import Switch from './switch';
 import TabBar from './tab-bar';
@@ -89,8 +90,8 @@ const components = [
 	NoticeBar,
 	Pagination,
 	Picker,
-	Popup,
 	Popover,
+	Popup,
 	Progress,
 	PullRefresh,
 	Radio,
@@ -99,6 +100,7 @@ const components = [
 	SearchBar,
 	SegmentedControl,
 	Slider,
+	Stepper,
 	Steps,
 	Switch,
 	TabBar,
@@ -154,8 +156,8 @@ export {
 	NoticeBar,
 	Pagination,
 	Picker,
-	Popup,
 	Popover,
+	Popup,
 	Progress,
 	PullRefresh,
 	Radio,
@@ -164,6 +166,7 @@ export {
 	SearchBar,
 	SegmentedControl,
 	Slider,
+	Stepper,
 	Steps,
 	Switch,
 	TabBar,
@@ -207,8 +210,8 @@ export default {
 	NoticeBar,
 	Pagination,
 	Picker,
-	Popup,
 	Popover,
+	Popup,
 	Progress,
 	PullRefresh,
 	Radio,
@@ -217,6 +220,7 @@ export default {
 	SearchBar,
 	SegmentedControl,
 	Slider,
+	Stepper,
 	Steps,
 	Switch,
 	TabBar,

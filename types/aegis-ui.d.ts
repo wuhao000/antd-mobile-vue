@@ -24,8 +24,8 @@ import {NavBarComponent} from './components/nav-bar';
 import {NoticeBarComponent} from './components/notice-bar';
 import {PaginationComponent} from './components/pagination';
 import {PickerComponent} from './components/picker';
-import {PopupComponent} from './components/popup';
 import {PopoverComponent} from './components/popover';
+import {PopupComponent} from './components/popup';
 import {ProgressComponent} from './components/progress';
 import {PullRefreshComponent} from './components/pull-refresh';
 import {RadioComponent} from './components/radio';
@@ -34,6 +34,7 @@ import {ResultComponent} from './components/result';
 import {SearchBarComponent} from './components/search-bar';
 import {SegmentedControlComponent} from './components/segmented-control';
 import {SliderComponent} from './components/slider';
+import {StepperComponent} from './components/stepper';
 import {StepsComponent} from './components/steps';
 import {SwitchComponent} from './components/switch';
 import {TabBarComponent} from './components/tab-bar';
@@ -97,9 +98,9 @@ export class Pagination extends PaginationComponent {
 }
 export class Picker extends PickerComponent {
 }
-export class Popup extends PopupComponent {
-}
 export class Popover extends PopoverComponent {
+}
+export class Popup extends PopupComponent {
 }
 export class Progress extends ProgressComponent {
 }
@@ -116,6 +117,8 @@ export class SearchBar extends SearchBarComponent {
 export class SegmentedControl extends SegmentedControlComponent {
 }
 export class Slider extends SliderComponent {
+}
+export class Stepper extends StepperComponent {
 }
 export class Steps extends StepsComponent {
 }
