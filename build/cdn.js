@@ -33,6 +33,7 @@ function upload() {
             Metadata['content-encoding'] = encoding;
         }
         const Key = `${projectName}/${pk.version}/${name}`;
+        console.log(Key);
         obs.putObject({
             Bucket: 'aegis-public-assets',
             Key,
