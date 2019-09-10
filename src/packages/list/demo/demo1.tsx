@@ -23,7 +23,7 @@ export default class ListExample extends Vue {
     slider: 5,
     switch: false,
     range: [0, 100],
-    readonly: true,
+    readonly: false,
     error: false,
     errorMessage: '',
     errorDisplayType: 'text'
@@ -45,7 +45,8 @@ export default class ListExample extends Vue {
             editable={!this.state.readonly}>
         <m-input title="输入框" error={this.state.error} errorDisplayType={this.state.errorDisplayType}
                  errorMessage={this.state.errorMessage}/>
-        <m-input title="数字" type="number" error={this.state.error} errorDisplayType={this.state.errorDisplayType}
+        <m-input title="数字"
+                 type="number" error={this.state.error} errorDisplayType={this.state.errorDisplayType}
                  errorMessage={this.state.errorMessage}/>
         <m-date-picker-item title="日期时间选择" value={new Date()} error={this.state.error}
                             errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
@@ -57,15 +58,23 @@ export default class ListExample extends Vue {
                             errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
         <m-date-picker-item title="时间选择" mode="time" value={new Date()} error={this.state.error}
                             errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
+        <m-calendar-item title="日期范围" value={[new Date(), new Date()]}/>
         <m-range-item title="范围选择" value={this.state.range} error={this.state.error}
                       errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
-        <m-radio-popup-list title="弹出单选" options={options} error={this.state.error}
+        <m-radio-popup-list title="弹出单选"
+                            value={1}
+                            options={options}
+                            error={this.state.error}
                             errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
         <m-checkbox-popup-list title="弹出多选" options={options} error={this.state.error}
+                               value={[1, 2]}
                                errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
         <m-switch-item title="开关" v-model={this.state.switch} error={this.state.error}
                        errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
-        <m-textarea rows={5} title="长文本222222222" error={this.state.error} errorDisplayType={this.state.errorDisplayType}
+        <m-textarea rows={5} title="长文本"
+                    value="这是一大段文字，这是一大段文字，这是一大段文字，这是一大段文字，这是一大段文字，这是一大段文字，这是一大段文字"
+                    error={this.state.error}
+                    errorDisplayType={this.state.errorDisplayType}
                     errorMessage={this.state.errorMessage}/>
         <m-slider-item title="滑动输入条" v-model={this.state.slider} error={this.state.error}
                        errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>

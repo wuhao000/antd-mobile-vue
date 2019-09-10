@@ -12,11 +12,6 @@ const MAX_DATE = new Date(new Date().getFullYear() + 10, 12, 31, 23, 59, 59);
 export default class MCalendarItem extends BaseInputComponent {
 
   /**
-   * 是否以文本的方式展示所选值
-   */
-  @Prop({type: Boolean, default: false})
-  public text: boolean;
-  /**
    * 标题
    */
   @Prop({type: String})
@@ -98,14 +93,10 @@ export default class MCalendarItem extends BaseInputComponent {
   }
 
   public render() {
-    // @ts-ignore
-    return <List.Item
-      text={this.text}
-      title={this.title}
-      onClick={this.onClick}>
-      {
-        // @ts-ignore
-        <Calendar
+    return <List.Item text={!!this.displayValue}
+                      title={this.title}
+                      onClick={this.onClick}>
+      <Calendar
           attrs={this.props}
           value={this.stateValue}
           scopedSlots={this.$scopedSlots}
@@ -116,9 +107,8 @@ export default class MCalendarItem extends BaseInputComponent {
           slots={this.slots}
           on={this.listeners}
           style={this.cssStyle}>
-          {this.getDefaultSlot()}
-        </Calendar>
-      }
+        {this.getDefaultSlot()}
+      </Calendar>
       <span>{this.title}</span>
       <span slot="extra">{this.displayValue || this.placeholder}</span>
     </List.Item>;
