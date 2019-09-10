@@ -123,11 +123,25 @@ class InputNumber extends BaseComponent {
     let downEvents;
     upEvents = {
       touchstart: (editable && !upDisabledClass) ? this.up : noop,
-      touchend: this.stop
+      touchend: this.stop,
+      click: (...args: any[]) => {
+        if (editable && !upDisabledClass) {
+          // @ts-ignore
+          this.up(...args);
+          this.stop();
+        }
+      }
     };
     downEvents = {
       touchstart: (editable && !downDisabledClass) ? this.down : noop,
-      touchend: this.stop
+      touchend: this.stop,
+      click: (...args: any[]) => {
+        if (editable && !upDisabledClass) {
+          // @ts-ignore
+          this.down(...args);
+          this.stop();
+        }
+      }
     };
     const inputDisplayValueFormat = this.formatWrapper(inputDisplayValue);
     const isUpDisabled = !!upDisabledClass || disabled || readOnly;

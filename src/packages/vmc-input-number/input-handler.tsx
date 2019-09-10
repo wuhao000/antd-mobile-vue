@@ -42,9 +42,14 @@ class InputHandler extends Vue {
                      }
                    }
                  }>
-        <span class={{
-          [`${prefixCls}-handler-active`]: this.active && !this.disabled
-        }} {...otherProps}
+        <span
+          class={{
+            [`${prefixCls}-handler-active`]: this.active && !this.disabled
+          }}
+          {...otherProps}
+          onClick={(...args) => {
+            this.$emit('click', ...args);
+          }}
         >{this.$slots.default}</span>
       </Touchable>
     );
