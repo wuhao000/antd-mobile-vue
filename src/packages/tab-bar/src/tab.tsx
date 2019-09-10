@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import IconRes from '../../../mixins/icon-res';
+import IconRes from '../../mixins/icon-res';
 import Badge from '../../badge';
 import {isVNode} from '../../utils/vnode';
 

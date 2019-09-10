@@ -2,31 +2,17 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
 import DateTimePicker from '../vmc-date-picker';
-import {Models} from './date/data-types';
+import {Locale} from './data-types';
 
 export const MIN_DATE = new Date(0, 0, 0, 0, 0);
 export const MAX_DATE = new Date(9999, 11, 31, 23, 59, 59);
-
-export interface PropsType {
-  locale: Models.Locale;
-  prefixCls?: string;
-  pickerPrefixCls?: string;
-  title?: string;
-  defaultValue?: Date;
-  value?: Date;
-  onValueChange?: (time: Date) => void;
-
-  minDate?: Date;
-  maxDate?: Date;
-  clientHeight?: number;
-}
 
 @Component({
   name: 'TimePicker'
 })
 class TimePicker extends Vue {
   @Prop()
-  public locale: Models.Locale;
+  public locale: Locale;
   @Prop(String)
   public prefixCls?: string;
   @Prop(String)

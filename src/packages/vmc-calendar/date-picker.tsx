@@ -1,8 +1,8 @@
 import {VNode} from 'vue';
 import Component, {mixins} from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
+import {Locale, MonthData} from './data-types';
 import DatePickerBase from './date-picker-base';
-import {Models} from './date/data-types';
 import SingleMonth from './date/single-month';
 import WeekPanel from './date/week-panel';
 
@@ -20,13 +20,13 @@ class DatePicker extends mixins(DatePickerBase) {
 
   public transform: string = '';
 
-  public genMonthComponent(data?: Models.MonthData): VNode {
+  public genMonthComponent(data?: MonthData): VNode {
     if (!data) {
       return;
     }
     // @ts-ignore
     return <SingleMonth key={data.title}
-                        locale={this.locale || {} as Models.Locale}
+                        locale={this.locale || {} as Locale}
                         monthData={data}
                         displayMode={this.displayMode}
                         rowSize={this.rowSize}
@@ -44,7 +44,7 @@ class DatePicker extends mixins(DatePickerBase) {
     />;
   }
 
-  public computeHeight(data: Models.MonthData, singleMonth) {
+  public computeHeight(data: MonthData, singleMonth) {
     if (singleMonth && singleMonth.wrapperDivDOM) {
       // preact, ref时dom有可能无height, offsetTop数据。
       if (!data.height && !singleMonth.wrapperDivDOM.clientHeight) {
@@ -139,7 +139,7 @@ class DatePicker extends mixins(DatePickerBase) {
   }
 
   public render() {
-    const {prefixCls = '', locale = {} as Models.Locale} = this;
+    const {prefixCls = '', locale = {} as Locale} = this;
     const style: any = {
       transform: this.transform
     };
@@ -150,33 +150,33 @@ class DatePicker extends mixins(DatePickerBase) {
       touchcancel: this.touchHandler.onTouchCancel
     };
     return (
-        <div class={`${prefixCls} date-picker`}>
-          <WeekPanel locale={locale}/>
-          <div class="wrapper"
-               style={{
-                 overflowX: 'hidden',
-                 overflowY: 'visible'
-               }}
-               ref="wrapper"
-               on={wrapperEvents}>
-            <div style={style} ref="panel">
+      <div class={`${prefixCls} date-picker`}>
+        <WeekPanel locale={locale}/>
+        <div class="wrapper"
+             style={{
+               overflowX: 'hidden',
+               overflowY: 'visible'
+             }}
+             ref="wrapper"
+             on={wrapperEvents}>
+          <div style={style} ref="panel">
+            {
+              this.canLoadPrev() && <div class="load-tip">{locale.loadPrevMonth}</div>
+            }
+            <div class="months">
               {
-                this.canLoadPrev() && <div class="load-tip">{locale.loadPrevMonth}</div>
+                this.state.months.map((m) => {
+                  const hidden = m.height && this.visibleMonth.indexOf(m) < 0;
+                  if (hidden) {
+                    return <div key={m.title + '_shallow'} style={{height: m.height}}/>;
+                  }
+                  return m.component;
+                })
               }
-              <div class="months">
-                {
-                  this.state.months.map((m) => {
-                    const hidden = m.height && this.visibleMonth.indexOf(m) < 0;
-                    if (hidden) {
-                      return <div key={m.title + '_shallow'} style={{height: m.height}}/>;
-                    }
-                    return m.component;
-                  })
-                }
-              </div>
             </div>
           </div>
         </div>
+      </div>
     );
   }
 }

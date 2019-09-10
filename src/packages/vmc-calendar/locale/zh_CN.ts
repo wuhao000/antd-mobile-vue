@@ -1,6 +1,6 @@
-import { Models } from '../date/data-types';
+import { Locale } from '../data-types';
 
-const locale: Models.Locale = {
+const locale: Locale = {
   title: '日期选择',
   today: '今天',
   month: '月',

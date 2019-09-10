@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import RcCollapse from '../../../ant/vc-collapse';
+import RcCollapse from 'ant-design-vue/lib/vc-collapse';
 
 @Component({
   name: 'Accordion'

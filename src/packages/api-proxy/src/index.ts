@@ -23,17 +23,17 @@ export default (apiObj: ApiObject<ApiDef>,
        * @param {object|array} params
        */
       copyObj.request = (params?: ParamType, settings?: AxiosRequestConfig): Promise<AxiosResponse<ApiResponse<D>>> =>
-          request.call(copyObj, merge({}, settings, copyObj), params) as Promise<AxiosResponse<ApiResponse<D>>>;
+        request.call(copyObj, merge({}, settings, copyObj), params) as Promise<AxiosResponse<ApiResponse<D>>>;
       copyObj.req = (params?: ParamType, settings?: AxiosRequestConfig): Promise<ApiResponse<D>> =>
-          requestData.call(copyObj, merge({}, settings, copyObj), params, false) as Promise<ApiResponse<D>>;
+        requestData.call(copyObj, merge({}, settings, copyObj), params, false) as Promise<ApiResponse<D>>;
       copyObj.r = (params?: ParamType, settings?: AxiosRequestConfig): Promise<D> =>
-          requestData.call(copyObj, merge({}, settings, copyObj), params, true) as Promise<D>;
+        requestData.call(copyObj, merge({}, settings, copyObj), params, true) as Promise<D>;
     }
     for (const property in copyObj) {
       if (copyObj.hasOwnProperty(property)
-          && typeof (copyObj as { [key: string]: any })[property] === 'object') {
+        && typeof (copyObj as { [key: string]: any })[property] === 'object') {
         (copyObj as { [key: string]: any })[property]
-            = defineReq((copyObj as { [key: string]: any })[property], options);
+          = defineReq((copyObj as { [key: string]: any })[property], options);
       }
     }
     return copyObj as unknown as ApiObject<API>;
@@ -60,21 +60,22 @@ export default (apiObj: ApiObject<ApiDef>,
     });
   };
 
-  const request = (obj: API & AxiosRequestConfig, params?: ParamType) => {
+
+  const request = (obj: any, params?: ParamType) => {
     obj.url = obj.url + (config.pathSuffix || '');
     obj.method = obj.method || HttpMethod.GET;
     assignParams(obj, params);
     const p = Axios.request(obj);
     return Promise.resolve(p).then((v: AxiosResponse<ApiResponse<any>>) => new Promise((resolve) => {
       if ((obj.errorHandleType === undefined || obj.errorHandleType === 'global')
-          && config.logicErrorHandler
-          && v.data.code) {
+        && config.logicErrorHandler
+        && v.data.code) {
         config.logicErrorHandler(v.data, v.data.code);
       }
       resolve(v);
     })).catch((err: AxiosError) => new Promise((resolve, reject) => {
       if ((obj.errorHandleType === undefined || obj.errorHandleType === 'global')
-          && config.httpStatusErrorHandler) {
+        && config.httpStatusErrorHandler) {
         if (err.response) {
           config.httpStatusErrorHandler(err, err.response.status);
         } else {

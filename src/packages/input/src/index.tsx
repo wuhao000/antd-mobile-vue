@@ -1,9 +1,8 @@
 /* tslint:disable:jsx-no-multiline-js */
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
-import {FormComponent} from '../../../mixins/form-component';
+import {FormComponent} from '../../mixins/form-component';
 import List from '../../list';
 import TouchFeedback from '../../vmc-feedback';
 import CustomInput from './custom-input';
@@ -95,9 +94,6 @@ export default class InputItem extends FormComponent {
   @Prop({type: Boolean, default: false})
   public required: boolean;
 
-  public static contextTypes = {
-    antLocale: PropTypes.object
-  };
   public static install: (Vue) => void;
 
   private renderLabel(): any {

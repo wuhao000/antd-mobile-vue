@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import {Models} from '../date/data-types';
+import {Locale} from '../data-types';
 import {formatDate} from '../util';
 
 @Component({
@@ -11,7 +11,7 @@ class ConfirmPanel extends Vue {
   @Prop({})
   public type?: 'one' | 'range';
   @Prop({})
-  public locale: Models.Locale;
+  public locale: Locale;
   @Prop({type: Boolean})
   public onlyConfirm?: boolean;
   @Prop({type: Boolean})

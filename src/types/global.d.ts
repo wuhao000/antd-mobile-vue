@@ -38,15 +38,15 @@ export interface MessageOptions {
 }
 
 export declare class Message {
-  success(content: any, duration?: number, onClose?: () => void): Promise<any>;
-  warning(content: any, duration?: number, onClose?: () => void): Promise<any>;
-  warn(content: any, duration?: number, onClose?: () => void): Promise<any>;
-  info(content: any, duration?: number, onClose?: () => void): Promise<any>;
-  error(content: any, duration?: number, onClose?: () => void): Promise<any>;
-  loading(content: any, duration?: number, onClose?: () => void): Promise<any>;
-  open: (config: MessageOptions) => Promise<any>;
-  config: (options: MessageConfigOptions) => void;
-  destroy: () => void;
+  public success(content: any, duration?: number, onClose?: () => void): Promise<any>;
+  public warning(content: any, duration?: number, onClose?: () => void): Promise<any>;
+  public warn(content: any, duration?: number, onClose?: () => void): Promise<any>;
+  public info(content: any, duration?: number, onClose?: () => void): Promise<any>;
+  public error(content: any, duration?: number, onClose?: () => void): Promise<any>;
+  public loading(content: any, duration?: number, onClose?: () => void): Promise<any>;
+  public open: (config: MessageOptions) => Promise<any>;
+  public config: (options: MessageConfigOptions) => void;
+  public destroy: () => void;
 }
 
 
@@ -80,7 +80,7 @@ export interface MessageConfigOptions {
 }
 
 export class Global {
-  static proxyAPI: (obj: ApiObject<ApiDef>, config: AppConfig, axiosConfig?: AxiosRequestConfig) => ApiObject<API>;
+  public static proxyAPI: (obj: ApiObject<ApiDef>, config: AppConfig, axiosConfig?: AxiosRequestConfig) => ApiObject<API>;
 }
 
 declare module 'vue/types/vue' {

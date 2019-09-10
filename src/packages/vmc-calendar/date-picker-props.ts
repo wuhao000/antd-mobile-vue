@@ -1,7 +1,7 @@
-import {Models} from './date/data-types';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
+import {ExtraData, Locale} from './data-types';
 
 @Component({
   name: 'DatePickerProps'
@@ -15,7 +15,7 @@ export default class DatePickerProps extends Vue {
   public endDate?: Date;
   /** 日期扩展数据 */
   @Prop({})
-  public getDateExtra?: (date: Date, currentValue?: Date[]) => Models.ExtraData;
+  public getDateExtra?: (date: Date, currentValue?: Date[]) => ExtraData;
   /** 无限滚动优化（大范围选择），default: false */
   @Prop({type: Boolean})
   public infiniteOpt?: boolean;
@@ -24,7 +24,7 @@ export default class DatePickerProps extends Vue {
   public initialMonths?: number;
   /** 本地化 */
   @Prop({})
-  public locale?: Models.Locale;
+  public locale?: Locale;
   /** 最大日期 */
   @Prop({type: Date})
   public maxDate?: Date;

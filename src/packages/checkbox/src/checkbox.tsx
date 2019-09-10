@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
-import RcCheckbox from '../../../ant/vc-checkbox';
+import RcCheckbox from 'ant-design-vue/lib/vc-checkbox';
 import AgreeItem from './agree-item';
 import CheckboxItem from './checkbox-item';
 

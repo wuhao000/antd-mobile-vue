@@ -42,7 +42,7 @@ export default class BasicInputExample extends Vue {
             <List.Item>
               <div
                   style={{width: '100%', color: '#108ee9', textAlign: 'center'}}
-                  onClick={this.handleClick.bind(this)}>
+                  onClick={this.handleClick}>
                 click to focus
               </div>
             </List.Item>

@@ -1,4 +1,4 @@
-import {Models} from './models';
+import {Models} from '../../../types/models';
 
 
 export interface TabBarPropsType {

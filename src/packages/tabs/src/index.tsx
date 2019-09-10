@@ -4,7 +4,7 @@ import {Prop, Watch} from 'vue-property-decorator';
 import Gesture, {IGestureStatus} from '../../vmc-gesture';
 import {DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP} from '../../vmc-gesture/config';
 import DefaultTabBar from './default-tab-bar';
-import {Models} from './models';
+import {Models} from '../../../types/models';
 import {TabBarPropsType} from './props-type';
 import TabPane from './tab-pane';
 import {getTransformPropValue, setPxStyle, setTransform} from './utils';
@@ -246,7 +246,7 @@ export default class Tabs extends Vue {
       animated,
       card: this.card,
       activeCardColor: this.activeCardColor,
-      goToTab: this.tabClickGoToTab.bind(this),
+      goToTab: this.tabClickGoToTab,
       tabBarActiveTextColor,
       tabBarBackgroundColor,
       tabBarInactiveTextColor,

@@ -1,11 +1,11 @@
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import {Models} from '../date/data-types';
+import {Locale} from '../data-types';
 
 export interface PropsType {
   title?: string;
-  locale?: Models.Locale;
+  locale?: Locale;
   showClear?: boolean;
   onCancel?: () => void;
   onClear?: () => void;
@@ -20,7 +20,7 @@ class Header extends Vue {
   @Prop({type: String})
   public title?: string;
   @Prop({})
-  public locale?: Models.Locale;
+  public locale?: Locale;
   @Prop({type: Boolean})
   public showClear?: boolean;
   @Prop({default: 'X'})
@@ -31,7 +31,7 @@ class Header extends Vue {
   public render() {
     const {
       title,
-      locale = {} as Models.Locale,
+      locale = {} as Locale,
       showClear,
       closeIcon,
       clearIcon

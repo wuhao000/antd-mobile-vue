@@ -1,4 +1,4 @@
-import {Models} from '../date/data-types';
+import {CellData, Locale, SelectType} from '../data-types';
 
 export const mergeDateTime = (date?: Date, time?: Date) => {
   const copyDate = date || new Date();
@@ -6,16 +6,16 @@ export const mergeDateTime = (date?: Date, time?: Date) => {
     return copyDate;
   }
   return new Date(
-      copyDate.getFullYear(),
-      copyDate.getMonth(),
-      copyDate.getDate(),
-      time.getHours(),
-      time.getMinutes(),
-      time.getSeconds()
+    copyDate.getFullYear(),
+    copyDate.getMonth(),
+    copyDate.getDate(),
+    time.getHours(),
+    time.getMinutes(),
+    time.getSeconds()
   );
 };
 
-export const formatDate = (date: Date, format: string, locale?: Models.Locale) => {
+export const formatDate = (date: Date, format: string, locale?: Locale) => {
   const week = locale && locale.week;
 
   const o: { [key: string]: any } = {
@@ -56,7 +56,7 @@ export function shallowEqual(objA: any, objB: any, exclude: string[] = []): bool
   }
 
   if (typeof objA !== 'object' || objA === null ||
-      typeof objB !== 'object' || objB === null) {
+    typeof objB !== 'object' || objB === null) {
     return false;
   }
 
@@ -72,8 +72,8 @@ export function shallowEqual(objA: any, objB: any, exclude: string[] = []): bool
       continue;
     }
     if (
-        !hasOwnProperty.call(objB, keysA[i]) ||
-        !is(objA[keysA[i]], objB[keysA[i]])
+      !hasOwnProperty.call(objB, keysA[i]) ||
+      !is(objA[keysA[i]], objB[keysA[i]])
     ) {
       return false;
     }
@@ -96,28 +96,27 @@ export const getDateWithoutTime = (date?: Date) => {
     return 0;
   }
   return +new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
   );
 };
-
 
 
 export const genWeekData = (firstDate: Date, minDate?: Date, maxDate?: Date) => {
   const minDateTime = getDateWithoutTime(minDate);
   const maxDateTime = getDateWithoutTime(maxDate) || Number.POSITIVE_INFINITY;
 
-  const weeks: Models.CellData[][] = [];
+  const weeks: CellData[][] = [];
   const nextMonth = getMonthDate(firstDate, 1).firstDate;
   let currentDay = firstDate;
-  let currentWeek: Models.CellData[] = [];
+  let currentWeek: CellData[] = [];
   weeks.push(currentWeek);
 
   const startWeekday = currentDay.getDay();
   if (startWeekday > 0) {
     for (let i = 0; i < startWeekday; i++) {
-      currentWeek.push({} as Models.CellData);
+      currentWeek.push({} as CellData);
     }
   }
   while (currentDay < nextMonth) {
@@ -130,7 +129,7 @@ export const genWeekData = (firstDate: Date, minDate?: Date, maxDate?: Date) => 
     currentWeek.push({
       tick,
       dayOfMonth,
-      selected: Models.SelectType.None,
+      selected: SelectType.None,
       isFirstOfMonth: dayOfMonth === 1,
       isLastOfMonth: false,
       outOfDate: tick < minDateTime || tick > maxDateTime

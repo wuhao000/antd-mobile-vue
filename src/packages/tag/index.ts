@@ -1,5 +1,5 @@
-import 'antd-mobile/es/tag/style/index.css';
 import MTag from './src';
+import './style';
 
 MTag.install = Vue => {
   Vue.component('MTag', MTag);

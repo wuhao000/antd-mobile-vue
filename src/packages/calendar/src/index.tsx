@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
 import Icon from '../../icon';
@@ -11,9 +10,6 @@ import CalendarProps from '../../vmc-calendar/calendar-props';
 })
 class Calendar extends CalendarProps {
 
-  public static contextTypes = {
-    antLocale: PropTypes.object
-  };
   public static install: (Vue) => void;
 
   @Prop({type: String, default: 'am-calendar'})
@@ -77,4 +73,5 @@ class Calendar extends CalendarProps {
     );
   }
 }
+
 export default Calendar as any;

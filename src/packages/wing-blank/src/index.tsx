@@ -6,7 +6,7 @@ import {Prop} from 'vue-property-decorator';
 @Component({
   name: 'WingBlank'
 })
-export default class WingBlank extends Vue {
+class WingBlank extends Vue {
   @Prop({
     type: String,
     default: 'am-wingblank'
@@ -21,9 +21,11 @@ export default class WingBlank extends Vue {
     const wrapCls = classnames(prefixCls, `${prefixCls}-${size}`);
 
     return (
-        <div class={wrapCls}>
-          {this.$slots.default}
-        </div>
+      <div class={wrapCls}>
+        {this.$slots.default}
+      </div>
     );
   }
 }
+
+export default WingBlank as any;

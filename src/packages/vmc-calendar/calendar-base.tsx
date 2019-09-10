@@ -6,7 +6,7 @@ import Header from './calendar/header';
 import ShortcutPanel from './calendar/shortcut-panel';
 
 import DatePicker from './date-picker';
-import {Models} from './date/data-types';
+import {Locale} from './data-types';
 import TimePicker from './time-picker';
 
 import {mergeDateTime} from './util';
@@ -71,7 +71,7 @@ export default class CalendarBase extends CalendarProps {
       return {} as StateType;
     }
     let newState = {} as StateType;
-    const {type, pickTime, defaultTimeValue, locale = {} as Models.Locale} = this;
+    const {type, pickTime, defaultTimeValue, locale = {} as Locale} = this;
     const newDate = pickTime && !useDateTime ? mergeDateTime(date, defaultTimeValue) : date;
     const {startDate, endDate} = oldState;
     switch (type) {
@@ -206,7 +206,7 @@ export default class CalendarBase extends CalendarProps {
 
   public renderCalendar() {
     const {
-      type, locale = {} as Models.Locale, prefixCls, pickTime, showShortcut, renderHeader,
+      type, locale = {} as Locale, prefixCls, pickTime, showShortcut, renderHeader,
       infiniteOpt, initialMonths, defaultDate, minDate, maxDate, getDateExtra, rowSize,
       defaultTimeValue, renderShortcut, timePickerPrefixCls, timePickerPickerPrefixCls
     } = this;

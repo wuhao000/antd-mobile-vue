@@ -1,3 +1,3 @@
-import DatePickerLocale from 'rmc-date-picker/lib/locale/zh_CN';
+import DatePickerLocale from '../../../vmc-date-picker/locale/zh_CN';
 
 export default DatePickerLocale;

@@ -1,5 +1,4 @@
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
@@ -68,9 +67,6 @@ class Menu extends Vue {
     firstLevelSelectValue: this.getNewFsv(),
     value: this.value,
     height: this.height
-  };
-  public static contextTypes = {
-    antLocale: PropTypes.object
   };
   public static install: (Vue) => void;
 

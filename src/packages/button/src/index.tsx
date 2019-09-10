@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import IconRes, {IconResProps} from '../../../mixins/icon-res';
+import IconRes, {IconResProps} from '../../mixins/icon-res';
 import TouchFeedback from '../../vmc-feedback';
 
 const httpReg = /^http(s)?:\/\//;

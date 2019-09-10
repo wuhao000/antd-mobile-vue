@@ -4,7 +4,6 @@ import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
 
 import Icon from '../../icon';
-import {Indicator} from './prop-types';
 import {getScrollEventTarget, getScrollTop} from './util';
 
 function setTransform(nodeStyle: any, value: any) {
@@ -92,7 +91,7 @@ export default class PullToRefresh extends Vue {
   @Prop()
   private className: string;
 
-  get indicator(): Indicator {
+  get indicator(): any {
     return {
       activate: this.activateText,
       deactivate: this.deactivateText,

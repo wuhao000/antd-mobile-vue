@@ -52,8 +52,8 @@ import Toast from './toast';
 import WhiteSpace from './white-space';
 import WingBlank from './wing-blank';
 // 注册moment中文国际化文案
-if (moment) {
-  moment.updateLocale('zh-cn', zhCn);
+if (window.moment) {
+  window.moment.updateLocale('zh-cn', zhCn);
 }
 if (window.AntDesignIcons) {
   // 注册 ant design icons, 共721个icon

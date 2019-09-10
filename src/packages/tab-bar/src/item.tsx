@@ -1,4 +1,4 @@
-import {IconResProps} from '../../../mixins/icon-res';
+import {IconResProps} from '../../mixins/icon-res';
 import Tab from './tab';
 import getDataAttr from '../../utils/get-data-attr';
 import Vue, {VNode} from 'vue';

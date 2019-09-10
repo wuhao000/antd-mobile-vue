@@ -1,5 +1,4 @@
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
@@ -44,9 +43,6 @@ export default class SearchBar extends Vue {
   public focused?: boolean;
   @Prop({type: Number})
   public maxLength?: number;
-  public static contextTypes = {
-    antLocale: PropTypes.object
-  };
   public rightBtnInitMarginleft: string | null;
   public firstFocus: boolean;
   public blurFromOnClear: boolean;

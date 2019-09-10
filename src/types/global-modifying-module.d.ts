@@ -6,5 +6,6 @@ declare global {
     antd: any;
     CodeMirror: any;
     AntDesignIcons: any;
+    moment: any;
   }
 }

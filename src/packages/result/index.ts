@@ -1,5 +1,5 @@
 import MResult from './src';
-import 'antd-mobile/lib/result/style';
+import './style';
 
 MResult.install = Vue => {
   Vue.component('MResult', MResult);

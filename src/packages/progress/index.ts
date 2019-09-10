@@ -1,5 +1,5 @@
-import 'antd-mobile/es/progress/style/index.css';
 import MProgress from './src';
+import './style';
 
 MProgress.install = Vue => {
   Vue.component('MProgress', MProgress);

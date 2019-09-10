@@ -1,5 +1,4 @@
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
@@ -37,9 +36,6 @@ export default class Pagination extends Vue {
   public prevText?: string;
   @Prop({type: String})
   public nextText?: string;
-  public static contextTypes = {
-    antLocale: PropTypes.object
-  };
 
   public state = {
     current: this.value
