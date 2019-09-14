@@ -10,12 +10,18 @@
   &.@{inputPrefixCls}-item {
     padding-left: @h-spacing-lg;
 
-    .am-list-content {
+    .@{listPrefixCls}-content {
       flex: initial;
     }
 
-    .am-list-extra {
-      flex: 1;
+    .@{listPrefixCls}-extra {
+      color: @color-text-caption;
+      flex: initial;
+      font-size: @font-size-subhead;
+      margin-left: @h-spacing-sm;
+      min-width: 0;
+      overflow: hidden;
+      padding-right: 0;
     }
   }
 
@@ -126,18 +132,6 @@
     .@{inputPrefixCls}-clear {
       display: block;
     }
-  }
-
-  .@{inputPrefixCls}-extra {
-    color: @color-text-caption;
-    flex: initial;
-    font-size: @font-size-subhead;
-    line-height: @line-height-base;
-    margin-left: @h-spacing-sm;
-    max-height: @icon-size-sm;
-    min-width: 0;
-    overflow: hidden;
-    padding-right: 0;
   }
 
   &.@{inputPrefixCls}-disabled {

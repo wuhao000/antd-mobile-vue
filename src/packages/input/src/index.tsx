@@ -351,7 +351,7 @@ export default class InputItem extends FormComponent {
                  errorMessage={this.errorMessage}
                  errorDisplayType={this.errorDisplayType}
                  class={wrapCls}>
-        <div class={controlCls} slot="extra">
+        <div class={controlCls} slot="control">
           {type === 'money' ? (
             // @ts-ignore
             <CustomInput
@@ -420,6 +420,7 @@ export default class InputItem extends FormComponent {
         ) : null}
         {extra !== '' ? (
           <div class={`${prefixCls}-extra`}
+               slot="extra"
                onClick={(e) => {
                  this.$emit('extra-click', e);
                }}>

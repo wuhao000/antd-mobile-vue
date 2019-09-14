@@ -10,15 +10,8 @@ const obs = new esdk_obs_nodejs_1.default({
     server: obsConfig.url
 });
 const fileNames = fs_1.default.readdirSync('lib');
-const content = fs_1.default
-    .readFileSync('.git/config')
-    .toString();
-const urlLine = content.split('\n').map(it => it.trim()).find(it => it.startsWith('url = '));
-const url = urlLine.replace('url = ', '');
-const urlParts = url.split('/');
-const projectName = urlParts[urlParts.length - 1].substr(0, urlParts[urlParts.length - 1].lastIndexOf('.'));
-const json = fs_1.default.readFileSync('package.json').toString();
-const pk = JSON.parse(json);
+const pk = JSON.parse(fs_1.default.readFileSync('package.json').toString());
+const projectName = pk.name;
 upload();
 function upload() {
     fileNames.forEach(name => {

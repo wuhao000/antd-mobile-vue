@@ -8,16 +8,9 @@ const obs = new ObsClient({
   server: obsConfig.url
 });
 const fileNames = fs.readdirSync('lib');
-const content = fs
-  .readFileSync('.git/config')
-  .toString();
-const urlLine = content.split('\n').map(it => it.trim()).find(it => it.startsWith('url = '));
-const url = urlLine.replace('url = ', '');
-const urlParts = url.split('/');
-const projectName = urlParts[urlParts.length - 1].substr(0, urlParts[urlParts.length - 1].lastIndexOf('.'));
 
-const json = fs.readFileSync('package.json').toString();
-const pk = JSON.parse(json);
+const pk = JSON.parse(fs.readFileSync('package.json').toString());
+const projectName = pk.name;
 
 upload();
 

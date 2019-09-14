@@ -94,6 +94,7 @@ export default class MCalendarItem extends BaseInputComponent {
 
   public render() {
     return <List.Item text={!!this.displayValue}
+                      arrow="horizontal"
                       title={this.title}
                       onClick={this.onClick}>
       <Calendar
