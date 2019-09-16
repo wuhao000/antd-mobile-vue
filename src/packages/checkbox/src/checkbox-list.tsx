@@ -1,7 +1,7 @@
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import OptionsBasedComponent from '../../mixins/options-based-component';
 import List from '../../list';
+import OptionsBasedComponent from '../../mixins/options-based-component';
 import CheckboxItem from './checkbox-item';
 
 @Component({
@@ -29,7 +29,7 @@ class MCheckboxList extends OptionsBasedComponent {
 
   public render() {
     // @ts-ignore
-    return <List title={this.title}>
+    return <List required={this.required} title={this.title}>
       {this.renderOptions()}
     </List>;
   }

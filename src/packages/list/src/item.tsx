@@ -83,6 +83,8 @@ class Item extends Vue {
   public extraStyle: object;
   @Prop({type: Boolean, default: true})
   public touchFeedback: boolean;
+  @Prop({type: Boolean, default: false})
+  public required: boolean;
   @Prop()
   public suffix: VNode | undefined;
   @Prop({type: String, default: 'text'})
@@ -256,6 +258,8 @@ class Item extends Vue {
       return <div class={`${prefixCls}-thumb`}>
         {typeof thumb === 'string' ? <img src={thumb}/> : thumb}
       </div>;
+    } else if (this.required) {
+      return <div class={`${prefixCls}-required`}/>;
     } else {
       return null;
     }

@@ -20,8 +20,8 @@ class MPopup extends BaseFormComponent {
   public cancelButton: VNode;
   @Prop({type: Boolean, default: true})
   public showOk: boolean;
-  @Prop({type: String, default: ''})
-  public title: string;
+  @Prop({type: [String, Object], default: ''})
+  public title: string | VNode;
   @Prop({type: String, default: 'am-popup'})
   public prefixCls: string;
   public static install: (Vue) => void;

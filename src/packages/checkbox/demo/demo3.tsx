@@ -38,17 +38,19 @@ export default {
   render(this: any) {
     return <div>
       <m-checkbox-popup-list
+        visible={true}
+        searchable={true}
         title="点击选择"
         options={options}/>
-      <m-checkbox-popup-list
-        title="点击选择（包含禁用选项）"
-        options={options2}/>
-      <m-checkbox-popup-list
-        vModel={this.value3}
-        title="自定义选项"
-        labelProperty="name"
-        valueProperty="id"
-        options={this.options3}/>
+      {/*<m-checkbox-popup-list*/}
+      {/*  title="点击选择（包含禁用选项）"*/}
+      {/*  options={options2}/>*/}
+      {/*<m-checkbox-popup-list*/}
+      {/*  vModel={this.value3}*/}
+      {/*  title="自定义选项"*/}
+      {/*  labelProperty="name"*/}
+      {/*  valueProperty="id"*/}
+      {/*  options={this.options3}/>*/}
     </div>;
   }
 };

@@ -1,5 +1,5 @@
 import {ValidateRules} from 'async-validator';
-import classnames from 'classnames';
+import classNames from 'classnames';
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop, Provide} from 'vue-property-decorator';
@@ -37,6 +37,8 @@ class List extends Vue {
   public editable: boolean;
   public static install: (Vue) => void;
   public fields: any[] = [];
+  @Prop({type: Boolean, default: false})
+  public required: boolean;
 
   public created() {
     this.$on('d.form.addField', (field) => {
@@ -129,7 +131,7 @@ class List extends Vue {
 
   public render() {
     const {prefixCls} = this;
-    const wrapCls = classnames(prefixCls, {
+    const wrapCls = classNames(prefixCls, {
       [prefixCls + '-section']: this.section
     });
     const children = [];
@@ -149,11 +151,11 @@ class List extends Vue {
     }
     return (
       <div class={wrapCls}>
-        {this.$slots.title ? this.$slots.title : (
-          this.title ? <div class={`${prefixCls}-header`}>
-            {this.title}
-          </div> : null
-        )}
+        <div class={classNames(`${prefixCls}-header`, {
+          [`${prefixCls}-required`]: this.required
+        })}>
+          {this.$slots.title ? this.$slots.title : this.title}
+        </div>
         {children.length ? (
           <div class={`${prefixCls}-body`}>{children}</div>
         ) : null}

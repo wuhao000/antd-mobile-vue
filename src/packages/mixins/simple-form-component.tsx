@@ -9,6 +9,8 @@ export class SimpleFormComponent extends Vue {
 
   @Prop({type: String})
   public size: 'small' | 'large' | 'default';
+  @Prop({type: Boolean, default: false})
+  public required: boolean;
   @Prop({type: Boolean})
   public disabled: boolean;
   @Prop({type: Boolean})

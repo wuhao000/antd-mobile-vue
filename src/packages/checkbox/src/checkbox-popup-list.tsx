@@ -1,7 +1,7 @@
 import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
-import OptionsBasedComponent from '../../mixins/options-based-component';
+import {Prop, Watch} from 'vue-property-decorator';
 import List from '../../list';
+import OptionsBasedComponent from '../../mixins/options-based-component';
 import Popup from '../../popup';
 import CheckboxList from './checkbox-list';
 
@@ -18,8 +18,21 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
   private clearable: boolean;
   @Prop({type: String, default: '、'})
   public separator: string;
+  @Prop({type: Boolean, default: false})
+  public visible: boolean;
+  public popupVisible: boolean = this.visible;
+  @Prop({type: Boolean, default: false})
+  private searchable: boolean;
 
-  public popupVisible: boolean = false;
+  @Watch('visible')
+  public visibleChanged(visible: boolean) {
+    this.popupVisible = visible;
+  }
+
+  @Watch('popupVisible')
+  public popupVisibleChanged(popupVisible: boolean) {
+    this.$emit('update:visible', popupVisible);
+  }
 
   private onChange(value: any[]) {
     this.stateValue = value;
@@ -72,6 +85,7 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
                               class={`am-popup-item am-popup-header-left`}>清除</div>;
     return <List.Item onClick={this.onClick}
                       touchFeedback={!this.readOnly && !this.disabled}
+                      required={this.required}
                       text={!!optionText}
                       disabled={this.isDisabled}
                       extraStyle={{flexBasis: '60%'}}>
@@ -82,6 +96,7 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
              title={this.title}
              onOk={this.closePopup}
              onCancel={this.closePopup}>
+        {this.renderSearch()}
         <CheckboxList
           attrs={
             listProps
@@ -97,5 +112,18 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
 
   private closePopup() {
     this.popupVisible = false;
+  }
+
+  @Watch('searchKeyword')
+  public searchKeywordChanged(keyword: string) {
+    console.log(keyword);
+  }
+
+  private renderSearch() {
+    return this.searchable ? <m-search-bar
+      value={this.searchKeyword}
+      onInput={(v) => {
+        this.searchKeyword = v;
+      }}/> : null;
   }
 }

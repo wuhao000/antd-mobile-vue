@@ -11,11 +11,22 @@
     font-size: @font-size-base;
     padding: @v-spacing-lg @h-spacing-lg @v-spacing-md @h-spacing-lg;
     width: 100%;
+    &.@{listPrefixCls}-required {
+      &:before {
+        color: #f50;
+        content: '*';
+        float: left;
+        font-size: 18px;
+        margin-right: 5px;
+        margin-top: 2px;
+      }
+    }
   }
 
   &-item {
 
     &&-label {
+
       &-top {
 
         .@{listPrefixCls}-line {
@@ -33,27 +44,31 @@
       &-left {
 
         .@{listPrefixCls}-line {
+
           .@{listPrefixCls}-content {
             flex: none;
           }
+
           .@{listPrefixCls}-extra {
             flex: 1;
-            text-align: left;
             margin-left: 8px;
+            text-align: left;
           }
         }
-
       }
 
       &-center {
+
         .@{listPrefixCls}-line {
+
           .@{listPrefixCls}-content {
             flex: none;
           }
+
           .@{listPrefixCls}-extra {
             flex: 1;
-            text-align: center;
             margin-left: 8px;
+            text-align: center;
           }
         }
       }
@@ -156,6 +171,7 @@
   &.@{listPrefixCls}-item-error {
 
     .@{listPrefixCls}-line {
+
       .@{listPrefixCls}-error-extra {
         background-size: @icon-size-sm auto;
         height: @icon-size-sm;
@@ -164,6 +180,7 @@
 
         width: @icon-size-sm;
       }
+
       .@{listPrefixCls}-extra {
         color: #f50;
 
@@ -195,6 +212,17 @@
     width: @icon-size-md;
   }
 
+  .@{listPrefixCls}-required {
+
+    &:before {
+      color: #f50;
+      content: '*';
+      float: left;
+      font-size: 18px;
+      margin: 7px 5px 0 0;
+    }
+  }
+
   /* list左图片显示*/
 
   .@{listPrefixCls}-thumb {
@@ -219,17 +247,19 @@
     /* list左侧主内容*/
 
     &.@{listPrefixCls}-line-multiple {
+
       .@{listPrefixCls}-content {
         flex: 1;
       }
     }
+
     .@{listPrefixCls}-content {
       color: @color-text-base;
-      padding-right: 8px;
-      min-width: 20%;
       font-size: @font-size-heading;
       line-height: @line-height-paragraph;
+      min-width: 20%;
       padding-bottom: 7 * @hd;
+      padding-right: 8px;
       .ellipsis();
 
       padding-top: 7 * @hd;
@@ -248,6 +278,7 @@
 
       padding-top: 7 * @hd;
       text-align: right;
+
       &-text {
         color: @color-text-paragraph;
       }

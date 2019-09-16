@@ -43,44 +43,44 @@ export default class ListExample extends Vue {
       </List>
       <List title="表单" disabled={this.state.disabled}
             editable={!this.state.readonly}>
-        <m-input title="输入框" error={this.state.error} errorDisplayType={this.state.errorDisplayType}
+        <m-input required title="输入框" error={this.state.error} errorDisplayType={this.state.errorDisplayType}
                  errorMessage={this.state.errorMessage}/>
         <m-input title="数字"
                  type="number" error={this.state.error} errorDisplayType={this.state.errorDisplayType}
                  errorMessage={this.state.errorMessage}/>
-        <m-date-picker-item title="日期时间选择" value={new Date()} error={this.state.error}
+        <m-date-picker-item required title="日期时间选择" value={new Date()} error={this.state.error}
                             errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
-        <m-date-picker-item title="日期选择" mode="date" value={new Date()} error={this.state.error}
+        <m-date-picker-item required title="日期选择" mode="date" value={new Date()} error={this.state.error}
                             errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
-        <m-date-picker-item title="年份选择" mode="year" value={new Date()} error={this.state.error}
+        <m-date-picker-item required title="年份选择" mode="year" value={new Date()} error={this.state.error}
                             errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
-        <m-date-picker-item title="月份选择" mode="month" value={new Date()} error={this.state.error}
+        <m-date-picker-item required title="月份选择" mode="month" value={new Date()} error={this.state.error}
                             errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
-        <m-date-picker-item title="时间选择" mode="time" value={new Date()} error={this.state.error}
+        <m-date-picker-item required title="时间选择" mode="time" value={new Date()} error={this.state.error}
                             errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
-        <m-calendar-item title="日期范围" value={[new Date(), new Date()]}/>
+        <m-calendar-item required title="日期范围" value={[new Date(), new Date()]}/>
         <m-range-item title="范围选择" value={this.state.range} error={this.state.error}
                       errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
-        <m-radio-popup-list title="弹出单选"
+        <m-radio-popup-list required title="弹出单选"
                             value={1}
                             options={options}
                             error={this.state.error}
                             errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
-        <m-checkbox-popup-list title="弹出多选" options={options} error={this.state.error}
+        <m-checkbox-popup-list required title="弹出多选" options={options} error={this.state.error}
                                value={[1, 2]}
                                errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
         <m-switch-item title="开关" v-model={this.state.switch} error={this.state.error}
                        errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
-        <m-textarea rows={5} title="长文本"
+        <m-textarea required rows={5} title="长文本"
                     value="这是一大段文字，这是一大段文字，这是一大段文字，这是一大段文字，这是一大段文字，这是一大段文字，这是一大段文字"
                     error={this.state.error}
                     errorDisplayType={this.state.errorDisplayType}
                     errorMessage={this.state.errorMessage}/>
         <m-slider-item title="滑动输入条" v-model={this.state.slider} error={this.state.error}
                        errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
-        <m-radio-list title="单选" options={options} error={this.state.error}
+        <m-radio-list required title="单选" options={options} error={this.state.error}
                       errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
-        <m-checkbox-list title="多选" options={options} error={this.state.error}
+        <m-checkbox-list required title="多选" options={options} error={this.state.error}
                          errorDisplayType={this.state.errorDisplayType} errorMessage={this.state.errorMessage}/>
       </List>
     </div>);

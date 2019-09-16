@@ -22,6 +22,7 @@ export default class DatePickerItem extends BaseInputComponent {
                        on={this.listeners}
                        style={this.cssStyle}>
       <List.Item title={this.title}
+                 required={this.required}
                  disabled={this.isDisabled}
                  error={this.error}
                  errorDisplayType={this.errorDisplayType}

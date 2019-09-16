@@ -33,7 +33,7 @@ export default class MRadioList extends OptionsBasedComponent {
   }
 
   public render() {
-    return <List title={this.title}>
+    return <List required={this.required} title={this.title}>
       {this.renderOptions()}
     </List>;
   }
@@ -55,7 +55,6 @@ export default class MRadioList extends OptionsBasedComponent {
   }
 
   private onChange(checkState: any, value: any) {
-    console.log(checkState + '/' + value);
     if (checkState) {
       this.stateValue = value;
     }

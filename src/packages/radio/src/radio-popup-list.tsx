@@ -58,6 +58,7 @@ export default class MRadioPopupList extends OptionsBasedComponent {
     const {optionText, placeholder, stateValue, closePopup, title, clearable, onClick, readOnly, isDisabled, disabled} = this;
     return <List.Item onClick={onClick}
                       text={!!optionText}
+                      required={this.required}
                       touchFeedback={!readOnly && !disabled}
                       disabled={isDisabled}
                       extraStyle={{flexBasis: '60%'}}>

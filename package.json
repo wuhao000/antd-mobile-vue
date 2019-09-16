@@ -1,6 +1,6 @@
 {
   "name": "antd-mobile-vue",
-  "version": "0.4.0",
+  "version": "0.4.0-3",
   "description": "基于Vue和ant-desing的及PC端综合组件库",
   "main": "es/index.js",
   "keyword": "antd antd-mobile vue",
@@ -24,7 +24,6 @@
     "build": "tsc -p build && npm run docs && vue-cli-service build",
     "api": "tsc -p build | node build/generate-api.js",
     "lint": "vue-cli-service lint",
-    "compile": "tsc -p src/packages --outDir es && node tools/cli/compile.js",
     "lib": "npm run docs && vue-cli-service build --target lib --name antdm --dest lib src/packages/index.ts",
     "remove": "tsc -p build && node build/remove.js && npm run docs",
     "publish": "npm run docs",

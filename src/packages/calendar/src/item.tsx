@@ -1,7 +1,7 @@
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
-import BaseInputComponent from '../../mixins/base-input-component';
 import List from '../../list';
+import BaseInputComponent from '../../mixins/base-input-component';
 import Calendar from './index';
 
 const MIN_DATE = new Date(2000, 1, 1, 0, 0, 0);
@@ -94,19 +94,19 @@ export default class MCalendarItem extends BaseInputComponent {
 
   public render() {
     return <List.Item text={!!this.displayValue}
+                      required={this.required}
                       title={this.title}
                       onClick={this.onClick}>
-      <Calendar
-          attrs={this.props}
-          value={this.stateValue}
-          scopedSlots={this.$scopedSlots}
-          visible={this.visible}
-          onClose={this.onClose}
-          onConfirm={this.onConfirm}
-          defaultValue={this.currentValue}
-          slots={this.slots}
-          on={this.listeners}
-          style={this.cssStyle}>
+      <Calendar attrs={this.props}
+                value={this.stateValue}
+                scopedSlots={this.$scopedSlots}
+                visible={this.visible}
+                onClose={this.onClose}
+                onConfirm={this.onConfirm}
+                defaultValue={this.currentValue}
+                slots={this.slots}
+                on={this.listeners}
+                style={this.cssStyle}>
         {this.getDefaultSlot()}
       </Calendar>
       <span>{this.title}</span>
