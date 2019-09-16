@@ -130,43 +130,11 @@ class SingleMonth extends Vue {
               }
             }
 
-<<<<<<< HEAD
-                switch (styleType) {
-                  case Models.SelectType.Single:
-                  case Models.SelectType.Only:
-                  case Models.SelectType.All:
-                    cls += ' selected-single';
-                    break;
-                  case Models.SelectType.Start:
-                    cls += ' selected-start';
-                    rCls += ' date-selected';
-                    break;
-                  case Models.SelectType.Middle:
-                    cls += ' selected-middle';
-                    lCls += ' date-selected';
-                    rCls += ' date-selected';
-                    break;
-                  case Models.SelectType.End:
-                    cls += ' selected-end';
-                    lCls += ' date-selected';
-                    break;
-                }
-              }
-
-              const defaultContent = [
-                <div key="wrapper" class="date-wrapper">
-                  <span class={lCls}/>
-                  <div class={cls}>
-                    {day.dayOfMonth}
-                  </div>
-                  <span class={rCls}/>
-=======
             const defaultContent = [
-              <div key="wrapper'} class={'date-wrapper">
+              <div key="wrapper" class="date-wrapper">
                 <span class={lCls}/>
                 <div class={cls}>
                   {day.dayOfMonth}
->>>>>>> 2bae3a0... '增加ts编译成js，支持按钮加载，无需ts开发环境，发布0.4.0'
                 </div>
                 <span class={rCls}/>
               </div>
