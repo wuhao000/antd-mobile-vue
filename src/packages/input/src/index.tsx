@@ -343,6 +343,7 @@ export default class InputItem extends FormComponent {
     }
     return (
       <List.Item title={this.renderLabel()}
+                 required={this.required}
                  error={this.error}
                  errorMessage={this.errorMessage}
                  errorDisplayType={this.errorDisplayType}

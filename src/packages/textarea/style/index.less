@@ -5,14 +5,34 @@
 @textareaPrefixCls: am-textarea;
 
 .@{listPrefixCls} .@{listPrefixCls}-item {
+
   &.@{textareaPrefixCls}-item {
-    display: flex;
     align-items: flex-start;
     box-sizing: border-box;
+    display: flex;
     min-height: @list-item-height;
     padding-left: @h-spacing-lg;
     padding-right: @h-spacing-lg;
     .hairline('bottom');
+    .@{listPrefixCls}-required {
+      min-height: 44px;
+      line-height: 44px;
+      &:before {
+        margin-top: 10px;
+      }
+    }
+    .@{listPrefixCls}-content {
+      align-self: flex-start;
+      color: #000;
+      text-align: left;
+      min-height: 44px;
+      font-size: 17px;
+      line-height: 44px;
+      margin-left: 0;
+      margin-right: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
 
     &.@{textareaPrefixCls}-item-single-line {
       align-items: center;
@@ -22,8 +42,8 @@
       }
 
       .@{textareaPrefixCls}-control {
-        padding-top: 0;
         padding-bottom: 0;
+        padding-top: 0;
 
         textarea {
           line-height: @line-height-paragraph * @font-size-heading;
@@ -35,6 +55,7 @@
       }
 
       &.@{textareaPrefixCls}-error {
+
         .@{textareaPrefixCls}-error-extra {
           margin-top: 0;
         }
@@ -46,14 +67,14 @@
 .@{textareaPrefixCls}-label {
   align-self: flex-start;
   color: @color-text-base;
-  text-align: left;
-  min-height: @list-item-height;
   font-size: @font-size-heading;
   line-height: @list-item-height;
   margin-left: 0;
   margin-right: @h-spacing-sm;
-  white-space: nowrap;
+  min-height: @list-item-height;
   overflow: hidden;
+  text-align: left;
+  white-space: nowrap;
 
   &.@{textareaPrefixCls}-label-2 {
     width: 2 * @input-label-width;
@@ -82,21 +103,21 @@
 
 .@{textareaPrefixCls}-control {
   flex: 1;
-  padding-top: 10 * @hd;
   padding-bottom: 9 * @hd;
+  padding-top: 10 * @hd;
 
   textarea {
+    appearance: none;
+    background-color: transparent;
+    border: 0;
     color: @color-text-base;
+    display: block;
     font-size: @font-size-heading;
     line-height: @line-height-paragraph * @font-size-heading;
-    appearance: none;
-    width: 100%;
-    padding: 0;
-    border: 0;
-    background-color: transparent;
     overflow: visible;
-    display: block;
+    padding: 0;
     resize: none;
+    width: 100%;
     word-break: break-word;
     word-wrap: break-word;
 
@@ -105,24 +126,24 @@
     }
 
     &:disabled {
-      color: @color-text-disabled;
       background-color: #fff;
+      color: @color-text-disabled;
     }
   }
 }
 
 .@{textareaPrefixCls}-clear {
-  display: none;
-  width: @icon-size-sm;
-  height: @icon-size-sm;
-  margin-top: 12 * @hd;
-  border-radius: @radius-circle;
-  overflow: hidden;
-  font-style: normal;
-  color: #fff;
   background-color: @input-color-icon;
   background-repeat: no-repeat;
   background-size: @icon-size-sm auto;
+  border-radius: @radius-circle;
+  color: #fff;
+  display: none;
+  font-style: normal;
+  height: @icon-size-sm;
+  margin-top: 12 * @hd;
+  overflow: hidden;
+  width: @icon-size-sm;
   .encoded-svg-background('textarea_item_delete');
 
   &-active {
@@ -131,6 +152,7 @@
 }
 
 &.@{textareaPrefixCls}-focus {
+
   .@{textareaPrefixCls}-clear {
     display: block;
   }
@@ -141,11 +163,11 @@
 }
 
 .@{textareaPrefixCls}-count {
-  position: absolute;
   bottom: @v-spacing-sm;
-  right: @h-spacing-sm;
   color: @color-text-placeholder;
   font-size: @font-size-base;
+  position: absolute;
+  right: @h-spacing-sm;
 
   span {
     color: @color-text-base;
@@ -153,34 +175,41 @@
 }
 
 &.@{textareaPrefixCls}-error {
+
   .@{textareaPrefixCls}-control {
+
     textarea {
       color: #f50;
     }
   }
 
   .@{textareaPrefixCls}-error-extra {
-    margin-top: 12 * @hd;
-    width: @icon-size-sm;
+    background-size: @icon-size-sm @icon-size-sm;
     height: @icon-size-sm;
     margin-left: @h-spacing-md;
-    background-size: @icon-size-sm @icon-size-sm;
+    margin-top: 12 * @hd;
+    width: @icon-size-sm;
     .encoded-svg-background('error');
   }
 }
 
 &.@{textareaPrefixCls}-disabled {
+
   .@{textareaPrefixCls}-label {
     color: @color-text-disabled;
   }
 }
 
 .@{listPrefixCls} {
+
   &-body {
+
     .@{listPrefixCls}-item {
+
       &:last-child {
         .hairline-remove('bottom');
       }
     }
   }
 }
+

@@ -164,14 +164,6 @@ export default class Textarea extends FormComponent {
       }
     );
 
-    const labelCls = classnames(`${prefixCls}-label`, {
-      [`${prefixCls}-label-2`]: labelNumber === 2,
-      [`${prefixCls}-label-3`]: labelNumber === 3,
-      [`${prefixCls}-label-4`]: labelNumber === 4,
-      [`${prefixCls}-label-5`]: labelNumber === 5,
-      [`${prefixCls}-label-6`]: labelNumber === 6,
-      [`${prefixCls}-label-7`]: labelNumber === 7
-    });
     const characterLength = countSymbols(value);
     const lengthCtrlProps: any = {};
     if (count! > 0) {
@@ -188,6 +180,7 @@ export default class Textarea extends FormComponent {
     }
     return (
       <List.Item class={wrapCls}
+                 required={this.required}
                  disabled={this.isDisabled}
                  title={title}>
         <div class={`${prefixCls}-control`} slot="extra">
