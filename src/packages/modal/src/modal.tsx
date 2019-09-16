@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Model, Prop, Watch} from 'vue-property-decorator';
-import Dialog from '../../../ant/vc-dialog';
+import Dialog from 'ant-design-vue/lib/vc-dialog';
 import TouchFeedback from '../../vmc-feedback';
 import {Action} from './props-type';
 
@@ -31,7 +31,7 @@ export abstract class ModalComponent extends Vue {
 @Component({
   name: 'Modal'
 })
-export default class Modal extends ModalComponent {
+class Modal extends ModalComponent {
   @Prop({default: 'am-modal'})
   public prefixCls?: string;
   @Prop({type: String})
@@ -146,7 +146,7 @@ export default class Modal extends ModalComponent {
     const btnGroupClass = classnames(
       `${prefixCls}-button-group-${
         footer.length === 2 && !operation ? 'h' : 'v'
-        }`,
+      }`,
       `${prefixCls}-button-group-${operation ? 'operation' : 'normal'}`
     );
     const footerDom = footer.length ? (
@@ -206,3 +206,5 @@ export default class Modal extends ModalComponent {
     );
   }
 }
+
+export default Modal as any;

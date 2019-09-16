@@ -1,6 +1,6 @@
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import OptionsBasedComponent from '../../../mixins/options-based-component';
+import OptionsBasedComponent from '../../mixins/options-based-component';
 import List from '../../list';
 import Popup from '../../popup';
 import CheckboxList from './checkbox-list';

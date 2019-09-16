@@ -1,5 +1,5 @@
-import 'antd-mobile/es/segmented-control/style/index.css';
 import MSegmentedControl from './src';
+import './style';
 
 MSegmentedControl.install = Vue => {
   Vue.component('MSegmentedControl', MSegmentedControl);

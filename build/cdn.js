@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const esdk_obs_nodejs_1 = tslib_1.__importDefault(require("esdk-obs-nodejs"));
+// @ts-ignore
+const esdk_obs_nodejs_new_1 = tslib_1.__importDefault(require("esdk-obs-nodejs-new"));
 const fs_1 = tslib_1.__importDefault(require("fs"));
 const obsConfig = JSON.parse(fs_1.default.readFileSync('obs.json').toString());
-const obs = new esdk_obs_nodejs_1.default({
+const obs = new esdk_obs_nodejs_new_1.default({
     access_key_id: obsConfig.ak,
     secret_access_key: obsConfig.sk,
     server: obsConfig.url
@@ -28,18 +29,13 @@ function upload() {
         else if (realFileName.endsWith('.css')) {
             ContentType = 'text/css';
         }
-        const Metadata = {};
-        if (encoding) {
-            Metadata['content-encoding'] = encoding;
-        }
         const Key = `${projectName}/${pk.version}/${name}`;
-        console.log(Key);
         obs.putObject({
             Bucket: 'aegis-public-assets',
             Key,
             SourceFile: 'lib/' + name,
             ContentType,
-            Metadata
+            ContentEncoding: encoding
         }).then((res) => {
             if (res.CommonMsg.Status === 200) {
                 console.log('上传文件【' + name + '】成功, 发布的地址为:\nhttps://public-file.aegis-info.com/' + Key);

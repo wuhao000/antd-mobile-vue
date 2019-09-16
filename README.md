@@ -21,55 +21,55 @@ Chart| 图表组件
 
 ## 与ant design mobile的组件比较
 
-组件名称 | antd-mobile | antd-mobile-vue | 说明
---- | :---: | :---: | ---
-Accordion | √ | √
+组件名称 | antd-mobile | antd-mobile-vue | 示例移植 |说明 
+--- | :---: | :---: | :---: | ---
+Accordion | √ | √ | √
 ActionSheet | √ | √
 ActivityIndicator | √ | √
-Badge | √ | √
-Button | √ | √
-Calendar | √ | √
-Card | √ | √
-Carousel | √ | √
+Badge | √ | √ | √
+Button | √ | √ | √
+Calendar | √ | √ | √
+Card | √ | √ | √
+Carousel | √ | √ | √
 Chart | [无] | √
-Checkbox | √ | √
-DatePicker | √ | √
+Checkbox | √ | √ | √
+DatePicker | √ | √ | √
 DatePickerView | √ | √
-Drawer | √ | √
-Flex | √ | √
+Drawer | √ | √ | √
+Flex | √ | √ | √
 Grid | √ | √
 Icon | √ | √
-ImagePicker | √ | √
-InputItem | √ | √
-List | √ | √
+ImagePicker | √ | √ | √
+InputItem | √ | √ | √
+List | √ | √ | √
 ListView | √ | [无] 
-Menu | √ | √
-Modal | √ | √
-NavBar | √ | √
+Menu | √ | √ | √
+Modal | √ | √ | √ 
+NavBar | √ | √ | √
 NoticeBar | √ | √
-Pagination | √ | √
-Picker | √ | √
+Pagination | √ | √ | √
+Picker | √ | √ | √
 PickerView | √ | √
-Popover | √ | √ 
+Popover | √ | √ | √
 Progress | √ | √
-Radio | √ | √
+Radio | √ | √ | √
 PullToRefresh | √ | √
 Result | √ | √
 SearchBar | √ | √
-SegmentedControl | √ | √
+SegmentedControl | √ | √ | √
 Slider | √ | √
 Range | √ | √
 Stepper | √ | √ 
 Steps | √ | √
 SwipeAction | √ |  [无] 
 Switch | √ | √
-TabBar | √ | √
-Tabs | √ | √
+TabBar | √ | √ | √
+Tabs | √ | √ | √
 Tag | √ | √
 TextareaItem | √ | √
-Toast | √ | √
-WhiteSpace | √ | √
-WingBlank | √ | √
+Toast | √ | √ | √ 
+WhiteSpace | √ | √ | √
+WingBlank | √ | √ | √
 LocaleProvider | √ |  [无] 
 
 ## 安装
@@ -105,8 +105,8 @@ module.exports = {
       'import',
       {
         libraryName: 'antd-mobile-vue',
-        libraryDirectory: 'src/packages',
-        style: false
+        libraryDirectory: 'es',
+        style: true
       },
       'antd-mobile-vue'
     ]
@@ -190,3 +190,4 @@ npm run remove <name>
 ```bash
 npm publish
 ```
+

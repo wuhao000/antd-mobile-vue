@@ -1,5 +1,5 @@
 import MNoticeBar from './src';
-import 'antd-mobile/es/notice-bar/style/index.css';
+import './style';
 
 MNoticeBar.install = Vue => {
   Vue.component('MNoticeBar', MNoticeBar);

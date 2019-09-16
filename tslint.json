@@ -13,7 +13,9 @@
     "indent": true,
     "max-line-length": [
       true,
-      1000
+      {
+        "limit": 5000
+      }
     ],
     "no-console": [
       false

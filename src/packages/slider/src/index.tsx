@@ -2,7 +2,7 @@ import RcSlider from 'ant-design-vue/es/vc-slider/src/Slider';
 import {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import {FormComponent} from '../../../mixins/form-component';
+import {FormComponent} from '../../mixins/form-component';
 
 @Component({
   name: 'Slider'

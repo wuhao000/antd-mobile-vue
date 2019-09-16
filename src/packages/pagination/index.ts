@@ -1,5 +1,5 @@
 import MPagination from './src';
-import 'antd-mobile/es/pagination/style/index.css';
+import './style';
 
 MPagination.install = Vue => {
   Vue.component('MPagination', MPagination);

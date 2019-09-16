@@ -1,6 +1,6 @@
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import BaseInputComponent from '../../../mixins/base-input-component';
+import BaseInputComponent from '../../mixins/base-input-component';
 import List from '../../list';
 import DatePicker from './index';
 

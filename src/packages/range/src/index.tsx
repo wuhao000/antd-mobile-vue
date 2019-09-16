@@ -2,7 +2,7 @@ import RcRange from 'ant-design-vue/lib/vc-slider/src/Range';
 import {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import {FormComponent} from '../../../mixins/form-component';
+import {FormComponent} from '../../mixins/form-component';
 
 @Component({
   name: 'Range'

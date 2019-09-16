@@ -1,4 +1,6 @@
-import ObsClient from 'esdk-obs-nodejs';
+
+// @ts-ignore
+import ObsClient from 'esdk-obs-nodejs-new';
 import fs from 'fs';
 
 const obsConfig = JSON.parse(fs.readFileSync('obs.json').toString());
@@ -28,17 +30,13 @@ function upload() {
     } else if (realFileName.endsWith('.css')) {
       ContentType = 'text/css';
     }
-    const Metadata: any = {};
-    if (encoding) {
-      Metadata['content-encoding'] = encoding;
-    }
     const Key = `${projectName}/${pk.version}/${name}`;
     obs.putObject({
       Bucket: 'aegis-public-assets',
       Key,
       SourceFile: 'lib/' + name,
       ContentType,
-      Metadata
+      ContentEncoding: encoding
     }).then((res) => {
       if (res.CommonMsg.Status === 200) {
         console.log('上传文件【' + name + '】成功, 发布的地址为:\nhttps://public-file.aegis-info.com/' + Key);

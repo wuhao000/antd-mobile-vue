@@ -1,5 +1,6 @@
+import Notification from 'ant-design-vue/lib/vc-notification';
 import classnames from 'classnames';
-import Notification from '../../../ant/vc-notification';
+import {VNode} from 'vue';
 import Icon from '../../icon';
 
 const prefixCls = 'am-toast';
@@ -20,7 +21,7 @@ function getMessageInstance(mask: boolean,
   );
 }
 
-function notice(content: string, type: string,
+function notice(content: string | VNode, type: string,
                 duration = 3, onClose: (() => void) | undefined, mask = true) {
   const iconTypes: { [key: string]: string } = {
     info: '',
@@ -90,12 +91,12 @@ function notice(content: string, type: string,
 export default {
   install: (any) => {
   },
-  show(content: string, duration?: number, mask?: boolean) {
+  show(content: string | VNode, duration?: number, mask?: boolean) {
     return notice(content, 'info', duration, () => {
     }, mask);
   },
   info(
-    content: string,
+    content: string | VNode,
     duration?: number,
     onClose?: () => void,
     mask: boolean = false
@@ -103,7 +104,7 @@ export default {
     return notice(content, 'info', duration, onClose, mask);
   },
   success(
-    content: string,
+    content: string | VNode,
     duration?: number,
     onClose?: () => void,
     mask: boolean = false
@@ -111,7 +112,7 @@ export default {
     return notice(content, 'success', duration, onClose, mask);
   },
   fail(
-    content: string,
+    content: string | VNode,
     duration?: number,
     onClose?: () => void,
     mask: boolean = false
@@ -119,14 +120,14 @@ export default {
     return notice(content, 'fail', duration, onClose, mask);
   },
   offline(
-    content: string,
+    content: string | VNode,
     duration?: number,
     onClose?: () => void,
     mask: boolean = false
   ) {
     return notice(content, 'offline', duration, onClose, mask);
   },
-  loading(content: string, duration?: number,
+  loading(content: string | VNode, duration?: number,
           onClose?: () => void, mask?: boolean) {
     return notice(content, 'loading', duration, onClose, mask);
   }

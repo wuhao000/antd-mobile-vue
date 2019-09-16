@@ -1,8 +1,7 @@
-import Vue from 'vue';
-import {Prop} from 'vue-property-decorator';
-import Component from 'vue-class-component';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import {Prop} from 'vue-property-decorator';
 
 @Component({
   name: 'Notice'
@@ -10,7 +9,7 @@ import PropTypes from 'prop-types';
 export default class Notice extends Vue {
 
   @Prop(Number)
-    public duration: PropTypes.number;
+  public duration: number;
   @Prop(Function)
   public onClose: any;
   @Prop()

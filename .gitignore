@@ -19,7 +19,7 @@ node_mobules/
 /node_modules/
 /build/router.js
 /build/components.js
-/build/webpack.base.conf.js
+/compile/webpack.base.conf.js
 /build/tmpl.js
 /build/docs.js
 /build/create.js

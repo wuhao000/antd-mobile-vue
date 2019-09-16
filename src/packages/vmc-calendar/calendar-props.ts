@@ -1,8 +1,8 @@
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
+import {ExtraData, Locale} from './data-types';
 import {PropsType as HeaderPropsType} from './calendar/header';
-import {Models} from './date/data-types';
 import defaultLocale from './locale/zh_CN';
 
 export type SelectDateType = [Date, Date] | [Date];
@@ -34,7 +34,7 @@ export default class CalendarProps extends Vue {
   public enterDirection?: 'horizontal' | 'vertical';
   /** 日期扩展数据 */
   @Prop({type: Function})
-  public getDateExtra?: (date: Date) => Models.ExtraData;
+  public getDateExtra?: (date: Date) => ExtraData;
   /** 无限滚动优化（大范围选择），default: false */
   @Prop({type: Boolean, default: false})
   public infiniteOpt?: boolean;
@@ -47,7 +47,7 @@ export default class CalendarProps extends Vue {
       return defaultLocale;
     }
   })
-  public locale?: Models.Locale;
+  public locale?: Locale;
   /** 最大日期 */
   @Prop({type: Date})
   public maxDate?: Date;

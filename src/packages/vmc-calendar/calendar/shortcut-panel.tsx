@@ -1,14 +1,14 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import {Models} from '../date/data-types';
+import {Locale} from '../data-types';
 
 @Component({
   name: 'ShortcutPanel'
 })
 class ShortcutPanel extends Vue {
   @Prop({})
-  public locale: Models.Locale;
+  public locale: Locale;
   @Prop({})
   public onSelect: (startDate?: Date, endDate?: Date) => void;
 

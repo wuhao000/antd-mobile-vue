@@ -1,6 +1,6 @@
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
-import BaseInputComponent from '../../../mixins/base-input-component';
+import BaseInputComponent from '../../mixins/base-input-component';
 import List from '../../list';
 import Calendar from './index';
 

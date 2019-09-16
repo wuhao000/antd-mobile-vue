@@ -1,14 +1,14 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import {Models} from './data-types';
+import {Locale} from '../data-types';
 
 @Component({
   name: 'WeekPanel'
 })
 class WeekPanel extends Vue {
   @Prop({})
-  public locale: Models.Locale;
+  public locale: Locale;
 
   public render() {
     const {locale} = this;

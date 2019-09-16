@@ -2,7 +2,7 @@ import {Drawer} from 'ant-design-vue';
 import Vue, {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop, Watch} from 'vue-property-decorator';
-import BaseFormComponent from '../../../mixins/base-input-component';
+import BaseFormComponent from '../../mixins/base-input-component';
 import Touchable from '../../vmc-feedback/feedback';
 
 Vue.use(Drawer);

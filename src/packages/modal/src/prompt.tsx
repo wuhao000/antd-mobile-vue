@@ -5,7 +5,9 @@ import Modal from './modal';
 export default function prompt(
   title: string | VNode,
   message: string | VNode,
-  callbackOrActions: Array<{ text: string, style?: object }> = [{text: '取消'}, {text: '确认'}],
+  callbackOrActions: Array<{
+    text: string, onPress?: (...args: any[]) => any, style?: object
+  }> | ((...args: any[]) => any) = [{text: '取消'}, {text: '确认'}],
   type = 'default',
   defaultValue = '',
   placeholders = ['', ''],
@@ -72,14 +74,18 @@ export default function prompt(
       return resolve(callbackArgs[0]);
     }
 
-    const actions = callbackOrActions.map((item, index) => {
+    const actions: any[] = typeof callbackOrActions === 'function' ? [{
+      text: '取消'
+    }, {
+      text: '确定', onPress: callbackOrActions
+    }] : callbackOrActions.map((item, index) => {
       return {
         text: item.text,
-        onPress: () => {
+        onPress: item.onPress || (() => {
           if (index === 1) {
             return handleConfirm();
           }
-        }
+        })
       };
     });
 
@@ -91,8 +97,16 @@ export default function prompt(
         if (closed) {
           return;
         }
-
-        const res: any = orginPress();
+        const args = [];
+        if (type === 'secure-text') {
+          args.push(data['password']);
+        } else if (type === 'login-password') {
+          args.push(data['text']);
+          args.push(data['password']);
+        } else {
+          args.push(data['text']);
+        }
+        const res: any = orginPress(...args);
         if (res && res.then) {
           res.then(() => {
             closed = true;
@@ -118,7 +132,6 @@ export default function prompt(
         e.preventDefault();
       }
     }
-
     modal = new Vue({
       el: div,
       methods: {
@@ -180,7 +193,7 @@ export default function prompt(
                     <label>
                       <input
                         type="text"
-                        defaultValue={data.text}
+                        value={data.text}
                         ref="input"
                         hook={{
                           mounted: () => {

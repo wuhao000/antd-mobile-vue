@@ -1,0 +1,344 @@
+@import '../../style/mixins';
+@import '../../style/themes/default';
+
+@listPrefixCls: am-list;
+
+.@{listPrefixCls} {
+
+  &-header {
+    box-sizing: border-box;
+    color: @color-text-caption;
+    font-size: @font-size-base;
+    padding: @v-spacing-lg @h-spacing-lg @v-spacing-md @h-spacing-lg;
+    width: 100%;
+  }
+
+  &-item {
+
+    &&-label {
+      &-top {
+
+        .@{listPrefixCls}-line {
+          display: block;
+
+          .@{listPrefixCls}-extra {
+            text-align: left;
+          }
+        }
+      }
+    }
+
+    &&-extra {
+
+      &-left {
+
+        .@{listPrefixCls}-line {
+          .@{listPrefixCls}-content {
+            flex: none;
+          }
+          .@{listPrefixCls}-extra {
+            flex: 1;
+            text-align: left;
+            margin-left: 8px;
+          }
+        }
+
+      }
+
+      &-center {
+        .@{listPrefixCls}-line {
+          .@{listPrefixCls}-content {
+            flex: none;
+          }
+          .@{listPrefixCls}-extra {
+            flex: 1;
+            text-align: center;
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+  }
+
+  &-footer {
+    color: @color-text-caption;
+    font-size: @font-size-base;
+    padding: @v-spacing-md @h-spacing-lg @v-spacing-lg @h-spacing-lg;
+  }
+
+  &-body {
+    position: relative;
+    .hairline('top');
+    .hairline('bottom');
+
+    div:not(:last-child) {
+
+      .@{listPrefixCls}-line {
+        .hairline('bottom');
+      }
+
+      &.@{listPrefixCls}-item-section {
+
+        .@{listPrefixCls}-line {
+          border-bottom: none;
+
+          &:after {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  &.@{listPrefixCls}-section {
+
+    .@{listPrefixCls}-body {
+      border-bottom: none;
+      border-top: none;
+    }
+  }
+}
+
+.@{listPrefixCls}-item {
+  align-items: center;
+  background-color: @fill-base;
+  display: flex;
+  min-height: @list-item-height;
+  overflow: hidden;
+  padding-left: @h-spacing-lg;
+  position: relative;
+  transition: background-color 200ms;
+  vertical-align: middle;
+
+  .@{listPrefixCls}-ripple {
+    background: transparent;
+    border-radius: 100%;
+    cursor: pointer;
+    display: inline-block;
+    outline: none;
+    overflow: hidden;
+    position: absolute;
+    transform: scale(0);
+    transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
+    will-change: box-shadow, transform;
+
+    &.@{listPrefixCls}-ripple-animate {
+      animation: ripple 1s linear;
+      background-color: hsla(0, 0%, 62%, .2);
+    }
+  }
+
+  &.@{listPrefixCls}-item-top {
+
+    .@{listPrefixCls}-line {
+      align-items: flex-start;
+
+      .@{listPrefixCls}-arrow {
+        margin-top: 2 * @hd;
+      }
+    }
+  }
+
+  &.@{listPrefixCls}-item-middle {
+
+    .@{listPrefixCls}-line {
+      align-items: center;
+    }
+  }
+
+  &.@{listPrefixCls}-item-bottom {
+
+    .@{listPrefixCls}-line {
+      align-items: flex-end;
+    }
+  }
+
+  &.@{listPrefixCls}-item-error {
+
+    .@{listPrefixCls}-line {
+      .@{listPrefixCls}-error-extra {
+        background-size: @icon-size-sm auto;
+        height: @icon-size-sm;
+        margin-left: @v-spacing-sm;
+        .encoded-svg-background('error');
+
+        width: @icon-size-sm;
+      }
+      .@{listPrefixCls}-extra {
+        color: #f50;
+
+        .@{listPrefixCls}-brief {
+          color: #f50;
+        }
+      }
+    }
+  }
+
+  &.@{listPrefixCls}-item-active {
+    background-color: @fill-tap;
+  }
+
+  &&-disabled {
+
+    .@{listPrefixCls}-line {
+
+      .@{listPrefixCls}-content,
+      .@{listPrefixCls}-extra {
+        color: @color-text-disabled;
+      }
+    }
+  }
+
+  img {
+    height: @icon-size-md;
+    vertical-align: middle;
+    width: @icon-size-md;
+  }
+
+  /* list左图片显示*/
+
+  .@{listPrefixCls}-thumb {
+
+    &:first-child {
+      margin-right: @h-spacing-lg;
+    }
+
+    &:last-child {
+      margin-left: @h-spacing-md;
+    }
+  }
+
+  .@{listPrefixCls}-line {
+    align-self: stretch;
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    padding-right: @h-spacing-lg;
+    position: relative;
+
+    /* list左侧主内容*/
+
+    &.@{listPrefixCls}-line-multiple {
+      .@{listPrefixCls}-content {
+        flex: 1;
+      }
+    }
+    .@{listPrefixCls}-content {
+      color: @color-text-base;
+      padding-right: 8px;
+      min-width: 20%;
+      font-size: @font-size-heading;
+      line-height: @line-height-paragraph;
+      padding-bottom: 7 * @hd;
+      .ellipsis();
+
+      padding-top: 7 * @hd;
+      text-align: left;
+    }
+
+    /* list右补充内容*/
+
+    .@{listPrefixCls}-extra {
+      color: @color-text-caption;
+      flex: 1;
+      font-size: @font-size-caption;
+      line-height: @line-height-paragraph;
+      padding-bottom: 7 * @hd;
+      .ellipsis();
+
+      padding-top: 7 * @hd;
+      text-align: right;
+      &-text {
+        color: @color-text-paragraph;
+      }
+    }
+
+    .@{listPrefixCls}-title {
+      .ellipsis();
+    }
+
+    /* 辅助性文字*/
+
+    .@{listPrefixCls}-brief {
+      color: @color-text-caption;
+      font-size: @font-size-subhead;
+      line-height: @line-height-paragraph;
+      margin-top: @v-spacing-sm;
+      .ellipsis();
+    }
+
+    /* list右侧箭头*/
+
+    .@{listPrefixCls}-arrow {
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      background-size: contain;
+      display: block;
+      .encoded-svg-background('right');
+
+      height: @icon-size-xxs;
+      margin-left: @h-spacing-md;
+      visibility: hidden;
+      width: @icon-size-xxs;
+
+      &-horizontal {
+        visibility: visible;
+      }
+
+      &-vertical {
+        transform: rotate(90deg);
+        visibility: visible;
+      }
+
+      &-vertical-up {
+        transform: rotate(270deg);
+        visibility: visible;
+      }
+    }
+
+    &-multiple {
+      padding: 12.5 * @hd @h-spacing-lg 12.5 * @hd 0;
+
+      .@{listPrefixCls}-content {
+        padding-bottom: 0;
+        padding-top: 0;
+      }
+
+      .@{listPrefixCls}-extra {
+        padding-bottom: 0;
+        padding-top: 0;
+      }
+    }
+
+    &-wrap {
+
+      .@{listPrefixCls}-content {
+        white-space: normal;
+      }
+
+      .@{listPrefixCls}-extra {
+        white-space: normal;
+      }
+    }
+  }
+
+  select {
+    appearance: none;
+    background-color: transparent;
+    border: 0;
+    display: block;
+    font-size: @font-size-heading;
+    height: 100%;
+    padding: 0;
+    position: relative;
+    width: 100%;
+  }
+}
+
+@keyframes ripple {
+
+  100% {
+    opacity: 0;
+    transform: scale(2.5);
+  }
+}

@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0d5bed"],{7031:function(n,i){n.exports="<p>初始化版本，包含以下组件：</p>\n<ul>\n<li>m-button 按钮组件</li>\n<li>time-directive 时间格式化指令</li>\n</ul>\n"}}]);
-//# sourceMappingURL=chunk-2d0d5bed.985b357c.js.map

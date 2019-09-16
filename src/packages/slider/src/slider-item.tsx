@@ -1,7 +1,7 @@
 import {VNode} from 'vue';
 import Component from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
-import {FormComponent} from '../../../mixins/form-component';
+import {FormComponent} from '../../mixins/form-component';
 import List from '../../list';
 import Slider from './index';
 

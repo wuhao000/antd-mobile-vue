@@ -43,6 +43,9 @@ export default class ImagePickerExample extends Vue {
           onChange={this.onChange}
           onImageClick={(index, fs) => console.log(index, fs)}
           selectable={files.length < 7}
+          onFail={(msg) => {
+            this.$toast.fail(msg);
+          }}
           multiple={this.state.multiple}
         />
       </WingBlank>
