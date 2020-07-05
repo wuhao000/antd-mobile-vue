@@ -9,7 +9,7 @@ import DatePicker from './index';
 })
 export default class DatePickerItem extends BaseInputComponent {
 
-  @Prop({type: String})
+  @Prop({type: [String, Object]})
   public title: string;
 
   public render() {

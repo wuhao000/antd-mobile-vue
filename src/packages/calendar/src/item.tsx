@@ -14,7 +14,7 @@ export default class MCalendarItem extends BaseInputComponent {
   /**
    * 标题
    */
-  @Prop({type: String})
+  @Prop({type: [String, Object]})
   public title: string;
   /**
    * 默认值

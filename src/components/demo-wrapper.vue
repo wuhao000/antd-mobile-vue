@@ -18,7 +18,7 @@
   })
   export default class DemoWrapper extends Vue {
 
-    @Prop({type: String})
+    @Prop({type: [String, Object]})
     public title: string;
 
   }

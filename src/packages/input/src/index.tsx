@@ -22,7 +22,7 @@ function normalizeValue(value?: string) {
   name: 'InputItem'
 })
 export default class InputItem extends FormComponent {
-  @Prop({type: String})
+  @Prop({type: [String, Object]})
   public title: string;
   /**
    * class 前缀

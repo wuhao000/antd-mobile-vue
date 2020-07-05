@@ -10,7 +10,7 @@ import RadioList from './radio-list';
 })
 export default class MRadioPopupList extends OptionsBasedComponent {
 
-  @Prop({type: String})
+  @Prop({type: [String, Object]})
   public title: string;
   @Prop({type: String})
   public placeholder: string;

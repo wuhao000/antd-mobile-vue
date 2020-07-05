@@ -30,7 +30,7 @@ export default class Picker extends Vue {
   public pickerPrefixCls?: string;
   @Prop({type: String, default: 'am-picker-popup'})
   public popupPrefixCls?: string;
-  @Prop({type: String, default: ''})
+  @Prop({type: [String, Object], default: ''})
   public title: string;
   @Prop()
   public data: PickerData[] | PickerData[][];

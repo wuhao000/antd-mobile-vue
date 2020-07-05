@@ -40,7 +40,7 @@ export default class SliderItem extends FormComponent {
   public step?: number;
   @Prop({})
   public handle?: any;
-  @Prop({type: String})
+  @Prop({type: [String, Object]})
   public title: string;
   public static install: (Vue) => void;
 

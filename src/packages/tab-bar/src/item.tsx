@@ -17,7 +17,7 @@ export default class Item extends Vue {
   public icon?: string | IconResProps | VNode;
   @Prop({type: [String, Object]})
   public selectedIcon?: any;
-  @Prop({type: String, default: ''})
+  @Prop({type: [String, Object], default: ''})
   public title: string;
   @Prop({type: Boolean})
   public dot?: boolean;

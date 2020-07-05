@@ -22,7 +22,7 @@ export default class SwitchItem extends FormComponent {
     }
   })
   public switchProps?: object;
-  @Prop({type: String})
+  @Prop({type: [String, Object]})
   public title: string;
   public state = {
     value: this.value

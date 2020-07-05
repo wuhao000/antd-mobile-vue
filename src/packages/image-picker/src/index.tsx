@@ -16,7 +16,6 @@ const file = `<svg class="icon"viewBox="0 0 1024 1024" version="1.1" xmlns="http
 function getIcon(image: any) {
   if (image.file) {
     const type = (image.file as File).type;
-    console.log(type);
     if (type) {
       if (type.endsWith('.document') || type.endsWith('msword')) {
         return word;
@@ -51,7 +50,7 @@ function isImage(image: any) {
   if (image.file) {
     return image.file.type.startsWith('image/');
   } else {
-    return ['.png', '.jpg', '.jpeg', '.bmp'].some(it => image.url.indexOf(it) > 0);
+    return ['.png', '.jpg', '.jpeg', '.bmp'].some(it => image.url.includes(it));
   }
 }
 
@@ -85,8 +84,10 @@ class ImagePicker extends Vue {
     default: '*'
   })
   public accept?: string;
-  @Prop({default: 4})
+  @Prop({type: Number, default: 4})
   public length?: number | string;
+  @Prop({type: Number, default: 8})
+  public maxLength: number;
   /**
    * 允许上传的最大字节数
    */
@@ -163,30 +164,33 @@ class ImagePicker extends Vue {
     this.$emit('change', newImages, 'remove', index);
   }
 
-  public addImage(imgItem: any) {
-    const {value = []} = this;
-    const newImages = value.concat(imgItem);
+  public addImage(imgItem: any[]) {
+    const newImages = this.value ? [...this.value] : [];
+    imgItem.forEach(img => {
+      if (newImages.length < this.maxLength) {
+        newImages.push(img);
+      }
+    });
     this.$emit('input', newImages, 'add');
     this.$emit('change', newImages, 'add');
   }
 
   public onImageClick(image: any, index: number) {
-
     this.$emit('click', image, index);
   }
 
   public onFileChange(e) {
     if (e && e.target && e.target.files && e.target.files.length) {
-      const files = e.target.files;
+      const files: FileList = e.target.files;
       const imageParsePromiseList = [];
       for (let i = 0; i < files.length; i++) {
-        imageParsePromiseList.push(this.parseFile(files[i], i));
+        imageParsePromiseList.push(this.parseFile(files.item(i), i));
       }
       Promise.all(imageParsePromiseList)
-        .then(imageItems => this.addImage(imageItems))
-        .catch(error => {
-          this.$emit('fail', error);
-        });
+          .then(imageItems => this.addImage(imageItems))
+          .catch(error => {
+            this.$emit('fail', error);
+          });
     }
     if (e && e.target) {
       e.target.value = '';
@@ -225,6 +229,10 @@ class ImagePicker extends Vue {
 
   public static install: (Vue) => void;
 
+  public isImage(image: any) {
+    return isImage(image) || this.accept && this.accept.includes('image/');
+  }
+
   public render() {
     const {
       prefixCls,
@@ -239,70 +247,70 @@ class ImagePicker extends Vue {
     if (count <= 0) {
       count = 4;
     }
-
     const wrapCls = classnames(`${prefixCls}`);
-
     value.forEach((image: any, index: number) => {
+      if (index === this.maxLength) {
+        return;
+      }
       const imgStyle = {
-        backgroundImage: isImage(image) ? `url(${image.url})` : 'none',
+        backgroundImage: (this.isImage(image)) ? `url(${image.url})` : 'none',
         transform: `rotate(${this.getRotation(image.orientation)}deg)`
       };
       const itemStyle = {};
       imgItemList.push(
-        <Flex.Item
-          key={`item-${index}`}
-          style={itemStyle}>
-          <div key={index} class={`${prefixCls}-item`}>
-            <div
-              class={`${prefixCls}-item-remove`}
-              role="button"
-              aria-label="Click and Remove this image"
-              // tslint:disable-next-line:jsx-no-multiline-js
-              onClick={() => {
-                this.removeImage(index);
-              }}
-            />
-            {
-              // @ts-ignore
-              <HtmlComponent
-                class={`${prefixCls}-item-content`}
-                role="button"
-                aria-label="Image can be clicked"
-                // tslint:disable-next-line:jsx-no-multiline-js
-                onClick={() => {
-                  this.onImageClick(image, index);
-                }}
-                html={imgStyle.backgroundImage === 'none' ? getIcon(image) : null}
-                style={imgStyle}>
-              </HtmlComponent>
-            }
-          </div>
-        </Flex.Item>
+          <Flex.Item
+              key={`item-${index}`}
+              style={itemStyle}>
+            <div key={index} class={`${prefixCls}-item`}>
+              <div
+                  class={`${prefixCls}-item-remove`}
+                  role="button"
+                  aria-label="Click and Remove this image"
+                  // tslint:disable-next-line:jsx-no-multiline-js
+                  onClick={() => {
+                    this.removeImage(index);
+                  }}
+              />
+              {
+                // @ts-ignore
+                <HtmlComponent class={`${prefixCls}-item-content`}
+                               role="button"
+                               aria-label="Image can be clicked"
+                    // tslint:disable-next-line:jsx-no-multiline-js
+                               onClick={() => {
+                                 this.onImageClick(image, index);
+                               }}
+                               html={imgStyle.backgroundImage === 'none' ? getIcon(image) : null}
+                               style={imgStyle}>
+                </HtmlComponent>
+              }
+            </div>
+          </Flex.Item>
       );
     });
 
     const selectEl = (
-      <Flex.Item key="select">
-        <TouchFeedback activeClassName={`${prefixCls}-upload-btn-active`}>
-          <div
-            class={`${prefixCls}-item ${prefixCls}-upload-btn`}
-            onClick={this.onImageClick}
-            role="button"
-            aria-label="选择并添加图片">
-            <input ref="fileSelectorInput"
-                   type="file"
-                   accept={accept}
-                   onchange={(v) => {
-                     this.onFileChange(v);
-                   }}
-                   multiple={multiple}
-            />
-          </div>
-        </TouchFeedback>
-      </Flex.Item>
+        <Flex.Item key="select">
+          <TouchFeedback activeClassName={`${prefixCls}-upload-btn-active`}>
+            <div
+                class={`${prefixCls}-item ${prefixCls}-upload-btn`}
+                onClick={this.onImageClick}
+                role="button"
+                aria-label="选择并添加图片">
+              <input ref="fileSelectorInput"
+                     type="file"
+                     accept={accept}
+                     onchange={(v) => {
+                       this.onFileChange(v);
+                     }}
+                     multiple={multiple}
+              />
+            </div>
+          </TouchFeedback>
+        </Flex.Item>
     );
 
-    let allEl = selectable ? imgItemList.concat([selectEl]) : imgItemList;
+    let allEl = (selectable && imgItemList.length < this.maxLength) ? imgItemList.concat([selectEl]) : imgItemList;
     const length = allEl.length;
     if (length !== 0 && length % count !== 0) {
       const blankCount = count - length % count;
@@ -318,15 +326,15 @@ class ImagePicker extends Vue {
       flexEl.push(rowEl);
     }
     const renderEl = flexEl.map((item, index) => (
-      <Flex key={`flex-${index}`}>{item}</Flex>
+        <Flex key={`flex-${index}`}>{item}</Flex>
     ));
 
     return (
-      <div class={wrapCls}>
-        <div class={`${prefixCls}-list`} role="group">
-          {renderEl}
+        <div class={wrapCls}>
+          <div class={`${prefixCls}-list`} role="group">
+            {renderEl}
+          </div>
         </div>
-      </div>
     );
   }
 
