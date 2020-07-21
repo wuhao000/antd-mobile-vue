@@ -15,7 +15,7 @@ import DatePicker from './index';
 var DatePickerItem = (_dec = Component({
   name: 'DatePickerItem'
 }), _dec2 = Prop({
-  type: String
+  type: [String, Object]
 }), _dec(_class = (_class2 =
 /*#__PURE__*/
 function (_BaseInputComponent) {
@@ -52,6 +52,7 @@ function (_BaseInputComponent) {
     }]), [h(List.Item, {
       "attrs": {
         "title": this.title,
+        "required": this.required,
         "disabled": this.isDisabled,
         "error": this.error,
         "errorDisplayType": this.errorDisplayType,

@@ -54,6 +54,7 @@ function (_OptionsBasedComponen) {
     var h = arguments[0];
     return h(List, {
       "attrs": {
+        "required": this.required,
         "title": this.title
       }
     }, [this.renderOptions()]);
@@ -88,8 +89,6 @@ function (_OptionsBasedComponen) {
   };
 
   _proto.onChange = function onChange(checkState, value) {
-    console.log(checkState + '/' + value);
-
     if (checkState) {
       this.stateValue = value;
     }

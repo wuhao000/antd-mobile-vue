@@ -7,18 +7,18 @@ import _inheritsLoose from "@babel/runtime/helpers/inheritsLoose";
 import _applyDecoratedDescriptor from "@babel/runtime/helpers/applyDecoratedDescriptor";
 import _initializerWarningHelper from "@babel/runtime/helpers/initializerWarningHelper";
 
-var _dec, _dec2, _dec3, _dec4, _dec5, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4;
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6;
 
 import Component from 'vue-class-component';
-import { Prop } from 'vue-property-decorator';
-import OptionsBasedComponent from '../../mixins/options-based-component';
+import { Prop, Watch } from 'vue-property-decorator';
 import List from '../../list';
+import OptionsBasedComponent from '../../mixins/options-based-component';
 import Popup from '../../popup';
 import CheckboxList from './checkbox-list';
 var MCheckboxPopupList = (_dec = Component({
   name: 'MCheckboxPopupList'
 }), _dec2 = Prop({
-  type: String
+  type: [String, Object]
 }), _dec3 = Prop({
   type: String
 }), _dec4 = Prop({
@@ -27,7 +27,13 @@ var MCheckboxPopupList = (_dec = Component({
 }), _dec5 = Prop({
   type: String,
   default: '、'
-}), _dec(_class = (_class2 =
+}), _dec6 = Prop({
+  type: Boolean,
+  default: false
+}), _dec7 = Prop({
+  type: Boolean,
+  default: false
+}), _dec8 = Watch('visible'), _dec9 = Watch('popupVisible'), _dec10 = Watch('searchKeyword'), _dec(_class = (_class2 =
 /*#__PURE__*/
 function (_OptionsBasedComponen) {
   _inheritsLoose(MCheckboxPopupList, _OptionsBasedComponen);
@@ -39,10 +45,18 @@ function (_OptionsBasedComponen) {
       args[_key] = arguments[_key];
     }
 
-    return (_temp = _this = _OptionsBasedComponen.call.apply(_OptionsBasedComponen, [this].concat(args)) || this, _initializerDefineProperty(_this, "title", _descriptor, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "placeholder", _descriptor2, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "clearable", _descriptor3, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "separator", _descriptor4, _assertThisInitialized(_this)), _this.popupVisible = false, _temp) || _assertThisInitialized(_this);
+    return (_temp = _this = _OptionsBasedComponen.call.apply(_OptionsBasedComponen, [this].concat(args)) || this, _initializerDefineProperty(_this, "title", _descriptor, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "placeholder", _descriptor2, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "clearable", _descriptor3, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "separator", _descriptor4, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "visible", _descriptor5, _assertThisInitialized(_this)), _this.popupVisible = _this.visible, _initializerDefineProperty(_this, "searchable", _descriptor6, _assertThisInitialized(_this)), _temp) || _assertThisInitialized(_this);
   }
 
   var _proto = MCheckboxPopupList.prototype;
+
+  _proto.visibleChanged = function visibleChanged(visible) {
+    this.popupVisible = visible;
+  };
+
+  _proto.popupVisibleChanged = function popupVisibleChanged(popupVisible) {
+    this.$emit('update:visible', popupVisible);
+  };
 
   _proto.onChange = function onChange(value) {
     this.stateValue = value;
@@ -85,6 +99,7 @@ function (_OptionsBasedComponen) {
       },
       "attrs": {
         "touchFeedback": !this.readOnly && !this.disabled,
+        "required": this.required,
         "text": !!optionText,
         "disabled": this.isDisabled,
         "extraStyle": {
@@ -103,7 +118,7 @@ function (_OptionsBasedComponen) {
         "ok": this.closePopup,
         "cancel": this.closePopup
       }
-    }, [h(CheckboxList, _mergeJSXProps([{}, {
+    }, [this.renderSearch(), h(CheckboxList, _mergeJSXProps([{}, {
       "attrs": listProps
     }, {
       "attrs": {
@@ -121,10 +136,30 @@ function (_OptionsBasedComponen) {
     this.popupVisible = false;
   };
 
+  _proto.searchKeywordChanged = function searchKeywordChanged(keyword) {
+    console.log(keyword);
+  };
+
+  _proto.renderSearch = function renderSearch() {
+    var _this2 = this;
+
+    var h = this.$createElement;
+    return this.searchable ? h("m-search-bar", {
+      "attrs": {
+        "value": this.searchKeyword
+      },
+      "on": {
+        "input": function input(v) {
+          _this2.searchKeyword = v;
+        }
+      }
+    }) : null;
+  };
+
   _createClass(MCheckboxPopupList, [{
     key: "optionText",
     get: function get() {
-      var _this2 = this;
+      var _this3 = this;
 
       var options = this.getOptions(); // @ts-ignore
 
@@ -144,7 +179,7 @@ function (_OptionsBasedComponen) {
           }
 
           if (index < value.length - 1) {
-            array.push(_this2.separator);
+            array.push(_this3.separator);
           }
         });
       }
@@ -174,5 +209,15 @@ function (_OptionsBasedComponen) {
   enumerable: true,
   writable: true,
   initializer: null
-})), _class2)) || _class);
+}), _descriptor5 = _applyDecoratedDescriptor(_class2.prototype, "visible", [_dec6], {
+  configurable: true,
+  enumerable: true,
+  writable: true,
+  initializer: null
+}), _descriptor6 = _applyDecoratedDescriptor(_class2.prototype, "searchable", [_dec7], {
+  configurable: true,
+  enumerable: true,
+  writable: true,
+  initializer: null
+}), _applyDecoratedDescriptor(_class2.prototype, "visibleChanged", [_dec8], Object.getOwnPropertyDescriptor(_class2.prototype, "visibleChanged"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "popupVisibleChanged", [_dec9], Object.getOwnPropertyDescriptor(_class2.prototype, "popupVisibleChanged"), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, "searchKeywordChanged", [_dec10], Object.getOwnPropertyDescriptor(_class2.prototype, "searchKeywordChanged"), _class2.prototype)), _class2)) || _class);
 export { MCheckboxPopupList as default };

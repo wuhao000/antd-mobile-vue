@@ -35,11 +35,11 @@ class MStepper extends Vue {
   public disabled?: boolean;
   @Prop({type: Boolean})
   public autoFocus?: boolean;
-  @Prop({type: Number})
+  @Prop({type: [Number, String]})
   public value?: number;
   @Prop({type: Number})
   public defaultValue?: number;
-  @Prop({type: Boolean, default: false})
+  @Prop({type: Boolean, default: true})
   public valueEditable: boolean;
   @Prop({})
   public upStyle?: {};
@@ -51,8 +51,24 @@ class MStepper extends Vue {
   public name?: string;
   public static install: (Vue) => void;
 
+  public getCurrentValue() {
+    const value = this.value;
+    let currentValue = null;
+    if (typeof value === 'string') {
+      if (value === '') {
+        currentValue = null;
+      } else {
+        currentValue = parseInt(value);
+      }
+    } else {
+      currentValue = value;
+    }
+    return currentValue;
+  }
+
   public render() {
-    const {showNumber, ...restProps} = this.$props;
+    const {showNumber, value, ...restProps} = this.$props;
+
     const stepperClass = classnames({
       showNumber: !!showNumber
     });
@@ -61,7 +77,11 @@ class MStepper extends Vue {
     return (
       <RMCInputNumber
         on={this.$listeners}
-        props={restProps} class={stepperClass}/>
+        props={{
+          value: this.getCurrentValue(),
+          ...restProps
+        }}
+        class={stepperClass}/>
     );
   }
 }

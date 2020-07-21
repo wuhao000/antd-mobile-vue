@@ -8,7 +8,11 @@
       <h2>示例代码</h2>
     </div>
     <demo1 id="demo1"/>
-    
+    <div class="markdown-body" id="props">
+      <span></span>
+      <h2>属性说明</h2>
+    </div>
+    <markdown :source="props"/>
  </div>
 </template>
 
@@ -19,6 +23,7 @@
   import Component from 'vue-class-component';
   import Stepper from '@/packages/stepper';
   import title from '../../packages/stepper/demo/README.md';
+  import props from '../../packages/stepper/demo/props.md';
 
   Vue.use(Stepper);
   @Component({
@@ -29,6 +34,7 @@
   })
   export default class ComponentDemo extends Vue {
     public title = title;
+    public props = props;
 
     public getContainer() {
       return document.getElementById('app-content');

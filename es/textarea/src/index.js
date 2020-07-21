@@ -170,7 +170,7 @@ function (_FormComponent) {
   };
 
   _proto.render = function render() {
-    var _classnames, _classnames2;
+    var _classnames;
 
     var h = arguments[0];
     var prefixCls = this.prefixCls,
@@ -187,7 +187,6 @@ function (_FormComponent) {
         focus = _this$state.focus;
     var hasCount = count > 0 && this.rows > 1;
     var wrapCls = classnames(prefixListCls + "-item", prefixCls + "-item", (_classnames = {}, _classnames[prefixCls + "-disabled"] = disabled, _classnames[prefixCls + "-item-single-line"] = this.rows === 1 && !autoHeight, _classnames[prefixCls + "-focus"] = focus, _classnames[prefixCls + "-has-count"] = hasCount, _classnames));
-    var labelCls = classnames(prefixCls + "-label", (_classnames2 = {}, _classnames2[prefixCls + "-label-2"] = labelNumber === 2, _classnames2[prefixCls + "-label-3"] = labelNumber === 3, _classnames2[prefixCls + "-label-4"] = labelNumber === 4, _classnames2[prefixCls + "-label-5"] = labelNumber === 5, _classnames2[prefixCls + "-label-6"] = labelNumber === 6, _classnames2[prefixCls + "-label-7"] = labelNumber === 7, _classnames2));
     var characterLength = countSymbols(value);
     var lengthCtrlProps = {};
 
@@ -205,6 +204,7 @@ function (_FormComponent) {
     return h(List.Item, {
       "class": wrapCls,
       "attrs": {
+        "required": this.required,
         "disabled": this.isDisabled,
         "title": title
       }

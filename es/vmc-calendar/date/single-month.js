@@ -165,7 +165,8 @@ function (_Vue) {
       }
 
       var defaultContent = [h("div", {
-        "key": "wrapper'} class={'date-wrapper"
+        "key": "wrapper",
+        "class": "date-wrapper"
       }, [h("span", {
         "class": lCls
       }), h("div", {

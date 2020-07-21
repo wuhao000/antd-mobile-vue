@@ -5,7 +5,7 @@ import _inheritsLoose from "@babel/runtime/helpers/inheritsLoose";
 import _applyDecoratedDescriptor from "@babel/runtime/helpers/applyDecoratedDescriptor";
 import _initializerWarningHelper from "@babel/runtime/helpers/initializerWarningHelper";
 
-var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8;
 
 import classnames from 'classnames';
 import Vue from 'vue';
@@ -23,7 +23,6 @@ var file = "<svg class=\"icon\"viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\
 function getIcon(image) {
   if (image.file) {
     var type = image.file.type;
-    console.log(type);
 
     if (type) {
       if (type.endsWith('.document') || type.endsWith('msword')) {
@@ -57,12 +56,12 @@ function getIcon(image) {
   }
 }
 
-function isImage(image) {
+function _isImage(image) {
   if (image.file) {
     return image.file.type.startsWith('image/');
   } else {
     return ['.png', '.jpg', '.jpeg', '.bmp'].some(function (it) {
-      return image.url.indexOf(it) > 0;
+      return image.url.includes(it);
     });
   }
 }
@@ -86,8 +85,12 @@ var ImagePicker = (_dec = Component({
   type: String,
   default: '*'
 }), _dec7 = Prop({
+  type: Number,
   default: 4
 }), _dec8 = Prop({
+  type: Number,
+  default: 8
+}), _dec9 = Prop({
   type: Number,
   default: 0
 }), _dec(_class = (_class2 =
@@ -102,7 +105,7 @@ function (_Vue) {
       args[_key] = arguments[_key];
     }
 
-    return (_temp = _this = _Vue.call.apply(_Vue, [this].concat(args)) || this, _initializerDefineProperty(_this, "prefixCls", _descriptor, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "value", _descriptor2, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "selectable", _descriptor3, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "multiple", _descriptor4, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "accept", _descriptor5, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "length", _descriptor6, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "maxSize", _descriptor7, _assertThisInitialized(_this)), _temp) || _assertThisInitialized(_this);
+    return (_temp = _this = _Vue.call.apply(_Vue, [this].concat(args)) || this, _initializerDefineProperty(_this, "prefixCls", _descriptor, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "value", _descriptor2, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "selectable", _descriptor3, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "multiple", _descriptor4, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "accept", _descriptor5, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "length", _descriptor6, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "maxLength", _descriptor7, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "maxSize", _descriptor8, _assertThisInitialized(_this)), _temp) || _assertThisInitialized(_this);
   }
 
   var _proto = ImagePicker.prototype;
@@ -194,9 +197,14 @@ function (_Vue) {
   };
 
   _proto.addImage = function addImage(imgItem) {
-    var _this$value2 = this.value,
-        value = _this$value2 === void 0 ? [] : _this$value2;
-    var newImages = value.concat(imgItem);
+    var _this2 = this;
+
+    var newImages = this.value ? [].concat(this.value) : [];
+    imgItem.forEach(function (img) {
+      if (newImages.length < _this2.maxLength) {
+        newImages.push(img);
+      }
+    });
     this.$emit('input', newImages, 'add');
     this.$emit('change', newImages, 'add');
   };
@@ -206,20 +214,20 @@ function (_Vue) {
   };
 
   _proto.onFileChange = function onFileChange(e) {
-    var _this2 = this;
+    var _this3 = this;
 
     if (e && e.target && e.target.files && e.target.files.length) {
       var files = e.target.files;
       var imageParsePromiseList = [];
 
       for (var i = 0; i < files.length; i++) {
-        imageParsePromiseList.push(this.parseFile(files[i], i));
+        imageParsePromiseList.push(this.parseFile(files.item(i), i));
       }
 
       Promise.all(imageParsePromiseList).then(function (imageItems) {
-        return _this2.addImage(imageItems);
+        return _this3.addImage(imageItems);
       }).catch(function (error) {
-        _this2.$emit('fail', error);
+        _this3.$emit('fail', error);
       });
     }
 
@@ -229,10 +237,10 @@ function (_Vue) {
   };
 
   _proto.parseFile = function parseFile(file, index) {
-    var _this3 = this;
+    var _this4 = this;
 
     return new Promise(function (resolve, reject) {
-      if (_this3.maxSize && file.size > _this3.maxSize) {
+      if (_this4.maxSize && file.size > _this4.maxSize) {
         reject('文件大小超出限制');
       } else {
         var reader = new FileReader();
@@ -247,7 +255,7 @@ function (_Vue) {
 
           var orientation = 1;
 
-          _this3.getOrientation(file, function (res) {
+          _this4.getOrientation(file, function (res) {
             // -2: not jpeg , -1: not defined
             if (res > 0) {
               orientation = res;
@@ -266,13 +274,17 @@ function (_Vue) {
     });
   };
 
+  _proto.isImage = function isImage(image) {
+    return _isImage(image) || this.accept && this.accept.includes('image/');
+  };
+
   _proto.render = function render() {
-    var _this4 = this;
+    var _this5 = this;
 
     var h = arguments[0];
     var prefixCls = this.prefixCls,
-        _this$value3 = this.value,
-        value = _this$value3 === void 0 ? [] : _this$value3,
+        _this$value2 = this.value,
+        value = _this$value2 === void 0 ? [] : _this$value2,
         selectable = this.selectable,
         multiple = this.multiple,
         accept = this.accept;
@@ -285,9 +297,13 @@ function (_Vue) {
 
     var wrapCls = classnames("" + prefixCls);
     value.forEach(function (image, index) {
+      if (index === _this5.maxLength) {
+        return;
+      }
+
       var imgStyle = {
-        backgroundImage: isImage(image) ? "url(" + image.url + ")" : 'none',
-        transform: "rotate(" + _this4.getRotation(image.orientation) + "deg)"
+        backgroundImage: _this5.isImage(image) ? "url(" + image.url + ")" : 'none',
+        transform: "rotate(" + _this5.getRotation(image.orientation) + "deg)"
       };
       var itemStyle = {};
       imgItemList.push(h(Flex.Item, {
@@ -304,7 +320,7 @@ function (_Vue) {
         },
         "on": {
           "click": function click() {
-            _this4.removeImage(index);
+            _this5.removeImage(index);
           }
         }
       }), // @ts-ignore
@@ -317,7 +333,7 @@ function (_Vue) {
         },
         "on": {
           "click": function click() {
-            _this4.onImageClick(image, index);
+            _this5.onImageClick(image, index);
           }
         },
         "style": imgStyle
@@ -347,11 +363,11 @@ function (_Vue) {
       },
       "on": {
         "change": function change(v) {
-          _this4.onFileChange(v);
+          _this5.onFileChange(v);
         }
       }
     })])])]);
-    var allEl = selectable ? imgItemList.concat([selectEl]) : imgItemList;
+    var allEl = selectable && imgItemList.length < this.maxLength ? imgItemList.concat([selectEl]) : imgItemList;
     var length = allEl.length;
 
     if (length !== 0 && length % count !== 0) {
@@ -432,7 +448,12 @@ function (_Vue) {
   enumerable: true,
   writable: true,
   initializer: null
-}), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, "maxSize", [_dec8], {
+}), _descriptor7 = _applyDecoratedDescriptor(_class2.prototype, "maxLength", [_dec8], {
+  configurable: true,
+  enumerable: true,
+  writable: true,
+  initializer: null
+}), _descriptor8 = _applyDecoratedDescriptor(_class2.prototype, "maxSize", [_dec9], {
   configurable: true,
   enumerable: true,
   writable: true,

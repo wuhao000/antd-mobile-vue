@@ -84,7 +84,17 @@ function (_Vue) {
       }
     }]), [h("span", _mergeJSXProps([{
       "class": (_class4 = {}, _class4[prefixCls + "-handler-active"] = this.active && !this.disabled, _class4)
-    }, otherProps]), [this.$slots.default])]);
+    }, otherProps, {
+      "on": {
+        "click": function click() {
+          for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+            args[_key4] = arguments[_key4];
+          }
+
+          _this2.$emit.apply(_this2, ['click'].concat(args));
+        }
+      }
+    }]), [this.$slots.default])]);
   };
 
   return InputHandler;

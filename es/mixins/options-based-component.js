@@ -7,6 +7,7 @@ import _initializerWarningHelper from "@babel/runtime/helpers/initializerWarning
 
 var _dec, _dec2, _dec3, _dec4, _class, _class2, _descriptor, _descriptor2, _descriptor3;
 
+import { getNodeText } from '@/packages/utils/vnode';
 import Component, { mixins } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { getOptionProperty } from '../utils/option';
@@ -33,7 +34,7 @@ function (_mixins) {
       args[_key] = arguments[_key];
     }
 
-    return (_temp = _this = _mixins.call.apply(_mixins, [this].concat(args)) || this, _initializerDefineProperty(_this, "labelProperty", _descriptor, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "options", _descriptor2, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "valueProperty", _descriptor3, _assertThisInitialized(_this)), _temp) || _assertThisInitialized(_this);
+    return (_temp = _this = _mixins.call.apply(_mixins, [this].concat(args)) || this, _this.searchKeyword = '', _initializerDefineProperty(_this, "labelProperty", _descriptor, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "options", _descriptor2, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "valueProperty", _descriptor3, _assertThisInitialized(_this)), _temp) || _assertThisInitialized(_this);
   }
 
   var _proto = OptionsBasedComponent.prototype;
@@ -55,11 +56,18 @@ function (_mixins) {
 
     if (options) {
       return options.map(function (option) {
-        var op = _extends({}, option);
+        return _extends({}, option, {
+          label: getOptionProperty(option, _this2.labelProperty),
+          value: getOptionProperty(option, _this2.valueProperty)
+        });
+      }).filter(function (item) {
+        var label = item.label;
 
-        op.label = getOptionProperty(option, _this2.labelProperty);
-        op.value = getOptionProperty(option, _this2.valueProperty);
-        return op;
+        if (typeof label === 'object') {
+          label = getNodeText(label) || '';
+        }
+
+        return !_this2.searchKeyword || label.includes(_this2.searchKeyword);
       });
     } else {
       return null;

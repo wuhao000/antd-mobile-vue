@@ -28,7 +28,7 @@ var SliderItem = (_dec = Component({
 }), _dec14 = Prop({
   type: Number
 }), _dec15 = Prop({}), _dec16 = Prop({
-  type: String
+  type: [String, Object]
 }), _dec(_class = (_class2 =
 /*#__PURE__*/
 function (_FormComponent) {

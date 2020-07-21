@@ -26,7 +26,7 @@ var Item = (_dec = Component({
 }), _dec5 = Prop({
   type: [String, Object]
 }), _dec6 = Prop({
-  type: String,
+  type: [String, Object],
   default: ''
 }), _dec7 = Prop({
   type: Boolean

@@ -9,8 +9,8 @@ var _dec, _dec2, _dec3, _dec4, _class, _class2, _descriptor, _descriptor2, _desc
 
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
-import OptionsBasedComponent from '../../mixins/options-based-component';
 import List from '../../list';
+import OptionsBasedComponent from '../../mixins/options-based-component';
 import CheckboxItem from './checkbox-item';
 var MCheckboxList = (_dec = Component({
   name: 'MCheckboxList'
@@ -53,6 +53,7 @@ function (_OptionsBasedComponen) {
     // @ts-ignore
     return h(List, {
       "attrs": {
+        "required": this.required,
         "title": this.title
       }
     }, [this.renderOptions()]);

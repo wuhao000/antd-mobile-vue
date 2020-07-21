@@ -7,7 +7,7 @@
 </template>
 <script lang="ts">
   import DemoWrapper from '@/components/demo-wrapper.vue';
-  import demo1 from '@/packages/stepper/demo/demo1.tsx';
+  import demo1 from '@/packages/stepper/demo/demo1.vue';
   import Vue from 'vue';
   import Component from 'vue-class-component';
 

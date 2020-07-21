@@ -27,7 +27,7 @@ var MPopup = (_dec = Component({
   type: Boolean,
   default: true
 }), _dec6 = Prop({
-  type: String,
+  type: [String, Object],
   default: ''
 }), _dec7 = Prop({
   type: String,

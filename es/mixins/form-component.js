@@ -194,7 +194,7 @@ function (_Emitter) {
       var isReadonly = !this.editable;
 
       if (this.list && !isReadonly) {
-        isReadonly = this.list.editable;
+        isReadonly = !this.list.editable;
       }
 
       return isReadonly;

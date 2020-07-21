@@ -5,7 +5,7 @@ import _inheritsLoose from "@babel/runtime/helpers/inheritsLoose";
 import _applyDecoratedDescriptor from "@babel/runtime/helpers/applyDecoratedDescriptor";
 import _initializerWarningHelper from "@babel/runtime/helpers/initializerWarningHelper";
 
-var _dec, _dec2, _dec3, _class, _class2, _descriptor, _descriptor2, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _dec19, _dec20, _dec21, _dec22, _dec23, _dec24, _dec25, _dec26, _dec27, _class4, _class5, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20, _descriptor21, _descriptor22, _descriptor23, _descriptor24, _descriptor25, _class6, _temp3;
+var _dec, _dec2, _dec3, _class, _class2, _descriptor, _descriptor2, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _dec19, _dec20, _dec21, _dec22, _dec23, _dec24, _dec25, _dec26, _dec27, _dec28, _class4, _class5, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _descriptor13, _descriptor14, _descriptor15, _descriptor16, _descriptor17, _descriptor18, _descriptor19, _descriptor20, _descriptor21, _descriptor22, _descriptor23, _descriptor24, _descriptor25, _descriptor26, _class6, _temp3;
 
 /* tslint:disable:jsx-no-multiline-js */
 import classNames from 'classnames';
@@ -110,7 +110,10 @@ var Item = (_dec4 = Component({
 }), _dec25 = Prop({
   type: Boolean,
   default: true
-}), _dec26 = Prop(), _dec27 = Prop({
+}), _dec26 = Prop({
+  type: Boolean,
+  default: false
+}), _dec27 = Prop(), _dec28 = Prop({
   type: String,
   default: 'text'
 }), _dec4(_class4 = (_class5 = (_temp3 = _class6 =
@@ -127,7 +130,7 @@ function (_Vue2) {
 
     return (_temp2 = _this2 = _Vue2.call.apply(_Vue2, [this].concat(args)) || this, _initializerDefineProperty(_this2, "text", _descriptor3, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "prefixCls", _descriptor4, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "role", _descriptor5, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "platform", _descriptor6, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "thumb", _descriptor7, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "extra", _descriptor8, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "extraPosition", _descriptor9, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "activeStyle", _descriptor10, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "multipleLine", _descriptor11, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "error", _descriptor12, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "errorMessage", _descriptor13, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "disabled", _descriptor14, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "align", _descriptor15, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "wrap", _descriptor16, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "arrow", _descriptor17, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "title", _descriptor18, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "labelPosition", _descriptor19, _assertThisInitialized(_this2)), _this2.coverRippleStyle = {
       display: 'none'
-    }, _this2.rippleClicked = false, _initializerDefineProperty(_this2, "list", _descriptor20, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "contentStyle", _descriptor21, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "extraStyle", _descriptor22, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "touchFeedback", _descriptor23, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "suffix", _descriptor24, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "errorDisplayType", _descriptor25, _assertThisInitialized(_this2)), _this2.showErrorPopover = false, _temp2) || _assertThisInitialized(_this2);
+    }, _this2.rippleClicked = false, _initializerDefineProperty(_this2, "list", _descriptor20, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "contentStyle", _descriptor21, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "extraStyle", _descriptor22, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "touchFeedback", _descriptor23, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "required", _descriptor24, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "suffix", _descriptor25, _assertThisInitialized(_this2)), _initializerDefineProperty(_this2, "errorDisplayType", _descriptor26, _assertThisInitialized(_this2)), _this2.showErrorPopover = false, _temp2) || _assertThisInitialized(_this2);
   }
 
   var _proto2 = Item.prototype;
@@ -204,7 +207,7 @@ function (_Vue2) {
       "class": wrapCls
     }, [this.renderThumb(), h("div", {
       "class": lineCls
-    }, [this.renderLabel(), this.renderExtra(), arrow && h("div", {
+    }, [this.renderLabel(), this.renderControl(), this.renderExtra(), arrow && h("div", {
       "class": arrowCls,
       "attrs": {
         "aria-hidden": "true"
@@ -284,6 +287,10 @@ function (_Vue2) {
           "src": thumb
         }
       }) : thumb]);
+    } else if (this.required) {
+      return h("div", {
+        "class": prefixCls + "-required"
+      });
     } else {
       return null;
     }
@@ -305,6 +312,13 @@ function (_Vue2) {
     } else {
       return null;
     }
+  };
+
+  _proto2.renderControl = function renderControl() {
+    var h = this.$createElement;
+    return this.$slots.control ? h("div", {
+      "class": this.prefixCls + '-control'
+    }, [this.$slots.control]) : null;
   };
 
   _createClass(Item, [{
@@ -435,12 +449,17 @@ function (_Vue2) {
   enumerable: true,
   writable: true,
   initializer: null
-}), _descriptor24 = _applyDecoratedDescriptor(_class5.prototype, "suffix", [_dec26], {
+}), _descriptor24 = _applyDecoratedDescriptor(_class5.prototype, "required", [_dec26], {
   configurable: true,
   enumerable: true,
   writable: true,
   initializer: null
-}), _descriptor25 = _applyDecoratedDescriptor(_class5.prototype, "errorDisplayType", [_dec27], {
+}), _descriptor25 = _applyDecoratedDescriptor(_class5.prototype, "suffix", [_dec27], {
+  configurable: true,
+  enumerable: true,
+  writable: true,
+  initializer: null
+}), _descriptor26 = _applyDecoratedDescriptor(_class5.prototype, "errorDisplayType", [_dec28], {
   configurable: true,
   enumerable: true,
   writable: true,

@@ -43,7 +43,7 @@ var Picker = (_dec = Component({
   type: String,
   default: 'am-picker-popup'
 }), _dec9 = Prop({
-  type: String,
+  type: [String, Object],
   default: ''
 }), _dec10 = Prop(), _dec11 = Prop({
   type: Boolean,

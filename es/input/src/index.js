@@ -33,7 +33,7 @@ function normalizeValue(value) {
 var InputItem = (_dec = Component({
   name: 'InputItem'
 }), _dec2 = Prop({
-  type: String
+  type: [String, Object]
 }), _dec3 = Prop({
   type: String,
   default: 'am-input'
@@ -363,6 +363,7 @@ function (_FormComponent) {
     return h(List.Item, {
       "attrs": {
         "title": this.renderLabel(),
+        "required": this.required,
         "error": this.error,
         "errorMessage": this.errorMessage,
         "errorDisplayType": this.errorDisplayType
@@ -370,7 +371,7 @@ function (_FormComponent) {
       "class": wrapCls
     }, [h("div", {
       "class": controlCls,
-      "slot": "extra"
+      "slot": "control"
     }, [type === 'money' ? // @ts-ignore
     h(CustomInput, _mergeJSXProps([{}, {
       "attrs": {
@@ -432,6 +433,7 @@ function (_FormComponent) {
       }
     })]) : null, extra !== '' ? h("div", {
       "class": prefixCls + "-extra",
+      "slot": "extra",
       "on": {
         "click": function click(e) {
           _this5.$emit('extra-click', e);

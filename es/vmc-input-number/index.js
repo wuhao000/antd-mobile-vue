@@ -89,7 +89,8 @@ function (_BaseComponent) {
   };
 
   _proto.render = function render() {
-    var _classNames;
+    var _classNames,
+        _this2 = this;
 
     var h = arguments[0];
     var _this$prefixCls = this.prefixCls,
@@ -143,11 +144,27 @@ function (_BaseComponent) {
     var downEvents;
     upEvents = {
       touchstart: editable && !upDisabledClass ? this.up : noop,
-      touchend: this.stop
+      touchend: this.stop,
+      click: function click() {
+        if (editable && !upDisabledClass) {
+          // @ts-ignore
+          _this2.up.apply(_this2, arguments);
+
+          _this2.stop();
+        }
+      }
     };
     downEvents = {
       touchstart: editable && !downDisabledClass ? this.down : noop,
-      touchend: this.stop
+      touchend: this.stop,
+      click: function click() {
+        if (editable && !upDisabledClass) {
+          // @ts-ignore
+          _this2.down.apply(_this2, arguments);
+
+          _this2.stop();
+        }
+      }
     };
     var inputDisplayValueFormat = this.formatWrapper(inputDisplayValue);
     var isUpDisabled = !!upDisabledClass || disabled || readOnly;

@@ -28,7 +28,7 @@ var SwitchItem = (_dec = Component({
     return {};
   }
 }), _dec5 = Prop({
-  type: String
+  type: [String, Object]
 }), _dec6 = Watch('value'), _dec7 = Watch('state.value'), _dec(_class = (_class2 =
 /*#__PURE__*/
 function (_FormComponent) {

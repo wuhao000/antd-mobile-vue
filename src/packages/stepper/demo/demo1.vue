@@ -37,6 +37,14 @@
                  :defaultValue="3" disabled/>
       禁用状态
     </m-list-item>
+    <m-list-item>
+      <m-stepper :style="{width : '120px'}"
+                 v-model="state.value5"
+                 slot="extra"
+                 :max="100"
+                 :min="1"/>
+      字符串转数值
+    </m-list-item>
   </m-list>
 </template>
 <script lang="ts">
@@ -53,7 +61,8 @@
       val1: 2,
       value4: 0,
       value3: 0,
-      value2: 0
+      value2: 0,
+      value5: '20'
     };
 
     public onChange(val) {

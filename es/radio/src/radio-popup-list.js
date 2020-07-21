@@ -18,7 +18,7 @@ import RadioList from './radio-list';
 var MRadioPopupList = (_dec = Component({
   name: 'MRadioPopupList'
 }), _dec2 = Prop({
-  type: String
+  type: [String, Object]
 }), _dec3 = Prop({
   type: String
 }), _dec4 = Prop({
@@ -92,6 +92,7 @@ function (_OptionsBasedComponen) {
       },
       "attrs": {
         "text": !!optionText,
+        "required": this.required,
         "touchFeedback": !readOnly && !disabled,
         "disabled": isDisabled,
         "extraStyle": {

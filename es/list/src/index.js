@@ -5,9 +5,9 @@ import _inheritsLoose from "@babel/runtime/helpers/inheritsLoose";
 import _applyDecoratedDescriptor from "@babel/runtime/helpers/applyDecoratedDescriptor";
 import _initializerWarningHelper from "@babel/runtime/helpers/initializerWarningHelper";
 
-var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _class3, _temp2;
+var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _descriptor9, _descriptor10, _descriptor11, _descriptor12, _class3, _temp2;
 
-import classnames from 'classnames';
+import classNames from 'classnames';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop, Provide } from 'vue-property-decorator';
@@ -39,6 +39,9 @@ var List = (_dec = Component({
 }), _dec12 = Prop({
   type: Boolean,
   default: true
+}), _dec13 = Prop({
+  type: Boolean,
+  default: false
 }), _dec(_class = (_class2 = (_temp2 = _class3 =
 /*#__PURE__*/
 function (_Vue) {
@@ -51,7 +54,7 @@ function (_Vue) {
       args[_key] = arguments[_key];
     }
 
-    return (_temp = _this = _Vue.call.apply(_Vue, [this].concat(args)) || this, _initializerDefineProperty(_this, "section", _descriptor, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "prefixCls", _descriptor2, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "role", _descriptor3, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "title", _descriptor4, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "spaceBetweenSection", _descriptor5, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "touchFeedback", _descriptor6, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "list", _descriptor7, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "model", _descriptor8, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "rules", _descriptor9, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "disabled", _descriptor10, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "editable", _descriptor11, _assertThisInitialized(_this)), _this.fields = [], _temp) || _assertThisInitialized(_this);
+    return (_temp = _this = _Vue.call.apply(_Vue, [this].concat(args)) || this, _initializerDefineProperty(_this, "section", _descriptor, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "prefixCls", _descriptor2, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "role", _descriptor3, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "title", _descriptor4, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "spaceBetweenSection", _descriptor5, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "touchFeedback", _descriptor6, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "list", _descriptor7, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "model", _descriptor8, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "rules", _descriptor9, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "disabled", _descriptor10, _assertThisInitialized(_this)), _initializerDefineProperty(_this, "editable", _descriptor11, _assertThisInitialized(_this)), _this.fields = [], _initializerDefineProperty(_this, "required", _descriptor12, _assertThisInitialized(_this)), _temp) || _assertThisInitialized(_this);
   }
 
   var _proto = List.prototype;
@@ -169,12 +172,13 @@ function (_Vue) {
   };
 
   _proto.render = function render() {
-    var _classnames,
-        _this4 = this;
+    var _classNames,
+        _this4 = this,
+        _classNames2;
 
     var h = arguments[0];
     var prefixCls = this.prefixCls;
-    var wrapCls = classnames(prefixCls, (_classnames = {}, _classnames[prefixCls + '-section'] = this.section, _classnames));
+    var wrapCls = classNames(prefixCls, (_classNames = {}, _classNames[prefixCls + '-section'] = this.section, _classNames));
     var children = [];
 
     if (this.$slots.default) {
@@ -197,9 +201,9 @@ function (_Vue) {
 
     return h("div", {
       "class": wrapCls
-    }, [this.$slots.title ? this.$slots.title : this.title ? h("div", {
-      "class": prefixCls + "-header"
-    }, [this.title]) : null, children.length ? h("div", {
+    }, [this.$slots.title || this.title ? h("div", {
+      "class": classNames(prefixCls + "-header", (_classNames2 = {}, _classNames2[prefixCls + "-required"] = this.required, _classNames2))
+    }, [this.$slots.title ? this.$slots.title : this.title]) : '', children.length ? h("div", {
       "class": prefixCls + "-body"
     }, [children]) : null, this.$slots.footer ? this.$slots.footer : null]);
   };
@@ -258,6 +262,11 @@ function (_Vue) {
   writable: true,
   initializer: null
 }), _descriptor11 = _applyDecoratedDescriptor(_class2.prototype, "editable", [_dec12], {
+  configurable: true,
+  enumerable: true,
+  writable: true,
+  initializer: null
+}), _descriptor12 = _applyDecoratedDescriptor(_class2.prototype, "required", [_dec13], {
   configurable: true,
   enumerable: true,
   writable: true,
