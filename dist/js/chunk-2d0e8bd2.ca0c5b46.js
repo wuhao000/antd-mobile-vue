@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0e8bd2"],{"8b0b":function(n,o){n.exports='<h1 id="更新日志维护说明">更新日志维护说明</h1>\n<ul>\n<li>每增加一个新的版本，须在map.json中添加版本的信息</li>\n</ul>\n<p>map.json的内容如下：</p>\n<pre><code class="language-json">{\n  &quot;0.1.0&quot;: {\n    &quot;time&quot;: &quot;2019-04-06&quot;\n  },\n  &quot;0.1.1&quot;: {\n    &quot;time&quot;: &quot;2019-04-07&quot;\n  }\n}</code></pre>\n<ul>\n<li>在当前文件加下添加 <code><版本号>.md</code>文件</li>\n</ul>\n'}}]);
+//# sourceMappingURL=chunk-2d0e8bd2.ca0c5b46.js.map

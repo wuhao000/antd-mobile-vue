@@ -94,10 +94,7 @@ function (_OptionsBasedComponen) {
         "text": !!optionText,
         "required": this.required,
         "touchFeedback": !readOnly && !disabled,
-        "disabled": isDisabled,
-        "extraStyle": {
-          flexBasis: '60%'
-        }
+        "disabled": isDisabled
       }
     }, [h(Popup, {
       "attrs": {
