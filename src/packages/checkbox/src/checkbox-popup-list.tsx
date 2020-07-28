@@ -87,8 +87,7 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
                       touchFeedback={!this.readOnly && !this.disabled}
                       required={this.required}
                       text={!!optionText}
-                      disabled={this.isDisabled}
-                      extraStyle={{flexBasis: '60%'}}>
+                      disabled={this.isDisabled}>
       <Popup value={this.isDisabled ? false : this.popupVisible}
              showCancel={this.clearable}
              disabled={this.disabled || this.isReadonly}
