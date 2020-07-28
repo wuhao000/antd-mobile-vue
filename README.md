@@ -1,3 +1,6 @@
+如有问题可添加个人微信（wuhao1200），欢迎共同交流
+![](http://chuantu.xyz/t6/740/1595927552x-633054266.jpg)
+
 该项目原本为公司内部项目，现放到github上开源，发布个时候项目名称改为antd-mobile-vue
 
 [查看文档](https://antdmobilevue.aegis-info.com)
@@ -190,5 +193,3 @@ npm run remove <name>
 ```bash
 npm publish
 ```
-如有问题可添加个人微信，欢迎共同交流
-![](http://chuantu.xyz/t6/740/1595927552x-633054266.jpg)
