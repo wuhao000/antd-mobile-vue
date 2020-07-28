@@ -49,7 +49,7 @@ ListView | √ | [无]
 Menu | √ | √ | √
 Modal | √ | √ | √ 
 NavBar | √ | √ | √
-NoticeBar | √ | √
+NoticeBar | √ | √ | √
 Pagination | √ | √ | √
 Picker | √ | √ | √
 PickerView | √ | √
