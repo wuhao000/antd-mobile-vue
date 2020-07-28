@@ -190,4 +190,5 @@ npm run remove <name>
 ```bash
 npm publish
 ```
-
+如有问题，请添加个人微信交流，备注antdm
+![](https://user-gold-cdn.xitu.io/2020/7/28/17394a2adfd262eb?w=430&h=430&f=jpeg&s=44334)
