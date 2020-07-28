@@ -1,4 +1,4 @@
-import {getNodeText} from '@/packages/utils/vnode';
+import {getNodeText} from '../utils/vnode';
 import Component, {mixins} from 'vue-class-component';
 import {Prop} from 'vue-property-decorator';
 import {getOptionProperty} from '../utils/option';

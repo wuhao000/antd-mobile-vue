@@ -1,3 +1,4 @@
+import _extends from "@babel/runtime/helpers/extends";
 import _mergeJSXProps from "@vue/babel-helper-vue-jsx-merge-props";
 import _objectWithoutPropertiesLoose from "@babel/runtime/helpers/objectWithoutPropertiesLoose";
 import _initializerDefineProperty from "@babel/runtime/helpers/initializerDefineProperty";
@@ -36,12 +37,12 @@ var MStepper = (_dec = Component({
 }), _dec9 = Prop({
   type: Boolean
 }), _dec10 = Prop({
-  type: Number
+  type: [Number, String]
 }), _dec11 = Prop({
   type: Number
 }), _dec12 = Prop({
   type: Boolean,
-  default: false
+  default: true
 }), _dec13 = Prop({}), _dec14 = Prop({}), _dec15 = Prop({}), _dec16 = Prop({
   type: String
 }), _dec(_class = (_class2 =
@@ -61,12 +62,30 @@ function (_Vue) {
 
   var _proto = MStepper.prototype;
 
+  _proto.getCurrentValue = function getCurrentValue() {
+    var value = this.value;
+    var currentValue = null;
+
+    if (typeof value === 'string') {
+      if (value === '') {
+        currentValue = null;
+      } else {
+        currentValue = parseInt(value);
+      }
+    } else {
+      currentValue = value;
+    }
+
+    return currentValue;
+  };
+
   _proto.render = function render() {
     var h = arguments[0];
 
     var _this$$props = this.$props,
         showNumber = _this$$props.showNumber,
-        restProps = _objectWithoutPropertiesLoose(_this$$props, ["showNumber"]);
+        value = _this$$props.value,
+        restProps = _objectWithoutPropertiesLoose(_this$$props, ["showNumber", "value"]);
 
     var stepperClass = classnames({
       showNumber: !!showNumber
@@ -86,7 +105,9 @@ function (_Vue) {
     return h(RMCInputNumber, _mergeJSXProps([{}, {
       "on": this.$listeners
     }, {}, {
-      "props": restProps
+      "props": _extends({
+        value: this.getCurrentValue()
+      }, restProps)
     }, {
       "class": stepperClass
     }]));

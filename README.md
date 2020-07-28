@@ -190,4 +190,4 @@ npm run remove <name>
 ```bash
 npm publish
 ```
-
+![](https://user-gold-cdn.xitu.io/2020/7/28/17394a2adfd262eb?w=430&h=430&f=jpeg&s=44334)

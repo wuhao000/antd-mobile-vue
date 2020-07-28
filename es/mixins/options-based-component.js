@@ -7,7 +7,7 @@ import _initializerWarningHelper from "@babel/runtime/helpers/initializerWarning
 
 var _dec, _dec2, _dec3, _dec4, _class, _class2, _descriptor, _descriptor2, _descriptor3;
 
-import { getNodeText } from '@/packages/utils/vnode';
+import { getNodeText } from '../utils/vnode';
 import Component, { mixins } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { getOptionProperty } from '../utils/option';

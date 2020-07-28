@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0e4c23"],{"921e":function(n,o){n.exports="<ul>\n<li>✨ 发布CDN版本</li>\n</ul>\n"}}]);
+//# sourceMappingURL=chunk-2d0e4c23.55c3ca75.js.map
