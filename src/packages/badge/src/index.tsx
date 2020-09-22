@@ -1,48 +1,49 @@
+import {Options, Vue} from 'vue-class-component';
 import classnames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
 
-@Component({
-  name: 'Badge'
+@Options({
+  name: 'Badge',
+  props: {
+    prefixCls: {default: 'am-badge'},
+    hot: {type: Boolean, default: false},
+    size: {type: String, default: 'small'},
+    overflowCount: {type: Number, default: 99},
+    corner: {type: Boolean, default: false},
+    dot: {type: Boolean, default: false},
+    text: {type: [String, Number]},
+    textStyle: {type: Object}
+  }
 })
-export default class Badge extends Vue {
+
+class Badge extends Vue {
   /**
    * class前缀
    */
-  @Prop({default: 'am-badge'})
   public prefixCls?: string;
   /**
    * 营销样式
    */
-  @Prop({type: Boolean, default: false})
   public hot?: boolean;
   /**
    * 大小
    */
-  @Prop({type: String, default: 'small'})
   public size?: 'large' | 'small';
   /**
    * 展示封顶的数字值
    */
-  @Prop({type: Number, default: 99})
   public overflowCount?: number;
-  @Prop({type: Boolean, default: false})
   public corner?: boolean;
   /**
    * 不展示数字，只有一个小红点
    */
-  @Prop({type: Boolean, default: false})
   public dot?: boolean;
   /**
    * 展示的数字或文案，当为数字时候，大于 overflowCount <br/> 时显示为 ${overflowCount}+，为 0 时隐藏
    */
-  @Prop({type: [String, Number]})
   public text?: string | number;
   /**
    * 文本样式
    */
-  @Prop({type: Object})
   public textStyle: object;
 
   public render() {
@@ -96,3 +97,5 @@ export default class Badge extends Vue {
     );
   }
 }
+
+export default Badge;

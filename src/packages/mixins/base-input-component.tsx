@@ -1,12 +1,19 @@
+import {useSimpleFormComponent} from '@/packages/mixins/simple-form-component';
+import {mixins, Options} from 'vue-class-component';
 import PureInputComponent from './pure-input-component';
-import Component from 'vue-class-component';
-import {mixins} from 'vue-class-component';
-import {SimpleFormComponent} from './simple-form-component';
 
-@Component({
-  name: 'BaseFormComponent'
+@Options({
+  name: 'BaseFormComponent',
+  setup(props) {
+    const {isReadonly, componentSize, isDisabled} = useSimpleFormComponent(props);
+    return {isReadonly, componentSize, isDisabled};
+  }
 })
-export default class BaseFormComponent extends mixins(PureInputComponent, SimpleFormComponent) {
+export default class BaseFormComponent extends PureInputComponent {
+
+  public isDisabled;
+  public isReadonly;
+  public componentSize;
 
   get props() {
     return {
@@ -19,5 +26,4 @@ export default class BaseFormComponent extends mixins(PureInputComponent, Simple
       visible: this.stateValue
     };
   }
-
 }

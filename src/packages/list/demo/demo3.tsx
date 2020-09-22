@@ -1,15 +1,13 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {Options, Vue} from 'vue-class-component';
 import {Button, Input, List, Range, Switch} from '../../index';
 
 const Item = List.Item;
 
-@Component({
+@Options({
   name: 'BasicInput'
 })
 export default class BasicInput extends Vue {
-
-  public data = {
+  public data2 = {
     account: null,
     password: null
   };
@@ -33,7 +31,7 @@ export default class BasicInput extends Vue {
   }
 
   public onReset() {
-    this.data = {account: null, password: null};
+    this.data2 = {account: null, password: null};
   }
 
   public validateAccount(rule, value, callback) {
@@ -44,16 +42,16 @@ export default class BasicInput extends Vue {
     }
   }
 
-  public render() {
+  public render(): any {
     return (<form>
       <List ref="form"
             attrs={{model: this.data}}
             renderHeader={() => 'Form Validation'}
             renderFooter={() => 'abc'}>
-        <Input clear vModel={this.data.account}
+        <Input clear vModel={this.data2.account}
                placeholder="please input account"
         >Account</Input>
-        <Input vModel={this.data.password}
+        <Input vModel={this.data2.password}
                placeholder="please input password" type="password">
           Password
         </Input>

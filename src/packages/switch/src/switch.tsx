@@ -1,23 +1,22 @@
+import FormComponent from '../../mixins/form-component';
 import classnames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
-import {FormComponent} from '../../mixins/form-component';
+import {Options} from 'vue-class-component';
 
-@Component({
-  name: 'MSwitch'
+@Options({
+  name: 'MSwitch',
+  props: {
+    color: {type: String},
+    name: {type: String},
+    prefixCls: {type: String, default: 'am-switch'},
+    platform: {type: String, default: 'ios'}
+  }
 })
+
 export default class Switch extends FormComponent {
-
-  @Prop({type: String})
   public color?: string;
-  @Prop({type: String})
   public name?: string;
-  @Prop({type: String, default: 'am-switch'})
   public prefixCls?: string;
-  @Prop({type: String, default: 'ios'})
   public platform: string;
-
 
   public onChange(e) {
     this.currentValue = e.target.checked;
@@ -34,7 +33,7 @@ export default class Switch extends FormComponent {
     this.currentValue = val;
   }
 
-  public render() {
+  public render(): any {
     const {
       prefixCls,
       name,

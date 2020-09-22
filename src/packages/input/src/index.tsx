@@ -1,9 +1,8 @@
 /* tslint:disable:jsx-no-multiline-js */
 import classnames from 'classnames';
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
-import {FormComponent} from '../../mixins/form-component';
+import {Options} from 'vue-class-component';
 import List from '../../list';
+import FormComponent from '../../mixins/form-component';
 import TouchFeedback from '../../vmc-feedback';
 import CustomInput from './custom-input';
 import Input from './input';
@@ -18,82 +17,87 @@ function normalizeValue(value?: string) {
   return value + '';
 }
 
-@Component({
-  name: 'InputItem'
+@Options({
+  name: 'InputItem',
+  props: {
+    title: {type: [String, Object]},
+    prefixCls: {type: String, default: 'am-input'},
+    prefixListCls: {type: String, default: 'am-list'},
+    moneyKeyboardAlign: {type: String, default: 'right'},
+    moneyKeyboardWrapProps: {
+      type: Function,
+      default: () => {
+        return {};
+      }
+    },
+    moneyKeyboardHeader: {default: null},
+    type: {type: String, default: 'text'},
+    name: {type: String},
+    placeholder: {type: String, default: ''},
+    clearable: {type: Boolean, default: false},
+    maxLength: {type: Number},
+    extra: {default: ''},
+    labelNumber: {default: 5},
+    textAlign: {type: String},
+    locale: {},
+    android: {type: Boolean, default: false},
+    required: {type: Boolean, default: false}
+  },
+  watch: {
+    placeholder(placeholder) {
+      this.state.placeholder = placeholder;
+    }
+  }
 })
-export default class InputItem extends FormComponent {
-  @Prop({type: [String, Object]})
+class InputItem extends FormComponent {
   public title: string;
   /**
    * class 前缀
    */
-  @Prop({type: String, default: 'am-input'})
   public prefixCls?: string;
   /**
    * list class 前缀
    */
-  @Prop({type: String, default: 'am-list'})
   public prefixListCls?: string;
   /**
    * 文字排版起始方向, 只有 type='money' 支持，
    * 可选为 <code>'left'</code>, <code>'right'</code>
    */
-  @Prop({type: String, default: 'right'})
   public moneyKeyboardAlign?: string;
-  @Prop({
-    type: Function,
-    default: () => {
-      return {};
-    }
-  })
   public moneyKeyboardWrapProps?: object;
-  @Prop({default: null})
   public moneyKeyboardHeader?: any;
-  @Prop({type: String, default: 'text'})
   public type?: '' | 'text' | 'bankCard' | 'phone' | 'password' | 'number' | 'digit' | 'money';
   /**
    * input元素的name属性
    */
-  @Prop({type: String})
   public name?: string;
   /**
    * 占位文字
    */
-  @Prop({type: String, default: ''})
   public placeholder?: string;
   /**
    * 是否支持清除内容
    */
-  @Prop({type: Boolean, default: false})
   public clearable?: boolean;
   /**
    * 最大长度
    */
-  @Prop({type: Number})
   public maxLength?: number;
   /**
    * 右边注释
    */
-  @Prop({default: ''})
   public extra?: any;
-  @Prop({default: 5})
   /**
    * 标签的文字个数，可用2-7之间的数字
    */
   public labelNumber?: number;
-  @Prop({type: String})
   public textAlign?: 'left' | 'center' | 'right';
-  @Prop()
   public locale?: object;
-  @Prop({type: Boolean, default: false})
   public android: boolean;
   public state = {
     placeholder: this.placeholder || ''
   };
-
-  @Prop({type: Boolean, default: false})
   public required: boolean;
-
   public static install: (Vue) => void;
 
   private renderLabel(): any {
@@ -108,16 +112,11 @@ export default class InputItem extends FormComponent {
       [`${prefixCls}-label-7`]: labelNumber === 7
     });
     if (this.$slots.default) {
-      return <div class={labelCls}>{this.$slots.default}</div>;
+      return <div class={labelCls}>{this.$slots.default()}</div>;
     } else if (this.title) {
       return <div class={labelCls}>{this.title}</div>;
     }
     return null;
-  }
-
-  @Watch('placeholder')
-  public placeholderChanged(placeholder: string) {
-    this.state.placeholder = placeholder;
   }
 
   get inputRef(): any {
@@ -254,7 +253,6 @@ export default class InputItem extends FormComponent {
     }
   }
 
-
   public calcPos(prePos: number, preCtrlVal: string, rawVal: string, ctrlVal: string, placeholderChars: Array<string>, maskReg: RegExp) {
     const editLength = rawVal.length - preCtrlVal.length;
     const isAddition = editLength > 0;
@@ -276,7 +274,7 @@ export default class InputItem extends FormComponent {
     return pos;
   }
 
-  public render() {
+  public render(): any {
     const {
       prefixCls,
       prefixListCls,
@@ -290,7 +288,7 @@ export default class InputItem extends FormComponent {
       moneyKeyboardHeader,
       name, maxLength
     } = this;
-    const extra = this.$slots.extra || this.extra;
+    const extra = this.$slots.extra?.() || this.extra;
     const {
       confirmLabel,
       backspaceLabel,
@@ -348,83 +346,91 @@ export default class InputItem extends FormComponent {
                  errorMessage={this.errorMessage}
                  errorDisplayType={this.errorDisplayType}
                  class={wrapCls}>
-        <div class={controlCls} slot="control">
-          {type === 'money' ? (
-            // @ts-ignore
-            <CustomInput
-              attrs={
+        <template slot="control">
+          <div class={controlCls}>
+            {type === 'money' ? (
+              // @ts-ignore
+              <CustomInput
                 {
-                  value: normalizeValue(currentValue),
-                  type,
-                  maxLength,
-                  placeholder,
-                  disabled: isDisabled,
-                  editable: !isReadonly,
-                  prefixCls,
-                  confirmLabel,
-                  backspaceLabel,
-                  cancelKeyboardLabel,
-                  moneyKeyboardAlign,
-                  moneyKeyboardWrapProps,
-                  moneyKeyboardHeader
+                  ...{
+                    value: normalizeValue(currentValue),
+                    type,
+                    maxLength,
+                    placeholder,
+                    disabled: isDisabled,
+                    editable: !isReadonly,
+                    prefixCls,
+                    confirmLabel,
+                    backspaceLabel,
+                    cancelKeyboardLabel,
+                    moneyKeyboardAlign,
+                    moneyKeyboardWrapProps,
+                    moneyKeyboardHeader,
+                    onChange: this.onInputChange,
+                    onFocus: this.onInputFocus,
+                    onBlur: this.onInputBlur,
+                    onConfirm: (v) => {
+                      this.$emit('confirm', v);
+                    },
+                    ref: 'input'
+                  }
                 }
-              }
-              onChange={this.onInputChange}
-              onFocus={this.onInputFocus}
-              onBlur={this.onInputBlur}
-              onConfirm={(v) => {
-                this.$emit('confirm', v);
-              }}
-              ref="input"
-            />
-          ) : (
-            <Input
-              props={
-                {
-                  ...patternProps,
-                  value: normalizeValue(currentValue),
-                  defaultValue: undefined,
-                  textAlign: this.textAlign,
-                  type: inputType,
-                  maxLength,
-                  name,
-                  placeholder,
-                  readonly: isReadonly,
-                  disabled: isDisabled
+              />
+            ) : (
+              <Input
+                props={
+                  {
+                    ...patternProps,
+                    value: normalizeValue(currentValue),
+                    defaultValue: undefined,
+                    textAlign: this.textAlign,
+                    type: inputType,
+                    maxLength,
+                    name,
+                    placeholder,
+                    readonly: isReadonly,
+                    disabled: isDisabled
+                  }
                 }
-              }
-              class={classNameProp}
-              ref="input"
-              on={
-                {
-                  change: this.onInputChange,
-                  focus: this.onInputFocus,
-                  blur: this.onInputBlur
+                class={classNameProp}
+                ref="input"
+                on={
+                  {
+                    change: this.onInputChange,
+                    focus: this.onInputFocus,
+                    blur: this.onInputBlur
+                  }
                 }
-              }
-            />
-          )}
-        </div>
+              />
+            )}
+          </div>
+        </template>
         {clearable &&
         !isReadonly &&
         !isDisabled &&
         (currentValue && `${currentValue}`.length > 0) ? (
           // @ts-ignore
-          <TouchFeedback slot="suffix" activeClassName={`${prefixCls}-clear-active`}>
-            <div class={`${prefixCls}-clear`}
-                 onClick={this.clearInput}/>
-          </TouchFeedback>
+          <template slot="suffix">
+            <TouchFeedback activeClassName={`${prefixCls}-clear-active`}>
+              <div class={`${prefixCls}-clear`}
+                   onClick={this.clearInput}/>
+            </TouchFeedback>
+          </template>
         ) : null}
         {extra !== '' ? (
-          <div class={`${prefixCls}-extra`}
-               slot="extra"
-               onClick={(e) => {
-                 this.$emit('extra-click', e);
-               }}>
-            {extra}
-          </div>
+          <template slot="extra">
+            <div class={`${prefixCls}-extra`}
+                 onClick={(e) => {
+                   this.$emit('extra-click', e);
+                 }}>
+              {extra}
+            </div>
+          </template>
         ) : null}
       </List.Item>
     );
   }
 }
+
+
+export default InputItem;

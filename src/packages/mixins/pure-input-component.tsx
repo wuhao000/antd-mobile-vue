@@ -1,7 +1,5 @@
 import {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {mixins} from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
+import {mixins, Options} from 'vue-class-component';
 import Emitter from './emitter';
 
 const hasListener = (instance, listener) => {
@@ -15,17 +13,33 @@ const hasProp = (instance, prop) => {
   return prop in propsData;
 };
 
-@Component({
-  name: 'PureInputComponent'
+@Options({
+  name: 'PureInputComponent',
+  props: {
+    block: Boolean,
+    value: {},
+    width: [String, Number]
+  },
+  watch: {
+    stateValue(value) {
+      const val = this.convertValueBack(value);
+      if (hasProp(this, 'value')) {
+        this.$emit('input', val);
+      }
+      this.$emit('change', val);
+      this.dispatch('DFormItem', 'd.form.change', [val]);
+    },
+    value(value) {
+      if (this.stateValue !== this.convertValue(value)) {
+        this.stateValue = this.convertValue(value);
+      }
+    }
+  }
 })
-export default class PureInputComponent extends mixins(Emitter) {
-
-  @Prop(Boolean)
+export default class PureInputComponent extends Emitter {
   public block: boolean;
-  @Prop()
   public value: string | number | any;
   public stateValue = this.initValue;
-  @Prop([String, Number])
   public width: string | number;
 
   get cssStyle() {
@@ -52,13 +66,13 @@ export default class PureInputComponent extends mixins(Emitter) {
     }
   }
 
-  protected get listeners() {
-    return Object.assign({}, this.$listeners, {
-      input: this.onInput,
-      blur: this.handleBlur,
-      change: this.handleChange,
-      keydown: this.handleKeydown,
-      keyup: this.handleKeyup
+  protected get listeners(): any {
+    return Object.assign({}, {
+      onInput: this.onInput,
+      onBlur: this.handleBlur,
+      onChange: this.handleChange,
+      onKeydown: this.handleKeydown,
+      onKeyup: this.handleKeyup
     }, this.getListeners());
   }
 
@@ -82,23 +96,6 @@ export default class PureInputComponent extends mixins(Emitter) {
       ...this.getProps(),
       visible: this.stateValue
     };
-  }
-
-  @Watch('stateValue')
-  public stateValueChanged(value: any) {
-    const val = this.convertValueBack(value);
-    if (hasProp(this, 'value')) {
-      this.$emit('input', val);
-    }
-    this.$emit('change', val);
-    this.dispatch('DFormItem', 'd.form.change', [val]);
-  }
-
-  @Watch('value')
-  public valueChanged(value: any) {
-    if (this.stateValue !== this.convertValue(value)) {
-      this.stateValue = this.convertValue(value);
-    }
   }
 
   public mounted() {
@@ -172,21 +169,23 @@ export default class PureInputComponent extends mixins(Emitter) {
     }
   }
 
-  public render() {
+  public render(): any {
     const CustomComponent = this.getInputComponent();
+    const props = {
+      ...this.listeners,
+      ...this.props,
+      style: this.cssStyle,
+      value: this.stateValue,
+
+    }
     // @ts-ignore
-    return <CustomComponent
-      attrs={this.props}
-      value={this.stateValue}
-      scopedSlots={this.$scopedSlots}
-      slots={this.slots}
-      on={this.listeners}
-      style={this.cssStyle}>
+    return <CustomComponent {...props}
+      slots={this.slots}>
       {this.getDefaultSlot()}
     </CustomComponent>;
   }
 
   public getDefaultSlot(): VNode | VNode[] | undefined {
-    return this.$slots.default;
+    return this.$slots.default?.();
   }
 }

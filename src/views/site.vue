@@ -1,41 +1,50 @@
 <template>
-  <ae-layout>
-    <ae-layout-header id="app-header">
+  <a-layout>
+    <a-layout-header id="app-header">
       <ui-header/>
-    </ae-layout-header>
-    <ae-layout id="app-body">
-      <ae-layout-sider v-show="!isDemo"
+    </a-layout-header>
+    <a-layout id="app-body">
+      <a-layout-sider v-show="!isDemo"
                        id="app-nav"
                        width="220px">
         <nav-list :menu-list="routersName"></nav-list>
-      </ae-layout-sider>
-      <ae-layout-content :id="(!$route.meta || $route.meta.hideNav !== true) ? 'app-content' : ''">
+      </a-layout-sider>
+      <a-layout-content :id="(!$route.meta || $route.meta.hideNav !== true) ? 'app-content' : ''">
         <router-view/>
-      </ae-layout-content>
-      <ae-layout-sider style="padding: 0 0 0 10px;">
+      </a-layout-content>
+      <a-layout-sider style="padding: 0 0 0 10px;" width="375px">
         <iframe v-if="componentName"
                 height="512px"
-                width="375px"
+                width="100%"
                 :src="`/demo/mobile/${componentName}`">
         </iframe>
-      </ae-layout-sider>
-    </ae-layout>
-  </ae-layout>
+      </a-layout-sider>
+    </a-layout>
+  </a-layout>
 </template>
 <script lang="ts">
-  import NavList from '@/components/nav-list.vue';
   import {routes} from '@/router';
+  import {Options, Vue} from 'vue-class-component';
   import UiHeader from '@/views/header.vue';
-  import Vue from 'vue';
-  import VueClipboard from 'vue-clipboard2';
-  import {Component, Watch} from 'vue-property-decorator';
-  import {RouteConfig} from 'vue-router';
+  import NavList from '@/components/nav-list.vue';
+  import {RouteRecordRaw} from 'vue-router';
 
-  Vue.use(VueClipboard as any);
-  @Component({
+  @Options({
     components: {
       UiHeader,
       NavList
+    },
+    watch: {
+      $route: {
+        immediate: true,
+        handler(route: RouteRecordRaw) {
+          if (route.path.startsWith('/mobile-components')) {
+            this.componentName = 'm-' + route.path.replace('/mobile-components/', '');
+          } else {
+            this.componentName = null;
+          }
+        }
+      }
     }
   })
   export default class App extends Vue {
@@ -47,15 +56,6 @@
 
     get routersName() {
       return routes.find(it => it.name === 'site').children;
-    }
-
-    @Watch('$route', {immediate: true})
-    public routeChanged(route: RouteConfig) {
-      if (route.path.startsWith('/mobile-components')) {
-        this.componentName = 'm-' + route.path.replace('/mobile-components/', '');
-      } else {
-        this.componentName = null;
-      }
     }
 
   }

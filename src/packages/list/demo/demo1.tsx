@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {Options, Vue} from 'vue-class-component';
 import {List} from '../../index';
 import './index1.less';
 
@@ -13,11 +12,10 @@ const options = [{
   label: '选项3', value: 3
 }];
 
-@Component({
+@Options({
   name: 'ListExample'
 })
 export default class ListExample extends Vue {
-
   public state = {
     disabled: false,
     slider: 5,
@@ -34,7 +32,7 @@ export default class ListExample extends Vue {
     console.log('item clicked');
   }
 
-  public render() {
+  public render(): any {
     return (<div>
       <List title="状态控制">
         <m-switch-item title="禁用" v-model={this.state.disabled}/>

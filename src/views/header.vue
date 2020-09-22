@@ -1,20 +1,19 @@
 <template>
   <div id="header">
-    <ae-row>
+    <a-row>
       <div class="ant-col-xs-24 ant-col-sm-24 ant-col-md-6 ant-col-lg-5 ant-col-xl-5 ant-col-xxl-4 header-left">
         <router-link id="logo"
                      to="/">
           <span>Ant Design Mobile Vue</span>
         </router-link>
       </div>
-    </ae-row>
+    </a-row>
   </div>
 </template>
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
+  import {Options, Vue} from 'vue-class-component';
 
-  @Component({
+  @Options({
     name: 'Header'
   })
   export default class Header extends Vue {

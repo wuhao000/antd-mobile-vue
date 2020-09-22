@@ -1,42 +1,42 @@
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
+import {Options, Vue} from 'vue-class-component';
 import List from '../../list';
 import BaseInputComponent from '../../mixins/base-input-component';
 import Calendar from './index';
 
 const MIN_DATE = new Date(2000, 1, 1, 0, 0, 0);
 const MAX_DATE = new Date(new Date().getFullYear() + 10, 12, 31, 23, 59, 59);
-@Component({
-  name: 'MCalendarItem'
+
+@Options({
+  name: 'MCalendarItem',
+  props: {
+    title: {type: [String, Object]},
+    defaultDate: {type: Date, default: () => new Date()},
+    minDate: {type: Date, default: () => MIN_DATE},
+    maxDate: {type: Date, default: () => MAX_DATE},
+    pickTime: {type: Boolean, default: false},
+    type: {type: String, default: 'range'},
+    placeholder: {type: String}
+  }
 })
 export default class MCalendarItem extends BaseInputComponent {
-
   /**
    * 标题
    */
-  @Prop({type: [String, Object]})
   public title: string;
   /**
    * 默认值
    */
-  @Prop({type: Date, default: () => new Date()})
   public defaultDate: Date;
-  @Prop({type: Date, default: () => MIN_DATE})
   public minDate: Date;
-  @Prop({type: Date, default: () => MAX_DATE})
   public maxDate: Date;
-  @Prop({type: Boolean, default: false})
   public pickTime: boolean;
-  @Prop({type: String, default: 'range'})
   public type: 'one' | 'range';
-  @Prop({type: String})
   public placeholder: string;
   public currentValue: Date[] = [];
   public displayValue: string;
-
   public visible: boolean = false;
 
-  public getInputComponent(): {} {
+  public getInputComponent(): any {
     return Calendar;
   }
 
@@ -72,7 +72,6 @@ export default class MCalendarItem extends BaseInputComponent {
     }
   }
 
-
   public getDisplayValue() {
     const valueStrs = this.currentValue.map(it => {
       if (this.pickTime) {
@@ -92,7 +91,7 @@ export default class MCalendarItem extends BaseInputComponent {
     this.visible = false;
   }
 
-  public render() {
+  public render(): any {
     return <List.Item text={!!this.displayValue}
                       required={this.required}
                       arrow="horizontal"
@@ -114,5 +113,4 @@ export default class MCalendarItem extends BaseInputComponent {
       <span slot="extra">{this.displayValue || this.placeholder}</span>
     </List.Item>;
   }
-
 }

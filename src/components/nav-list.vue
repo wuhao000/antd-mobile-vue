@@ -1,53 +1,56 @@
 <template>
-  <d-menu id="nav-list"
-          mode="inline"
-          :open-keys.sync="openKeys">
+  <a-menu id="nav-list"
+          mode="inline">
     <template v-for="item in menuList">
-      <d-sub-menu v-if="item.children && item.children.length"
+      <a-sub-menu v-if="item.children && item.children.length"
                   :key="item.name">
-        <div class="category-title"
-             slot="title">{{item.name}}
-        </div>
+        <template v-slot:title>
+          <div class="category-title">{{item.name}}
+          </div>
+        </template>
         <template v-if="item.name === '组件'">
-          <d-menu-item-group v-for="(item) in getComponentMap(item.children)"
+          <a-menu-item-group v-for="(item) in getComponentMap(item.children)"
                              :key="item.tag"
                              :title="item.tag">
-            <d-menu-item v-for="component in item.components"
+            <a-menu-item v-for="component in item.components"
                          :key="component.name"
                          @click="handleClick(component)">{{component.name}}
-            </d-menu-item>
-          </d-menu-item-group>
+            </a-menu-item>
+          </a-menu-item-group>
         </template>
         <template v-else>
-          <d-menu-item v-for="sub in item.children"
+          <a-menu-item v-for="sub in item.children"
                        :key="sub.name"
                        @click="handleClick(sub)">{{sub.name}}
-          </d-menu-item>
+          </a-menu-item>
         </template>
-      </d-sub-menu>
-      <d-menu-item v-else
+      </a-sub-menu>
+      <a-menu-item v-else
                    class="category-title"
                    :key="item.name"
                    @click="handleClick(item)">{{item.name}}
-      </d-menu-item>
+      </a-menu-item>
     </template>
-  </d-menu>
+  </a-menu>
 </template>
 <script lang="ts">
-  import {Component, Prop, Vue} from 'vue-property-decorator';
-  import {RouteConfig} from 'vue-router';
+import {Options, Vue} from 'vue-class-component';
+import {RouteRecordRaw} from 'vue-router';
 
-  const tagNames = ['布局', '导航', '数据入口', '数据展示', '反馈', '手势', '组合', '其他'];
-  @Component
+const tagNames = ['布局', '导航', '数据入口', '数据展示', '反馈', '手势', '组合', '其他'];
+  @Options({
+    props: {
+      menuList: {
+        type: Array
+      }
+    }
+  })
   export default class NavList extends Vue {
-    @Prop({
-      type: Array
-    })
-    public menuList: RouteConfig[]; // 代码片段
+    public menuList: RouteRecordRaw[]; // 代码片段
 
     public openKeys: string[] = [];
 
-    public getComponentMap(routes: RouteConfig[]) {
+    public getComponentMap(routes: RouteRecordRaw[]) {
       const tags = routes.map(it => it.meta && it.meta.tag);
       const map = {};
       tags.forEach(tag => {

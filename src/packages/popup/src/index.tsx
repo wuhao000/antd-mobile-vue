@@ -1,39 +1,43 @@
+import {VNode} from 'vue';
 import {Drawer} from 'ant-design-vue';
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
+import {mixins, Options, Vue} from 'vue-class-component';
 import BaseFormComponent from '../../mixins/base-input-component';
 import Touchable from '../../vmc-feedback/feedback';
 
-Vue.use(Drawer);
-
-@Component({
-  name: 'MPopup'
+// @ts-ignore
+@Options({
+  name: 'MPopup',
+  props: {
+    cancelText: {type: String, default: '取消'},
+    showCancel: {type: Boolean, default: false},
+    cancelButton: {type: Object},
+    showOk: {type: Boolean, default: true},
+    title: {type: [String, Object], default: ''},
+    prefixCls: {type: String, default: 'am-popup'},
+    height: {type: String},
+    width: {type: String},
+    placement: {type: String, default: 'bottom'},
+    showTitle: {type: Boolean, default: true},
+    closable: {type: Boolean, default: true}
+  },
+  watch: {
+    value(value) {
+      this.stateValue = value;
+    }
+  }
 })
 class MPopup extends BaseFormComponent {
-
-  @Prop({type: String, default: '取消'})
   public cancelText: string;
-  @Prop({type: Boolean, default: false})
   public showCancel: boolean;
-  @Prop({type: Object})
   public cancelButton: VNode;
-  @Prop({type: Boolean, default: true})
   public showOk: boolean;
-  @Prop({type: [String, Object], default: ''})
   public title: string | VNode;
-  @Prop({type: String, default: 'am-popup'})
   public prefixCls: string;
   public static install: (Vue) => void;
-  @Prop({type: String})
   public height: string;
-  @Prop({type: String})
   public width: string;
-  @Prop({type: String, default: 'bottom'})
   public placement: string;
-  @Prop({type: Boolean, default: true})
   public showTitle: boolean;
-  @Prop({type: Boolean, default: true})
   public closable: boolean;
 
   private onCancel(): any {
@@ -58,11 +62,6 @@ class MPopup extends BaseFormComponent {
     this.$emit('ok');
   }
 
-  @Watch('value')
-  public valueChanged(value: boolean) {
-    this.stateValue = value;
-  }
-
   public getProps(): {} {
     return {
       title: this.renderHeader(),
@@ -85,7 +84,7 @@ class MPopup extends BaseFormComponent {
   }
 
   public getInputComponent() {
-    return 'a-drawer';
+    return Drawer;
   }
 
   private renderHeader() {
@@ -101,7 +100,7 @@ class MPopup extends BaseFormComponent {
       <Touchable activeClassName={`${this.prefixCls}-item-active`}>
         {
           this.cancelButton ? this.cancelButton
-            : <div onclick={this.onCancel}
+            : <div onClick={this.onCancel}
                    class={`${this.prefixCls}-item ${this.prefixCls}-header-left`}>
               {this.cancelText}
             </div>
@@ -112,7 +111,7 @@ class MPopup extends BaseFormComponent {
   private renderOk() {
     return this.showOk ?
       <Touchable activeClassName={`${this.prefixCls}-item-active`}>
-        <div onclick={this.onOk} class={`${this.prefixCls}-item ${this.prefixCls}-header-right`}>确定</div>
+        <div onClick={this.onOk} class={`${this.prefixCls}-item ${this.prefixCls}-header-right`}>确定</div>
       </Touchable> : null;
   }
 }

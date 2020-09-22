@@ -1,23 +1,24 @@
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {VNode} from 'vue';
+import {Options, Vue} from 'vue-class-component';
 import locale from './locale/zh_CN';
 
-@Component({
-  name: 'DatePickerProps'
+@Options({
+  name: 'DatePickerProps',
+  props: {
+    value: {},
+    mode: {default: 'datetime'},
+    minDate: {},
+    maxDate: {},
+    visible: {type: Boolean},
+    locale: type: Object, default: () => locale}
+  }
 })
-export default class DatePickerProps extends Vue<IDatePickerPropsType> {
-  @Prop({})
+export default class DatePickerProps extends Vue {
   public value?: Date | number;
-  @Prop({default: 'datetime'})
   public mode?: 'datetime' | 'date' | 'year' | 'month' | 'time';
-  @Prop({})
   public minDate?: Date;
-  @Prop({})
   public maxDate?: Date;
-  @Prop({type: Boolean})
   public visible?: boolean;
-  @Prop({type: Object, default: () => locale})
   public locale?: {
     okText: string;
     dismissText: string;

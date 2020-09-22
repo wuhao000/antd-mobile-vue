@@ -1,46 +1,62 @@
 import AsyncValidator, {ValidateRule} from 'async-validator';
-import Component from 'vue-class-component';
-import {Inject, Prop, Watch} from 'vue-property-decorator';
+import {Options} from 'vue-class-component';
 import Emitter from './emitter';
 import {getPropByPath} from './utils';
 
 const noop = function noop(a?, b?) {
 };
 
-@Component({
-  name: 'FormComponent'
+@Options({
+  name: 'FormComponent',
+  props: {
+    prefixCls: {type: String},
+    disabled: {type: Boolean},
+    error: {type: Boolean, default: false},
+    errorMessage: {type: String},
+    prop: {type: String},
+    editable: {type: Boolean, default: true},
+    required: {type: Boolean, default: false},
+    rules: {type: Array},
+    value: {},
+    errorDisplayType: String
+  },
+  inject: {
+    list: {from: 'list', default: undefined}
+  },
+  watch: {
+    errorMessage(errorMessage) {
+      this.currentErrorMessage = errorMessage;
+    },
+    value(value) {
+      if (this.currentValue !== value) {
+        this.currentValue = value;
+      }
+    },
+    currentValue(currentValue: number[]) {
+      this.$emit('input', currentValue);
+      this.$emit('change', currentValue);
+    }
+  }
 })
-export class FormComponent extends Emitter {
-
+export default class FormComponent extends Emitter {
   /**
    * class 前缀
    */
-  @Prop({type: String})
   public prefixCls?: string;
-  @Prop({type: Boolean})
   public disabled: boolean;
-  @Prop({type: Boolean, default: false})
   public error: boolean;
-  @Prop({type: String})
   public errorMessage: string;
   public currentErrorMessage = this.errorMessage;
-  @Inject({from: 'list', default: undefined})
   public list: any;
-  @Prop({type: String})
   public prop: string;
-  @Prop({type: Boolean, default: true})
   public editable: boolean;
   /**
    * 是否必须
    */
-  @Prop({type: Boolean, default: false})
   public required: boolean;
-  @Prop({type: Array})
   public rules: ValidateRule[];
   public validateStatus: '' | 'success' | 'warning' | 'error' | 'validating' = '';
-  @Prop()
   public value: any;
-  @Prop(String)
   public errorDisplayType: 'toast' | 'popover' | 'text' | undefined;
   public currentValue = this.value;
   private validateDisabled: boolean = true;
@@ -74,11 +90,6 @@ export class FormComponent extends Emitter {
     }
   }
 
-  @Watch('errorMessage')
-  public errorMessageChanged(errorMessage: string) {
-    this.currentErrorMessage = errorMessage;
-  }
-
   public getFilteredRule(trigger) {
     const rules = this.getRules();
     return rules.filter(rule => {
@@ -100,7 +111,7 @@ export class FormComponent extends Emitter {
     const selfRules = this.rules;
     let requiredRule = this.required !== undefined ? {required: this.required} : [];
     if ((formRules && formRules.some(rule => rule.required !== undefined))
-        || (selfRules && selfRules.some(rule => rule.required !== undefined))) {
+      || (selfRules && selfRules.some(rule => rule.required !== undefined))) {
       requiredRule = [];
     }
     return [].concat(selfRules || formRules || []).concat(requiredRule);
@@ -146,18 +157,4 @@ export class FormComponent extends Emitter {
       });
     });
   }
-
-  @Watch('value')
-  public valueChanged(value: any) {
-    if (this.currentValue !== value) {
-      this.currentValue = value;
-    }
-  }
-
-  @Watch('currentValue')
-  public currentValueChanged(currentValue: number[]) {
-    this.$emit('input', currentValue);
-    this.$emit('change', currentValue);
-  }
-
 }

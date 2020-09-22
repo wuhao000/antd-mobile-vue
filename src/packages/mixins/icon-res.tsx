@@ -1,6 +1,5 @@
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {VNode} from 'vue';
+import {Options, Vue} from 'vue-class-component';
 import Icon from '../icon';
 
 const httpReg = /^http(s)?:\/\//;
@@ -11,13 +10,14 @@ export interface IconResProps {
   [key: string]: any;
 }
 
-@Component({
-  name: 'IconRes'
+@Options({
+  name: 'IconRes',
+  props: {
+    type: [String, Object]
+  }
 })
 class IconRes extends Vue {
-
-  @Prop({type: [String, Object]})
-  public type: string | IconResProps | VNode;
+  public type: any;
 
   public render() {
     const icon = this.type;

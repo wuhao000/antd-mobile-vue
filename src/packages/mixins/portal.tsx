@@ -1,18 +1,18 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {Options, Vue} from 'vue-class-component';
 
-@Component({
-  name: 'Portal'
+@Options({
+  name: 'Portal',
+  props: {
+    getContainer: {
+      type: Function, default: () => {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+        return container;
+      }
+    }
+  }
 })
 export default class Portal extends Vue {
-  @Prop({
-    type: Function, default: () => {
-      const container = document.createElement('div');
-      document.body.appendChild(container);
-      return container;
-    }
-  })
   public getContainer: () => Element;
   public container: Element;
 

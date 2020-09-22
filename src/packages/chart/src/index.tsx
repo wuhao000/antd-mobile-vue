@@ -1,8 +1,6 @@
 import F2 from '@antv/f2';
 
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
+import {Options, Vue} from 'vue-class-component';
 import VArea from './area';
 import VAxis from './axis';
 import VBar from './bar';
@@ -13,44 +11,47 @@ import VPie from './pie';
 import VPoint from './point';
 import VScale from './scale';
 import VTooltip from './tooltip';
+import {PropType} from 'vue';
 
-@Component({
-  name: 'VChart'
+@Options({
+  name: 'VChart',
+  props: {
+    prefixCls: {type: String as PropType<string>, default: 'mchart-'},
+    width: Number as PropType<number>,
+    height: Number as PropType<number>,
+    backgroundColor: {
+      type: String as PropType<string>,
+      default: '#fff'
+    },
+    data: {
+      type: Array as PropType<any[]>
+    },
+    tooltip: {
+      type: Object as PropType<any>
+    },
+    shape: {
+      type: String as PropType<string>,
+      default: 'line'
+    },
+    preventRender: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    preventDefault: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    }
+  }
 })
 class VChart extends Vue {
-  @Prop({type: String, default: 'mchart-'})
   public prefixCls: string;
-  @Prop(Number)
   public width: number;
-  @Prop(Number)
   public height: number;
-  @Prop({
-    type: String,
-    default: '#fff'
-  })
   public backgroundColor: string;
-  @Prop({
-    type: Array
-  })
   public data: any[];
-  @Prop({
-    type: Object
-  })
   public tooltip: any;
-  @Prop({
-    type: String,
-    default: 'line'
-  })
   public shape: string;
-  @Prop({
-    type: Boolean,
-    default: false
-  })
   public preventRender: boolean;
-  @Prop({
-    type: Boolean,
-    default: false
-  })
   public preventDefault: boolean;
   public xField = '';
   public yField = '';

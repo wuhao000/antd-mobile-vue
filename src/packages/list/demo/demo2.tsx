@@ -1,16 +1,14 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {Options, Vue} from 'vue-class-component';
 import {List} from '../../index';
 import './index1.less';
 
 const Item = List.Item;
 const Brief = Item.Brief;
 
-@Component({
+@Options({
   name: 'ListExample'
 })
 export default class ListExample extends Vue {
-
   public state = {
     disabled: false
   };
@@ -20,7 +18,7 @@ export default class ListExample extends Vue {
     console.log('item clicked');
   }
 
-  public render() {
+  public render(): any {
     return (<div>
       <List renderHeader={() => 'Basic Style'} class="my-list">
         <Item onClick={this.onClick} extra="extra content">Title</Item>

@@ -1,4 +1,4 @@
-import {RouteConfig} from 'vue-router';
+import {RouteRecordRaw} from 'vue-router';
 
 export default [{
   path: 'api-proxy',
@@ -7,4 +7,4 @@ export default [{
     tag: '其他'
   },
   component: () => import('@/generated/api-proxy/index.vue')
-}] as RouteConfig[];
+}] as RouteRecordRaw[];

@@ -1,27 +1,16 @@
-import Component from 'vue-class-component';
+import {Options} from 'vue-class-component';
 import Emitter from './emitter';
 
-@Component({
+@Options({
   name: 'ProxyComponent'
 })
 export default class ProxyComponent extends Emitter {
-
   get cssClass() {
     return {};
   }
 
   get cssStyle() {
     return {};
-  }
-
-  get listeners() {
-    const listeners: any = {};
-    Object.keys(this.$listeners).forEach(listener => {
-      if (listener !== 'change') {
-        listeners[listener] = this.$listeners[listener];
-      }
-    });
-    return listeners;
   }
 
   get props() {
@@ -55,15 +44,12 @@ export default class ProxyComponent extends Emitter {
     return props;
   }
 
-  public render() {
+  public render(): any {
     const ProxyComponent: any = this.getInputComponent();
+    const props = {...this.props, class: this.cssClass, style: this.cssStyle};
     return <ProxyComponent
-      attrs={this.props}
-      on={this.listeners}
-      scopedSlots={this.$scopedSlots}
-      slots={this.$slots}
-      class={this.cssClass}
-      style={this.cssStyle}>
+      {...props}
+      slots={this.$slots}>
       {this.$slots.default}
     </ProxyComponent>;
   }

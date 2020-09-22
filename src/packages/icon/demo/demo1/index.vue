@@ -22,7 +22,7 @@
       <m-icon type="loading"></m-icon>
     </div>
     <div>
-      <ae-icon type="user"/>
+      <UserOutlined/>
     </div>
   </div>
 </template>

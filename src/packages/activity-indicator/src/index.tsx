@@ -1,32 +1,33 @@
+import {Options, Vue} from 'vue-class-component';
 import classnames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
 
-@Component({
-  name: 'ActivityIndicator'
+@Options({
+  name: 'ActivityIndicator',
+  props: {
+    prefixCls: {
+      type: String,
+      default: 'am-activity-indicator'
+    },
+    className: {type: String},
+    animating: {
+      type: Boolean,
+      default: true
+    },
+    toast: {
+      type: Boolean,
+      default: false
+    },
+    size: {default: 'small'},
+    text: {type: String}
+  }
 })
+
 class ActivityIndicator extends Vue {
-  @Prop({
-    type: String,
-    default: 'am-activity-indicator'
-  })
   public prefixCls?: string;
-  @Prop({type: String})
   public className?: string;
-  @Prop({
-    type: Boolean,
-    default: true
-  })
   public animating?: boolean;
-  @Prop({
-    type: Boolean,
-    default: false
-  })
   public toast?: boolean;
-  @Prop({default: 'small'})
   public size?: 'large' | 'small';
-  @Prop({type: String})
   public text?: string;
   public static install: (Vue) => void;
 
@@ -43,29 +44,29 @@ class ActivityIndicator extends Vue {
     if (animating) {
       if (toast) {
         return (
-            <div class={wrapClass}>
-              {text ? (
-                  <div class={`${prefixCls}-content`}>
-                    <span class={spinnerClass} aria-hidden="true"/>
-                    <span class={`${prefixCls}-toast`}>{text}</span>
-                  </div>
-              ) : (
-                  <div class={`${prefixCls}-content`}>
-                    <span class={spinnerClass} aria-label="Loading"/>
-                  </div>
-              )}
-            </div>
+          <div class={wrapClass}>
+            {text ? (
+              <div class={`${prefixCls}-content`}>
+                <span class={spinnerClass} aria-hidden="true"/>
+                <span class={`${prefixCls}-toast`}>{text}</span>
+              </div>
+            ) : (
+              <div class={`${prefixCls}-content`}>
+                <span class={spinnerClass} aria-label="Loading"/>
+              </div>
+            )}
+          </div>
         );
       } else {
         return text ? (
-            <div class={wrapClass}>
-              <span class={spinnerClass} aria-hidden="true"/>
-              <span class={`${prefixCls}-tip`}>{text}</span>
-            </div>
+          <div class={wrapClass}>
+            <span class={spinnerClass} aria-hidden="true"/>
+            <span class={`${prefixCls}-tip`}>{text}</span>
+          </div>
         ) : (
-            <div class={wrapClass}>
-              <span class={spinnerClass} aria-label="loading"/>
-            </div>
+          <div class={wrapClass}>
+            <span class={spinnerClass} aria-label="loading"/>
+          </div>
         );
       }
     } else {
@@ -73,4 +74,5 @@ class ActivityIndicator extends Vue {
     }
   }
 }
+
 export default ActivityIndicator as any;

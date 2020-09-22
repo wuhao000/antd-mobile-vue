@@ -1,56 +1,49 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Inject, Prop} from 'vue-property-decorator';
+import {computed, inject} from 'vue';
 
-@Component({
-  name: 'SimpleFormComponent'
-})
-export class SimpleFormComponent extends Vue {
 
-  @Prop({type: String})
-  public size: 'small' | 'large' | 'default';
-  @Prop({type: Boolean, default: false})
-  public required: boolean;
-  @Prop({type: Boolean})
-  public disabled: boolean;
-  @Prop({type: Boolean})
-  public readOnly: boolean;
-  @Inject({from: 'list', default: undefined})
-  public form: any;
-  @Prop({type: Boolean, default: false})
-  public error: boolean;
-  @Prop({type: String})
-  public errorMessage: string;
-  @Prop({type: String})
-  public errorDisplayType: string;
+export const simpleFormComponentProps = {
+  size: {type: String},
+  required: {type: Boolean, default: false},
+  disabled: {type: Boolean},
+  readOnly: {type: Boolean},
+  error: {type: Boolean, default: false},
+  errorMessage: {type: String},
+  errorDisplayType: {type: String}
+};
 
-  get isDisabled() {
-    let disabled = this.disabled;
-    if (this.form) {
+export const useSimpleFormComponent = (props) => {
+  const form = inject('list') as any;
+
+  const isDisabled = computed(() => {
+    let disabled = props.disabled;
+    if (form) {
       if (!disabled) {
-        disabled = this.form.disabled;
+        disabled = form.disabled;
       }
     }
     return disabled;
-  }
+  });
 
-  get componentSize() {
-    let size = this.size;
-    if (this.form) {
+  const componentSize = computed(() => {
+    let size = props.size;
+    if (form) {
       if (size === undefined || size === null) {
-        size = this.form.size;
+        size = form.size;
       }
     }
     return size;
-  }
+  });
 
-  get isReadonly() {
-    let isReadonly = this.readOnly;
-    if (this.form) {
+  const isReadonly = computed(() => {
+    let isReadonly = props.readOnly;
+    if (form) {
       if (!isReadonly) {
-        isReadonly = !this.form.editable;
+        isReadonly = !form.editable;
       }
     }
     return isReadonly;
-  }
-}
+  });
+  return {
+    isDisabled, componentSize, isReadonly
+  };
+};

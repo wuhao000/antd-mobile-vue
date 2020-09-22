@@ -30,3 +30,4 @@ node_mobules/
 /build/remove.js
 /build/props.js
 obs.json
+src/generated/

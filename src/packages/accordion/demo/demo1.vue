@@ -21,11 +21,17 @@
   </div>
 </template>
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
+  import { Options, Vue } from 'vue-class-component';
+  import Accordion from '@/packages/accordion';
+  import List from '@/packages/list';
 
-  @Component({
-    name: 'MobileAccordionDemo1'
+  @Options({
+    name: 'MobileAccordionDemo1',
+    components: {
+      MAccordion: Accordion,
+      MList: List,
+      MListItem: List.Item
+    }
   })
   export default class MobileAccordionDemo1 extends Vue {
     public onChange(key) {

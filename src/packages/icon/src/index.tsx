@@ -1,31 +1,31 @@
+import {Options, Vue} from 'vue-class-component';
 import classnames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
 import loadSprite from './load-sprite';
 
-@Component({
-  name: 'MIcon'
+@Options({
+  name: 'MIcon',
+  props: {
+    size: {type: [String, Number], default: 'md'},
+    type: {type: String, required: true},
+    color: String
+  }
 })
-export default class Icon extends Vue {
 
-  @Prop({type: [String, Number], default: 'md'})
+class Icon extends Vue {
   public size: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | number;
-  @Prop({type: String, required: true})
   public type: string;
-  @Prop(String)
   public color?: string;
 
   public mounted() {
     loadSprite();
   }
 
-  public render() {
+  public render(): any {
     const {type, size, ...restProps} = this;
     const cls = classnames(
-        'am-icon',
-        `am-icon-${type}`,
-        `am-icon-${size}`
+      'am-icon',
+      `am-icon-${type}`,
+      `am-icon-${size}`
     );
     const style: any = {};
     if (this.color) {
@@ -36,10 +36,12 @@ export default class Icon extends Vue {
       style.height = this.size + 'px';
     }
     return (
-        <svg class={cls} style={style}
-             {...{props: restProps}}>
-          <use xlinkHref={`#${type}`}/>
-        </svg>
+      <svg class={cls} style={style}
+           {...{props: restProps}}>
+        <use xlinkHref={`#${type}`}/>
+      </svg>
     );
   }
 }
+
+export default Icon;

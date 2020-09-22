@@ -1,9 +1,8 @@
+import {Options, Vue} from 'vue-class-component';
 import classnames from 'classnames';
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
 import IconRes, {IconResProps} from '../../mixins/icon-res';
 import TouchFeedback from '../../vmc-feedback';
+import { VNode } from 'vue';
 
 const httpReg = /^http(s)?:\/\//;
 
@@ -14,34 +13,36 @@ function isString(str: any) {
   return typeof str === 'string';
 }
 
-@Component({
-  name: 'Button'
+@Options({
+  name: 'MButton',
+  props: {
+    prefixCls: {type: String, default: 'am-button'},
+    role: {type: String},
+    inline: {type: Boolean, default: false},
+    icon: {type: [String, Object]},
+    activeClassName: {type: String},
+    activeStyle: {
+      type: [Boolean, Object],
+      default: () => {
+        return {};
+      }
+    },
+    type: {type: String},
+    size: {type: String, default: 'large'},
+    disabled: {type: Boolean, default: false},
+    loading: {type: Boolean, default: false}
+  }
 })
-class Button extends Vue {
-  @Prop({type: String, default: 'am-button'})
+class MButton extends Vue {
   public prefixCls?: string;
-  @Prop({type: String})
   public role?: string;
-  @Prop({type: Boolean, default: false})
   public inline?: boolean;
-  @Prop({type: [String, Object]})
   public icon?: IconResProps | string | VNode;
-  @Prop({type: String})
   public activeClassName?: string;
-  @Prop({
-    type: [Boolean, Object],
-    default: () => {
-      return {};
-    }
-  })
   public activeStyle?: boolean | object;
-  @Prop({type: String})
   public type?: 'primary' | 'warning' | 'ghost';
-  @Prop({type: String, default: 'large'})
   public size?: 'large' | 'small';
-  @Prop({type: Boolean, default: false})
   public disabled?: boolean;
-  @Prop({type: Boolean, default: false})
   public loading?: boolean;
   public static install: (Vue) => void;
 
@@ -52,7 +53,7 @@ class Button extends Vue {
     return child;
   }
 
-  public render() {
+  public render(): any {
     const {
       prefixCls,
       type,
@@ -77,7 +78,7 @@ class Button extends Vue {
       [`${prefixCls}-icon`]: !!iconType
     });
 
-    const kids = this.$slots.default ? this.$slots.default.map(this.insertSpace) : '';
+    const kids = this.$slots.default ? this.$slots.default().map(this.insertSpace) : '';
 
     let iconEl;
 
@@ -131,4 +132,4 @@ class Button extends Vue {
   }
 }
 
-export default Button as any;
+export default MButton as any;

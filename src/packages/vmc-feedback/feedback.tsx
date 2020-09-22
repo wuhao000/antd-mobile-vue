@@ -1,14 +1,15 @@
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {Options, Vue} from 'vue-class-component';
+import { VNode } from 'vue';
 
-@Component({
-  name: 'TouchFeedback'
+@Options({
+  name: 'TouchFeedback',
+  props: {
+    disabled: {type: Boolean, default: false},
+    activeClassName: {type: String}
+  }
 })
 class TouchFeedback extends Vue {
-  @Prop({type: Boolean, default: false})
   public disabled?: boolean;
-  @Prop({type: String})
   public activeClassName?: string;
   public active: boolean = false;
 
@@ -20,7 +21,7 @@ class TouchFeedback extends Vue {
 
   public triggerEvent(type, isActive, ev) {
     const eventType = `on${type}`;
-    const children = this.$slots.default && this.$slots.default[0];
+    const children = this.$slots.default && this.$slots.default()[0];
     if (children[eventType]) {
       children[eventType](ev);
     }
@@ -62,32 +63,38 @@ class TouchFeedback extends Vue {
   public render() {
     const {disabled, activeClassName} = this;
     const events = disabled ? undefined : {
-      touchstart: this.onTouchStart,
-      touchmove: this.onTouchMove,
-      touchend: this.onTouchEnd,
-      touchcancel: this.onTouchCancel,
-      mousedown: this.onMouseDown,
-      mouseup: this.onMouseUp,
-      mouseleave: this.onMouseLeave
+      onTouchstart: this.onTouchStart,
+      onTouchmove: this.onTouchMove,
+      onTouchend: this.onTouchEnd,
+      onTouchcancel: this.onTouchCancel,
+      onMousedown: this.onMouseDown,
+      onMouseup: this.onMouseUp,
+      onMouseleave: this.onMouseLeave
     };
-    const child: VNode = this.$slots.default[0];
+    const child: VNode = this.$slots.default()[0];
     if (!disabled && this.active) {
-      if (child.elm) {
-        const elm = child.elm as HTMLElement;
-        if (!elm.classList.contains(activeClassName)) {
-          elm.classList.add(activeClassName);
+      const cls = child.props.class;
+      if (cls) {
+        const classArray = cls.split(/\s+/);
+        if (!classArray.includes(activeClassName)) {
+          classArray.push(activeClassName)
         }
+        child.props.class = classArray.join(' ');
+      } else {
+        child.props.class = activeClassName;
       }
     } else {
-      if (child.elm) {
-        const elm = child.elm as HTMLElement;
-        if (elm.classList.contains(activeClassName)) {
-          elm.classList.remove(activeClassName);
+      const cls = child.props.class;
+      if (cls) {
+        const classArray = cls.split(/\s+/);
+        if (classArray.includes(activeClassName)) {
+          classArray.splice(classArray.indexOf(activeClassName), 1)
         }
+        child.props.class = classArray.join(' ');
       }
     }
-    const on = child.data.on;
-    child.data.on = on ? Object.assign(on, events) : events;
+    const on = child.props;
+    child.props = on ? Object.assign(on, events) : events;
     return child;
   }
 }

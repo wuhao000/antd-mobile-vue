@@ -16,13 +16,15 @@
 <script lang="ts">
   import Markdown from '@/components/markdown.vue';
   import '@/styles/github-markdown.less';
-  import {Component, Vue} from 'vue-property-decorator';
+  import {Options, Vue} from 'vue-class-component';
   import md from '../documents/change-log/index.md';
   import VersionMap from '../documents/change-log/map.json';
 
-  Vue.component('Markdown', Markdown);
-  @Component({
-    name: 'Home'
+  @Options({
+    name: 'Home',
+    components: {
+      Markdown
+    }
   })
   export default class Home extends Vue {
 

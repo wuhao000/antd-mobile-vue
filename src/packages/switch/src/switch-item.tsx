@@ -1,45 +1,43 @@
+import FormComponent from '../../mixins/form-component';
 import classnames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
-import {FormComponent} from '../../mixins/form-component';
+import {Options} from 'vue-class-component';
 import List from '../../list';
 import Switch from './switch';
 
 const ListItem = List.Item as any;
 
-@Component({
-  name: 'SwitchItem'
+@Options({
+  name: 'SwitchItem',
+  props: {
+    prefixCls: {default: 'am-switch'},
+    listPrefixCls: {default: 'am-list'},
+    switchProps: {
+      default: () => {
+        return {};
+      }
+    },
+    title: {type: [String, Object]}
+  },
+  watch: {
+    value(value) {
+      this.state.value = value;
+    },
+    'state.value'(value, oldValue) {
+      this.$emit('input', value);
+      if (value !== oldValue) {
+        this.$emit('change', value);
+      }
+    }
+  }
 })
 export default class SwitchItem extends FormComponent {
-  @Prop({default: 'am-switch'})
   public prefixCls?: string;
-  @Prop({default: 'am-list'})
   public listPrefixCls?: string;
-  @Prop({
-    default: () => {
-      return {};
-    }
-  })
   public switchProps?: object;
-  @Prop({type: [String, Object]})
   public title: string;
   public state = {
     value: this.value
   };
-
-  @Watch('value')
-  public valueChanged(value: boolean) {
-    this.state.value = value;
-  }
-
-  @Watch('state.value')
-  public stateValueChanged(value: boolean, oldValue: boolean) {
-    this.$emit('input', value);
-    if (value !== oldValue) {
-      this.$emit('change', value);
-    }
-  }
 
   public onClick(e) {
     if (!this.disabled) {
@@ -47,13 +45,13 @@ export default class SwitchItem extends FormComponent {
     }
   }
 
-  public render() {
+  public render(): any {
     const {
       listPrefixCls,
       disabled,
       switchProps,
       ...otherProps
-    } = this.$props;
+    } = this.$props as any;
     const {prefixCls} = otherProps;
     const wrapCls = classnames(`${prefixCls}-item`, {
       [`${prefixCls}-item-disabled`]: disabled === true
@@ -65,29 +63,24 @@ export default class SwitchItem extends FormComponent {
         extraProps[i] = (this.$props as any)[i];
       }
     });
+    const props = {
+      ...switchProps,
+      ...extraProps,
+      ...this.$attrs,
+      vModel: this.state.value,
+      disabled: this.isDisabled,
+      onClick: this.onClick
+    };
     // @ts-ignore
-    const extra = <Switch
-      vModel={this.state.value}
-      attrs={
-        {
-          ...switchProps,
-          ...extraProps,
-          ...this.$attrs
-        }
-      }
-      disabled={this.isDisabled}
-      onClick={this.onClick}
-    />;
+    const extra = <Switch {...props}/>;
     return (
       <ListItem
-        attrs={
-          {...otherProps}
-        }
+        {...otherProps}
         disabled={this.isDisabled}
         prefixCls={listPrefixCls}
         class={wrapCls}
         extra={extra}>
-        {this.$slots.default}
+        {this.$slots.default?.()}
       </ListItem>
     );
   }

@@ -25,27 +25,22 @@ export default {
       component: () => import('@/views/change-log.vue')
     },
     {
-      path: '/global',
-      name: '全局工具',
-      component: () => import('@/views/global.vue')
-    },
-    {
       path: '/mobile-components',
       name: '组件',
       component: () => import('@/components/components.vue'),
       children: components
     },
-    {
-      path: '/tools',
-      name: '工具',
-      component: () => import('@/components/components.vue'),
-      children: tool
-    },
-    {
-      path: '/directives',
-      name: '指令',
-      component: () => import('@/components/components.vue'),
-      children: directive
-    }
+    // {
+    //   path: '/tools',
+    //   name: '工具',
+    //   component: () => import('@/components/components.vue'),
+    //   children: tool
+    // },
+    // {
+    //   path: '/directives',
+    //   name: '指令',
+    //   component: () => import('@/components/components.vue'),
+    //   children: directive
+    // }
   ]
 };

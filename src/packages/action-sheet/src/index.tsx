@@ -1,59 +1,84 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
+import {Options, Vue} from 'vue-class-component';
 import Popup from '../../popup';
 import TouchFeedback from '../../vmc-feedback';
+import { VNode } from 'vue';
 
-@Component({
-  name: 'ActionSheet'
+interface ActionSheetMenu {
+  label?: string | VNode;
+  badge?: string | boolean | number | undefined
+}
+
+@Options({
+  name: 'ActionSheet',
+  props: {
+    prefixCls: {type: String, default: 'am-action-sheet'},
+    cancelText: {type: String, default: '取消'},
+    closeOnClickingMask: {
+      type: Boolean,
+      default: true
+    },
+    closeOnClickingMenu: {
+      type: Boolean,
+      default: true
+    },
+    menus: {
+      type: [Object, Array],
+      default: () => []
+    },
+    showCancel: {type: Boolean, default: true},
+    theme: {
+      type: String,
+      default: 'ios'
+    },
+    value: Boolean,
+    type: {type: String, default: 'normal'},
+    title: {type: String}
+  },
+  watch: {
+    show(val) {
+      this.$emit('input', val);
+      if (val) {
+        this.fixIos(-1);
+      } else {
+        setTimeout(() => {
+          this.fixIos(100);
+        }, 200);
+      }
+    },
+    value: {
+      immediate: true,
+      handler(val) {
+        this.show = val;
+      }
+    }
+  }
 })
-export default class ActionSheet extends Vue {
-  @Prop({type: String, default: 'am-action-sheet'})
+
+class ActionSheet extends Vue {
   public prefixCls: string;
   /**
    * 取消按钮文本
    */
-  @Prop({type: String, default: '取消'})
   public cancelText: string;
   /**
    * 是否在点击遮罩层时关闭
    */
-  @Prop({
-    type: Boolean,
-    default: true
-  })
   public closeOnClickingMask: boolean;
   /**
    * 是否在点击按钮后关闭
    */
-  @Prop({
-    type: Boolean,
-    default: true
-  })
   public closeOnClickingMenu: boolean;
-  @Prop({
-    type: [Object, Array],
-    default: () => []
-  })
   public menus: any[];
   /**
    * 是否显示取消按钮
    */
-  @Prop({type: Boolean, default: true})
   public showCancel: boolean;
-  @Prop({
-    type: String,
-    default: 'ios'
-  })
   public theme: string;
-  @Prop(Boolean)
   public value: boolean;
-  private $tabbar: Element = null;
+  private tabbar: Element = null;
   public hasHeaderSlot = false;
   public show = this.value || false;
-  @Prop({type: String, default: 'normal'})
   public type: 'normal' | 'share';
-  @Prop({type: String})
   private title: string;
   public static install: (Vue) => void;
 
@@ -62,29 +87,10 @@ export default class ActionSheet extends Vue {
     this.show = false;
   }
 
-  @Watch('show')
-  public showChanged(val) {
-    this.$emit('input', val);
-    if (val) {
-      this.fixIos(-1);
-    } else {
-      setTimeout(() => {
-        this.fixIos(100);
-      }, 200);
-    }
-  }
-
-  @Watch('value', {
-    immediate: true
-  })
-  public valueChanged(val) {
-    this.show = val;
-  }
-
   public mounted() {
     this.hasHeaderSlot = !!this.$slots.header;
     this.$nextTick(() => {
-      this.$tabbar = document.querySelector('.weui-tabbar');
+      this.tabbar = document.querySelector('.weui-tabbar');
       this.$refs.iOSMenu && (this.$refs.iOSMenu as any).addEventListener('transitionend', this.onTransitionEnd);
     });
   }
@@ -110,8 +116,8 @@ export default class ActionSheet extends Vue {
     if (this.$el.parentNode && (this.$el.parentNode as Element).className.indexOf('v-transfer-dom') !== -1) {
       return;
     }
-    if (this.$tabbar && /iphone/i.test(navigator.userAgent)) {
-      (this.$tabbar as HTMLElement).style.zIndex = zIndex;
+    if (this.tabbar && /iphone/i.test(navigator.userAgent)) {
+      (this.tabbar as HTMLElement).style.zIndex = zIndex;
     }
   }
 
@@ -179,12 +185,12 @@ export default class ActionSheet extends Vue {
     }
   }
 
-  public render() {
+  public render(): any {
     const classes = 'am-action-sheet am-action-sheet-' + this.type;
     // @ts-ignore
     return <Popup value={this.show}
-                   wrapClassName={classes}
-                   onCancel={this.cancelClick}>
+                  wrapClassName={classes}
+                  onCancel={this.cancelClick}>
       <div>
         {this.renderSheet()}
       </div>
@@ -206,7 +212,7 @@ export default class ActionSheet extends Vue {
     return this.title ? <div class={this.prefixCls + '-message'}>{this.title}</div> : null;
   }
 
-  private renderMenu(menu: any) {
+  private renderMenu(menu: ActionSheetMenu) {
     const MTouchFeedback = TouchFeedback as any;
     const itemClassPrefix = this.listClassPrefix + '-item';
     const classes = {
@@ -245,3 +251,5 @@ export default class ActionSheet extends Vue {
     </MTouchFeedback>;
   }
 }
+
+export default ActionSheet;

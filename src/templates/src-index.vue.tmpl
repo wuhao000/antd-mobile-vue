@@ -3,11 +3,9 @@
   </div>
 </template>
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
-  import {Prop} from 'vue-property-decorator';
+  import {Options, Vue} from 'vue-class-component';
 
-  @Component({
+  @Options({
     name: '{{{componentClassName}}}'
   })
   export default class {{{componentClassName}}} extends Vue {

@@ -2,14 +2,13 @@
   <router-view></router-view>
 </template>
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
+import {Options, Vue} from 'vue-class-component';
 
-  @Component({
-    name: 'Components'
-  })
-  export default class Components extends Vue {
-  }
+@Options({
+  name: 'Components'
+})
+export default class Components extends Vue {
+}
 </script>
 <style lang="less" type="text/less">
 </style>

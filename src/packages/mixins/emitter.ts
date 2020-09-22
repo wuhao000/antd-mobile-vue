@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {Options, Vue} from 'vue-class-component';
 
 function broadcast(this: any, componentName, eventName, params) {
   this.$children.forEach(child => {
@@ -12,10 +11,10 @@ function broadcast(this: any, componentName, eventName, params) {
   });
 }
 
-@Component({
+@Options({
   name: 'Emitter'
 })
-export default class Emitter extends Vue {
+class Emitter extends Vue {
   public dispatch(componentName: string, eventName: any, params?: any[]) {
     let parent = this.$parent || this.$root;
     let name = parent.$options.name;
@@ -34,3 +33,6 @@ export default class Emitter extends Vue {
     broadcast.call(this, componentName, eventName, params);
   }
 }
+
+
+export default Emitter;

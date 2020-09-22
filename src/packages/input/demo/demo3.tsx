@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {Options, Vue} from 'vue-class-component';
 import List from '../../list';
 import InputItem from '../index';
 
@@ -14,16 +13,15 @@ if (isIPhone) {
   };
 }
 
-@Component({
+@Options({
   name: 'H5NumberInputExample'
 })
 export default class H5NumberInputExample extends Vue {
-
   public state = {
     type: 'money'
   };
 
-  public render() {
+  public render(): any {
     const {type} = this.state;
     return (
       <div>

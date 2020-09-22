@@ -1,65 +1,55 @@
+import {Options, Vue} from 'vue-class-component';
 import {ValidateRules} from 'async-validator';
 import classNames from 'classnames';
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Provide} from 'vue-property-decorator';
 import Item from './item';
+import { VNode } from 'vue';
 
-@Component({
-  name: 'MList'
+@Options({
+  name: 'MList',
+  props: {
+    section: {type: Boolean, default: false},
+    prefixCls: {default: 'am-list'},
+    role: {type: String},
+    title: {type: [String, Object]},
+    spaceBetweenSection: {type: Number, default: 8},
+    touchFeedback: {type: Boolean, default: true},
+    model: {type: Object},
+    rules: {type: Object},
+    disabled: {type: Boolean, default: false},
+    editable: {type: Boolean, default: true},
+    required: {type: Boolean, default: false}
+  },
+  provide() {
+    return {
+      list: this
+    }
+  }
 })
 class List extends Vue {
   /**
    * 是否分区样式
    */
-  @Prop({type: Boolean, default: false})
   public section: boolean;
-  @Prop({default: 'am-list'})
   public prefixCls?: string;
-  @Prop({type: String})
   public role?: string;
-  @Prop({type: [String, Object]})
   public title: string | VNode;
-  @Prop({type: Number, default: 8})
   public spaceBetweenSection: number;
   public static Item = Item;
-  @Prop({type: Boolean, default: true})
   public touchFeedback: boolean;
-  @Provide('list')
-  public list = this;
-  @Prop({type: Object})
   public model: object;
-  @Prop({type: Object})
   public rules: ValidateRules;
-  @Prop({type: Boolean, default: false})
   public disabled: boolean;
-  @Prop({type: Boolean, default: true})
   public editable: boolean;
   public static install: (Vue) => void;
   public fields: any[] = [];
-  @Prop({type: Boolean, default: false})
   public required: boolean;
-
-  public created() {
-    this.$on('d.form.addField', (field) => {
-      if (field) {
-        this.fields.push(field);
-      }
-    });
-    /* istanbul ignore next */
-    this.$on('d.form.removeField', (field) => {
-      if (field.prop) {
-        this.fields.splice(this.fields.indexOf(field), 1);
-      }
-    });
-  }
 
   public clearValidate(props = []) {
     const fields = props.length
-        ? (typeof props === 'string'
-                ? this.fields.filter(field => props === (field as any).prop)
-                : this.fields.filter(field => props.indexOf((field as any).prop) > -1)
-        ) : this.fields;
+      ? (typeof props === 'string'
+          ? this.fields.filter(field => props === (field as any).prop)
+          : this.fields.filter(field => props.indexOf((field as any).prop) > -1)
+      ) : this.fields;
     fields.forEach(field => {
       (field as any).clearValidate();
     });
@@ -129,20 +119,20 @@ class List extends Vue {
     });
   }
 
-  public render() {
+  public render(): any {
     const {prefixCls} = this;
     const wrapCls = classNames(prefixCls, {
       [prefixCls + '-section']: this.section
     });
     const children = [];
     if (this.$slots.default) {
-      this.$slots.default.forEach((it: VNode, index) => {
-        if (index < this.$slots.default.length - 1) {
-          if (this.section && it.data) {
-            if (it.data.staticStyle) {
-              it.data.staticStyle.marginBottom = this.spaceBetweenSection + 'px';
+      this.$slots.default().forEach((it: VNode, index) => {
+        if (index < this.$slots.default().length - 1) {
+          if (this.section && it.props) {
+            if (it.props.style) {
+              it.props.style.marginBottom = this.spaceBetweenSection + 'px';
             } else {
-              it.data.staticStyle = {marginBottom: this.spaceBetweenSection + 'px'};
+              it.props.style = {marginBottom: this.spaceBetweenSection + 'px'};
             }
           }
         }
@@ -150,17 +140,17 @@ class List extends Vue {
       });
     }
     return (
-        <div class={wrapCls}>
-          {this.$slots.title || this.title ? <div class={classNames(`${prefixCls}-header`, {
-            [`${prefixCls}-required`]: this.required
-          })}>
-            {this.$slots.title ? this.$slots.title : this.title}
-          </div> : ''}
-          {children.length ? (
-              <div class={`${prefixCls}-body`}>{children}</div>
-          ) : null}
-          {this.$slots.footer ? this.$slots.footer : null}
-        </div>
+      <div class={wrapCls}>
+        {this.$slots.title || this.title ? <div class={classNames(`${prefixCls}-header`, {
+          [`${prefixCls}-required`]: this.required
+        })}>
+          {this.$slots.title ? this.$slots.title() : this.title}
+        </div> : ''}
+        {children.length ? (
+          <div class={`${prefixCls}-body`}>{children}</div>
+        ) : null}
+        {this.$slots.footer ? this.$slots.footer() : null}
+      </div>
     );
   }
 }

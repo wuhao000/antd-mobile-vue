@@ -1,46 +1,56 @@
+import {Options, Vue} from 'vue-class-component';
 import classnames from 'classnames';
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
 import {addClass, removeClass} from '../../utils/class';
 import CustomKeyboard from './custom-keyboard';
 import Portal from './portal';
+import { VNode } from 'vue';
 
 let instanceArr: any = [];
 let customNumberKeyboard: any = null;
 
-@Component({
-  name: ''
+@Options({
+  name: 'MNumberInput',
+  props: {
+    placeholder: {default: ''},
+    disabled: {type: Boolean, default: false},
+    editable: {type: Boolean, default: true},
+    moneyKeyboardAlign: {},
+    moneyKeyboardWrapProps: {},
+    moneyKeyboardHeader: {},
+    value: {type: [String, Number]},
+    prefixCls: {default: 'am-input'},
+    keyboardPrefixCls: {default: 'am-number-keyboard'},
+    confirmLabel: {},
+    backspaceLabel: {},
+    cancelKeyboardLabel: {},
+    maxLength: {},
+    type: {}
+  },
+  watch: {
+    value(value) {
+      this.currentValue = value;
+    },
+    focus(focus: boolean) {
+      if (focus) {
+        this.onInputFocus();
+      }
+    }
+  }
 })
-
 class NumberInput extends Vue {
-  @Prop({default: ''})
   public placeholder?: string;
-  @Prop({type: Boolean, default: false})
   public disabled?: boolean;
-  @Prop({type: Boolean, default: true})
   public editable?: boolean;
-  @Prop()
   public moneyKeyboardAlign?: 'left' | 'right' | string;
-  @Prop()
   public moneyKeyboardWrapProps?: object;
-  @Prop()
   public moneyKeyboardHeader?: VNode;
-  @Prop({type: [String, Number]})
   public value?: string;
-  @Prop({default: 'am-input'})
   public prefixCls?: string;
-  @Prop({default: 'am-number-keyboard'})
   public keyboardPrefixCls?: string;
-  @Prop()
   public confirmLabel: any;
-  @Prop()
   public backspaceLabel: any;
-  @Prop()
   public cancelKeyboardLabel: any;
-  @Prop()
   public maxLength?: number;
-  @Prop()
   public type?: string;
   public container: HTMLElement;
   public inputRef: HTMLDivElement | null;
@@ -60,18 +70,6 @@ class NumberInput extends Vue {
 
   public onConfirm(value: any) {
     this.$emit('confirm', value);
-  }
-
-  @Watch('value')
-  public valueChanged(value: any) {
-    this.currentValue = value;
-  }
-
-  @Watch('focus')
-  public focusChanged(focus: boolean) {
-    if (focus) {
-      this.onInputFocus();
-    }
   }
 
   public addBlurListener() {
@@ -95,7 +93,7 @@ class NumberInput extends Vue {
     instanceArr.push({el, container: this.container});
   }
 
-  public getComponent(): VNode {
+  public getComponent() {
     const {
       confirmLabel,
       backspaceLabel,
@@ -285,7 +283,7 @@ class NumberInput extends Vue {
     );
   }
 
-  public render() {
+  public render(): any {
     const {placeholder, disabled, editable, moneyKeyboardAlign} = this;
     const {focus, value} = this;
     const preventKeyboard = disabled || !editable;

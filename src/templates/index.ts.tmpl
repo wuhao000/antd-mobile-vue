@@ -1,5 +1,4 @@
 // 导入颜色选择器组件
-import Global from './global';
 import HttpMethod from './http-method';
 import VueIcon from '@ant-design/icons-vue';
 import zhCn from './moment-zh_CN';
@@ -7,13 +6,6 @@ import zhCn from './moment-zh_CN';
 // 注册moment中文国际化文案
 if (window.moment) {
   window.moment.updateLocale('zh-cn', zhCn);
-}
-if (window.AntDesignIcons) {
-  // 注册 ant design icons, 共721个icon
-  const icons = window.AntDesignIcons;
-  Object.keys(icons).forEach(icon => {
-    VueIcon.add(icons[icon]);
-  });
 }
 // 存储组件列表
 const components = [
@@ -34,14 +26,12 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 export {
   // 以下是具体的组件列表
-  Global,
   HttpMethod,
   {{{components}}}
 };
 export default {
   // 导出的对象必须具有 install，才能被 Vue.use() 方法安装
   install,
-  Global,
   HttpMethod,
   {{{components}}}
 };

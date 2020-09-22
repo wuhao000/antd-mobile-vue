@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack:///./src/documents/change-log/0.3.0.md"],"names":["module","exports"],"mappings":"iGAAAA,EAAAC,QAAA","file":"js/chunk-2d21e198.bf71c1bb.js","sourcesContent":["module.exports = \"<ul>\\n<li>➕ m-result 结果页</li>\\n</ul>\\n\";"],"sourceRoot":""}

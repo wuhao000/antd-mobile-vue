@@ -1,30 +1,30 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
+import {Options, Vue} from 'vue-class-component';
 
-@Component({
-  name: 'Input'
+@Options({
+  name: 'Input',
+  props: {
+    value: {type: [String, Number]},
+    disabled: Boolean,
+    placeholder: String,
+    readonly: Boolean,
+    type: {type: String},
+    textAlign: {type: String, default: 'left'}
+  },
+  watch: {
+    value(value: string) {
+      this.currentValue = value;
+    }
+  }
 })
-class Input extends Vue {
 
-  @Prop({type: [String, Number]})
+class Input extends Vue {
   public value: string;
-  @Prop(Boolean)
   public disabled: boolean;
-  @Prop(String)
   public placeholder: string;
-  @Prop(Boolean)
   public readonly: boolean;
-  @Prop({type: String})
   public type: string;
   private currentValue: string = this.value || '';
-  @Prop({type: String, default: 'left'})
   private textAlign: 'left' | 'right' | 'center';
-
-  @Watch('value')
-  public valueChanged(value: string) {
-    this.currentValue = value;
-  }
 
   get inputRef(): HTMLInputElement {
     return this.$refs['input'] as HTMLInputElement;
@@ -45,24 +45,26 @@ class Input extends Vue {
     }
   }
 
-  public render() {
+  public render(): any {
     const value = this.currentValue + '';
     const type = this.type === 'number' ? 'text' : this.type;
-    return <input value={value}
-                  ref="input"
-                  type={type}
-                  disabled={this.disabled}
-                  readonly={this.readonly}
-                  placeholder={this.placeholder}
-                  onblur={(e) => {
-                    this.onInputBlur(e);
-                  }}
-                  style={{textAlign: this.textAlign}}
-                  {...this.$props}
-                  {...this.$attrs}
-                  oninput={e => {
-                    this.$emit('change', e);
-                  }}/>;
+    const props: any = {
+      value,type,
+      ref: 'input',
+      disabled: this.disabled,
+      readonly: this.readonly,
+      placeholder: this.placeholder,
+      onBlur: (e) => {
+        this.onInputBlur(e);
+      },
+      onInput: e => {
+        this.$emit('change', e);
+      },
+      style: {textAlign: this.textAlign},
+      ...this.$props,
+      ...this.$attrs
+    }
+    return <input {...props}/>;
   }
 }
 

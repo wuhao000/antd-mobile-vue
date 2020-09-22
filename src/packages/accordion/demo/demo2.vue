@@ -22,21 +22,19 @@
   </div>
 </template>
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
+import {Options, Vue} from 'vue-class-component';
 
-  @Component({
-    name: 'MobileAccordionDemo2'
-  })
-  export default class MobileAccordionDemo2 extends Vue {
-
-    public onChange(key) {
-      console.log(key);
-    }
+@Options({
+  name: 'MobileAccordionDemo2'
+})
+export default class MobileAccordionDemo2 extends Vue {
+  public onChange(key) {
+    console.log(key);
   }
+}
 </script>
 <style lang="less">
-  .my-accordion .pad .am-accordion-content-box {
-    padding: 10px;
-  }
+.my-accordion .pad .am-accordion-content-box {
+  padding: 10px;
+}
 </style>

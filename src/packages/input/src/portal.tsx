@@ -1,12 +1,13 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {Options, Vue} from 'vue-class-component';
 
-@Component({
-  name: 'Portal'
+@Options({
+  name: 'Portal',
+  props: {
+    getContainer: {required: true}
+  }
 })
+
 class Portal extends Vue {
-  @Prop({required: true})
   public getContainer: () => Element;
   public container: Element;
 
@@ -18,8 +19,9 @@ class Portal extends Vue {
     this.container.appendChild(this.$el);
   }
 
-  public render() {
-    return this.$slots.default;
+  public render(): any {
+    return this.$slots.default?.();
   }
 }
+
 export default Portal as any;

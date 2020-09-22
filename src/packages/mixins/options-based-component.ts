@@ -1,29 +1,30 @@
-import {getNodeText} from '../utils/vnode';
-import Component, {mixins} from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {mixins, Options} from 'vue-class-component';
 import {getOptionProperty} from '../utils/option';
+import {getNodeText} from '../utils/vnode';
 import BaseFormComponent from './base-input-component';
 
-@Component({
-  name: 'OptionsBasedComponent'
+// @ts-ignore
+@Options({
+  name: 'OptionsBasedComponent',
+  props: {
+    labelProperty: {type: [String, Function], default: 'label'},
+    options: {type: Array},
+    valueProperty: {type: [String, Function], default: 'value'}
+  }
 })
 export default class OptionsBasedComponent extends mixins(BaseFormComponent) {
-
   public searchKeyword: string = '';
   /**
    * 选项对象中作为标签的属性名称
    */
-  @Prop({type: [String, Function], default: 'label'})
   public labelProperty: string | ((option) => any);
   /**
    * 选项数据
    */
-  @Prop({type: Array})
   public options: any[];
   /**
    * 选项对象中作为值的属性名称
    */
-  @Prop({type: [String, Function], default: 'value'})
   public valueProperty: string | ((option) => any);
 
   public beforeUpdate() {
@@ -59,12 +60,12 @@ export default class OptionsBasedComponent extends mixins(BaseFormComponent) {
 
   private setProps() {
     if (this.$slots.default) {
-      this.$slots.default.forEach(node => {
-        if (node.componentOptions && node.componentOptions.propsData['disabled'] === undefined) {
-          node.componentOptions.propsData['disabled'] = this['isDisabled'];
+      this.$slots.default().forEach(node => {
+        if (node.props.disabled === undefined) {
+          node.props.disabled = this.isDisabled;
         }
-        if (node.componentOptions && node.componentOptions.propsData['readonly'] === undefined) {
-          node.componentOptions.propsData['readonly'] = this['isReadonly'];
+        if (node.props.readonly === undefined) {
+          node.props.readonly = this.isReadonly;
         }
       });
     }

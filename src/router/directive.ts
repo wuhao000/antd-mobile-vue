@@ -1,4 +1,4 @@
-import {RouteConfig} from 'vue-router';
+import {RouteRecordRaw} from 'vue-router';
 
 export default [{
   path: 'loading-directive',
@@ -14,4 +14,4 @@ export default [{
     tag: '其他'
   },
   component: () => import('@/generated/time-directive/index.vue')
-}] as RouteConfig[];
+}] as RouteRecordRaw[];

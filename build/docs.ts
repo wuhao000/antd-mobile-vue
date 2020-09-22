@@ -1,4 +1,3 @@
-const resolveProps = require('./props').resolveProps;
 import fs from 'fs';
 import {Component} from './components';
 
@@ -94,14 +93,14 @@ function createDemoIndex(component: Component, componentDemoRootPath, demos: Dem
 
   function generateDecorator(demos: DemoDescriptor[]) {
     if (demos.length) {
-      return `@Component({
+      return `@Options({
     name: 'ComponentDemo',
     components: {
-      ${demos.map(it => it.name).join(', ')}
+      M${component.upperCase}: ${component.upperCase}, ${demos.map(it => it.name).join(', ')}
     }
   })`;
     } else {
-      return `@Component({
+      return `@Options({
     name: 'ComponentDemo'
   })`;
     }
@@ -109,14 +108,13 @@ function createDemoIndex(component: Component, componentDemoRootPath, demos: Dem
 
   const content = `${createDemoTemplate(demos, options)}
 <script lang="ts">
-${demoImports}
+${demoImports};
   
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
-${component.type !== 'tool' ? `  import ${component.upperCase} from '@/packages/${component.dir}';` : ''}
+ 
+  import {Options, Vue} from 'vue-class-component';
+  ${component.type !== 'tool' ? `import ${component.upperCase} from '@/packages/${component.dir}';` : ''}
   ${mdImports}
 
-${component.type !== 'tool' ? `  Vue.use(${component.upperCase});` : ''}
   ${generateDecorator(demos)}
   export default class ComponentDemo extends Vue {
 ${mdProps ? `    ${mdProps}` : ''}
@@ -157,7 +155,6 @@ ${mdProps ? `    ${mdProps}` : ''}
 }
 
 function resolveDemo(component) {
-  resolveProps(component);
   const componentDemoRootPath = `${basePath}/${component.dir}/demo`;
   if (fs.existsSync(componentDemoRootPath)) {
     const paths = fs.readdirSync(componentDemoRootPath);

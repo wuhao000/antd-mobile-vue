@@ -1,19 +1,18 @@
 <template>
-  <div v-hljs
-       v-html="source"
+  <div v-html="source"
        class="markdown-body">
   </div>
 </template>
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
-  import {Prop} from 'vue-property-decorator';
+import {Options, Vue} from 'vue-class-component';
 
-  @Component({
-    name: 'Markdown'
-  })
-  export default class Markdown extends Vue {
-    @Prop({type: String})
-    public source: string;
+@Options({
+  name: 'Markdown',
+  props: {
+    source: {type: String}
   }
+})
+export default class Markdown extends Vue {
+  public source: string;
+}
 </script>
