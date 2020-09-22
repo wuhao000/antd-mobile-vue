@@ -95,6 +95,7 @@ class InputItem extends FormComponent {
   public locale?: object;
   public android: boolean;
   public state = {
+    // @ts-ignore
     placeholder: this.placeholder || ''
   };
   public required: boolean;

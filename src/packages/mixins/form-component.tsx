@@ -46,6 +46,7 @@ export default class FormComponent extends Emitter {
   public disabled: boolean;
   public error: boolean;
   public errorMessage: string;
+  // @ts-ignore
   public currentErrorMessage = this.errorMessage;
   public list: any;
   public prop: string;
@@ -58,6 +59,7 @@ export default class FormComponent extends Emitter {
   public validateStatus: '' | 'success' | 'warning' | 'error' | 'validating' = '';
   public value: any;
   public errorDisplayType: 'toast' | 'popover' | 'text' | undefined;
+  // @ts-ignore
   public currentValue = this.value;
   private validateDisabled: boolean = true;
   private isCurrentError: boolean = false;

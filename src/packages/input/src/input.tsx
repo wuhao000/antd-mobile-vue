@@ -23,7 +23,8 @@ class Input extends Vue {
   public placeholder: string;
   public readonly: boolean;
   public type: string;
-  private currentValue: string = this.value || '';
+  // @ts-ignore
+  private currentValue: string = this.value ?? '';
   private textAlign: 'left' | 'right' | 'center';
 
   get inputRef(): HTMLInputElement {
@@ -49,7 +50,7 @@ class Input extends Vue {
     const value = this.currentValue + '';
     const type = this.type === 'number' ? 'text' : this.type;
     const props: any = {
-      value,type,
+      value, type,
       ref: 'input',
       disabled: this.disabled,
       readonly: this.readonly,
@@ -63,7 +64,7 @@ class Input extends Vue {
       style: {textAlign: this.textAlign},
       ...this.$props,
       ...this.$attrs
-    }
+    };
     return <input {...props}/>;
   }
 }

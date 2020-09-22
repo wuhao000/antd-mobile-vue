@@ -50,6 +50,7 @@ class MPopover extends Vue {
    */
   @Prop({type: Boolean, default: true})
   public maskClosable: boolean;
+  // @ts-ignore
   public currentValue = this.value;
   public static Item: any;
   public static install: (Vue) => void;

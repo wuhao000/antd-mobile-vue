@@ -1,11 +1,11 @@
+import {nextTick, VNode} from 'vue';
 import {Options, Vue} from 'vue-class-component';
 import Popup from '../../popup';
 import TouchFeedback from '../../vmc-feedback';
-import { VNode } from 'vue';
 
 interface ActionSheetMenu {
   label?: string | VNode;
-  badge?: string | boolean | number | undefined
+  badge?: string | boolean | number | undefined;
 }
 
 @Options({
@@ -77,7 +77,7 @@ class ActionSheet extends Vue {
   public value: boolean;
   private tabbar: Element = null;
   public hasHeaderSlot = false;
-  public show = this.value || false;
+  public show = false;
   public type: 'normal' | 'share';
   private title: string;
   public static install: (Vue) => void;
@@ -88,8 +88,9 @@ class ActionSheet extends Vue {
   }
 
   public mounted() {
+    this.show = this.value ?? false;
     this.hasHeaderSlot = !!this.$slots.header;
-    this.$nextTick(() => {
+    nextTick(() => {
       this.tabbar = document.querySelector('.weui-tabbar');
       this.$refs.iOSMenu && (this.$refs.iOSMenu as any).addEventListener('transitionend', this.onTransitionEnd);
     });
@@ -231,10 +232,10 @@ class ActionSheet extends Vue {
     if (badge) {
       const supClass = typeof badge === 'boolean' ? 'am-badge-dot' : 'am-badge-text';
       return badge ? <span class="am-badge am-badge-not-a-wrapper">
-          <sup class={supClass}>
-            {typeof badge === 'boolean' ? null : badge}
-          </sup>
-        </span> : null;
+        <sup class={supClass}>
+          {typeof badge === 'boolean' ? null : badge}
+        </sup>
+      </span> : null;
     }
   }
 

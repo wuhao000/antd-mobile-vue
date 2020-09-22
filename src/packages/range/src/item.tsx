@@ -9,17 +9,10 @@ import Range from './index';
   name: 'RangeItem',
   props: {
     title: {type: [String, Object]}
-  },
-  setup(props) {
-    const {isDisabled, componentSize, isReadonly} = useSimpleFormComponent(props);
-    return {isDisabled, componentSize, isReadonly}
   }
 })
 export default class RangeItem extends FormComponent {
   public title: string | VNode;
-  public isDisabled: boolean;
-  public isReadonly: boolean;
-  public componentSize: any;
 
   public render(): any {
     return <List.Item multipleLine
