@@ -112,12 +112,7 @@ class InputItem extends FormComponent {
       [`${prefixCls}-label-6`]: labelNumber === 6,
       [`${prefixCls}-label-7`]: labelNumber === 7
     });
-    if (this.$slots.default) {
-      return <div class={labelCls}>{this.$slots.default()}</div>;
-    } else if (this.title) {
-      return <div class={labelCls}>{this.title}</div>;
-    }
-    return null;
+    return <div class={labelCls}>{this.$slots.default?.()}{this.title}</div>;
   }
 
   get inputRef(): any {
@@ -161,7 +156,7 @@ class InputItem extends FormComponent {
           ctrlValue = `${ctrlValue.substr(0, 3)} ${ctrlValue.substr(3)}`;
         } else if (valueLen >= 8) {
           ctrlValue = `${ctrlValue.substr(0, 3)} ${ctrlValue.substr(3, 4)} ${ctrlValue.substr(
-            7
+              7
           )}`;
         }
         break;
@@ -306,14 +301,14 @@ class InputItem extends FormComponent {
     } = this;
 
     const wrapCls = classnames(
-      `${prefixListCls}-item`,
-      `${prefixCls}-item`,
-      `${prefixListCls}-item-middle`,
-      {
-        [`${prefixCls}-disabled`]: isDisabled,
-        [`${prefixCls}-focus`]: focus,
-        [`${prefixCls}-android`]: this.android
-      }
+        `${prefixListCls}-item`,
+        `${prefixCls}-item`,
+        `${prefixListCls}-item-middle`,
+        {
+          [`${prefixCls}-disabled`]: isDisabled,
+          [`${prefixCls}-focus`]: focus,
+          [`${prefixCls}-android`]: this.android
+        }
     );
 
     const controlCls = `${prefixCls}-control`;
@@ -341,94 +336,94 @@ class InputItem extends FormComponent {
       classNameProp = 'h5numInput';
     }
     return (
-      <List.Item title={this.renderLabel()}
-                 required={this.required}
-                 error={this.error}
-                 errorMessage={this.errorMessage}
-                 errorDisplayType={this.errorDisplayType}
-                 class={wrapCls}>
-        <template slot="control">
-          <div class={controlCls}>
-            {type === 'money' ? (
-              // @ts-ignore
-              <CustomInput
-                {
-                  ...{
-                    value: normalizeValue(currentValue),
-                    type,
-                    maxLength,
-                    placeholder,
-                    disabled: isDisabled,
-                    editable: !isReadonly,
-                    prefixCls,
-                    confirmLabel,
-                    backspaceLabel,
-                    cancelKeyboardLabel,
-                    moneyKeyboardAlign,
-                    moneyKeyboardWrapProps,
-                    moneyKeyboardHeader,
-                    onChange: this.onInputChange,
-                    onFocus: this.onInputFocus,
-                    onBlur: this.onInputBlur,
-                    onConfirm: (v) => {
-                      this.$emit('confirm', v);
-                    },
-                    ref: 'input'
-                  }
-                }
-              />
-            ) : (
-              <Input
-                props={
-                  {
-                    ...patternProps,
-                    value: normalizeValue(currentValue),
-                    defaultValue: undefined,
-                    textAlign: this.textAlign,
-                    type: inputType,
-                    maxLength,
-                    name,
-                    placeholder,
-                    readonly: isReadonly,
-                    disabled: isDisabled
-                  }
-                }
-                class={classNameProp}
-                ref="input"
-                on={
-                  {
-                    change: this.onInputChange,
-                    focus: this.onInputFocus,
-                    blur: this.onInputBlur
-                  }
-                }
-              />
-            )}
-          </div>
-        </template>
-        {clearable &&
-        !isReadonly &&
-        !isDisabled &&
-        (currentValue && `${currentValue}`.length > 0) ? (
-          // @ts-ignore
-          <template slot="suffix">
-            <TouchFeedback activeClassName={`${prefixCls}-clear-active`}>
-              <div class={`${prefixCls}-clear`}
-                   onClick={this.clearInput}/>
-            </TouchFeedback>
-          </template>
-        ) : null}
-        {extra !== '' ? (
-          <template slot="extra">
-            <div class={`${prefixCls}-extra`}
-                 onClick={(e) => {
-                   this.$emit('extra-click', e);
-                 }}>
-              {extra}
+        <List.Item title={this.renderLabel()}
+                   required={this.required}
+                   error={this.error}
+                   errorMessage={this.errorMessage}
+                   errorDisplayType={this.errorDisplayType}
+                   class={wrapCls}>
+          <template slot="control">
+            <div class={controlCls}>
+              {type === 'money' ? (
+                  // @ts-ignore
+                  <CustomInput
+                      {
+                        ...{
+                          value: normalizeValue(currentValue),
+                          type,
+                          maxLength,
+                          placeholder,
+                          disabled: isDisabled,
+                          editable: !isReadonly,
+                          prefixCls,
+                          confirmLabel,
+                          backspaceLabel,
+                          cancelKeyboardLabel,
+                          moneyKeyboardAlign,
+                          moneyKeyboardWrapProps,
+                          moneyKeyboardHeader,
+                          onChange: this.onInputChange,
+                          onFocus: this.onInputFocus,
+                          onBlur: this.onInputBlur,
+                          onConfirm: (v) => {
+                            this.$emit('confirm', v);
+                          },
+                          ref: 'input'
+                        }
+                      }
+                  />
+              ) : (
+                  <Input
+                      props={
+                        {
+                          ...patternProps,
+                          value: normalizeValue(currentValue),
+                          defaultValue: undefined,
+                          textAlign: this.textAlign,
+                          type: inputType,
+                          maxLength,
+                          name,
+                          placeholder,
+                          readonly: isReadonly,
+                          disabled: isDisabled
+                        }
+                      }
+                      class={classNameProp}
+                      ref="input"
+                      on={
+                        {
+                          change: this.onInputChange,
+                          focus: this.onInputFocus,
+                          blur: this.onInputBlur
+                        }
+                      }
+                  />
+              )}
             </div>
           </template>
-        ) : null}
-      </List.Item>
+          {clearable &&
+          !isReadonly &&
+          !isDisabled &&
+          (currentValue && `${currentValue}`.length > 0) ? (
+              // @ts-ignore
+              <template slot="suffix">
+                <TouchFeedback activeClassName={`${prefixCls}-clear-active`}>
+                  <div class={`${prefixCls}-clear`}
+                       onClick={this.clearInput}/>
+                </TouchFeedback>
+              </template>
+          ) : null}
+          {extra !== '' ? (
+              <template slot="extra">
+                <div class={`${prefixCls}-extra`}
+                     onClick={(e) => {
+                       this.$emit('extra-click', e);
+                     }}>
+                  {extra}
+                </div>
+              </template>
+          ) : null}
+        </List.Item>
     );
   }
 }

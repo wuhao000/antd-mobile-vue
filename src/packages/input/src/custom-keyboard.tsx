@@ -36,7 +36,7 @@ export class KeyboardItem extends Vue {
       iconOnly,
       ...restProps
     } = this;
-    let value: any = this.$slots.default;
+    let value: any = this.$slots.default?.();
     const type = this.type;
     if (type === 'keyboard-delete') {
       value = 'delete';
@@ -65,7 +65,7 @@ export class KeyboardItem extends Vue {
           class={wrapCls}
           {...restProps}
         >
-          {this.$slots.default}
+          {this.$slots.default?.()}
           {iconOnly && <i class="sr-only">{label}</i>}
         </td>
       </TouchFeedback2>

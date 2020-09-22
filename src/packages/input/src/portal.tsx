@@ -6,7 +6,6 @@ import {Options, Vue} from 'vue-class-component';
     getContainer: {required: true}
   }
 })
-
 class Portal extends Vue {
   public getContainer: () => Element;
   public container: Element;

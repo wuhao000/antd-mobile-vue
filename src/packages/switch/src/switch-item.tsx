@@ -1,7 +1,7 @@
-import FormComponent from '../../mixins/form-component';
 import classnames from 'classnames';
 import {Options} from 'vue-class-component';
 import List from '../../list';
+import FormComponent from '../../mixins/form-component';
 import Switch from './switch';
 
 const ListItem = List.Item as any;
@@ -73,15 +73,17 @@ export default class SwitchItem extends FormComponent {
     };
     // @ts-ignore
     const extra = <Switch {...props}/>;
+    const listItemProps = {
+      ...otherProps,
+      disabled: this.isDisabled,
+      prefixCls: listPrefixCls,
+      class: wrapCls,
+      extra
+    };
     return (
-      <ListItem
-        {...otherProps}
-        disabled={this.isDisabled}
-        prefixCls={listPrefixCls}
-        class={wrapCls}
-        extra={extra}>
-        {this.$slots.default?.()}
-      </ListItem>
+        <ListItem {...listItemProps}>
+          {this.$slots.default?.()}
+        </ListItem>
     );
   }
 }

@@ -1,8 +1,8 @@
-import {Options, Vue} from 'vue-class-component';
 import {ValidateRules} from 'async-validator';
 import classNames from 'classnames';
+import {VNode} from 'vue';
+import {Options, Vue} from 'vue-class-component';
 import Item from './item';
-import { VNode } from 'vue';
 
 @Options({
   name: 'MList',
@@ -22,7 +22,7 @@ import { VNode } from 'vue';
   provide() {
     return {
       list: this
-    }
+    };
   }
 })
 class List extends Vue {
@@ -46,10 +46,10 @@ class List extends Vue {
 
   public clearValidate(props = []) {
     const fields = props.length
-      ? (typeof props === 'string'
-          ? this.fields.filter(field => props === (field as any).prop)
-          : this.fields.filter(field => props.indexOf((field as any).prop) > -1)
-      ) : this.fields;
+        ? (typeof props === 'string'
+                ? this.fields.filter(field => props === (field as any).prop)
+                : this.fields.filter(field => props.indexOf((field as any).prop) > -1)
+        ) : this.fields;
     fields.forEach(field => {
       (field as any).clearValidate();
     });
@@ -140,17 +140,17 @@ class List extends Vue {
       });
     }
     return (
-      <div class={wrapCls}>
-        {this.$slots.title || this.title ? <div class={classNames(`${prefixCls}-header`, {
-          [`${prefixCls}-required`]: this.required
-        })}>
-          {this.$slots.title ? this.$slots.title() : this.title}
-        </div> : ''}
-        {children.length ? (
-          <div class={`${prefixCls}-body`}>{children}</div>
-        ) : null}
-        {this.$slots.footer ? this.$slots.footer() : null}
-      </div>
+        <div class={wrapCls}>
+          {this.$slots.title || this.title ? <div class={classNames(`${prefixCls}-header`, {
+            [`${prefixCls}-required`]: this.required
+          })}>
+            {this.$slots.title ? this.$slots.title() : this.title}
+          </div> : ''}
+          {children.length ? (
+              <div class={`${prefixCls}-body`}>{children}</div>
+          ) : null}
+          {this.$slots.footer ? this.$slots.footer() : null}
+        </div>
     );
   }
 }
