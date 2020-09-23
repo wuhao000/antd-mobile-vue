@@ -1,27 +1,8 @@
 {
 
-  "activity-indicator": {
-    "type": "component",
-    "componentType": "mobile",
-    "name": "activity-indicator",
-    "chineseName": "活动指示器",
-    "tag": "反馈"
-  },
-  "badge": {
-    "type": "component",
-    "componentType": "mobile",
-    "name": "badge",
-    "chineseName": "徽标",
-    "tag": "数据展示"
-  },
 
-  "calendar": {
-    "type": "component",
-    "componentType": "mobile",
-    "name": "calendar",
-    "chineseName": "日历",
-    "tag": "数据入口"
-  },
+
+
   "card": {
     "type": "component",
     "componentType": "mobile",

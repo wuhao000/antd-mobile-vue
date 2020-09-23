@@ -20,6 +20,10 @@ export default [{
   name: 'm-list',
   component: () => import('@/generated/list/demo.vue')
 }, {
+  path: 'm-activity-indicator',
+  name: 'm-activity-indicator',
+  component: () => import('@/generated/activity-indicator/demo.vue')
+}, {
   path: 'm-range',
   name: 'm-range',
   component: () => import('@/generated/range/demo.vue')
@@ -31,4 +35,12 @@ export default [{
   path: 'm-input',
   name: 'm-input',
   component: () => import('@/generated/input/demo.vue')
+}, {
+  path: 'm-calendar',
+  name: 'm-calendar',
+  component: () => import('@/generated/calendar/demo.vue')
+}, {
+  path: 'm-badge',
+  name: 'm-badge',
+  component: () => import('@/generated/badge/demo.vue')
 }];

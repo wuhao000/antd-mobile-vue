@@ -1,7 +1,24 @@
+import {watch, computed, defineComponent} from 'vue';
 import CalendarBase from './calendar-base';
 import Component from 'vue-class-component';
 import {Watch} from 'vue-property-decorator';
 import Popup from '../popup';
+
+defineComponent({
+  props: {},
+  setup(props) {
+
+    watch(() => visible, () => {
+      this.state.visible = visible;
+      const defaultValue = this.defaultValue;
+      if (visible && defaultValue) {
+        this.shortcutSelect(defaultValue[0], defaultValue[1]);
+      }
+    },)
+
+    return {};
+  }
+})
 
 @Component({
   name: 'Calendar'

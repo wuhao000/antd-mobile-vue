@@ -46,7 +46,7 @@ class Badge extends Vue {
    */
   public textStyle: object;
 
-  public render() {
+  public render(): any {
     let {
       overflowCount,
       text
@@ -77,7 +77,7 @@ class Badge extends Vue {
     });
 
     const badgeCls = classnames(prefixCls, {
-      [`${prefixCls}-not-a-wrapper`]: !this.$slots.default,
+      [`${prefixCls}-not-a-wrapper`]: !this.$slots.default?.(),
       [`${prefixCls}-corner-wrapper`]: corner,
       [`${prefixCls}-hot`]: hot,
       [`${prefixCls}-corner-wrapper-large`]: corner && size === 'large'
@@ -85,7 +85,7 @@ class Badge extends Vue {
 
     return (
       <span class={badgeCls}>
-          {this.$slots.default}
+          {this.$slots.default?.()}
         {(text || dot) && (
           // tslint:disable-next-line:jsx-no-multiline-js
           <sup class={scrollNumberCls}

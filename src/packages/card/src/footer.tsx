@@ -1,19 +1,13 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent} from 'vue';
 
-@Component({
-  name: 'Footer'
-})
-export default class Footer extends Vue {
-  @Prop({default: 'am-card'})
-  public prefixCls?: string;
-  @Prop({type: String})
-  public extra?: string;
-  @Prop({type: String})
-  public content?: string;
-
-  public render() {
+export default defineComponent({
+  name: 'MCardFooter',
+  props: {
+    prefixCls: {default: 'am-card'},
+    extra: {type: String},
+    content: {type: String}
+  },
+  render() {
     const {prefixCls, content, extra} = this;
     const wrapCls = `${prefixCls}-footer`;
     return (
@@ -27,4 +21,4 @@ export default class Footer extends Vue {
       </div>
     );
   }
-}
+});

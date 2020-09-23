@@ -27,6 +27,13 @@
     "chineseName": "列表",
     "tag": "数据展示"
   },
+  "activity-indicator": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "activity-indicator",
+    "chineseName": "活动指示器",
+    "tag": "反馈"
+  },
   "range": {
     "type": "component",
     "componentType": "mobile",
@@ -47,5 +54,19 @@
     "name": "input",
     "chineseName": "输入框",
     "tag": "数据入口"
+  },
+  "calendar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "calendar",
+    "chineseName": "日历",
+    "tag": "数据入口"
+  },
+  "badge": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "badge",
+    "chineseName": "徽标",
+    "tag": "数据展示"
   }
 }

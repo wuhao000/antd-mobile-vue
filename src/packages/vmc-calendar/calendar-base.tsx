@@ -1,3 +1,4 @@
+import {watch, computed, defineComponent, reactive, Ref, ref, provide} from 'vue';
 import Component from 'vue-class-component';
 import {Provide, Watch} from 'vue-property-decorator';
 import CalendarProps from './calendar-props';
@@ -21,10 +22,122 @@ export class StateType {
   public visible: boolean = false;
 }
 
+defineComponent({
+  props: {
+    ...CalendarProps
+  },
+  setup(props) {
+    const DefaultHeader = Header;
+    const DefaultShortcut = ShortcutPanel;
+
+    const currentValue: Ref<Date[]> = ref([]);
+
+    provide('currentValue', currentValue);
+
+    const state = reactive({
+      showTimePicker: false,
+      timePickerTitle: '',
+      startDate: undefined,
+      endDate: undefined,
+      disConfirmBtn: true,
+      clientHeight: 0,
+      contentStyle: {},
+      visible: props.visible
+    });
+    const selectDate = (date: Date, useDateTime = false, oldState: { startDate?: Date, endDate?: Date } = {}) => {
+      if (!date) {
+        return {} as StateType;
+      }
+      let newState = {} as StateType;
+      const {type, pickTime, defaultTimeValue, locale = {} as Locale} = props;
+      const newDate = pickTime && !useDateTime ? mergeDateTime(date, defaultTimeValue) : date;
+      const {startDate, endDate} = oldState;
+      switch (type) {
+        case 'one':
+          newState = {
+            ...newState,
+            startDate: newDate,
+            disConfirmBtn: false
+          };
+          if (pickTime) {
+            newState = {
+              ...newState,
+              timePickerTitle: locale.selectTime,
+              showTimePicker: true
+            };
+          }
+          break;
+
+        case 'range':
+          if (!startDate || endDate) {
+            newState = {
+              ...newState,
+              startDate: newDate,
+              endDate: undefined,
+              disConfirmBtn: true
+            };
+            if (pickTime) {
+              newState = {
+                ...newState,
+                timePickerTitle: locale.selectStartTime,
+                showTimePicker: true
+              };
+            }
+          } else {
+            newState = {
+              ...newState,
+              timePickerTitle: +newDate >= +startDate ? locale.selectEndTime : locale.selectStartTime,
+              disConfirmBtn: false,
+              endDate: (pickTime && !useDateTime && +newDate >= +startDate) ?
+                new Date(+mergeDateTime(newDate, startDate) + 3600000) : newDate
+            };
+          }
+          break;
+      }
+      return newState;
+    }
+
+    const setState = (newState: any) => {
+      Object.keys(newState).forEach(key=>{
+        state[key] = newState[key];
+      });
+    }
+
+    const shortcutSelect = (startDate: Date, endDate: Date) => {
+      const newState = {
+        startDate,
+        ...selectDate(endDate, true, {startDate}),
+        showTimePicker: false
+      };
+      setState(newState)
+    }
+
+
+    watch(() => state, (value) => {
+      currentValue.value[0] = value.startDate;
+      currentValue.value[1] = value.endDate;
+    }, {deep: true});
+    watch(() => props.defaultValue, () => {
+      if (props.visible && props.defaultValue) {
+        shortcutSelect(props.defaultValue[0], props.defaultValue[1]);
+      }
+    });
+    if (props.defaultValue) {
+      const defaultValue = props.defaultValue;
+      const newState = {
+        ...state,
+        ...selectDate(defaultValue[1], true, {startDate: defaultValue[0]})
+      };
+      setState(newState);
+    }
+    return {};
+  }
+});
+
 @Component({
   name: 'CalendarBase'
 })
-export default class CalendarBase extends CalendarProps {
+class CalendarBase extends CalendarProps {
 
   public static DefaultHeader = Header;
   public static DefaultShortcut = ShortcutPanel;
@@ -40,84 +153,6 @@ export default class CalendarBase extends CalendarProps {
     visible: this.visible
   };
 
-  @Provide('currentValue')
-  public currentValue: Date[] = [];
-
-  @Watch('state', {deep: true})
-  public stateChanged(value: any) {
-    this.currentValue[0] = value.startDate;
-    this.currentValue[1] = value.endDate;
-  }
-
-  public created() {
-    if (this.defaultValue) {
-      const defaultValue = this.defaultValue;
-      this.state = {
-        ...this.state,
-        ...this.selectDate(defaultValue[1], true, {startDate: defaultValue[0]})
-      };
-    }
-  }
-
-  @Watch('defaultValue')
-  public defaultValueChanged(defaultValue: any) {
-    if (this.visible && this.defaultValue) {
-      this.shortcutSelect(this.defaultValue[0], this.defaultValue[1]);
-    }
-  }
-
-  public selectDate(date: Date, useDateTime = false, oldState: { startDate?: Date, endDate?: Date } = {}) {
-    if (!date) {
-      return {} as StateType;
-    }
-    let newState = {} as StateType;
-    const {type, pickTime, defaultTimeValue, locale = {} as Locale} = this;
-    const newDate = pickTime && !useDateTime ? mergeDateTime(date, defaultTimeValue) : date;
-    const {startDate, endDate} = oldState;
-    switch (type) {
-      case 'one':
-        newState = {
-          ...newState,
-          startDate: newDate,
-          disConfirmBtn: false
-        };
-        if (pickTime) {
-          newState = {
-            ...newState,
-            timePickerTitle: locale.selectTime,
-            showTimePicker: true
-          };
-        }
-        break;
-
-      case 'range':
-        if (!startDate || endDate) {
-          newState = {
-            ...newState,
-            startDate: newDate,
-            endDate: undefined,
-            disConfirmBtn: true
-          };
-          if (pickTime) {
-            newState = {
-              ...newState,
-              timePickerTitle: locale.selectStartTime,
-              showTimePicker: true
-            };
-          }
-        } else {
-          newState = {
-            ...newState,
-            timePickerTitle: +newDate >= +startDate ? locale.selectEndTime : locale.selectStartTime,
-            disConfirmBtn: false,
-            endDate: (pickTime && !useDateTime && +newDate >= +startDate) ?
-                new Date(+mergeDateTime(newDate, startDate) + 3600000) : newDate
-          };
-        }
-        break;
-    }
-    return newState;
-  }
 
   public onSelectedDate(date: Date) {
     const {startDate, endDate} = this.state;
@@ -192,13 +227,6 @@ export default class CalendarBase extends CalendarProps {
     this.$emit('clear');
   }
 
-  public shortcutSelect(startDate: Date, endDate: Date) {
-    this.state = Object.assign(this.state, {
-      startDate,
-      ...this.selectDate(endDate, true, {startDate}),
-      showTimePicker: false
-    });
-  }
 
   public setClientHeight(height: number) {
     this.state.clientHeight = height;

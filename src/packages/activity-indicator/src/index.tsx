@@ -31,7 +31,7 @@ class ActivityIndicator extends Vue {
   public text?: string;
   public static install: (Vue) => void;
 
-  public render() {
+  public render(): any {
     const {prefixCls, className, animating, toast, size, text} = this;
     const wrapClass = classnames(prefixCls, className, {
       [`${prefixCls}-lg`]: size === 'large',

@@ -1,5 +1,4 @@
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent, reactive} from 'vue';
 import Icon from '../../icon';
 import {getComponentLocale} from '../../utils/getLocale';
 import {CalendarView as VMCalendar} from '../../vmc-calendar';
@@ -15,25 +14,22 @@ const beginOfMonth = () => {
   return new Date(now.getFullYear(), now.getMonth(), 1);
 };
 
-@Component({
-  name: 'Calendar'
-})
-class Calendar extends CalendarProps {
-
-  @Prop({type: String, default: 'am-calendar'})
-  public prefixCls: string;
-  @Prop({type: String, default: 'am-picker'})
-  public timePickerPrefixCls: string;
-  @Prop({type: String, default: 'am-picker-col'})
-  public timePickerPickerPrefixCls: string;
-
-  public state = {
-    visible: this.visible
-  };
-  public static Item: any;
-
-
-  public render() {
+export default defineComponent({
+  props: {
+    ...CalendarProps,
+    prefixCls: {type: String, default: 'am-calendar'},
+    timePickerPrefixCls: {type: String, default: 'am-picker'},
+    timePickerPickerPrefixCls: {type: String, default: 'am-picker-col'}
+  },
+  setup(props) {
+    const state = reactive({
+      visible: props.visible
+    });
+    return {
+      state
+    };
+  },
+  render() {
     const locale = getComponentLocale(this.$props, {}, 'Calendar', () =>
       require('./locale/zh_CN')
     );
@@ -50,8 +46,8 @@ class Calendar extends CalendarProps {
         onSelectHasDisableDate={(...args) => {
           this.$emit('select-has-disable-date', ...args);
         }}
-        attrs={
-          {
+        {
+          ...{
             ...this.$props,
             type: 'one',
             displayMode: true,
@@ -63,6 +59,4 @@ class Calendar extends CalendarProps {
       />
     );
   }
-}
-
-export default Calendar as any;
+});

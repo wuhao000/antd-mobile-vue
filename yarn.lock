@@ -1407,6 +1407,11 @@
     semver "^7.3.2"
     tsutils "^3.17.1"
 
+"@vant/use@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@vant/use/-/use-0.0.2.tgz#9ea72642e0d6ef664f19e80b73fdb59b9f403d21"
+  integrity sha512-kPgqwBMKaeKPQ/LZjjVDHKxo2Thi4w5M186+Yg4jATW7qCcfd0CujDmqlETfFjBCbw40C1HVu/kmhXE0cQPPUg==
+
 "@vue/babel-helper-vue-jsx-merge-props@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@vue/babel-helper-vue-jsx-merge-props/-/babel-helper-vue-jsx-merge-props-1.0.0.tgz#048fe579958da408fb7a8b2a3ec050b50a661040"

@@ -29,6 +29,13 @@ export default [{
   },
   component: () => import('@/generated/list/index.vue')
 }, {
+  path: 'activity-indicator',
+  name: 'ActivityIndicator 活动指示器',
+  meta: {
+    tag: '反馈'
+  },
+  component: () => import('@/generated/activity-indicator/index.vue')
+}, {
   path: 'range',
   name: 'Range 区域选择',
   meta: {
@@ -49,4 +56,18 @@ export default [{
     tag: '数据入口'
   },
   component: () => import('@/generated/input/index.vue')
+}, {
+  path: 'calendar',
+  name: 'Calendar 日历',
+  meta: {
+    tag: '数据入口'
+  },
+  component: () => import('@/generated/calendar/index.vue')
+}, {
+  path: 'badge',
+  name: 'Badge 徽标',
+  meta: {
+    tag: '数据展示'
+  },
+  component: () => import('@/generated/badge/index.vue')
 }] as RouteRecordRaw[];

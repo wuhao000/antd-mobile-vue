@@ -1,38 +1,28 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent} from 'vue';
 
 
-@Component({
-  name: 'Header'
-})
-export default class Header extends Vue {
-  @Prop({default: 'am-card'})
-  public prefixCls?: string;
-  @Prop({
-    default: () => {
-      return {};
-    }
-  })
-  public thumbStyle?: object;
-  /** need url of img, if this is string. */
-  @Prop({type: String})
-  public thumb?: string;
-  @Prop({type: String})
-  public extra?: string;
-  @Prop({type: String})
-  public title?: string;
-
-  public render() {
+export default defineComponent({
+  name: 'MCardHeader',
+  props: {
+    prefixCls: {default: 'am-card'},
+    thumbStyle: {
+      default: () => {
+        return {};
+      }
+    },
+    thumb: {type: String},
+    extra: {type: String},
+    title: {type: String}
+  },
+  render() {
     const {
       prefixCls,
       thumb,
       thumbStyle,
       extra,
-      title,
+      title
     } = this;
     const wrapCls = `${prefixCls}-header`;
-
     return (
       <div class={wrapCls}>
         <div class={`${prefixCls}-header-content`}>
@@ -52,4 +42,4 @@ export default class Header extends Vue {
       </div>
     );
   }
-}
+});
