@@ -1,110 +1,110 @@
-import {Options, Vue} from 'vue-class-component';
+import {pureInputComponentProps} from '../../mixins/pure-input-component';
+import {simpleFormComponentProps} from '../../mixins/simple-form-component';
+import {defineComponent, PropType, Ref, ref, watch} from 'vue';
 import List from '../../list';
-import BaseInputComponent from '../../mixins/base-input-component';
+import {useBaseInputComponent} from '../../mixins/base-input-component';
 import Calendar from './index';
 
 const MIN_DATE = new Date(2000, 1, 1, 0, 0, 0);
 const MAX_DATE = new Date(new Date().getFullYear() + 10, 12, 31, 23, 59, 59);
 
-@Options({
+export default defineComponent({
   name: 'MCalendarItem',
   props: {
+    /**
+     * 标题
+     */
     title: {type: [String, Object]},
+    /**
+     * 默认值
+     */
     defaultDate: {type: Date, default: () => new Date()},
     minDate: {type: Date, default: () => MIN_DATE},
     maxDate: {type: Date, default: () => MAX_DATE},
     pickTime: {type: Boolean, default: false},
-    type: {type: String, default: 'range'},
-    placeholder: {type: String}
-  }
-})
-export default class MCalendarItem extends BaseInputComponent {
-  /**
-   * 标题
-   */
-  public title: string;
-  /**
-   * 默认值
-   */
-  public defaultDate: Date;
-  public minDate: Date;
-  public maxDate: Date;
-  public pickTime: boolean;
-  public type: 'one' | 'range';
-  public placeholder: string;
-  public currentValue: Date[] = [];
-  public displayValue: string;
-  public visible: boolean = false;
-
-  public getInputComponent(): any {
-    return Calendar;
-  }
-
-  @Watch('value', {immediate: true})
-  public valueChanged(value: any) {
-    if (this.type === 'one') {
-      this.currentValue = [value];
-    } else if (value) {
-      this.currentValue = value;
-    }
-  }
-
-  @Watch('currentValue', {immediate: true})
-  public currentValueChanged() {
-    if (this.currentValue.length) {
-      this.displayValue = this.getDisplayValue();
-    } else {
-      this.displayValue = '';
-    }
-  }
-
-  public onClick() {
-    this.visible = true;
-  }
-
-  public onConfirm(value1, value2) {
-    if (this.type === 'range') {
-      this.currentValue = [value1, value2];
-      this.$emit('input', [value1, value2]);
-    } else {
-      this.currentValue = [value1];
-      this.$emit('input', value1);
-    }
-  }
-
-  public getDisplayValue() {
-    const valueStrs = this.currentValue.map(it => {
-      if (this.pickTime) {
-        return moment(it).format('YYYY/MM/DD HH:mm');
-      } else {
-        return moment(it).format('YYYY/MM/DD');
-      }
+    type: {type: String as PropType<'one' | 'range'>, default: 'range'},
+    placeholder: {type: String},
+    ...simpleFormComponentProps,
+    ...pureInputComponentProps
+  },
+  setup(props, {emit, attrs, slots}) {
+    const {getDefaultSlot, stateValue, slots: inputSlots, cssStyle, listeners, props: inputProps} = useBaseInputComponent(props, {
+      emit,
+      attrs,
+      slots
     });
-    if (this.type === 'range') {
-      return valueStrs[0] + ' ~ ' + (valueStrs[1] || '');
-    } else {
-      return valueStrs[0];
-    }
-  }
+    const currentValue: Ref<Date[]> = ref([]);
+    const displayValue: Ref<string> = ref(null);
+    const visible: Ref<boolean> = ref(false);
+    watch(() => props.value, (value: any) => {
+      if (props.type === 'one') {
+        currentValue.value = [value];
+      } else if (value) {
+        currentValue.value = value;
+      }
+    }, {immediate: true});
+    watch(() => currentValue.value, () => {
+      if (currentValue.value.length) {
+        displayValue.value = getDisplayValue();
+      } else {
+        displayValue.value = '';
+      }
+    }, {immediate: true});
 
-  public onClose() {
-    this.visible = false;
-  }
+    const getInputComponent = () => {
+      return Calendar;
+    };
+    const onClick = () => {
+      visible.value = true;
+    };
+    const onConfirm = (value1, value2) => {
+      if (props.type === 'range') {
+        currentValue.value = [value1, value2];
+        emit('input', [value1, value2]);
+      } else {
+        currentValue.value = [value1];
+        emit('input', value1);
+      }
+    };
+    const getDisplayValue = () => {
+      const valueStrs = currentValue.value.map(it => {
+        if (props.pickTime) {
+          return moment(it).format('YYYY/MM/DD HH:mm');
+        } else {
+          return moment(it).format('YYYY/MM/DD');
+        }
+      });
+      if (props.type === 'range') {
+        return valueStrs[0] + ' ~ ' + (valueStrs[1] || '');
+      } else {
+        return valueStrs[0];
+      }
+    };
+    const onClose = () => {
+      visible.value = false;
+    };
 
-  public render(): any {
+    return {
+      onClose, inputProps, displayValue,
+      onClick, onConfirm, listeners,
+      getDefaultSlot, cssStyle,
+      inputSlots, visible, stateValue,
+      currentValue
+    };
+  },
+  render() {
     return <List.Item text={!!this.displayValue}
                       required={this.required}
                       arrow="horizontal"
                       title={this.title}
                       onClick={this.onClick}>
-      <Calendar attrs={this.props}
+      <Calendar {...this.inputProps}
                 value={this.stateValue}
-                scopedSlots={this.$scopedSlots}
                 visible={this.visible}
                 onClose={this.onClose}
                 onConfirm={this.onConfirm}
                 defaultValue={this.currentValue}
-                slots={this.slots}
+                slots={this.inputSlots}
                 on={this.listeners}
                 style={this.cssStyle}>
         {this.getDefaultSlot()}
@@ -113,4 +113,4 @@ export default class MCalendarItem extends BaseInputComponent {
       <span slot="extra">{this.displayValue || this.placeholder}</span>
     </List.Item>;
   }
-}
+});

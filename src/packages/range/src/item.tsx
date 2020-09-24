@@ -1,20 +1,21 @@
-import FormComponent from '../../mixins/form-component';
-import {useSimpleFormComponent} from '../../mixins/simple-form-component';
-import {Options, Vue} from 'vue-class-component';
-import {VNode} from 'vue';
+import {useFormComponent} from '../../mixins/form-component';
+import {defineComponent, PropType, VNode} from 'vue';
 import List from '../../list';
 import Range from './index';
 
-@Options({
+const RangeItem = defineComponent({
   name: 'RangeItem',
   props: {
-    title: {type: [String, Object]}
-  }
-})
-export default class RangeItem extends FormComponent {
-  public title: string | VNode;
+    title: {
+      type: [String, Object] as PropType<string | VNode>
+    }
+  },
+  setup(props, {emit}) {
+    const {isDisabled, currentValue} = useFormComponent(props, {emit});
 
-  public render(): any {
+    return {isDisabled, currentValue};
+  },
+  render() {
     return <List.Item multipleLine
                       disabled={this.isDisabled}>
       {this.title}
@@ -30,4 +31,6 @@ export default class RangeItem extends FormComponent {
       </List.Item.Brief>
     </List.Item>;
   }
-}
+});
+
+export default RangeItem;

@@ -1,12 +1,19 @@
-import CalendarBase from './calendar-base';
-import Component from 'vue-class-component';
+import {defineComponent} from 'vue';
+import {useBaseCalendar} from './calendar-base';
+import CalendarProps from './calendar-props';
 
-@Component({
-  name: 'CalendarView'
-})
-export default class CalendarView extends CalendarBase {
+const CalendarView = defineComponent({
+  name: 'CalendarView',
+  props: {
+    ...CalendarProps
+  },
+  setup(props, ctx) {
 
-  public render() {
+    const {renderCalendar} = useBaseCalendar(props, ctx);
+    return {renderCalendar};
+  },
+  render() {
     return this.renderCalendar();
   }
-}
+});
+export default CalendarView as any;

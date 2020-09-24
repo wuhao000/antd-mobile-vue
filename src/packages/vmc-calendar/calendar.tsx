@@ -1,55 +1,38 @@
-import {watch, computed, defineComponent} from 'vue';
-import CalendarBase from './calendar-base';
-import Component from 'vue-class-component';
-import {Watch} from 'vue-property-decorator';
+import {defineComponent, watch} from 'vue';
 import Popup from '../popup';
+import {useBaseCalendar} from './calendar-base';
+import CalendarProps from './calendar-props';
 
-defineComponent({
-  props: {},
-  setup(props) {
-
-    watch(() => visible, () => {
-      this.state.visible = visible;
-      const defaultValue = this.defaultValue;
-      if (visible && defaultValue) {
-        this.shortcutSelect(defaultValue[0], defaultValue[1]);
+const Calendar = defineComponent({
+  name: 'Calendar',
+  props: {
+    ...CalendarProps
+  },
+  setup(props, ctx) {
+    const {state, shortcutSelect, onClose, renderCalendar} = useBaseCalendar(props, ctx);
+    watch(() => props.visible, () => {
+      state.visible = props.visible;
+      const defaultValue = props.defaultValue;
+      if (props.visible && defaultValue) {
+        shortcutSelect(defaultValue[0], defaultValue[1]);
       }
-    },)
-
-    return {};
-  }
-})
-
-@Component({
-  name: 'Calendar'
-})
-class Calendar extends CalendarBase {
-
-  @Watch('visible')
-  public visibleChanged(visible: boolean) {
-    this.state.visible = visible;
-    const defaultValue = this.defaultValue;
-    if (visible && defaultValue) {
-      this.shortcutSelect(defaultValue[0], defaultValue[1]);
-    }
-  }
-
-  public render() {
+    });
+    return {onClose, state, renderCalendar};
+  },
+  render() {
     const height = document.body.clientHeight;
-    const width = document.body.clientWidth;
     return (
-        <Popup
-            onClose={this.onClose}
-            attrs={{
-              height: `${height}px`,
-              width: `${height}px`,
-              value: this.state.visible,
-              placement: this.enterDirection === 'vertical' ? 'bottom' : 'right'
-            }}>
-          {this.renderCalendar()}
-        </Popup>
+      <Popup
+        onClose={this.onClose}
+        attrs={{
+          height: `${height}px`,
+          width: `${height}px`,
+          value: this.state.visible,
+          placement: this.enterDirection === 'vertical' ? 'bottom' : 'right'
+        }}>
+        {this.renderCalendar()}
+      </Popup>
     );
   }
-}
-
+});
 export default Calendar as any;

@@ -1,51 +1,36 @@
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {PropType, VNode} from 'vue';
 
-@Component({
-  name: 'PopupPickerProps'
-})
-export class PopupPickerProps extends Vue<IPopupPickerProps> {
-  @Prop()
-  public picker?: any;
-  @Prop()
-  public value?: any;
-  @Prop({type: String, default: 'click'})
-  public triggerType?: string;
-  @Prop()
-  public WrapComponent?: any;
-  @Prop()
-  public dismissText?: string | VNode; // React.ReactElement only for web
-  @Prop()
-  public okText?: string | VNode; // React.ReactElement only for web
-  @Prop()
-  public title?: string | VNode; // React.ReactElement only for web
-  @Prop({type: Boolean, default: false})
-  public visible?: boolean;
-  @Prop({type: Boolean, default: false})
-  public disabled?: boolean;
-  @Prop()
-  public content?: VNode | string;
-  @Prop()
-  public actionTextUnderlayColor?: string;
-  @Prop()
-  public actionTextActiveOpacity?: number;
+export const PopupPickerProps = {
+  picker: {},
+  value: {},
+  triggerType: {
+    type: String as PropType<string>,
+    default: 'click'
+  },
+  WrapComponent: {},
+  dismissText: {},
+  okText: {},
+  title: {},
+  visible: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  disabled: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  content: {},
+  actionTextUnderlayColor: {},
+  actionTextActiveOpacity: {},
   /** web only */
-  @Prop()
-  public wrapStyle?: object;
-  @Prop()
-  public prefixCls?: string;
-  @Prop()
-  public pickerValueProp?: string;
-  @Prop()
-  public pickerValueChangeProp?: string;
-  @Prop()
-  public transitionName?: string;
-  @Prop()
-  public popupTransitionName?: string;
-  @Prop()
-  public maskTransitionName?: string;
-}
+  wrapStyle: {},
+  prefixCls: {},
+  pickerValueProp: {type: String as PropType<string>},
+  pickerValueChangeProp: {type: String as PropType<string>},
+  transitionName: {},
+  popupTransitionName: {},
+  maskTransitionName: {}
+};
 
 export interface IPopupPickerProps {
   picker?: any;

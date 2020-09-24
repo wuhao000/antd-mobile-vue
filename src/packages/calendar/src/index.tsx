@@ -1,48 +1,41 @@
-import {Options} from 'vue-class-component';
+import {defineComponent, reactive, watch} from 'vue';
 import Icon from '../../icon';
 import {getComponentLocale} from '../../utils/getLocale';
 import {Calendar as VMCalendar} from '../../vmc-calendar';
 import CalendarProps from '../../vmc-calendar/calendar-props';
 
-@Options({
+export default defineComponent({
+  install: null,
+  Item: null,
   name: 'Calendar',
   props: {
+    ...CalendarProps,
     prefixCls: {type: String, default: 'am-calendar'},
     timePickerPrefixCls: {type: String, default: 'am-picker'},
     timePickerPickerPrefixCls: {type: String, default: 'am-picker-col'}
   },
-  watch: {
-    visible(value) {
-      this.state.visible = value;
-    }
-  }
-})
-class Calendar extends CalendarProps {
-  public static install: (Vue) => void;
-  public prefixCls: string;
-  public timePickerPrefixCls: string;
-  public timePickerPickerPrefixCls: string;
-  public state = {
-    visible: this.visible
-  };
-  public static Item: any;
-
-  public onConfirm(...args) {
-    this.$emit('confirm', ...args);
-    this.onClose();
-  }
-
-  public onClear(e) {
-    this.$emit('clear', e);
-  }
-
-  public onClose(...args) {
-    this.state.visible = false;
-    this.$emit('close', ...args);
-    this.$emit('update:visible', false);
-  }
-
-  public render(): any {
+  setup(props, {emit}) {
+    const state = reactive({
+      visible: props.visible
+    });
+    watch(() => props.visible, (value) => {
+      state.visible = value;
+    });
+    const onConfirm = (...args) => {
+      emit('confirm', ...args);
+      onClose();
+    };
+    const onClear = (e) => {
+      emit('clear', e);
+    };
+    const onClose = (...args) => {
+      state.visible = false;
+      emit('close', ...args);
+      emit('update:visible', false);
+    };
+    return {onClose, onConfirm, onClear, state};
+  },
+  render() {
     const locale = getComponentLocale(this.$props, {}, 'Calendar', () =>
       require('./locale/zh_CN')
     );
@@ -69,6 +62,5 @@ class Calendar extends CalendarProps {
       />
     );
   }
-}
+});
 
-export default Calendar as any;

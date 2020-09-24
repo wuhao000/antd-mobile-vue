@@ -1,40 +1,31 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent, PropType} from 'vue';
 import {Locale} from '../data-types';
-import {formatDate} from '../util';
+import {formatDate as _formatDate} from '../util';
 
-@Component({
-  name: 'ConfirmPanel'
-})
-class ConfirmPanel extends Vue {
-  @Prop({})
-  public type?: 'one' | 'range';
-  @Prop({})
-  public locale: Locale;
-  @Prop({type: Boolean})
-  public onlyConfirm?: boolean;
-  @Prop({type: Boolean})
-  public disableBtn?: boolean;
-  @Prop({})
-  public startDateTime?: Date;
-  @Prop({})
-  public endDateTime?: Date;
-  @Prop({type: String})
-  public formatStr?: string;
-
-  public onConfirm() {
-    if (!this.disableBtn) {
-      this.$emit('confirm');
-    }
-  }
-
-  public formatDate(date: Date) {
-    const {formatStr = '', locale} = this;
-    return formatDate(date, formatStr, locale);
-  }
-
-  public render() {
+const ConfirmPanel = defineComponent({
+  name: 'ConfirmPanel',
+  props: {
+    type: {type: String},
+    locale: {type: Object as PropType<Locale>},
+    onlyConfirm: {type: Boolean},
+    disableBtn: {type: Boolean},
+    startDateTime: {type: Date as PropType<Date>},
+    endDateTime: {type: Date as PropType<Date>},
+    formatStr: {type: String as PropType<string>}
+  },
+  setup(props, {emit}) {
+    const onConfirm = () => {
+      if (!props.disableBtn) {
+        emit('confirm');
+      }
+    };
+    const formatDate = (date: Date) => {
+      const {formatStr = '', locale} = props;
+      return _formatDate(date, formatStr, locale);
+    };
+    return {onConfirm, formatDate};
+  },
+  render() {
     const {type, locale, disableBtn} = this;
     let {startDateTime, endDateTime} = this;
     if (startDateTime && endDateTime && +startDateTime > +endDateTime) {
@@ -51,20 +42,19 @@ class ConfirmPanel extends Vue {
     }
 
     return (
-        <div class="confirm-panel">
-          {
-            type === 'range' &&
-            <div class={'info'}>
-              <p>{locale.start}: <span class={!startDateTime ? 'grey' : ''}>{startTimeStr}</span></p>
-              <p>{locale.end}: <span class={!endDateTime ? 'grey' : ''}>{endTimeStr}</span></p>
-            </div>
-          }
-          <div class={btnCls} onClick={this.onConfirm}>
-            {locale.confirm}
+      <div class="confirm-panel">
+        {
+          type === 'range' &&
+          <div class={'info'}>
+            <p>{locale.start}: <span class={!startDateTime ? 'grey' : ''}>{startTimeStr}</span></p>
+            <p>{locale.end}: <span class={!endDateTime ? 'grey' : ''}>{endTimeStr}</span></p>
           </div>
+        }
+        <div class={btnCls} onClick={this.onConfirm}>
+          {locale.confirm}
         </div>
+      </div>
     );
   }
-}
-
+});
 export default ConfirmPanel as any;

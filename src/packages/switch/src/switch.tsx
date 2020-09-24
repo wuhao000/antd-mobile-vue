@@ -1,39 +1,46 @@
-import FormComponent from '../../mixins/form-component';
+import {formComponentProps, useFormComponent} from '../../mixins/form-component';
 import classnames from 'classnames';
-import {Options} from 'vue-class-component';
+import {defineComponent, PropType} from 'vue';
 
-@Options({
+const Switch = defineComponent({
   name: 'MSwitch',
   props: {
-    color: {type: String},
-    name: {type: String},
-    prefixCls: {type: String, default: 'am-switch'},
-    platform: {type: String, default: 'ios'}
-  }
-})
+    color: {
+      type: String as PropType<string>
+    },
+    name: {
+      type: String as PropType<string>
+    },
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-switch'
+    },
+    platform: {
+      type: String as PropType<string>,
+      default: 'ios'
+    },
+    ...formComponentProps
+  },
+  setup(props, ctx) {
+    const {currentValue} = useFormComponent(props, ctx);
 
-export default class Switch extends FormComponent {
-  public color?: string;
-  public name?: string;
-  public prefixCls?: string;
-  public platform: string;
+    const onChange = (e) => {
+      currentValue.value = e.target.checked;
+    };
+    const onClick = (e: any) => {
+      let val;
+      // tslint:disable-next-line:prefer-conditional-expression
+      if (e && e.target && e.target.checked !== undefined) {
+        val = e.target.checked;
+      } else {
+        val = props.value;
+      }
+      currentValue.value = val;
+    };
 
-  public onChange(e) {
-    this.currentValue = e.target.checked;
-  }
-
-  public onClick(e: any) {
-    let val;
-    // tslint:disable-next-line:prefer-conditional-expression
-    if (e && e.target && e.target.checked !== undefined) {
-      val = e.target.checked;
-    } else {
-      val = this.value;
-    }
-    this.currentValue = val;
-  }
-
-  public render(): any {
+    return {currentValue, onChange, onClick};
+  },
+  render() {
     const {
       prefixCls,
       name,
@@ -89,4 +96,6 @@ export default class Switch extends FormComponent {
       </label>
     );
   }
-}
+});
+
+export default Switch as any;

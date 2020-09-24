@@ -314,4 +314,4 @@ class NumberInput extends Vue {
   }
 }
 
-export default NumberInput;
+export default NumberInput as any;

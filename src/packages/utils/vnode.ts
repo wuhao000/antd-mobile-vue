@@ -90,56 +90,27 @@ export function cloneVNodes(vnodes, deep?) {
 }
 
 export function setListeners(vnode: VNode, listeners: any = {}) {
-  if (vnode.componentOptions) {
-    if (!vnode.componentOptions.listeners) {
-      vnode.componentOptions.listeners = {};
-    }
-    Object.keys(listeners).forEach(key => {
-      const orgListener = vnode.componentOptions.listeners[key];
-      const newListener = listeners[key];
-      vnode.componentOptions.listeners[key] = (...args) => {
-        if (newListener) {
-          newListener(...args);
-        }
-        if (orgListener) {
-          orgListener(...args);
-        }
-      };
-
-    });
-  } else if (vnode.data) {
-    if (!vnode.data.on) {
-      vnode.data.on = {};
-    }
-    Object.keys(listeners).forEach(key => {
-      const orgListener = vnode.data.on[key];
-      const newListener = listeners[key];
-      vnode.data.on[key] = (...args) => {
-        if (newListener) {
-          newListener(...args);
-        }
-        if (orgListener) {
-          if (typeof orgListener === 'function') {
-            orgListener(...args);
-          } else if (Array.isArray(orgListener)) {
-            orgListener.forEach(it => {
-              it(...args);
-            });
-          }
-        }
-      };
-
-    });
+  if (!vnode.props) {
+    vnode.props = {};
   }
+  Object.keys(listeners).forEach(key => {
+    const orgListener = vnode.props[key];
+    const newListener = listeners[key];
+    vnode.props[key] = (...args) => {
+      if (newListener) {
+        newListener(...args);
+      }
+      if (orgListener) {
+        orgListener(...args);
+      }
+    };
+  });
 }
 
 export function setProps(vnode: VNode, nodeProps: any = {}) {
-  if (vnode.componentOptions) {
-    if (!vnode.componentOptions.propsData) {
-      vnode.componentOptions.propsData = {};
-    }
+  if (vnode.props) {
     Object.keys(nodeProps).forEach(key => {
-      vnode.componentOptions.propsData[key] = nodeProps[key];
+      vnode.props[key] = nodeProps[key];
     });
   }
 }
@@ -224,10 +195,18 @@ export function cloneElement(n: VNode, nodeProps: any = {}, deep?) {
 
 export function getNodeText(node: VNode): string | undefined {
   if (node) {
-    if (node.text) {
-      return node.text;
-    } else if (node.componentOptions && node.componentOptions.children) {
-      return node.componentOptions.children.map(it => getNodeText(it)).join('');
+
+    if (typeof node.children === 'string') {
+      return node.children;
+    } else if (Array.isArray(node.children)) {
+      return node.children.map(it => getNodeText(it as VNode)).join('');
+    } else if (typeof node.children === 'object') {
+      const defaultSlot = node.children.default as any;
+      if (node.children.default) {
+        return defaultSlot().map(it => getNodeText(it)).join('');
+      } else {
+        return '';
+      }
     }
   }
   return undefined;

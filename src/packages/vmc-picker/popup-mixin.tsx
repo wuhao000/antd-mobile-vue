@@ -1,119 +1,114 @@
-import Component from 'vue-class-component';
-import {Watch} from 'vue-property-decorator';
+import {defineComponent, reactive, ref, VNode, watch} from 'vue';
 import {cloneElement, setListeners, setProps} from '../utils/vnode';
 import {PopupPickerProps} from './popup-picker-types';
 
 export default function PopupMixin(getModal, newProps) {
-  @Component({name: 'PopupMixin'})
-  class PopupMixin extends PopupPickerProps {
-    public picker: any;
-    public state = {
-      pickerValue: 'value' in this ? this.value : null,
-      visible: this.visible || false
-    };
+  return defineComponent({
+    name: 'PopupMixin',
+    props: {
+      ...PopupPickerProps
+    },
+    setup(props, {emit, slots}) {
+      const picker = ref(null);
+      const state = reactive({
+        pickerValue: props.value !== undefined ? props.value : null,
+        visible: props.visible || false
+      });
+      watch(() => state.visible, () => {
+        emit('visible-change', state.visible);
+      });
+      watch(() => props.value, (value) => {
+        state.pickerValue = value;
+      });
+      watch(() => props.visible, (value: boolean) => {
+        setVisibleState(value);
+      });
 
-    @Watch('state.visible')
-    public stateVisibleChanged() {
-      this.$emit('visible-change', this.state.visible);
-    }
-
-    @Watch('value')
-    public valueChanged(value) {
-      this.state.pickerValue = value;
-    }
-
-    @Watch('visible')
-    public visibleChanged(value: boolean) {
-      this.setVisibleState(value);
-    }
-
-    public onPickerChange(pickerValue) {
-      if (this.state.pickerValue !== pickerValue) {
-        this.state.pickerValue = pickerValue;
-        const {picker, pickerValueChangeProp} = this;
-        if (picker && picker.props[pickerValueChangeProp!]) {
-          picker.props[pickerValueChangeProp!](pickerValue);
+      const onPickerChange = (pickerValue) => {
+        if (state.pickerValue !== pickerValue) {
+          state.pickerValue = pickerValue;
+          const {pickerValueChangeProp} = props;
+          if (picker && picker.props[pickerValueChangeProp!]) {
+            picker.props[pickerValueChangeProp!](pickerValue);
+          }
         }
-      }
-    }
-
-    public saveRef(picker) {
-      this.picker = picker;
-    }
-
-    public setVisibleState(visible) {
-      this.state.visible = visible;
-      if (!visible) {
-        this.state.pickerValue = null;
-      }
-    }
-
-    public fireVisibleChange(visible) {
-      if (this.state.visible !== visible) {
-        this.setVisibleState(visible);
-        this.$emit('visible-change', visible);
-        this.$emit('update:visible', visible);
-      }
-    }
-
-    public onTriggerClick(e) {
-      const child: any = this.$slots.default;
-      const childProps = child.props || {};
-      if (childProps[this.triggerType!]) {
-        childProps[this.triggerType!](e);
-      }
-      this.fireVisibleChange(!this.state.visible);
-    }
-
-    public onOk() {
-      this.$emit('ok');
-      this.fireVisibleChange(false);
-    }
-
-    public getContent() {
-      if (this.$slots.picker) {
-        const picker = this.$slots.picker[0];
-        let {pickerValue} = this.state;
-        if (pickerValue === null) {
-          pickerValue = this.value;
+      };
+      const saveRef = (picker) => {
+        picker.value = picker;
+      };
+      const setVisibleState = (visible) => {
+        state.visible = visible;
+        if (!visible) {
+          state.pickerValue = null;
         }
-        setProps(this.picker, ({
-          [this.pickerValueProp!]: pickerValue,
-          [this.pickerValueChangeProp]: this.onPickerChange
-        }));
-        picker.data.ref = 'picker';
-        return picker;
-      }
-      if (this.picker) {
-        let {pickerValue} = this.state;
-        if (pickerValue === null) {
-          pickerValue = this.value;
+      };
+      const fireVisibleChange = (visible) => {
+        if (state.visible !== visible) {
+          setVisibleState(visible);
+          emit('visible-change', visible);
+          emit('update:visible', visible);
         }
-        return cloneElement(this.picker, ({
-          [this.pickerValueProp!]: pickerValue,
-          [this.pickerValueChangeProp]: this.onPickerChange,
-          ref: this.saveRef
-        }));
-      } else {
-        return this.content;
-      }
-    }
+      };
+      const onTriggerClick = (e) => {
+        const child: any = slots.default();
+        const childProps = child.props || {};
+        if (childProps[props.triggerType!]) {
+          childProps[props.triggerType!](e);
+        }
+        fireVisibleChange(!state.visible);
+      };
+      const onOk = () => {
+        emit('ok');
+        fireVisibleChange(false);
+      };
+      const getContent = () => {
+        if (slots.picker) {
+          const localPicker: VNode = slots.picker()[0];
+          let {pickerValue} = state;
+          if (pickerValue === null) {
+            pickerValue = props.value;
+          }
+          setProps(picker.value, ({
+            [props.pickerValueProp!]: pickerValue,
+            [props.pickerValueChangeProp]: onPickerChange
+          }));
 
-    public onDismiss() {
-      this.fireVisibleChange(false);
-      this.$emit('dismiss');
-    }
+          // localPicker.ref = 'picker';
+          return localPicker;
+        }
+        if (picker.value) {
+          let {pickerValue} = state;
+          if (pickerValue === null) {
+            pickerValue = props.value;
+          }
+          return cloneElement(picker.value, ({
+            [props.pickerValueProp!]: pickerValue,
+            [props.pickerValueChangeProp]: onPickerChange,
+            ref: saveRef
+          }));
+        } else {
+          return props.content;
+        }
+      };
+      const onDismiss = () => {
+        fireVisibleChange(false);
+        emit('dismiss');
+      };
+      const hide = () => {
+        fireVisibleChange(false);
+        emit('hide');
+      };
 
-    public hide() {
-      this.fireVisibleChange(false);
-      this.$emit('hide');
-    }
-
-    public render() {
+      return {
+        getContent, onOk, hide, onDismiss, state,
+        onTriggerClick
+      };
+    },
+    render() {
       const props = this.$props;
-      const children = this.$slots.default;
+      const children = this.$slots.default();
       if (!children) {
-        return getModal(this.$createElement, props, this.state.visible, {
+        return getModal(props, this.state.visible, {
           getContent: this.getContent,
           onOk: this.onOk,
           hide: this.hide,
@@ -128,20 +123,18 @@ export default function PopupMixin(getModal, newProps) {
           });
         });
       }
-      const modal = getModal(this.$createElement, props, this.state.visible, {
+      const modal = getModal(props, this.state.visible, {
         getContent: this.getContent,
         onOk: this.onOk,
         hide: this.hide,
         onDismiss: this.onDismiss
       });
       return (
-          <div style={props.wrapStyle}>
-            {children}
-            {modal}
-          </div>
+        <div style={props.wrapStyle}>
+          {children}
+          {modal}
+        </div>
       );
     }
-  }
-
-  return PopupMixin;
+  });
 }

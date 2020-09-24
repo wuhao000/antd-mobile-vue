@@ -1,6 +1,4 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {PropType} from 'vue';
 import defaultLocale from './locale/zh_CN';
 
 const DATE = 'date';
@@ -28,66 +26,55 @@ interface IDatePickerProps {
   use12Hours?: boolean;
 }
 
-@Component({
-  name: 'DatePickerProps'
-})
-class DatePickerProps extends Vue<IDatePickerProps> {
-  @Prop({})
-  public date?: any;
-  @Prop({default: () => new Date()})
-  public defaultDate?: any;
-  @Prop({})
-  public minDate?: any;
-  @Prop({})
-  public maxDate?: any;
-  @Prop({type: Number})
-  public minHour?: number;
-  @Prop({type: Number})
-  public maxHour?: number;
-  @Prop({type: Number})
-  public minMinute?: number;
-  @Prop({type: Number})
-  public maxMinute?: number;
-  @Prop({
-    type: String,
+export default {
+  date: {type: Date as PropType<Date>},
+  defaultDate: {
+    type: Date as PropType<Date>,
+    default: () => new Date()
+  },
+  minDate: {},
+  maxDate: {},
+  minHour: {
+    type: Number as PropType<number>
+  },
+  maxHour: {
+    type: Number as PropType<number>
+  },
+  minMinute: {
+    type: Number as PropType<number>
+  },
+  maxMinute: {
+    type: Number as PropType<number>
+  },
+  mode: {
+    type: String as PropType<string>,
     default: DATE
-  })
-  public mode?: string;
-  @Prop({
-    type: Boolean,
+  },
+  disabled: {
+    type: Boolean as PropType<boolean>,
     default: false
-  })
-  public disabled?: boolean;
-  @Prop({default: defaultLocale})
-  public locale?: any;
-  @Prop({
-    type: Number,
+  },
+  locale: {
+    default: defaultLocale
+  },
+  minuteStep: {
+    type: Number as PropType<number>,
     default: 1
-  })
-  public minuteStep?: number;
-  @Prop({})
-  public formatMonth?: (month: number, date?: any) => any;
-  @Prop({})
-  public formatDay?: (day: number, date?: any) => any;
-  @Prop({})
-  public itemStyle?: any;
-  @Prop({
-    type: String,
+  },
+  formatMonth: {type: Function as PropType<(index: number, date: Date) => any>},
+  formatDay: {type: Function as PropType<(index: number, date: Date) => any>},
+  itemStyle: {type: Function as PropType<any>},
+  prefixCls: {
+    type: String as PropType<string>,
     default: 'rmc-date-picker'
-  })
-  public prefixCls?: string;
-  @Prop({})
-  public rootNativeProps?: {};
-  @Prop({
-    type: String,
+  },
+  rootNativeProps: {},
+  pickerPrefixCls: {
+    type: String as PropType<string>,
     default: 'rmc-picker'
-  })
-  public pickerPrefixCls?: string;
-  @Prop({
-    type: Boolean,
+  },
+  use12Hours: {
+    type: Boolean as PropType<boolean>,
     default: false
-  })
-  public use12Hours?: boolean;
-}
-
-export default DatePickerProps;
+  }
+};

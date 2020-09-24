@@ -1,99 +1,91 @@
+import {useEmitter} from '@/packages/mixins/emitter';
 import AsyncValidator, {ValidateRule} from 'async-validator';
-import {Options} from 'vue-class-component';
-import Emitter from './emitter';
+import {computed, getCurrentInstance, inject, nextTick, PropType, Ref, ref, watch} from 'vue';
 import {getPropByPath} from './utils';
 
 const noop = function noop(a?, b?) {
 };
 
-@Options({
-  name: 'FormComponent',
-  props: {
-    prefixCls: {type: String},
-    disabled: {type: Boolean},
-    error: {type: Boolean, default: false},
-    errorMessage: {type: String},
-    prop: {type: String},
-    editable: {type: Boolean, default: true},
-    required: {type: Boolean, default: false},
-    rules: {type: Array},
-    value: {},
-    errorDisplayType: String
-  },
-  inject: {
-    list: {from: 'list', default: undefined}
-  },
-  watch: {
-    errorMessage(errorMessage) {
-      this.currentErrorMessage = errorMessage;
-    },
-    value(value) {
-      if (this.currentValue !== value) {
-        this.currentValue = value;
-      }
-    },
-    currentValue(currentValue: number[]) {
-      this.$emit('input', currentValue);
-      this.$emit('change', currentValue);
-    }
-  }
-})
-export default class FormComponent extends Emitter {
+export const formComponentProps = {
   /**
    * class 前缀
    */
-  public prefixCls?: string;
-  public disabled: boolean;
-  public error: boolean;
-  public errorMessage: string;
-  // @ts-ignore
-  public currentErrorMessage = this.errorMessage;
-  public list: any;
-  public prop: string;
-  public editable: boolean;
+  prefixCls: {
+    type: String as PropType<string>
+  },
+  disabled: {
+    type: Boolean as PropType<boolean>
+  },
+  error: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  errorMessage: {
+    type: String as PropType<string>
+  },
+  prop: {
+    type: String as PropType<string>
+  },
+  editable: {
+    type: Boolean as PropType<boolean>,
+    default: true
+  },
   /**
    * 是否必须
    */
-  public required: boolean;
-  public rules: ValidateRule[];
-  public validateStatus: '' | 'success' | 'warning' | 'error' | 'validating' = '';
-  public value: any;
-  public errorDisplayType: 'toast' | 'popover' | 'text' | undefined;
-  // @ts-ignore
-  public currentValue = this.value;
-  private validateDisabled: boolean = true;
-  private isCurrentError: boolean = false;
-
-  get fieldValue() {
-    return this.currentValue;
+  required: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  rules: {
+    type: Array as PropType<ValidateRule[]>
+  },
+  value: {},
+  errorDisplayType: {
+    type: String as PropType<'toast' | 'popover' | 'text' | undefined>
   }
-
-  get isDisabled() {
-    let disabled = this.disabled;
-    if (this.list) {
+};
+export const useFormComponent = (props, {emit}) => {
+  const {dispatch} = useEmitter(getCurrentInstance());
+  const currentErrorMessage = ref(props.errorMessage);
+  const list: any = inject('list');
+  const validateStatus: Ref<'' | 'success' | 'warning' | 'error' | 'validating'> = ref('');
+  const currentValue = ref(props.value);
+  const validateDisabled: Ref<boolean> = ref(true);
+  const isCurrentError: Ref<boolean> = ref(false);
+  watch(() => props.errorMessage, (errorMessage: string) => {
+    currentErrorMessage.value = errorMessage;
+  });
+  watch(() => props.value, (value: any) => {
+    if (currentValue.value !== value) {
+      currentValue.value = value;
+    }
+  });
+  watch(() => currentValue.value, (currentValue) => {
+    emit('input', currentValue);
+    emit('change', currentValue);
+  });
+  const fieldValue = computed(() => {
+    return currentValue.value;
+  });
+  const isDisabled = computed(() => {
+    let disabled = props.disabled;
+    if (list.value) {
       if (!disabled) {
-        disabled = this.list.disabled;
+        disabled = list.value.disabled;
       }
     }
     return disabled;
-  }
-
-  get isReadonly() {
-    let isReadonly = !this.editable;
-    if (this.list && !isReadonly) {
-      isReadonly = !this.list.editable;
+  });
+  const isReadonly = computed(() => {
+    let isReadonly = !props.editable;
+    if (list.value && !isReadonly) {
+      isReadonly = !list.value.editable;
     }
     return isReadonly;
-  }
-
-  public created() {
-    if (this.list) {
-      this.dispatch('DForm', 'd.form.addField', [this]);
-    }
-  }
-
-  public getFilteredRule(trigger) {
-    const rules = this.getRules();
+  });
+  const getFilteredRule = (trigger) => {
+    const rules = getRules();
     return rules.filter(rule => {
       if (!rule.trigger || trigger === '') {
         return true;
@@ -104,59 +96,62 @@ export default class FormComponent extends Emitter {
         return rule.trigger === trigger;
       }
     }).map(rule => Object.assign({}, rule));
-  }
-
-  public getRules(): ValidateRule[] {
-    let formRules: any = this.list && this.list.rules;
-    const prop = getPropByPath(formRules, this.prop || '');
-    formRules = formRules ? (prop.o[this.prop || ''] || prop.v) : [];
-    const selfRules = this.rules;
-    let requiredRule = this.required !== undefined ? {required: this.required} : [];
+  };
+  const getRules = () => {
+    let formRules: any = list.value && list.value.rules;
+    const prop = getPropByPath(formRules, props.prop || '');
+    formRules = formRules ? (prop.o[props.prop || ''] || prop.v) : [];
+    const selfRules = props.rules;
+    let requiredRule = props.required !== undefined ? {required: props.required} : [];
     if ((formRules && formRules.some(rule => rule.required !== undefined))
       || (selfRules && selfRules.some(rule => rule.required !== undefined))) {
       requiredRule = [];
     }
     return [].concat(selfRules || formRules || []).concat(requiredRule);
-  }
-
-  public onFieldBlur() {
-  }
-
-  public onFieldChange() {
-    if (this.validateDisabled) {
-      this.validateDisabled = false;
-      return;
+  };
+  const onFieldBlur = () => {
+  };
+  const onFieldChange = () => {
+    if (validateDisabled.value) {
+      validateDisabled.value = false;
     }
-  }
-
-  public validate(trigger, callback = noop) {
-    this.$nextTick(() => {
-      this.validateDisabled = false;
-      const rules = this.getFilteredRule(trigger);
-      if ((!rules || rules.length === 0) && this.required === undefined) {
+  };
+  const validate = (trigger, callback = noop) => {
+    nextTick(() => {
+      validateDisabled.value = false;
+      const rules = getFilteredRule(trigger);
+      if ((!rules || rules.length === 0) && props.required === undefined) {
         callback();
         return true;
       }
-      this.validateStatus = 'validating';
+      validateStatus.value = 'validating';
       const descriptor = {};
       if (rules && rules.length > 0) {
         rules.forEach(rule => {
           delete rule.trigger;
         });
       }
-      descriptor[this.prop] = rules;
+      descriptor[props.prop] = rules;
       const validator = new AsyncValidator(descriptor);
       const model = {
-        [this.prop]: this.fieldValue
+        [props.prop]: fieldValue.value
       };
       validator.validate(model, {firstFields: true}, (errors, invalidFields) => {
-        this.validateStatus = !errors ? 'success' : 'error';
-        this.isCurrentError = this.validateStatus === 'error';
-        this.currentErrorMessage = errors ? errors[0].message : '';
-        callback(this.currentErrorMessage, invalidFields);
-        this.$emit('validate', !errors, errors);
-        this.list && this.list.$emit('validate', this.prop, !errors, this.currentErrorMessage || null);
+        validateStatus.value = !errors ? 'success' : 'error';
+        isCurrentError.value = validateStatus.value === 'error';
+        currentErrorMessage.value = errors ? errors[0].message : '';
+        callback(currentErrorMessage.value, invalidFields);
+        emit('validate', !errors, errors);
+        list.value && list.value.$emit('validate', props.prop, !errors, currentErrorMessage.value || null);
       });
     });
+  };
+  {
+    if (list.value) {
+      dispatch('DForm', 'd.form.addField', [this]);
+    }
   }
-}
+  return {
+    currentValue, onFieldChange, validate, onFieldBlur, isReadonly, isDisabled
+  };
+};

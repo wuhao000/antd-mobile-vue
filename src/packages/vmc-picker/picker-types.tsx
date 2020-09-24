@@ -1,24 +1,20 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {PropType} from 'vue';
 
-@Component({
-  name: 'PickerProps'
-})
-export class PickerProps extends Vue {
-  @Prop({type: Boolean, default: false})
-  public disabled?: boolean;
-  @Prop()
-  public selectedValue?: any;
-  @Prop()
-  public itemStyle?: any;
+
+export default {
+  disabled: {
+    type: Boolean as PropType<boolean>,
+    default: false
+  },
+  selectedValue: {},
+  itemStyle: {type: Object as PropType<object>},
   /** web only */
-  @Prop()
-  public prefixCls?: string;
-  @Prop()
-  public indicatorStyle?: any;
-  @Prop()
-  public indicatorClassName?: string;
-  @Prop()
-  public defaultSelectedValue?: any;
-}
+  prefixCls: {
+    type: String as PropType<string>
+  },
+  indicatorStyle: {},
+  indicatorClassName: {
+    type: String as PropType<string>
+  },
+  defaultSelectedValue: {}
+};

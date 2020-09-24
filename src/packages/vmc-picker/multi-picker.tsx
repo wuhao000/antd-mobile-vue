@@ -1,22 +1,24 @@
-import {MultiPickerProps} from '../vmc-picker/multi-picker-props';
 import classnames from 'classnames';
-
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent, PropType} from 'vue';
 import {setListeners, setProps} from '../utils/vnode';
+
 import MultiPickerMixin from './multi-picker-mixin';
+import MultiPickerProps from './multi-picker-props';
 
-@Component({name: 'MultiPicker'})
-class MultiPicker extends MultiPickerProps {
-  @Prop()
-  public getValue: any;
-
-  public render(): any {
+const MultiPicker = defineComponent({
+  name: 'MultiPicker',
+  props: {
+    ...MultiPickerProps,
+    getValue: {
+      type: Function as PropType<() => any>
+    }
+  },
+  render() {
     const {
       prefixCls
-    } = this.$props;
+    } = this;
     const selectedValue = this.getValue();
-    const colElements = this.$slots.default.map((col: any, i) => {
+    const colElements = this.$slots.default().map((col: any, i) => {
       setProps(col, {
         selectedValue: selectedValue[i]
       });
@@ -36,6 +38,6 @@ class MultiPicker extends MultiPickerProps {
       </div>
     );
   }
-}
+});
 
-export default MultiPickerMixin(MultiPicker);
+export default MultiPickerMixin(MultiPicker) as any;

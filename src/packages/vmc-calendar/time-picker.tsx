@@ -1,74 +1,67 @@
-import Vue from 'vue';
+import {watch, computed, defineComponent, PropType} from 'vue';
 import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
 import DateTimePicker from '../vmc-date-picker';
 import {Locale} from './data-types';
 
 export const MIN_DATE = new Date(0, 0, 0, 0, 0);
 export const MAX_DATE = new Date(9999, 11, 31, 23, 59, 59);
 
-@Component({
-  name: 'TimePicker'
-})
-class TimePicker extends Vue {
-  @Prop()
-  public locale: Locale;
-  @Prop(String)
-  public prefixCls?: string;
-  @Prop(String)
-  public pickerPrefixCls?: string;
-  @Prop(String)
-  public title?: string;
-  @Prop(Date)
-  public defaultValue?: Date;
-  @Prop(Date)
-  public value?: Date;
-  @Prop({
-    type: Date, default: () => {
-      return MIN_DATE;
-    }
-  })
-  public minDate?: Date;
-  @Prop({
-    type: Date, default: () => {
-      return MAX_DATE;
-    }
-  })
-  public maxDate?: Date;
-  @Prop()
-  public clientHeight?: number;
+const TimePicker = defineComponent({
+  name: 'TimePicker',
+  props: {
+    locale: {},
+    prefixCls: String,
+    pickerPrefixCls: String,
+    title: String,
+    defaultValue: Date as PropType<Date>,
+    value: Date as PropType<Date>,
+    minDate: {
+      type: Date as PropType<Date>, default: () => {
+        return MIN_DATE;
+      }
+    },
+    maxDate: {
+      type: Date as PropType<Date>, default: () => {
+        return MAX_DATE;
+      }
+    },
+    clientHeight: {type: Number as PropType<number>}
+  },
+  setup(props, {emit}) {
 
-  public onDateChange(date: Date) {
-    this.$emit('change', date);
-  }
 
-  public getMinTime(date?: Date) {
-    const minDate = this.minDate as Date;
-    if (!date ||
-      date.getFullYear() > minDate.getFullYear() ||
-      date.getMonth() > minDate.getMonth() ||
-      date.getDate() > minDate.getDate()
-    ) {
-      return MIN_DATE;
-    }
-    return minDate;
-  }
-
-  public getMaxTime(date?: Date) {
-    const maxDate = this.maxDate as Date;
-    if (!date ||
-      date.getFullYear() < maxDate.getFullYear() ||
-      date.getMonth() < maxDate.getMonth() ||
-      date.getDate() < maxDate.getDate()
-    ) {
-      return MAX_DATE;
-    }
-    return maxDate;
-  }
-
-  public render() {
-    const {locale, title, value, defaultValue, prefixCls, pickerPrefixCls, clientHeight} = this.$props;
-    const date = value || defaultValue || undefined;
+    const onDateChange = (date: Date) => {
+      emit('change', date);
+    };
+    const getMinTime = (date?: Date) => {
+      const minDate = props.minDate;
+      if (!date ||
+        date.getFullYear() > minDate.getFullYear() ||
+        date.getMonth() > minDate.getMonth() ||
+        date.getDate() > minDate.getDate()
+      ) {
+        return MIN_DATE;
+      }
+      return minDate;
+    };
+    const getMaxTime = (date?: Date) => {
+      const maxDate = props.maxDate as Date;
+      if (!date ||
+        date.getFullYear() < maxDate.getFullYear() ||
+        date.getMonth() < maxDate.getMonth() ||
+        date.getDate() < maxDate.getDate()
+      ) {
+        return MAX_DATE;
+      }
+      return maxDate;
+    };
+    return {
+      getMinTime,getMaxTime,onDateChange
+    };
+  },
+  render() {
+    const {locale, title, value, defaultValue, prefixCls, pickerPrefixCls, clientHeight} = this;
+    const date: Date = value || defaultValue || undefined;
     const height = (clientHeight && clientHeight * 3 / 8 - 52) || Number.POSITIVE_INFINITY;
 
     return (
@@ -95,5 +88,5 @@ class TimePicker extends Vue {
       </div>
     );
   }
-}
+});
 export default TimePicker as any;

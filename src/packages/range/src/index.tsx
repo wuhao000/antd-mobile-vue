@@ -1,13 +1,12 @@
-import FormComponent from '../../mixins/form-component';
-import {Options, Vue} from 'vue-class-component';
+import {useFormComponent} from '../../mixins/form-component';
 import RcRange from 'ant-design-vue/lib/vc-slider/src/Range';
-import {VNode} from 'vue';
+import {defineComponent, PropType} from 'vue';
 
-@Options({
+const Range = defineComponent({
   name: 'Range',
   props: {
     prefixCls: {
-      type: String,
+      type: String as PropType<string>,
       default: 'am-slider'
     },
     handleStyle: {},
@@ -16,39 +15,32 @@ import {VNode} from 'vue';
     onChange: {},
     onAfterChange: {},
     tipFormatter: {},
-    min: {type: Number},
-    max: {type: Number},
-    step: {type: Number}
-  }
-})
-
-class Range extends FormComponent {
-  public prefixCls?: string;
-  public handleStyle?: any;
-  public trackStyle?: any;
-  public railStyle?: any;
-  public onChange?: (value?: number) => void;
-  public onAfterChange?: (value?: number) => void;
-  public tipFormatter?: ((value?: number) => VNode);
-  public min?: number;
-  public max?: number;
-  public step?: number;
-  public static install: (Vue) => void;
-
-  public render(): any {
-    const props = {
-      ...this.$props,
-      value: this.currentValue,
-      onChange: (v) => {
-        this.currentValue = v;
-      }
+    min: {
+      type: Number as PropType<number>
+    },
+    max: {
+      type: Number as PropType<number>
+    },
+    step: {
+      type: Number as PropType<number>
     }
+  },
+  isntall: null,
+  setup(props, ctx) {
+    const {currentValue} = useFormComponent(props, ctx);
+    return {currentValue};
+  },
+  render() {
     return (
       <div class={`${this.prefixCls}-wrapper`}>
-        <RcRange {...props}/>
+        <RcRange props={this.$props}
+                 value={this.currentValue}
+                 onChange={(v) => {
+                   this.currentValue = v;
+                 }}/>
       </div>
     );
   }
-}
+});
 
 export default Range as any;

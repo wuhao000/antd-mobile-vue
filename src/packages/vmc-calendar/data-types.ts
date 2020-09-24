@@ -1,5 +1,4 @@
 import {VNode} from 'vue';
-import SingleMonth from './date/single-month';
 
 export enum SelectType {
   None,
@@ -42,7 +41,7 @@ export interface ExtraData {
 
 export interface MonthData {
   component?: VNode;
-  componentRef?: SingleMonth;
+  componentRef?: any;
   firstDate: Date;
   height?: number;
   lastDate: Date;

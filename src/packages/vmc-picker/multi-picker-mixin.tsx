@@ -1,72 +1,62 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent, PropType} from 'vue';
 
 export default function MultiPickerMixin(ComposedComponent) {
-  @Component({
-    name: 'MultiPickerMixin'
-  })
-  class MultiPickerMixin extends Vue {
-    @Prop()
-    public prefixCls?: string;
-    @Prop()
-    public selectedValue: any;
-
-    public getValue() {
-      const {selectedValue} = this;
-      if (selectedValue && selectedValue.length) {
-        return selectedValue;
-      } else {
-        if (!this.$slots.default) {
-          return [];
+  const MultiPickerMixin = defineComponent({
+    name: 'MultiPickerMixin',
+    props: {
+      prefixCls: {},
+      selectedValue: {type: Array as PropType<any[]>}
+    },
+    setup(props, {slots, emit}) {
+      const getValue = () => {
+        const {selectedValue} = props;
+        if (selectedValue && selectedValue.length) {
+          return selectedValue;
+        } else {
+          if (!slots.default) {
+            return [];
+          }
+          return slots.default().map((c: any) => {
+            const cc: any = c.$children;
+            return cc && cc[0] && cc[0].props.value;
+          });
         }
-        return this.$slots.default.map((c: any) => {
-          const cc: any = c.$children;
-          return cc && cc[0] && cc[0].props.value;
+      };
+      const onChange = (i, v, cb) => {
+        const value = getValue().concat();
+        value[i] = v;
+        if (cb) {
+          cb(value, i);
+        }
+      };
+      const onValueChange = (i, v) => {
+        onChange(i, v, (...args) => {
+          emit('input', ...args);
         });
-      }
-    }
-
-    public onChange(i, v, cb) {
-      const value = this.getValue().concat();
-      value[i] = v;
-      if (cb) {
-        cb(value, i);
-      }
-    }
-
-    public onValueChange(i, v) {
-      this.onChange(i, v, (...args) => {
-        this.$emit('input', ...args);
-      });
-      this.$emit('value-change', i, v);
-    }
-
-    public onScrollChange(i, v) {
-      this.onChange(i, v, (...args) => {
-        this.$emit('scroll-change', ...args);
-      });
-    }
-
-    public render() {
+        emit('value-change', i, v);
+      };
+      const onScrollChange = (i, v) => {
+        onChange(i, v, (...args) => {
+          emit('scroll-change', ...args);
+        });
+      };
+      return {getValue, onValueChange, onScrollChange};
+    },
+    render() {
       return (
         <ComposedComponent
-          attrs={
-            {
+          {
+            ...{
               ...this.$props,
-              getValue: this.getValue
+              getValue: this.getValue,
+              'onUpdate:value': this.onValueChange,
+              onScrollChange: this.onScrollChange
             }
           }
-          on={
-            {
-              input: this.onValueChange,
-              scrollChange: this.onScrollChange
-            }
-          }
-        >{this.$slots.default}</ComposedComponent>
+        >{this.$slots.default()}</ComposedComponent>
       );
     }
-  }
+  });
 
   return MultiPickerMixin;
 }

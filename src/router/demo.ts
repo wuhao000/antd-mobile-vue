@@ -43,4 +43,12 @@ export default [{
   path: 'm-badge',
   name: 'm-badge',
   component: () => import('@/generated/badge/demo.vue')
+}, {
+  path: 'm-wing-blank',
+  name: 'm-wing-blank',
+  component: () => import('@/generated/wing-blank/demo.vue')
+}, {
+  path: 'm-white-space',
+  name: 'm-white-space',
+  component: () => import('@/generated/white-space/demo.vue')
 }];

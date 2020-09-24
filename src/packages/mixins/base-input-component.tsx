@@ -1,29 +1,29 @@
 import {useSimpleFormComponent} from '@/packages/mixins/simple-form-component';
-import {mixins, Options} from 'vue-class-component';
-import PureInputComponent from './pure-input-component';
+import {computed} from 'vue';
+import {usePureInputComponent} from './pure-input-component';
 
-@Options({
-  name: 'BaseFormComponent',
-  setup(props) {
-    const {isReadonly, componentSize, isDisabled} = useSimpleFormComponent(props);
-    return {isReadonly, componentSize, isDisabled};
-  }
-})
-export default class BaseFormComponent extends PureInputComponent {
-
-  public isDisabled;
-  public isReadonly;
-  public componentSize;
-
-  get props() {
-    return {
-      ...this.getSlotProps(),
-      ...this.$attrs,
-      ...this.$props,
-      ...this.getProps(),
-      disabled: this.isDisabled,
-      readOnly: this.isReadonly,
-      visible: this.stateValue
-    };
-  }
-}
+export const useBaseInputComponent = (props, {emit, attrs, slots}) => {
+  const {} = usePureInputComponent(props, {emit, attrs});
+  const {isReadonly, componentSize, isDisabled} = useSimpleFormComponent(props);
+  const {getSlotProps, cssStyle, listeners, getDefaultSlot, getProps, stateValue} = usePureInputComponent(props, {emit, attrs});
+  return {
+    isReadonly,
+    componentSize,
+    isDisabled,
+    getDefaultSlot,
+    slots,
+    stateValue,
+    listeners, cssStyle,
+    props: computed(() => {
+      return {
+        ...getSlotProps(),
+        ...attrs,
+        ...props,
+        ...getProps(),
+        disabled: isDisabled,
+        readOnly: isReadonly,
+        visible: stateValue
+      };
+    })
+  };
+};

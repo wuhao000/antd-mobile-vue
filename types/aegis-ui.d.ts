@@ -8,6 +8,8 @@ import {SwitchComponent} from './components/switch';
 import {InputComponent} from './components/input';
 import {CalendarComponent} from './components/calendar';
 import {BadgeComponent} from './components/badge';
+import {WingBlankComponent} from './components/wing-blank';
+import {WhiteSpaceComponent} from './components/white-space';
 
 export class Accordion extends AccordionComponent {
 }
@@ -28,4 +30,8 @@ export class Input extends InputComponent {
 export class Calendar extends CalendarComponent {
 }
 export class Badge extends BadgeComponent {
+}
+export class WingBlank extends WingBlankComponent {
+}
+export class WhiteSpace extends WhiteSpaceComponent {
 }

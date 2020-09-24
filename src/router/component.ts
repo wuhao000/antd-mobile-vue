@@ -70,4 +70,18 @@ export default [{
     tag: '数据展示'
   },
   component: () => import('@/generated/badge/index.vue')
+}, {
+  path: 'wing-blank',
+  name: 'WingBlank 两翼留白',
+  meta: {
+    tag: '布局'
+  },
+  component: () => import('@/generated/wing-blank/index.vue')
+}, {
+  path: 'white-space',
+  name: 'WhiteSpace 上下留白',
+  meta: {
+    tag: '布局'
+  },
+  component: () => import('@/generated/white-space/index.vue')
 }] as RouteRecordRaw[];

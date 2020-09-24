@@ -239,19 +239,5 @@
     "name": "toast",
     "chineseName": "轻提示",
     "tag": "反馈"
-  },
-  "white-space": {
-    "type": "component",
-    "componentType": "mobile",
-    "name": "white-space",
-    "chineseName": "上下留白",
-    "tag": "布局"
-  },
-  "wing-blank": {
-    "type": "component",
-    "componentType": "mobile",
-    "name": "wing-blank",
-    "chineseName": "两翼留白",
-    "tag": "布局"
   }
 }

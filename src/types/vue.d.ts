@@ -18,6 +18,7 @@ declare module '@vue/runtime-dom' {
     vModel?: any;
     slot?: any;
     ref?: any;
+    class?: any;
     defaultValue?: any;
   }
 }

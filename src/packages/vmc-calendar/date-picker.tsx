@@ -1,153 +1,151 @@
-import {VNode} from 'vue';
-import Component, {mixins} from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {useDatePickerBase} from '@/packages/vmc-calendar/date-picker-base';
+import {computed, defineComponent, ref} from 'vue';
 import {Locale, MonthData} from './data-types';
-import DatePickerBase from './date-picker-base';
+import DatePickerProps from './date-picker-props';
 import SingleMonth from './date/single-month';
 import WeekPanel from './date/week-panel';
 
-@Component({
-  name: 'DatePicker'
-})
-class DatePicker extends mixins(DatePickerBase) {
+const DatePicker = defineComponent({
+  name: 'DatePicker',
+  props: {
+    displayMode: {type: Boolean, default: false},
+    ...DatePickerProps
+  },
+  setup(props, {emit}) {
+    const {genMonthData, updateFlag, visibleMonth, createOnScroll, onCellClick, canLoadPrev, state} = useDatePickerBase(props, {emit});
+    const transform = ref('');
+    const wrapper = ref(null);
+    const panel = ref(null);
+    const touchHandler = computed(() => {
+      const initDelta = 0;
+      let lastY = 0;
+      let delta = initDelta;
+      const onFinish = () => {
+        if (delta > 40 && canLoadPrev()) {
+          genMonthData(state.months[0].firstDate, -1);
 
-  @Prop({type: Boolean, default: false})
-  public displayMode: boolean;
+          visibleMonth.value = state.months.slice(0, props.initialMonths);
 
-  public get panel(): HTMLDivElement {
-    return this.$refs['panel'] as HTMLDivElement;
-  }
-
-  public transform: string = '';
-
-  public genMonthComponent(data?: MonthData): VNode {
-    if (!data) {
-      return;
-    }
-    // @ts-ignore
-    return <SingleMonth key={data.title}
-                        locale={this.locale || {} as Locale}
-                        monthData={data}
-                        displayMode={this.displayMode}
-                        rowSize={this.rowSize}
-                        onCellClick={(day) => {
-                          this.onCellClick(day);
-                        }}
-                        getDateExtra={this.getDateExtra}
-                        callback={(dom) => {
-                          data.componentRef = dom || data.componentRef || undefined;
-                          data.updateLayout = () => {
-                            this.computeHeight(data, dom);
-                          };
-                          data.updateLayout();
-                        }}
-    />;
-  }
-
-  public computeHeight(data: MonthData, singleMonth) {
-    if (singleMonth && singleMonth.wrapperDivDOM) {
-      // preact, ref时dom有可能无height, offsetTop数据。
-      if (!data.height && !singleMonth.wrapperDivDOM.clientHeight) {
-        setTimeout(() => this.computeHeight(data, singleMonth), 500);
-        return;
-      }
-      data.height = singleMonth.wrapperDivDOM.clientHeight || data.height || 0;
-      data.y = singleMonth.wrapperDivDOM.offsetTop || data.y || 0;
-    }
-  }
-
-  public mounted() {
-    const wrapper = this.$refs['wrapper'] as HTMLDivElement;
-    if (wrapper) {
-      this.$emit('layout', wrapper.clientHeight);
-      const scrollHandler = this.createOnScroll();
-      wrapper.onscroll = (evt) => {
-        scrollHandler({
-          client: wrapper.clientHeight,
-          full: (evt.currentTarget as HTMLDivElement).clientHeight,
-          top: (evt.currentTarget as HTMLDivElement).scrollTop
-        });
-      };
-    }
-  }
-
-  get touchHandler() {
-    const initDelta = 0;
-    let lastY = 0;
-    let delta = initDelta;
-
-    return {
-      onTouchStart: (evt) => {
-        lastY = evt.touches[0].screenY;
-        delta = initDelta;
-      },
-      onTouchMove: (evt) => {
-        const ele = evt.currentTarget;
-        const isReachTop = ele.scrollTop === 0;
-
-        if (isReachTop) {
-          delta = evt.touches[0].screenY - lastY;
-          if (delta > 0) {
-            evt.preventDefault();
-            if (delta > 80) {
-              delta = 80;
-            }
-          } else {
-            delta = 0;
-          }
-          this.setTransform(this.panel.style, `translate3d(0,${delta}px,0)`);
-        }
-      },
-
-      onTouchEnd: () => {
-        this.touchHandler.onFinish();
-      },
-
-      onTouchCancel: () => {
-        this.touchHandler.onFinish();
-      },
-
-      onFinish: () => {
-        if (delta > 40 && this.canLoadPrev()) {
-          this.genMonthData(this.state.months[0].firstDate, -1);
-
-          this.visibleMonth = this.state.months.slice(0, this.initialMonths);
-
-          this.state.months.forEach((m) => {
+          state.months.forEach((m) => {
             m.updateLayout && m.updateLayout();
           });
-          this.$forceUpdate();
+          updateFlag.value++;
         }
-        this.setTransform(this.panel.style, `translate3d(0,0,0)`);
-        this.setTransition(this.panel.style, '.3s');
+        setTransform(panel.value.style, `translate3d(0,0,0)`);
+        setTransition(panel.value.style, '.3s');
         setTimeout(() => {
-          this.panel && this.setTransition(this.panel.style, '');
+          panel.value && setTransition(panel.value.style, '');
         }, 300);
+      };
+      return {
+        onTouchStart: (evt) => {
+          lastY = evt.touches[0].screenY;
+          delta = initDelta;
+        },
+        onTouchMove: (evt) => {
+          const ele = evt.currentTarget;
+          const isReachTop = ele.scrollTop === 0;
+
+          if (isReachTop) {
+            delta = evt.touches[0].screenY - lastY;
+            if (delta > 0) {
+              evt.preventDefault();
+              if (delta > 80) {
+                delta = 80;
+              }
+            } else {
+              delta = 0;
+            }
+            setTransform(panel.value.style, `translate3d(0,${delta}px,0)`);
+          }
+        },
+        onTouchEnd: () => {
+          onFinish();
+        },
+        onTouchCancel: () => {
+          onFinish();
+        },
+        onFinish
+      };
+    });
+    const genMonthComponent = (data?: MonthData) => {
+      if (!data) {
+        return;
+      }
+      // @ts-ignore
+      return <SingleMonth key={data.title}
+                          locale={props.locale || {} as Locale}
+                          monthData={data}
+                          displayMode={props.displayMode}
+                          rowSize={props.rowSize}
+                          onCellClick={(day) => {
+                            onCellClick(day);
+                          }}
+                          getDateExtra={props.getDateExtra}
+                          callback={(dom) => {
+                            data.componentRef = dom || data.componentRef || undefined;
+                            data.updateLayout = () => {
+                              computeHeight(data, dom);
+                            };
+                            data.updateLayout();
+                          }}
+      />;
+    };
+    const computeHeight = (data: MonthData, singleMonth) => {
+      if (singleMonth && singleMonth.wrapperDivDOM) {
+        // preact, ref时dom有可能无height, offsetTop数据。
+        if (!data.height && !singleMonth.wrapperDivDOM.clientHeight) {
+          setTimeout(() => computeHeight(data, singleMonth), 500);
+          return;
+        }
+        data.height = singleMonth.wrapperDivDOM.clientHeight || data.height || 0;
+        data.y = singleMonth.wrapperDivDOM.offsetTop || data.y || 0;
       }
     };
-  }
-
-  public setTransform(nodeStyle: CSSStyleDeclaration, value: any) {
-    this.transform = value;
-    nodeStyle.transform = value;
-    nodeStyle.webkitTransform = value;
-  }
-
-  public setTransition(nodeStyle: CSSStyleDeclaration, value: any) {
-    nodeStyle.transition = value;
-    nodeStyle.webkitTransition = value;
-  }
-
-  public render() {
+    const mounted = () => {
+      if (wrapper.value) {
+        emit('layout', wrapper.value.clientHeight);
+        const scrollHandler = createOnScroll();
+        wrapper.value.onscroll = (evt) => {
+          scrollHandler({
+            client: wrapper.value.clientHeight,
+            full: (evt.currentTarget as HTMLDivElement).clientHeight,
+            top: (evt.currentTarget as HTMLDivElement).scrollTop
+          });
+        };
+      }
+    };
+    const setTransform = (nodeStyle: CSSStyleDeclaration, value: any) => {
+      transform.value = value;
+      nodeStyle.transform = value;
+      nodeStyle.webkitTransform = value;
+    };
+    const setTransition = (nodeStyle: CSSStyleDeclaration, value: any) => {
+      nodeStyle.transition = value;
+      nodeStyle.webkitTransition = value;
+    };
+    return {
+      canLoadPrev, state, visibleMonth,
+      setPanel(el) {
+        panel.value = el;
+      },
+      setWrapper(el) {
+        wrapper.value = el;
+      },
+      transform,
+      touchHandler
+    };
+  },
+  render() {
     const {prefixCls = '', locale = {} as Locale} = this;
     const style: any = {
       transform: this.transform
     };
     const wrapperEvents = {
-      touchstart: this.touchHandler.onTouchStart,
-      touchmove: this.touchHandler.onTouchMove,
-      touchend: this.touchHandler.onTouchEnd,
-      touchcancel: this.touchHandler.onTouchCancel
+      onTouchstart: this.touchHandler.onTouchStart,
+      onTouchmove: this.touchHandler.onTouchMove,
+      onTouchend: this.touchHandler.onTouchEnd,
+      onTouchcancel: this.touchHandler.onTouchCancel
     };
     return (
       <div class={`${prefixCls} date-picker`}>
@@ -157,9 +155,9 @@ class DatePicker extends mixins(DatePickerBase) {
                overflowX: 'hidden',
                overflowY: 'visible'
              }}
-             ref="wrapper"
-             on={wrapperEvents}>
-          <div style={style} ref="panel">
+             ref={this.setWrapper}
+             {...wrapperEvents}>
+          <div style={style} ref={this.setPanel}>
             {
               this.canLoadPrev() && <div class="load-tip">{locale.loadPrevMonth}</div>
             }
@@ -179,6 +177,5 @@ class DatePicker extends mixins(DatePickerBase) {
       </div>
     );
   }
-}
-
+});
 export default DatePicker as any;

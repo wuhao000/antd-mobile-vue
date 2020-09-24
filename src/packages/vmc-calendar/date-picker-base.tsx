@@ -1,8 +1,5 @@
-import {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Inject} from 'vue-property-decorator';
+import {inject, reactive, ref, Ref, watch} from 'vue';
 import {CellData, MonthData, SelectType} from './data-types';
-import DatePickerProps from './date-picker-props';
 import {formatDate, genWeekData, getDateWithoutTime, getMonthDate} from './util';
 
 export interface StateType {
@@ -13,109 +10,96 @@ function monthsBetween(minDate: Date, maxDate: Date) {
   return (maxDate.getFullYear() - minDate.getFullYear()) * 12 + maxDate.getMonth() - minDate.getMonth();
 }
 
-@Component({
-  name: 'DatePicker'
-})
-export default class DatePicker extends DatePickerProps {
-
-  @Inject('currentValue')
-  public currentValue: Date[];
-  public visibleMonth: MonthData[] = [];
-  public state = {
+export const useDatePickerBase = (props, {emit}) => {
+  const currentValue: Date[] = inject('currentValue');
+  const visibleMonth: Ref<MonthData[]> = ref([]);
+  const updateFlag = ref(0);
+  const state = reactive({
     months: []
-  };
-
-  public genMonthComponent(data: MonthData): VNode {
+  });
+  const genMonthComponent = (data: MonthData): any => {
     return <div/>;
-  }
-
-  public created() {
-    this.$watch(() => {
-      return {startDate: this.startDate, endDate: this.endDate};
+  };
+  const created = () => {
+    watch(() => {
+      return {startDate: props.startDate, endDate: props.endDate};
     }, (newValue, oldValue) => {
       if (oldValue.startDate) {
-        this.selectDateRange(oldValue.startDate, oldValue.endDate, true);
+        selectDateRange(oldValue.startDate, oldValue.endDate, true);
       }
       if (newValue.startDate) {
-        this.selectDateRange(newValue.startDate, newValue.endDate);
+        selectDateRange(newValue.startDate, newValue.endDate);
       }
     });
-  }
-
-  public getBegin() {
-    if (this.startDate) {
-      return this.startDate;
+  };
+  const getBegin = () => {
+    if (props.startDate) {
+      return props.startDate;
     } else {
-      const min = this.minDate || this.defaultDate;
-      const max = this.maxDate || this.defaultDate;
+      const min = props.minDate || props.defaultDate;
+      const max = props.maxDate || props.defaultDate;
       if (monthsBetween(min, max) < 6) {
-        return this.minDate;
+        return props.minDate;
       } else {
         const date = new Date(max.getTime());
         date.setMonth(date.getMonth() - 6);
         return date;
       }
     }
-  }
-
-  public beforeMount() {
-    const {initialMonths = 6, defaultDate} = this;
-    const begin = this.getBegin();
+  };
+  const beforeMount = () => {
+    const {initialMonths = 6, defaultDate} = props;
+    const begin = getBegin();
     for (let i = 0; i < initialMonths; i++) {
-      this.canLoadNext() && this.genMonthData(begin, i);
+      canLoadNext() && genMonthData(begin, i);
     }
-    this.visibleMonth = [...this.state.months];
-  }
-
-  public canLoadPrev() {
-    const {minDate} = this;
-    return !minDate || this.state.months.length <= 0 || +getMonthDate(minDate).firstDate < +this.state.months[0].firstDate;
-  }
-
-  public canLoadNext() {
-    const {maxDate} = this;
-    return !maxDate || this.state.months.length <= 0
-      || +getMonthDate(maxDate).firstDate > +this.state.months[this.state.months.length - 1].firstDate;
-  }
-
-  public genMonthData(date?: Date, addMonth: number = 0) {
+    visibleMonth.value = [...state.months];
+  };
+  const canLoadPrev = () => {
+    const {minDate} = props;
+    return !minDate || state.months.length <= 0 || +getMonthDate(minDate).firstDate < +state.months[0].firstDate;
+  };
+  const canLoadNext = () => {
+    const {maxDate} = props;
+    return !maxDate || state.months.length <= 0
+      || +getMonthDate(maxDate).firstDate > +state.months[state.months.length - 1].firstDate;
+  };
+  const genMonthData = (date?: Date, addMonth: number = 0) => {
     let copyDate = date;
     if (!copyDate) {
-      copyDate = addMonth >= 0 ? this.state.months[this.state.months.length - 1].firstDate : this.state.months[0].firstDate;
+      copyDate = addMonth >= 0 ? state.months[state.months.length - 1].firstDate : state.months[0].firstDate;
     }
     if (!copyDate) {
       copyDate = new Date();
     }
-    const {locale} = this;
+    const {locale} = props;
     const {firstDate, lastDate} = getMonthDate(copyDate, addMonth);
 
-    const weeks = genWeekData(firstDate, this.minDate, this.maxDate);
-    const title = formatDate(firstDate, locale ? locale.monthTitle : 'yyyy/MM', this.locale);
+    const weeks = genWeekData(firstDate, props.minDate, props.maxDate);
+    const title = formatDate(firstDate, locale ? locale.monthTitle : 'yyyy/MM', props.locale);
     const data = {
       title,
       firstDate,
       lastDate,
       weeks
     } as MonthData;
-    data.component = this.genMonthComponent(data);
+    data.component = genMonthComponent(data);
     if (addMonth >= 0) {
-      this.state.months.push(data);
+      state.months.push(data);
     } else {
-      this.state.months.unshift(data);
+      state.months.unshift(data);
     }
-    const {startDate, endDate} = this;
+    const {startDate, endDate} = props;
     if (startDate) {
-      this.selectDateRange(startDate, endDate);
+      selectDateRange(startDate, endDate);
     }
     return data;
-  }
-
-  public inDate(date: number, tick: number) {
+  };
+  const inDate = (date: number, tick: number) => {
     return date <= tick && tick < date + 24 * 3600000;
-  }
-
-  public selectDateRange(startDate: Date, endDate?: Date, clear = false) {
-    const {getDateExtra, type, onSelectHasDisableDate} = this;
+  };
+  const selectDateRange = (startDate: Date, endDate?: Date, clear = false) => {
+    const {getDateExtra, type, onSelectHasDisableDate} = props;
     let copyEndDate = endDate;
     if (type === 'one') {
       copyEndDate = undefined;
@@ -128,12 +112,12 @@ export default class DatePicker extends DatePickerProps {
     const endMonthDate = endDateTick ? new Date(endDateTick) : getMonthDate(new Date(startDateTick)).lastDate;
     const unuseable: number[] = [];
     let needUpdate = false;
-    this.state.months.filter(m => {
+    state.months.filter(m => {
       return m.firstDate >= startMonthDate && m.firstDate <= endMonthDate;
     }).forEach(m => {
       m.weeks.forEach(w => w.filter(d => {
           if (!endDateTick) {
-            return d.tick && this.inDate(startDateTick, d.tick);
+            return d.tick && inDate(startDateTick, d.tick);
           } else {
             return d.tick && d.tick >= startDateTick && d.tick <= endDateTick;
           }
@@ -143,11 +127,11 @@ export default class DatePicker extends DatePickerProps {
             d.selected = SelectType.None;
           } else {
             const info = getDateExtra && getDateExtra(new Date(d.tick),
-              [...this.currentValue]) || {};
+              [...currentValue]) || {};
             if (d.outOfDate || info.disable) {
               unuseable.push(d.tick);
             }
-            if (this.inDate(startDateTick, d.tick)) {
+            if (inDate(startDateTick, d.tick)) {
               if (type === 'one') {
                 d.selected = SelectType.Single;
               } else if (!endDateTick) {
@@ -157,7 +141,7 @@ export default class DatePicker extends DatePickerProps {
               } else {
                 d.selected = SelectType.All;
               }
-            } else if (this.inDate(endDateTick, d.tick)) {
+            } else if (inDate(endDateTick, d.tick)) {
               d.selected = SelectType.End;
             } else {
               d.selected = SelectType.Middle;
@@ -178,9 +162,8 @@ export default class DatePicker extends DatePickerProps {
         console.warn('Unusable date. You can handle by onSelectHasDisableDate.', unuseable);
       }
     }
-  }
-
-  public computeVisible(clientHeight: number, scrollTop: number) {
+  };
+  const computeVisible = (clientHeight: number, scrollTop: number): boolean => {
     let needUpdate = false;
     const MAX_VIEW_PORT = clientHeight * 2;
     const MIN_VIEW_PORT = clientHeight;
@@ -188,46 +171,45 @@ export default class DatePicker extends DatePickerProps {
     // 大缓冲区外过滤规则
     const filterFunc = (vm: MonthData) => vm.y && vm.height && (vm.y + vm.height > scrollTop - MAX_VIEW_PORT && vm.y < scrollTop + clientHeight + MAX_VIEW_PORT);
 
-    if (this.infiniteOpt && this.visibleMonth.length > 12) {
-      this.visibleMonth = this.visibleMonth.filter(filterFunc).sort((a, b) => +a.firstDate - +b.firstDate);
+    if (props.infiniteOpt && visibleMonth.value.length > 12) {
+      visibleMonth.value = visibleMonth.value.filter(filterFunc).sort((a, b) => +a.firstDate - +b.firstDate);
     }
 
     // 当小缓冲区不满时填充
-    if (this.visibleMonth.length > 0) {
-      const last = this.visibleMonth[this.visibleMonth.length - 1];
+    if (visibleMonth.value.length > 0) {
+      const last = visibleMonth.value[visibleMonth.value.length - 1];
       if (last.y !== undefined && last.height && last.y + last.height < scrollTop + clientHeight + MIN_VIEW_PORT) {
-        const lastIndex = this.state.months.indexOf(last);
+        const lastIndex = state.months.indexOf(last);
         for (let i = 1; i <= 2; i++) {
           const index = lastIndex + i;
-          if (index < this.state.months.length && this.visibleMonth.indexOf(this.state.months[index]) < 0) {
-            this.visibleMonth.push(this.state.months[index]);
+          if (index < state.months.length && visibleMonth.value.indexOf(state.months[index]) < 0) {
+            visibleMonth.value.push(state.months[index]);
           } else {
-            this.canLoadNext() && this.genMonthData(undefined, 1);
+            canLoadNext() && genMonthData(undefined, 1);
           }
         }
         needUpdate = true;
       }
 
-      const first = this.visibleMonth[0];
+      const first = visibleMonth.value[0];
       if (first.y !== undefined && first.height && first.y > scrollTop - MIN_VIEW_PORT) {
-        const firstIndex = this.state.months.indexOf(first);
+        const firstIndex = state.months.indexOf(first);
         for (let i = 1; i <= 2; i++) {
           const index = firstIndex - i;
-          if (index >= 0 && this.visibleMonth.indexOf(this.state.months[index]) < 0) {
-            this.visibleMonth.unshift(this.state.months[index]);
+          if (index >= 0 && visibleMonth.value.indexOf(state.months[index]) < 0) {
+            visibleMonth.value.unshift(state.months[index]);
             needUpdate = true;
           }
         }
       }
-    } else if (this.state.months.length > 0) {
-      this.visibleMonth = this.state.months.filter(filterFunc);
+    } else if (state.months.length > 0) {
+      visibleMonth.value = state.months.filter(filterFunc);
       needUpdate = true;
     }
 
     return needUpdate;
-  }
-
-  public createOnScroll() {
+  };
+  const createOnScroll = () => {
     let timer: any;
     let clientHeight = 0;
     let scrollTop = 0;
@@ -243,17 +225,20 @@ export default class DatePicker extends DatePickerProps {
 
       timer = setTimeout(() => {
         timer = undefined;
-        if (this.computeVisible(clientHeight, scrollTop)) {
-          this.$forceUpdate();
+        if (computeVisible(clientHeight, scrollTop)) {
+          updateFlag.value++;
         }
       }, 64);
     };
-  }
-
-  public onCellClick(day: CellData) {
+  };
+  const onCellClick = (day: CellData) => {
     if (!day.tick) {
       return;
     }
-    this.$emit('cellClick', new Date(day.tick));
-  }
-}
+    emit('cellClick', new Date(day.tick));
+  };
+  return {
+    onCellClick, createOnScroll, visibleMonth,
+    updateFlag, genMonthData, state, canLoadPrev
+  };
+};

@@ -1,7 +1,7 @@
 import Popup from '../popup';
 import PopupMixin from './popup-mixin';
 
-const getModal = (h, props, visible, {getContent, hide, onDismiss, onOk}) => {
+const getModal = (props, visible, {getContent, hide, onDismiss, onOk}) => {
   const content = getContent();
   // @ts-ignore
   return <Popup

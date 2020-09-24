@@ -1,38 +1,49 @@
-import {Options, Vue} from 'vue-class-component';
+import {ComponentInternalInstance} from '@vue/runtime-core';
+import {Subject} from 'rxjs';
+import {inject, provide} from 'vue';
 
-function broadcast(this: any, componentName, eventName, params) {
-  this.$children.forEach(child => {
-    const name = child.$options.componentName;
-    if (name === componentName) {
-      child.$emit.apply(child, [eventName].concat(params));
-    } else {
-      broadcast.apply(child, [componentName, eventName].concat([params]) as any);
-    }
-  });
+interface EmitterContext {
+  component: string;
+  params: Array<any>;
+  instance: ComponentInternalInstance;
 }
 
-@Options({
-  name: 'Emitter'
-})
-class Emitter extends Vue {
-  public dispatch(componentName: string, eventName: any, params?: any[]) {
-    let parent = this.$parent || this.$root;
-    let name = parent.$options.name;
-    while (parent && (!name || name !== componentName)) {
-      parent = parent.$parent;
-      if (parent) {
-        name = parent.$options.name;
+interface Emitter {
+  dispatch(component: string, eventName: any, params?: any[]): void;
+
+  subscribe(event: string, callback): void
+}
+
+export const useEmitter = (instance: ComponentInternalInstance) => {
+  const emitter: Emitter = inject('emitter');
+  if (emitter) {
+    return emitter;
+  } else {
+    const subscribes: { [key: string]: Subject<EmitterContext> } = {};
+    const emitter: Emitter = {
+      subscribe(event: string, callback) {
+        if (!subscribes[event]) {
+          subscribes[event] = new Subject();
+        }
+        subscribes[event].subscribe({
+          next(value: EmitterContext) {
+            let parent = value.instance;
+            while (parent !== undefined && parent !== null && parent.uid !== instance.uid) {
+              parent = parent.parent;
+            }
+            callback(...value.params);
+          }
+        });
+      },
+      dispatch(component: string, eventName: any, params?: any[]) {
+        if (subscribes[eventName]) {
+          subscribes[eventName].next({
+            component, params, instance
+          });
+        }
       }
-    }
-    if (parent) {
-      parent.$emit.apply(parent, params ? [eventName].concat(params) as any : [eventName]);
-    }
+    };
+    provide('emitter', emitter);
+    return emitter;
   }
-
-  public broadcast(componentName, eventName, params) {
-    broadcast.call(this, componentName, eventName, params);
-  }
-}
-
-
-export default Emitter;
+};
