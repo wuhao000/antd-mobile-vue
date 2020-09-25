@@ -1,4 +1,4 @@
-import {defineComponent, inject, onBeforeMount, onMounted, PropType, reactive, Ref, ref, watch} from 'vue';
+import {defineComponent, inject, onMounted, PropType, reactive, Ref, watch} from 'vue';
 import {CellData, ExtraData, Locale, MonthData, SelectType} from '../data-types';
 
 const SingleMonth = defineComponent({
@@ -26,22 +26,9 @@ const SingleMonth = defineComponent({
     }
   },
   setup(props, {emit}) {
-    const currentValue: Date[] = inject('currentValue');
-    const wrapperDivDOM: Ref<HTMLDivElement | null> = ref(null);
+    const currentValue: Ref<Date[]> = inject('currentValue');
     const state = reactive({
-      weekComponents: []
-    });
-    watch(() => props.monthData, (data) => {
-      updateWeeks(data);
-    });
-
-    onBeforeMount(() => {
-      props.monthData.weeks.forEach((week, index) => {
-        genWeek(week, index);
-      });
-    });
-    onMounted(() => {
-      props.callback(this);
+      monthData: props.monthData
     });
     const genWeek = (weeksData: CellData[], index: number) => {
       const {getDateExtra, displayMode, monthData, locale, rowSize} = props;
@@ -49,12 +36,12 @@ const SingleMonth = defineComponent({
       if (rowSize === 'xl') {
         rowCls += ' row-xl';
       }
-      state.weekComponents[index] = (
+      return (
         <div key={index} class={rowCls}>
           {
             weeksData.map((day, dayOfWeek) => {
               const extra = (getDateExtra && getDateExtra(new Date(day.tick),
-                [...currentValue])) || {};
+                [...currentValue.value])) || {};
               let info = extra.info;
               const disable = extra.disable || day.outOfDate;
 
@@ -62,7 +49,6 @@ const SingleMonth = defineComponent({
               let lCls = 'left';
               let rCls = 'right';
               let infoCls = 'info';
-
               if (dayOfWeek === 0 || dayOfWeek === 6) {
                 cls += ' grey';
               }
@@ -171,25 +157,33 @@ const SingleMonth = defineComponent({
       );
     };
     const updateWeeks = (monthData?: MonthData) => {
-      (monthData || props.monthData).weeks.forEach((week, index) => {
-        genWeek(week, index);
+      state.monthData = monthData ?? props.monthData;
+    };
+    watch(() => props.monthData, (data) => {
+      updateWeeks(data);
+    });
+    onMounted(() => {
+      props.callback({
+        updateWeeks
+      });
+    });
+    const renderWeeks = () => {
+      return state.monthData.weeks.map((week, index) => {
+        return genWeek(week, index);
       });
     };
-    const setWrapper = (dom) => {
-      wrapperDivDOM.value = dom;
-    };
-    return {state, setWrapper};
+    return {state, renderWeeks};
   },
   render() {
     const {title} = this.monthData;
-    const {weekComponents} = this.state;
+    const {renderWeeks} = this;
     return (
-      <div class="single-month" ref={this.setWrapper}>
+      <div class="single-month">
         <div class="month-title">
           {title}
         </div>
         <div class="date">
-          {weekComponents}
+          {renderWeeks()}
         </div>
       </div>
     );

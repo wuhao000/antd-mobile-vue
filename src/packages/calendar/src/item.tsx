@@ -1,8 +1,8 @@
-import {pureInputComponentProps} from '../../mixins/pure-input-component';
-import {simpleFormComponentProps} from '../../mixins/simple-form-component';
 import {defineComponent, PropType, Ref, ref, watch} from 'vue';
 import List from '../../list';
 import {useBaseInputComponent} from '../../mixins/base-input-component';
+import {pureInputComponentProps} from '../../mixins/pure-input-component';
+import {simpleFormComponentProps} from '../../mixins/simple-form-component';
 import Calendar from './index';
 
 const MIN_DATE = new Date(2000, 1, 1, 0, 0, 0);
@@ -93,26 +93,36 @@ export default defineComponent({
     };
   },
   render() {
+    const slots = {
+      default: () => {
+        return [
+          <Calendar {...this.inputProps}
+                    {...this.listeners}
+                    value={this.stateValue}
+                    visible={this.visible}
+                    onClose={this.onClose}
+                    onConfirm={this.onConfirm}
+                    defaultValue={this.currentValue}
+                    slots={this.inputSlots}
+                    style={this.cssStyle}>
+            {this.getDefaultSlot()}
+          </Calendar>,
+          <span>{this.title}</span>
+        ];
+      },
+      extra: () => {
+        return <span>{this.displayValue || this.placeholder}</span>;
+      }
+    };
     return <List.Item text={!!this.displayValue}
                       required={this.required}
                       touchFeedback={true}
                       disabled={this.disabled}
                       arrow="horizontal"
+                      v-slots={slots}
                       title={this.title}
                       onClick={this.onClick}>
-      <Calendar {...this.inputProps}
-                {...this.listeners}
-                value={this.stateValue}
-                visible={this.visible}
-                onClose={this.onClose}
-                onConfirm={this.onConfirm}
-                defaultValue={this.currentValue}
-                slots={this.inputSlots}
-                style={this.cssStyle}>
-        {this.getDefaultSlot()}
-      </Calendar>
-      <span>{this.title}</span>
-      <span slot="extra">{this.displayValue || this.placeholder}</span>
+
     </List.Item>;
   }
 });

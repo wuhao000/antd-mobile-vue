@@ -41,7 +41,9 @@ export interface ExtraData {
 
 export interface MonthData {
   component?: VNode;
-  componentRef?: any;
+  componentRef?: {
+    updateWeeks: (data?: MonthData) => any
+  };
   firstDate: Date;
   height?: number;
   lastDate: Date;

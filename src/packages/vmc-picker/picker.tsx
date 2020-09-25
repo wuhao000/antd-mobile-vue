@@ -1,5 +1,18 @@
 import classNames from 'classnames';
-import {computed, defineComponent, onBeforeUnmount, onMounted, onUpdated, PropType, reactive, ref, Ref, watch} from 'vue';
+import {
+  computed,
+  defineComponent,
+  onBeforeUnmount,
+  onMounted,
+  onUpdated,
+  PropType,
+  reactive,
+  ref,
+  Ref,
+  VNode,
+  watch
+} from 'vue';
+import {unwrapFragment} from '../utils/vue';
 import PickerMixin from './picker-mixin';
 import PickerProps from './picker-types';
 
@@ -93,9 +106,8 @@ const Picker = defineComponent({
       const onFinish = () => {
         isMoving = false;
         let targetY = scrollY;
-
-        const height = (slots.default().length - 1) * itemHeight.value;
-
+        const children = unwrapFragment(slots.default());
+        const height = (children.length - 1) * itemHeight.value;
         let time = .3;
 
         const velocity = Velocity.getVelocity(targetY) * 4;
@@ -132,7 +144,6 @@ const Picker = defineComponent({
         if (scrollDisabled || !isMoving) {
           return;
         }
-
         scrollY = lastY - y + startY;
         Velocity.record(scrollY);
 
@@ -182,13 +193,12 @@ const Picker = defineComponent({
           state.selectedValue = selectedValue;
         }
         emit('update:value', selectedValue);
-        emit('update:value', selectedValue);
       }
     };
     const onScrollChange = () => {
       const top = scrollHandlers.value.getValue();
       if (top >= 0) {
-        const children = slots.default();
+        const children = unwrapFragment(slots.default());
         const index = props.computeChildIndex(top, itemHeight.value, children.length);
         if (scrollValue.value !== index) {
           scrollValue.value = index;
@@ -203,13 +213,6 @@ const Picker = defineComponent({
         props.doScrollingComplete(top, itemHeight.value, fireValueChange);
       }
     };
-    const getValue = () => {
-      if (props.selectedValue !== undefined) {
-        return props.selectedValue;
-      }
-      const children: any = slots.default();
-      return children && children[0] && children[0].props.value;
-    };
     {
       let selectedValueState;
       const {selectedValue, defaultSelectedValue} = props;
@@ -218,7 +221,7 @@ const Picker = defineComponent({
       } else if (defaultSelectedValue !== undefined) {
         selectedValueState = defaultSelectedValue;
       } else {
-        const children: any = slots.default();
+        const children: any = unwrapFragment(slots.default());
         selectedValueState = children && children[0] && children[0].value;
       }
       state.selectedValue = selectedValueState;
@@ -288,11 +291,11 @@ const Picker = defineComponent({
     const {selectedValue} = this.state;
     const itemClassName = `${prefixCls}-item`;
     const selectedItemClassName = `${itemClassName} ${prefixCls}-item-selected`;
-    const map = (item: any) => {
-      const className = item.data && item.data.staticClass || '';
-      const style = item.data && item.data.staticStyle;
-      const value = item.componentOptions.propsData && item.componentOptions.propsData.value;
-      const label = item.componentOptions.propsData && item.componentOptions.propsData.label || item.componentOptions.children;
+    const map = (item: VNode) => {
+      const className = item.props?.class || '';
+      const style = item.props?.style;
+      const value = item.props?.value;
+      const label = item.props?.label || item.props?.children;
       return (
         <div style={{...itemStyle, ...style}}
              class={`${selectedValue === value ? selectedItemClassName : itemClassName} ${className}`}
@@ -301,7 +304,7 @@ const Picker = defineComponent({
         </div>
       );
     };
-    const items = this.$slots.default ? this.$slots.default().map(map) : [];
+    const items = this.$slots.default ? unwrapFragment(this.$slots.default()).map(map) : [];
     const pickerCls = {
       [prefixCls as string]: true
     };

@@ -1,4 +1,5 @@
-import {defineComponent, PropType} from 'vue';
+import {unwrapFragment} from '@/packages/utils/vue';
+import {defineComponent, PropType, VNode} from 'vue';
 
 const PickerItem = defineComponent({
   name: 'PickerItem',
@@ -12,6 +13,7 @@ export default function PickerMixin(ComposedComponent) {
   return defineComponent({
     name: 'PickerMixin',
     props: {
+      value: {},
       disabled: {
         type: Boolean as PropType<boolean>,
         default: false
@@ -27,10 +29,10 @@ export default function PickerMixin(ComposedComponent) {
     setup(props, {slots}) {
       const Item = PickerItem;
       const select = (value, itemHeight, scrollTo) => {
-        const children: any = slots.default();
+        const children: VNode[] = unwrapFragment(slots.default());
         if (children) {
           for (let i = 0, len = children.length; i < len; i++) {
-            if (children[i].componentOptions.propsData.value === value) {
+            if (children[i].props?.value === value) {
               selectByIndex(i, itemHeight, scrollTo);
               return;
             }
@@ -39,7 +41,7 @@ export default function PickerMixin(ComposedComponent) {
         }
       };
       const selectByIndex = (index, itemHeight, zscrollTo) => {
-        if (index < 0 || index >= slots.default().length || !itemHeight) {
+        if (index < 0 || index >= unwrapFragment(slots.default()).length || !itemHeight) {
           return;
         }
         zscrollTo(index * itemHeight);
@@ -49,11 +51,11 @@ export default function PickerMixin(ComposedComponent) {
         return Math.min(index, childrenLength - 1);
       };
       const doScrollingComplete = (top, itemHeight, fireValueChange) => {
-        const children = slots.default();
+        const children: VNode[] = unwrapFragment(slots.default());
         const index = computeChildIndex(top, itemHeight, children.length);
-        const child: any = children[index];
+        const child: VNode = children[index];
         if (child) {
-          fireValueChange(child.componentOptions.propsData.value);
+          fireValueChange(child.props?.value);
         } else if (console.warn) {
           console.warn('child not found', children, index);
         }
@@ -68,6 +70,7 @@ export default function PickerMixin(ComposedComponent) {
         <ComposedComponent {
                              ...{
                                ...this.$props,
+                               ...this.$attrs,
                                doScrollingComplete: this.doScrollingComplete,
                                computeChildIndex: this.computeChildIndex,
                                select: this.select

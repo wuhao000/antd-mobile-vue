@@ -12,7 +12,30 @@ const DatePicker = defineComponent({
     ...DatePickerProps
   },
   setup(props, {emit}) {
-    const {genMonthData, updateFlag, visibleMonth, createOnScroll, onCellClick, canLoadPrev, state} = useDatePickerBase(props, {emit});
+    const genMonthComponent = (data?: MonthData) => {
+      if (!data) {
+        return;
+      }
+      // @ts-ignore
+      return <SingleMonth key={data.title}
+                          locale={props.locale || {} as Locale}
+                          monthData={data}
+                          displayMode={props.displayMode}
+                          rowSize={props.rowSize}
+                          onCellClick={(day) => {
+                            onCellClick(day);
+                          }}
+                          getDateExtra={props.getDateExtra}
+                          callback={(dom: {updateWeeks: (data?: MonthData) => any}) => {
+                            data.componentRef = dom || data.componentRef || undefined;
+                            data.updateLayout = () => {
+                              computeHeight(data, dom);
+                            };
+                            data.updateLayout();
+                          }}
+      />;
+    };
+    const {genMonthData, updateFlag, visibleMonth, createOnScroll, onCellClick, canLoadPrev, state} = useDatePickerBase(props, {emit}, {genMonthComponent});
     const transform = ref('');
     const wrapper = ref(null);
     const panel = ref(null);
@@ -68,29 +91,6 @@ const DatePicker = defineComponent({
         onFinish
       };
     });
-    const genMonthComponent = (data?: MonthData) => {
-      if (!data) {
-        return;
-      }
-      // @ts-ignore
-      return <SingleMonth key={data.title}
-                          locale={props.locale || {} as Locale}
-                          monthData={data}
-                          displayMode={props.displayMode}
-                          rowSize={props.rowSize}
-                          onCellClick={(day) => {
-                            onCellClick(day);
-                          }}
-                          getDateExtra={props.getDateExtra}
-                          callback={(dom) => {
-                            data.componentRef = dom || data.componentRef || undefined;
-                            data.updateLayout = () => {
-                              computeHeight(data, dom);
-                            };
-                            data.updateLayout();
-                          }}
-      />;
-    };
     const computeHeight = (data: MonthData, singleMonth) => {
       if (singleMonth && singleMonth.wrapperDivDOM) {
         // preact, ref时dom有可能无height, offsetTop数据。

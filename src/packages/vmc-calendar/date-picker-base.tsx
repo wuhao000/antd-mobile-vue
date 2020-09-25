@@ -1,4 +1,4 @@
-import {inject, reactive, ref, Ref, watch} from 'vue';
+import {inject, onBeforeMount, reactive, ref, Ref, watch} from 'vue';
 import {CellData, MonthData, SelectType} from './data-types';
 import {formatDate, genWeekData, getDateWithoutTime, getMonthDate} from './util';
 
@@ -10,17 +10,17 @@ function monthsBetween(minDate: Date, maxDate: Date) {
   return (maxDate.getFullYear() - minDate.getFullYear()) * 12 + maxDate.getMonth() - minDate.getMonth();
 }
 
-export const useDatePickerBase = (props, {emit}) => {
-  const currentValue: Date[] = inject('currentValue');
+export const useDatePickerBase = (props, {emit}, {
+  genMonthComponent
+}) => {
+  const currentValue: Ref<Date[]> = inject('currentValue');
   const visibleMonth: Ref<MonthData[]> = ref([]);
   const updateFlag = ref(0);
-  const state = reactive({
+  const state = reactive<{
+    months: MonthData[]
+  }>({
     months: []
   });
-  const genMonthComponent = (data: MonthData): any => {
-    return <div/>;
-  };
-
   const getBegin = () => {
     if (props.startDate) {
       return props.startDate;
@@ -36,14 +36,14 @@ export const useDatePickerBase = (props, {emit}) => {
       }
     }
   };
-  const beforeMount = () => {
-    const {initialMonths = 6, defaultDate} = props;
+  onBeforeMount(() => {
+    const {initialMonths = 6} = props;
     const begin = getBegin();
     for (let i = 0; i < initialMonths; i++) {
       canLoadNext() && genMonthData(begin, i);
     }
     visibleMonth.value = [...state.months];
-  };
+  });
   const canLoadPrev = () => {
     const {minDate} = props;
     return !minDate || state.months.length <= 0 || +getMonthDate(minDate).firstDate < +state.months[0].firstDate;
@@ -116,7 +116,7 @@ export const useDatePickerBase = (props, {emit}) => {
             d.selected = SelectType.None;
           } else {
             const info = getDateExtra && getDateExtra(new Date(d.tick),
-              [...currentValue]) || {};
+              [...currentValue.value]) || {};
             if (d.outOfDate || info.disable) {
               unuseable.push(d.tick);
             }
@@ -141,7 +141,6 @@ export const useDatePickerBase = (props, {emit}) => {
       );
       if (needUpdate && m.componentRef) {
         m.componentRef.updateWeeks();
-        m.componentRef.$forceUpdate();
       }
     });
     if (unuseable.length > 0) {

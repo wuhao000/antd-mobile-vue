@@ -1,36 +1,56 @@
+import {unwrapFragment} from '@/packages/utils/vue';
 import classnames from 'classnames';
-import {defineComponent, PropType} from 'vue';
+import {defineComponent, PropType, ref} from 'vue';
 import {setListeners, setProps} from '../utils/vnode';
 
-import MultiPickerMixin from './multi-picker-mixin';
-import MultiPickerProps from './multi-picker-props';
-
 const MultiPicker = defineComponent({
-  name: 'MultiPicker',
+  name: 'MultiPickerMixin',
   props: {
-    ...MultiPickerProps,
-    getValue: {
-      type: Function as PropType<() => any>
-    }
+    prefixCls: {
+      type: String as PropType<string>
+    },
+    selectedValue: {type: Array as PropType<any[]>}
+  },
+  setup(props, {slots, emit}) {
+    const stateValue = ref(props.selectedValue);
+    const onChange = (i, v, cb) => {
+      const value = stateValue.value.concat();
+      value[i] = v;
+      if (cb) {
+        cb(value, i);
+      }
+    };
+    const onValueChange = (i, v) => {
+      onChange(i, v, (...args) => {
+        emit('update:value', ...args);
+      });
+      emit('value-change', i, v);
+    };
+    const onScrollChange = (i, v) => {
+      onChange(i, v, (...args) => {
+        emit('scroll-change', ...args);
+      });
+    };
+    return {onValueChange, stateValue, onScrollChange};
   },
   render() {
     const {
       prefixCls
     } = this;
-    const selectedValue = this.getValue();
-    const colElements = this.$slots.default().map((col: any, i) => {
+    const selectedValue = this.selectedValue;
+    const colElements = this.$slots.default();
+    unwrapFragment(colElements).forEach((col: any, i) => {
       setProps(col, {
         selectedValue: selectedValue[i]
       });
       setListeners(col, {
-        input: (...args) => {
-          this.$emit('update:value', i, ...args);
+        'onUpdate:value': (value) => {
+          this.onValueChange(i, value);
         },
-        scrollChange: (...args) => {
-          this.$emit('scroll-change', i, ...args);
+        scrollChange: (value) => {
+          this.onScrollChange(i, value);
         }
       });
-      return col;
     });
     return (
       <div class={classnames(prefixCls)}>
@@ -39,5 +59,4 @@ const MultiPicker = defineComponent({
     );
   }
 });
-
-export default MultiPickerMixin(MultiPicker) as any;
+export default MultiPicker as any;

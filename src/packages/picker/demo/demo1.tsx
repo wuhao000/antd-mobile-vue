@@ -84,7 +84,6 @@ export default class PickerExample extends Vue {
   };
 
   public onClick() {
-    console.log(1);
     setTimeout(() => {
       this.state.data = provinceLite;
     }, 120);

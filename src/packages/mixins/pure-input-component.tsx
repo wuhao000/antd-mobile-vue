@@ -1,17 +1,6 @@
 import {computed, defineComponent, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 import {useEmitter} from './emitter';
 
-const hasListener = (instance, listener) => {
-  const listeners = instance.$listeners || {};
-  return Object.keys(listeners).includes(listener);
-};
-
-const hasProp = (instance, prop) => {
-  const $options = instance.$options || {};
-  const propsData = $options.propsData || {};
-  return prop in propsData;
-};
-
 export const usePureInputComponent = (props, {emit, attrs}) => {
   const getInitValue = () => {
     return null;
@@ -32,7 +21,7 @@ export const usePureInputComponent = (props, {emit, attrs}) => {
   const {dispatch} = useEmitter(instance);
   watch(() => stateValue.value, (value) => {
     const val = convertValueBack(value);
-    if (hasProp(this, 'value')) {
+    if (props.value !== undefined) {
       emit('update:value', val);
     }
     emit('change', val);
@@ -123,7 +112,7 @@ export const usePureInputComponent = (props, {emit, attrs}) => {
       val = value.target.value;
     }
     emit('update:value', val);
-    if (!(hasProp(this, 'value') && hasListener(this, 'input'))) {
+    if (props.value === undefined) {
       stateValue.value = val;
     }
   };

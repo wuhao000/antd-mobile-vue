@@ -1,4 +1,4 @@
-import Component, {Options} from 'vue-class-component';
+import {Options} from 'vue-class-component';
 import {getComponentLocale} from '../../utils/getLocale';
 import {setProps} from '../../utils/vnode';
 import RCDatePicker from '../../vmc-date-picker/date-picker';
