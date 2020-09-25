@@ -1,5 +1,5 @@
 import {useDatePickerBase} from '@/packages/vmc-calendar/date-picker-base';
-import {computed, defineComponent, ref} from 'vue';
+import {computed, defineComponent, onMounted, ref} from 'vue';
 import {Locale, MonthData} from './data-types';
 import DatePickerProps from './date-picker-props';
 import SingleMonth from './date/single-month';
@@ -102,7 +102,7 @@ const DatePicker = defineComponent({
         data.y = singleMonth.wrapperDivDOM.offsetTop || data.y || 0;
       }
     };
-    const mounted = () => {
+    onMounted(() => {
       if (wrapper.value) {
         emit('layout', wrapper.value.clientHeight);
         const scrollHandler = createOnScroll();
@@ -114,7 +114,7 @@ const DatePicker = defineComponent({
           });
         };
       }
-    };
+    });
     const setTransform = (nodeStyle: CSSStyleDeclaration, value: any) => {
       transform.value = value;
       nodeStyle.transform = value;
@@ -133,7 +133,8 @@ const DatePicker = defineComponent({
         wrapper.value = el;
       },
       transform,
-      touchHandler
+      touchHandler,
+      genMonthComponent
     };
   },
   render() {

@@ -33,7 +33,7 @@ const Range = defineComponent({
   render() {
     return (
       <div class={`${this.prefixCls}-wrapper`}>
-        <RcRange props={this.$props}
+        <RcRange {...this.$props}
                  value={this.currentValue}
                  onChange={(v) => {
                    this.currentValue = v;

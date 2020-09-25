@@ -2,13 +2,13 @@ import {useBaseInputComponent} from '@/packages/mixins/base-input-component';
 import {pureInputComponentProps} from '@/packages/mixins/pure-input-component';
 import {Drawer} from 'ant-design-vue';
 import {defineComponent, PropType, VNode, watch} from 'vue';
-import PureInputComponent from '../../mixins/pure-input-component';
 import Touchable from '../../vmc-feedback/feedback';
 
 
 const Popup = defineComponent({
   name: 'MPopup',
   props: {
+    ...pureInputComponentProps,
     cancelText: {
       type: String as PropType<string>,
       default: '取消'
@@ -49,17 +49,18 @@ const Popup = defineComponent({
     closable: {
       type: Boolean as PropType<boolean>,
       default: true
-    },
-    ...pureInputComponentProps
+    }
   },
-  mixins: [PureInputComponent],
   install: null,
   setup(props, {emit, attrs, slots}) {
-    const {stateValue, getDefaultSlot, isDisabled, isReadonly} = useBaseInputComponent(props, {emit, attrs, slots});
+    const {stateValue, cssStyle, getDefaultSlot, isDisabled, isReadonly} = useBaseInputComponent(props, {
+      emit,
+      attrs,
+      slots
+    });
     watch(() => props.value, (value) => {
       stateValue.value = value;
     });
-
     const onCancel = () => {
       // @ts-ignore
       if (this.value !== undefined) {
@@ -127,7 +128,31 @@ const Popup = defineComponent({
           <div onClick={onOk} class={`${props.prefixCls}-item ${props.prefixCls}-header-right`}>确定</div>
         </Touchable> : null;
     };
-    return {getProps, getDefaultSlot, getListeners, getInputComponent, isReadonly, isDisabled};
+    return {
+      getProps,
+      slots,
+      getDefaultSlot,
+      cssStyle,
+      stateValue,
+      getListeners,
+      getInputComponent,
+      isReadonly,
+      isDisabled
+    };
+  },
+  render() {
+    const CustomComponent = this.getInputComponent();
+    const props = {
+      ...this.getListeners(),
+      ...this.getProps(),
+      style: this.cssStyle,
+      value: this.stateValue
+    };
+    // @ts-ignore
+    return <CustomComponent {...props}
+                            v-slots={this.slots}>
+      {this.getDefaultSlot()}
+    </CustomComponent>;
   }
 });
 export default Popup as any;

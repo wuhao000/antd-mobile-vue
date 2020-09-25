@@ -27,49 +27,49 @@ Chart| 图表组件
 组件名称 | antd-mobile | antd-mobile-vue | 示例移植 |说明 
 --- | :---: | :---: | :---: | ---
 Accordion | √ | √ | √
-ActionSheet | √ | √
-ActivityIndicator | √ | √
+ActionSheet | √ | 
+ActivityIndicator | √ | 
 Badge | √ | √ | √
 Button | √ | √ | √
-Calendar | √ | √ | √
-Card | √ | √ | √
-Carousel | √ | √ | √
-Chart | [无] | √
-Checkbox | √ | √ | √
-DatePicker | √ | √ | √
-DatePickerView | √ | √
-Drawer | √ | √ | √
-Flex | √ | √ | √
-Grid | √ | √
-Icon | √ | √
-ImagePicker | √ | √ | √
-InputItem | √ | √ | √
+Calendar | √ |  | √
+Card | √ |  | √
+Carousel | √ |  | √
+Chart | [无] | 
+Checkbox | √ |  | √
+DatePicker | √ |  | √
+DatePickerView |  | √
+Drawer | √ |  | √
+Flex | √ |  | √
+Grid | √ | 
+Icon | √ | 
+ImagePicker | √ |  | √
+InputItem | √ | v | √
 List | √ | √ | √
 ListView | √ | [无] 
-Menu | √ | √ | √
-Modal | √ | √ | √ 
-NavBar | √ | √ | √
-NoticeBar | √ | √ | √
-Pagination | √ | √ | √
-Picker | √ | √ | √
-PickerView | √ | √
-Popover | √ | √ | √
-Progress | √ | √
-Radio | √ | √ | √
-PullToRefresh | √ | √
-Result | √ | √
-SearchBar | √ | √
-SegmentedControl | √ | √ | √
-Slider | √ | √
-Range | √ | √
-Stepper | √ | √ 
-Steps | √ | √
+Menu | √ |  | √
+Modal | √ |  | √ 
+NavBar | √ |  | √
+NoticeBar | √ |  | √
+Pagination | √ |  | √
+Picker | √ |  | √
+PickerView | √ | 
+Popover | √ |  | √
+Progress | √ | 
+Radio | √ |  | √
+PullToRefresh | √ | 
+Result | √ | 
+SearchBar | √ | 
+SegmentedControl | √ |  | √
+Slider | √ | 
+Range | √ | 
+Stepper | √ |  
+Steps | √ | 
 SwipeAction | √ |  [无] 
-Switch | √ | √
-TabBar | √ | √ | √
-Tabs | √ | √ | √
-Tag | √ | √
-TextareaItem | √ | √
+Switch | √ | √ 
+TabBar | √ |  | √
+Tabs | √ |  | √
+Tag | √ | 
+TextareaItem | √ | 
 Toast | √ | √ | √ 
 WhiteSpace | √ | √ | √
 WingBlank | √ | √ | √

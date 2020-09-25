@@ -180,7 +180,7 @@ export default defineComponent({
     };
     // @ts-ignore
     return <CustomComponent {...props}
-                            slots={this.slots}>
+                            v-slots={this.slots}>
       {this.getDefaultSlot()}
     </CustomComponent>;
   }

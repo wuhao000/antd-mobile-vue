@@ -70,17 +70,17 @@ export const useFormComponent = (props, {emit}) => {
   });
   const isDisabled = computed(() => {
     let disabled = props.disabled;
-    if (list.value) {
+    if (list) {
       if (!disabled) {
-        disabled = list.value.disabled;
+        disabled = list.disabled;
       }
     }
     return disabled;
   });
   const isReadonly = computed(() => {
     let isReadonly = !props.editable;
-    if (list.value && !isReadonly) {
-      isReadonly = !list.value.editable;
+    if (list && !isReadonly) {
+      isReadonly = !list.editable;
     }
     return isReadonly;
   });
@@ -98,7 +98,7 @@ export const useFormComponent = (props, {emit}) => {
     }).map(rule => Object.assign({}, rule));
   };
   const getRules = () => {
-    let formRules: any = list.value && list.value.rules;
+    let formRules: any = list && list.rules;
     const prop = getPropByPath(formRules, props.prop || '');
     formRules = formRules ? (prop.o[props.prop || ''] || prop.v) : [];
     const selfRules = props.rules;
@@ -142,12 +142,12 @@ export const useFormComponent = (props, {emit}) => {
         currentErrorMessage.value = errors ? errors[0].message : '';
         callback(currentErrorMessage.value, invalidFields);
         emit('validate', !errors, errors);
-        list.value && list.value.$emit('validate', props.prop, !errors, currentErrorMessage.value || null);
+        list && list.$emit('validate', props.prop, !errors, currentErrorMessage.value || null);
       });
     });
   };
   {
-    if (list.value) {
+    if (list) {
       dispatch('DForm', 'd.form.addField', [this]);
     }
   }

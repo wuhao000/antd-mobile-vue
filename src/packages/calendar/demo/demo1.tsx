@@ -37,7 +37,7 @@ export default defineComponent({
       config.locale = zhCN;
       return (
         <m-calendar-item
-          attrs={config}
+          {...config}
           title={state.en ? en : zh}
           onCancel={onCancel}
           onConfirm={onConfirm}

@@ -20,18 +20,7 @@ export const useDatePickerBase = (props, {emit}) => {
   const genMonthComponent = (data: MonthData): any => {
     return <div/>;
   };
-  const created = () => {
-    watch(() => {
-      return {startDate: props.startDate, endDate: props.endDate};
-    }, (newValue, oldValue) => {
-      if (oldValue.startDate) {
-        selectDateRange(oldValue.startDate, oldValue.endDate, true);
-      }
-      if (newValue.startDate) {
-        selectDateRange(newValue.startDate, newValue.endDate);
-      }
-    });
-  };
+
   const getBegin = () => {
     if (props.startDate) {
       return props.startDate;
@@ -237,6 +226,16 @@ export const useDatePickerBase = (props, {emit}) => {
     }
     emit('cellClick', new Date(day.tick));
   };
+  watch(() => {
+    return {startDate: props.startDate, endDate: props.endDate};
+  }, (newValue, oldValue) => {
+    if (oldValue.startDate) {
+      selectDateRange(oldValue.startDate, oldValue.endDate, true);
+    }
+    if (newValue.startDate) {
+      selectDateRange(newValue.startDate, newValue.endDate);
+    }
+  });
   return {
     onCellClick, createOnScroll, visibleMonth,
     updateFlag, genMonthData, state, canLoadPrev

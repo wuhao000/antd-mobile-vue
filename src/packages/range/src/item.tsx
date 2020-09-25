@@ -20,11 +20,11 @@ const RangeItem = defineComponent({
                       disabled={this.isDisabled}>
       {this.title}
       <List.Item.Brief style={{padding: '15px', flex: 1}}>
-        <Range attrs={Object.assign({}, this.$attrs, this.$props)}
+        <Range {...Object.assign({}, this.$attrs, this.$props)}
                disabled={this.isDisabled}
                value={this.currentValue}
-               on={{
-                 change: (v) => {
+               {...{
+                 onChange: (v) => {
                    this.currentValue = v;
                  }
                }}/>

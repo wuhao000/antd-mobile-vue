@@ -95,17 +95,19 @@ export default defineComponent({
   render() {
     return <List.Item text={!!this.displayValue}
                       required={this.required}
+                      touchFeedback={true}
+                      disabled={this.disabled}
                       arrow="horizontal"
                       title={this.title}
                       onClick={this.onClick}>
       <Calendar {...this.inputProps}
+                {...this.listeners}
                 value={this.stateValue}
                 visible={this.visible}
                 onClose={this.onClose}
                 onConfirm={this.onConfirm}
                 defaultValue={this.currentValue}
                 slots={this.inputSlots}
-                on={this.listeners}
                 style={this.cssStyle}>
         {this.getDefaultSlot()}
       </Calendar>

@@ -55,8 +55,8 @@ export default defineComponent({
         onSelectHasDisableDate={(...args) => {
           this.$emit('select-has-disable-date', ...args);
         }}
-        attrs={
-          this.$props
+        {
+          ...this.$props
         }
         visible={this.state.visible}
       />
