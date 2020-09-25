@@ -43,6 +43,20 @@ export default defineComponent({
         currentValue.value = value;
       }
     }, {immediate: true});
+    const getDisplayValue = () => {
+      const valueStrs = currentValue.value.map(it => {
+        if (props.pickTime) {
+          return moment(it).format('YYYY/MM/DD HH:mm');
+        } else {
+          return moment(it).format('YYYY/MM/DD');
+        }
+      });
+      if (props.type === 'range') {
+        return valueStrs[0] + ' ~ ' + (valueStrs[1] || '');
+      } else {
+        return valueStrs[0];
+      }
+    };
     watch(() => currentValue.value, () => {
       if (currentValue.value.length) {
         displayValue.value = getDisplayValue();
@@ -60,24 +74,10 @@ export default defineComponent({
     const onConfirm = (value1, value2) => {
       if (props.type === 'range') {
         currentValue.value = [value1, value2];
-        emit('input', [value1, value2]);
+        emit('update:value', [value1, value2]);
       } else {
         currentValue.value = [value1];
-        emit('input', value1);
-      }
-    };
-    const getDisplayValue = () => {
-      const valueStrs = currentValue.value.map(it => {
-        if (props.pickTime) {
-          return moment(it).format('YYYY/MM/DD HH:mm');
-        } else {
-          return moment(it).format('YYYY/MM/DD');
-        }
-      });
-      if (props.type === 'range') {
-        return valueStrs[0] + ' ~ ' + (valueStrs[1] || '');
-      } else {
-        return valueStrs[0];
+        emit('update:value', value1);
       }
     };
     const onClose = () => {

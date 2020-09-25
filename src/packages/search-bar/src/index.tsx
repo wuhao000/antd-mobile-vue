@@ -138,7 +138,7 @@ export default class SearchBar extends Vue {
 
   @Watch('state.value')
   public stateValueChanged(value: string) {
-    this.$emit('input', value);
+    this.$emit('update:value', value);
   }
 
   public onChange(e) {

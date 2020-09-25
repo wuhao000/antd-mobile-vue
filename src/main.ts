@@ -18,6 +18,9 @@ const app = createApp(App);
 //   const blocks = el.querySelectorAll('pre code');
 //   Array.prototype.forEach.call(blocks, hljs.highlightBlock);
 // });
+app.config.warnHandler = () => {
+
+};
 app.use(Antd);
 app.use(router);
 app.component('markdown', markdown);

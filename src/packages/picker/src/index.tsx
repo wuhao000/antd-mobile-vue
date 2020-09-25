@@ -261,7 +261,7 @@ export default class Picker extends Vue {
   @Watch('currentValue')
   public currentValueChanged(currentValue: any[]) {
     if (currentValue !== this.value) {
-      this.$emit('input', currentValue);
+      this.$emit('update:value', currentValue);
       this.$emit('change', currentValue);
     }
   }

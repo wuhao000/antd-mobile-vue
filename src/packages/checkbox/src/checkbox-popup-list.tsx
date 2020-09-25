@@ -36,7 +36,7 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
 
   private onChange(value: any[]) {
     this.stateValue = value;
-    this.$emit('input', this.stateValue);
+    this.$emit('update:value', this.stateValue);
     this.$emit('change', this.stateValue);
   }
 
@@ -69,7 +69,7 @@ export default class MCheckboxPopupList extends OptionsBasedComponent {
 
   public onClear() {
     this.$emit('clear');
-    this.$emit('input', []);
+    this.$emit('update:value', []);
     this.closePopup();
   }
 

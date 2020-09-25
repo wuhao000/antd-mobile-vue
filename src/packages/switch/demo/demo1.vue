@@ -12,7 +12,7 @@
         <m-switch color="#108ee9"/>
       </m-list-item>
       <m-list-item>
-        <m-switch v-model="value"/>
+        <m-switch v-model:value="value"/>
         {{value}}
       </m-list-item>
       <m-switch-item title="开关"

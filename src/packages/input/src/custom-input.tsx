@@ -104,7 +104,7 @@ class NumberInput extends Vue {
     return (
         <CustomKeyboard
             ref="keyboard"
-            onClick={this.onKeyboardClick.bind(this)}
+            onClick={this.onKeyboardClick}
             prefixCls={keyboardPrefixCls}
             confirmLabel={confirmLabel}
             backspaceLabel={backspaceLabel}
@@ -202,7 +202,7 @@ class NumberInput extends Vue {
     }
   }
 
-  public onKeyboardClick(KeyboardItemValue: string) {
+  public onKeyboardClick(keyboardItemValue: string) {
     const {maxLength} = this;
     const {value} = this;
     // tslint:disable-next-line:no-this-assignment
@@ -210,29 +210,28 @@ class NumberInput extends Vue {
 
     let valueAfterChange;
     // 删除键
-    if (KeyboardItemValue === 'delete') {
+    if (keyboardItemValue === 'delete') {
       valueAfterChange = value.substring(0, value.length - 1);
       onChange({target: {value: valueAfterChange}});
       // 确认键
-    } else if (KeyboardItemValue === 'confirm') {
+    } else if (keyboardItemValue === 'confirm') {
       valueAfterChange = value;
       onChange({target: {value: valueAfterChange}});
       this.onInputBlur(value);
       this.onConfirm(value);
       // 收起键
-    } else if (KeyboardItemValue === 'hide') {
+    } else if (keyboardItemValue === 'hide') {
       valueAfterChange = value;
       this.onInputBlur(valueAfterChange);
     } else {
-      if (
-          maxLength !== undefined &&
+      if (maxLength !== undefined &&
           +maxLength >= 0 &&
-          (value + KeyboardItemValue).length > maxLength
+          (value + keyboardItemValue).length > maxLength
       ) {
-        valueAfterChange = (value + KeyboardItemValue).substr(0, maxLength);
+        valueAfterChange = (value + keyboardItemValue).substr(0, maxLength);
         onChange({target: {value: valueAfterChange}});
       } else {
-        valueAfterChange = value + KeyboardItemValue;
+        valueAfterChange = value + keyboardItemValue;
         onChange({target: {value: valueAfterChange}});
       }
     }

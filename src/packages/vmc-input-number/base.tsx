@@ -145,7 +145,7 @@ export default class BaseComponent extends Vue {
 
   @Watch('state.inputValue')
   public stateValueChanged(v) {
-    this.$emit('input', v);
+    this.$emit('update:value', v);
   }
 
   public getPrecision(value: any) {

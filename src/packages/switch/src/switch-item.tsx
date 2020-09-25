@@ -1,7 +1,7 @@
-import {formComponentProps, useFormComponent} from '../../mixins/form-component';
 import classnames from 'classnames';
 import {defineComponent, PropType, reactive, watch} from 'vue';
 import List from '../../list';
+import {formComponentProps, useFormComponent} from '../../mixins/form-component';
 import Switch from './switch';
 
 const ListItem = List.Item as any;
@@ -9,6 +9,7 @@ const ListItem = List.Item as any;
 const switchItem = defineComponent({
   name: 'SwitchItem',
   props: {
+    ...formComponentProps,
     prefixCls: {
       default: 'am-switch'
     },
@@ -22,8 +23,7 @@ const switchItem = defineComponent({
     },
     title: {
       type: [String, Object] as PropType<string>
-    },
-    ...formComponentProps
+    }
   },
   setup(props, {emit}) {
     const {isDisabled} = useFormComponent(props, {emit});
@@ -34,7 +34,7 @@ const switchItem = defineComponent({
       state.value = value;
     });
     watch(() => state.value, (value, oldValue) => {
-      emit('input', value);
+      emit('update:value', value);
       if (value !== oldValue) {
         emit('change', value);
       }
@@ -45,7 +45,6 @@ const switchItem = defineComponent({
         emit('click');
       }
     };
-
     return {
       state, onClick, isDisabled
     };
@@ -62,35 +61,28 @@ const switchItem = defineComponent({
       [`${prefixCls}-item-disabled`]: disabled === true
     });
 
-    const extraProps: any = {};
-    ['name', 'disabled'].forEach(i => {
-      if (i in this.$props) {
-        extraProps[i] = (this.$props as any)[i];
-      }
-    });
+    const extraProps = {
+      ...this.$attrs,
+      ...switchProps,
+      disabled: this.isDisabled,
+      value: this.state.value,
+      'onUpdate:value': (value) => {
+        this.state.value = value;
+      },
+      onClick: this.onClick
+    };
     // @ts-ignore
-    const extra = <Switch
-      vModel={this.state.value}
-      attrs={
-        {
-          ...switchProps,
-          ...extraProps,
-          ...this.$attrs
-        }
-      }
-      disabled={this.isDisabled}
-      onClick={this.onClick}
-    />;
+    const extra = <Switch {...extraProps}/>;
+    const listItemProps = {
+      ...otherProps,
+      disabled: this.isDisabled,
+      prefixCls: listPrefixCls,
+      class: wrapCls,
+      extra
+    };
     return (
-      <ListItem
-        attrs={
-          {...otherProps}
-        }
-        disabled={this.isDisabled}
-        prefixCls={listPrefixCls}
-        class={wrapCls}
-        extra={extra}>
-        {this.$slots.default}
+      <ListItem {...listItemProps}>
+        {this.$slots.default?.()}
       </ListItem>
     );
   }

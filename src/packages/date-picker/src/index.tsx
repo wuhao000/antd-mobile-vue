@@ -142,7 +142,7 @@ class DatePicker extends DatePickerProps {
 
   private onInput(v: any) {
     this.$emit('change', v);
-    this.$emit('input', v);
+    this.$emit('update:value', v);
   }
 
   private getDate() {

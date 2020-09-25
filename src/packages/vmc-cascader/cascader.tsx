@@ -42,7 +42,7 @@ export default class Cascader extends Vue {
   };
 
   private onOk() {
-    this.$emit('input', this.state.value);
+    this.$emit('update:value', this.state.value);
     this.$emit('change', this.state.value);
   }
 

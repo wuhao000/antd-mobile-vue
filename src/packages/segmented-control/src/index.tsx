@@ -52,7 +52,7 @@ class SegmentedControl extends Vue {
       (e.nativeEvent as any).selectedSegmentIndex = index;
       (e.nativeEvent as any).value = value;
       this.state.selectedIndex = index;
-      this.$emit('input', index);
+      this.$emit('update:value', index);
       this.$emit('change', index);
     }
   }

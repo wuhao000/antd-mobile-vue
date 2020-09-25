@@ -5,6 +5,7 @@ import {defineComponent, PropType} from 'vue';
 const Switch = defineComponent({
   name: 'MSwitch',
   props: {
+    ...formComponentProps,
     color: {
       type: String as PropType<string>
     },
@@ -18,8 +19,7 @@ const Switch = defineComponent({
     platform: {
       type: String as PropType<string>,
       default: 'ios'
-    },
-    ...formComponentProps
+    }
   },
   setup(props, ctx) {
     const {currentValue} = useFormComponent(props, ctx);

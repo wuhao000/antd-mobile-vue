@@ -56,7 +56,7 @@ class MCheckboxList extends OptionsBasedComponent {
         if (!this.$props.value.includes(value)) {
           const array = [].concat(this.$props.value);
           array.push(value);
-          this.$emit('input', array);
+          this.$emit('update:value', array);
           this.$emit('change', array);
         }
       } else {
@@ -69,7 +69,7 @@ class MCheckboxList extends OptionsBasedComponent {
         if (this.$props.value.includes(value)) {
           const array = [].concat(this.$props.value);
           array.splice(array.indexOf(value), 1);
-          this.$emit('input', array);
+          this.$emit('update:value', array);
           this.$emit('change', array);
         }
       } else {

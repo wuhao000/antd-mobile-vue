@@ -31,7 +31,7 @@ export default function MultiPickerMixin(ComposedComponent) {
       };
       const onValueChange = (i, v) => {
         onChange(i, v, (...args) => {
-          emit('input', ...args);
+          emit('update:value', ...args);
         });
         emit('value-change', i, v);
       };

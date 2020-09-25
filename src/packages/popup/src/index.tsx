@@ -55,7 +55,7 @@ const Popup = defineComponent({
   mixins: [PureInputComponent],
   install: null,
   setup(props, {emit, attrs, slots}) {
-    const {stateValue, isDisabled, isReadonly} = useBaseInputComponent(props, {emit, attrs, slots});
+    const {stateValue, getDefaultSlot, isDisabled, isReadonly} = useBaseInputComponent(props, {emit, attrs, slots});
     watch(() => props.value, (value) => {
       stateValue.value = value;
     });
@@ -63,7 +63,7 @@ const Popup = defineComponent({
     const onCancel = () => {
       // @ts-ignore
       if (this.value !== undefined) {
-        emit('input', false);
+        emit('update:value', false);
       } else {
         // @ts-ignore
         this.stateValue = false;
@@ -73,7 +73,7 @@ const Popup = defineComponent({
     const onOk = () => {
       // @ts-ignore
       if (this.value !== undefined) {
-        emit('input', false);
+        emit('update:value', false);
       } else {
         // @ts-ignore
         this.stateValue = false;
@@ -127,7 +127,7 @@ const Popup = defineComponent({
           <div onClick={onOk} class={`${props.prefixCls}-item ${props.prefixCls}-header-right`}>确定</div>
         </Touchable> : null;
     };
-    return {getProps, getListeners, getInputComponent, isReadonly, isDisabled};
+    return {getProps, getDefaultSlot, getListeners, getInputComponent, isReadonly, isDisabled};
   }
 });
 export default Popup as any;

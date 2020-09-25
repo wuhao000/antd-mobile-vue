@@ -160,7 +160,7 @@ class ImagePicker extends Vue {
         newImages.push(image);
       }
     });
-    this.$emit('input', newImages, 'remove', index);
+    this.$emit('update:value', newImages, 'remove', index);
     this.$emit('change', newImages, 'remove', index);
   }
 
@@ -171,7 +171,7 @@ class ImagePicker extends Vue {
         newImages.push(img);
       }
     });
-    this.$emit('input', newImages, 'add');
+    this.$emit('update:value', newImages, 'add');
     this.$emit('change', newImages, 'add');
   }
 

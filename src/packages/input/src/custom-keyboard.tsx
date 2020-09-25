@@ -1,8 +1,8 @@
-import {Options, Vue} from 'vue-class-component';
 import classnames from 'classnames';
+import {VNode} from 'vue';
+import {Options, Vue} from 'vue-class-component';
 import {IS_IOS} from '../../utils/exenv';
 import TouchFeedback from '../../vmc-feedback';
-import { VNode } from 'vue';
 
 @Options({
   name: 'KeyboardItem',
@@ -15,7 +15,7 @@ import { VNode } from 'vue';
     disabled: {type: Boolean, default: false}
   }
 })
-export class KeyboardItem extends Vue {
+class KeyboardItem extends Vue {
   public value: any;
   public label: string;
   public type: string;
@@ -47,19 +47,14 @@ export class KeyboardItem extends Vue {
     }
 
     const wrapCls = classnames(`${prefixCls}-item`);
-    const TouchFeedback2: any = TouchFeedback;
     return (
-      <TouchFeedback2
+      <TouchFeedback
         class={type}
-        props={
-          {
-            activeClassName: `${prefixCls}-item-active`
-          }
-        }>
+        activeClassName={`${prefixCls}-item-active`}>
         <td
           ref="td"
           // tslint:disable-next-line:jsx-no-multiline-js
-          onclick={e => {
+          onClick={e => {
             this.$emit('click', e, this.value);
           }}
           class={wrapCls}
@@ -68,7 +63,7 @@ export class KeyboardItem extends Vue {
           {this.$slots.default?.()}
           {iconOnly && <i class="sr-only">{label}</i>}
         </td>
-      </TouchFeedback2>
+      </TouchFeedback>
     );
   }
 }
@@ -116,7 +111,7 @@ class CustomKeyboard extends Vue {
     const KeyboardItem2: any = KeyboardItem;
     return (
       <KeyboardItem2
-        props={{value: item}}
+        {...{value: item}}
         onClick={this.onKeyboardClick}
         key={`item-${item}-${index}`}>
         {item}
@@ -144,73 +139,61 @@ class CustomKeyboard extends Vue {
         {header}
         <table>
           <tbody>
-            <tr>
-              {['1', '2', '3'].map((item, index) =>
-                // tslint:disable-next-line:jsx-no-multiline-js
-                this.renderKeyboardItem(item, index)
-              )}
-              <KeyboardItem2
-                props={
-                  {
-                    ...this.getAriaAttr(backspaceLabel),
-                    type: 'keyboard-delete',
-                    rowSpan: 2
-                  }
+          <tr>
+            {['1', '2', '3'].map((item, index) =>
+              // tslint:disable-next-line:jsx-no-multiline-js
+              this.renderKeyboardItem(item, index)
+            )}
+            <KeyboardItem2
+              {
+                ...{
+                  ...this.getAriaAttr(backspaceLabel),
+                  type: 'keyboard-delete',
+                  rowSpan: 2,
+                  onClick: e => this.onKeyboardClick(e, 'delete')
                 }
-                on={
-                  {
-                    click: e => this.onKeyboardClick(e, 'delete')
-                  }
+              }
+            />
+          </tr>
+          <tr>
+            {['4', '5', '6'].map((item, index) =>
+              // tslint:disable-next-line:jsx-no-multiline-js
+              this.renderKeyboardItem(item, index)
+            )}
+          </tr>
+          <tr>
+            {['7', '8', '9'].map((item, index) =>
+              // tslint:disable-next-line:jsx-no-multiline-js
+              this.renderKeyboardItem(item, index)
+            )}
+            <KeyboardItem2
+              {
+                ...{
+                  type: 'keyboard-confirm',
+                  rowSpan: 2,
+                  onClick: e => this.onKeyboardClick(e, 'confirm')
                 }
-              />
-            </tr>
-            <tr>
-              {['4', '5', '6'].map((item, index) =>
-                // tslint:disable-next-line:jsx-no-multiline-js
-                this.renderKeyboardItem(item, index)
-              )}
-            </tr>
-            <tr>
-              {['7', '8', '9'].map((item, index) =>
-                // tslint:disable-next-line:jsx-no-multiline-js
-                this.renderKeyboardItem(item, index)
-              )}
-              <KeyboardItem2
-                props={
-                  {
-                    type: 'keyboard-confirm',
-                    rowSpan: 2
-                  }
+              }
+              tdRef="td"
+            >
+              {confirmLabel}
+            </KeyboardItem2>
+          </tr>
+          <tr>
+            {['.', '0'].map((item, index) =>
+              // tslint:disable-next-line:jsx-no-multiline-js
+              this.renderKeyboardItem(item, index)
+            )}
+            <KeyboardItem2
+              {
+                ...{
+                  ...this.getAriaAttr(cancelKeyboardLabel),
+                  type: 'keyboard-hide',
+                  onClick: e => this.onKeyboardClick(e, 'hide')
                 }
-                on={
-                  {
-                    click: e => this.onKeyboardClick(e, 'confirm')
-                  }
-                }
-                tdRef="td"
-              >
-                {confirmLabel}
-              </KeyboardItem2>
-            </tr>
-            <tr>
-              {['.', '0'].map((item, index) =>
-                // tslint:disable-next-line:jsx-no-multiline-js
-                this.renderKeyboardItem(item, index)
-              )}
-              <KeyboardItem2
-                props={
-                  {
-                    ...this.getAriaAttr(cancelKeyboardLabel),
-                    type: 'keyboard-hide'
-                  }
-                }
-                on={
-                  {
-                    click: e => this.onKeyboardClick(e, 'hide')
-                  }
-                }
-              />
-            </tr>
+              }
+            />
+          </tr>
           </tbody>
         </table>
       </div>

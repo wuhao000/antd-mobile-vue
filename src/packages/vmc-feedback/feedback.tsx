@@ -1,5 +1,5 @@
+import {VNode} from 'vue';
 import {Options, Vue} from 'vue-class-component';
-import { VNode } from 'vue';
 
 @Options({
   name: 'TouchFeedback',
@@ -28,7 +28,9 @@ class TouchFeedback extends Vue {
     if (isActive !== this.active) {
       this.active = isActive;
     }
-    this.$emit(type.toLowerCase(), ev);
+    if (this[eventType]) {
+      this.$emit(type.toLowerCase(), ev);
+    }
   }
 
   public onTouchStart(e) {
@@ -77,7 +79,7 @@ class TouchFeedback extends Vue {
       if (cls) {
         const classArray = cls.split(/\s+/);
         if (!classArray.includes(activeClassName)) {
-          classArray.push(activeClassName)
+          classArray.push(activeClassName);
         }
         child.props.class = classArray.join(' ');
       } else {
@@ -88,7 +90,7 @@ class TouchFeedback extends Vue {
       if (cls) {
         const classArray = cls.split(/\s+/);
         if (classArray.includes(activeClassName)) {
-          classArray.splice(classArray.indexOf(activeClassName), 1)
+          classArray.splice(classArray.indexOf(activeClassName), 1);
         }
         child.props.class = classArray.join(' ');
       }

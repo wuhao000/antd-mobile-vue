@@ -90,7 +90,7 @@ export default class Textarea extends FormComponent {
 
   @Watch('state.value')
   public stateValueChanged(value: string) {
-    this.$emit('input', value);
+    this.$emit('update:value', value);
   }
 
   public onChange(e) {

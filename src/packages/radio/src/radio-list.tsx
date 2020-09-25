@@ -58,7 +58,7 @@ export default class MRadioList extends OptionsBasedComponent {
     if (checkState) {
       this.stateValue = value;
     }
-    this.$emit('input', value);
+    this.$emit('update:value', value);
     this.$emit('change', value);
   }
 }

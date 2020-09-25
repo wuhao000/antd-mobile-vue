@@ -1,31 +1,35 @@
 import classnames from 'classnames';
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent, PropType} from 'vue';
 import TouchFeedback from '../../vmc-feedback';
 
-@Component({
-  name: 'PopoverItem'
-})
-export default class Item extends Vue {
-  @Prop({type: String, default: 'am-popover'})
-  public prefixCls?: string;
-  /**
-   * 图标
-   */
-  @Prop()
-  public icon?: VNode | string;
-  /**
-   * 是否禁用
-   */
-  @Prop({type: Boolean})
-  public disabled?: boolean;
-  @Prop({type: String})
-  public firstItem?: string;
-  @Prop()
-  public activeStyle?: object;
+const Item = defineComponent({
+  name: 'PopoverItem',
+  props: {
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-popover'
+    },
+    /**
+     * 图标
+     */
+    icon: {},
+    /**
+     * 是否禁用
+     */
+    disabled: {
+      type: Boolean as PropType<boolean>
+    },
+    firstItem: {
+      type: String as PropType<string>
+    },
+    activeStyle: {}
+  },
+  setup(props) {
 
-  public render() {
+
+    return {};
+  },
+  render() {
     const {
       prefixCls,
       icon,
@@ -58,8 +62,8 @@ export default class Item extends Vue {
             {icon ? (
               // tslint:disable-next-line:jsx-no-multiline-js
               <span class={`${prefixCls}-item-icon`} aria-hidden="true">
-                    {icon}
-                  </span>
+                  {icon}
+                </span>
             ) : null}
             <span class={`${prefixCls}-item-content`}>{this.$slots.default}</span>
           </div>
@@ -67,4 +71,6 @@ export default class Item extends Vue {
       </TouchFeedback>
     );
   }
-}
+});
+
+export default Item;

@@ -38,7 +38,7 @@ class DatePickerView extends DatePickerProps {
             }
             onChange={(value) => {
               const date = new Date(value[0], value[1], value[2], value[3], value[4]);
-              this.$emit('input', date);
+              this.$emit('update:value', date);
               this.$emit('change', date);
             }}
             onScrollChange={(e) => {

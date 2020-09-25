@@ -36,7 +36,7 @@ interface ActionSheetMenu {
   },
   watch: {
     show(val) {
-      this.$emit('input', val);
+      this.$emit('update:value', val);
       if (val) {
         this.fixIos(-1);
       } else {
@@ -83,7 +83,7 @@ class ActionSheet extends Vue {
   public static install: (Vue) => void;
 
   private cancelClick() {
-    this.$emit('input', false);
+    this.$emit('update:value', false);
     this.show = false;
   }
 

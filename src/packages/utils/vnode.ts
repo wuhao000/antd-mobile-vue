@@ -1,4 +1,4 @@
-import {VNode} from 'vue';
+import {Slot, VNode} from 'vue';
 
 const camelizeRE = /-(\w)/g;
 const camelize = str => {
@@ -20,8 +20,8 @@ const parseStyleText = (cssText = '', camel?) => {
   return res;
 };
 
-export function isEmptyElement(c) {
-  return !(c.tag || (c.text && c.text.trim() !== ''));
+export function isEmptyElement(node: VNode) {
+  return node.shapeFlag === 0;
 }
 
 export function filterEmpty(children = []) {
@@ -35,6 +35,13 @@ export function isVNode(obj: any) {
 
 export function children(children: VNode[], props: object) {
   return children.map(child => cloneElement(child, props, false));
+}
+
+export function isEmptySlot(slot: Slot): boolean {
+  if (!slot) {
+    return true;
+  }
+  return slot().filter(it => !isEmptyElement(it)).length === 0
 }
 
 export function cloneVNode(vnode, deep) {

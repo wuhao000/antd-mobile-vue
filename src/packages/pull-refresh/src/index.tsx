@@ -268,7 +268,7 @@ export default class PullToRefresh extends Vue {
       }, 1000);
       this.setContentStyle(this.indicatorHeight);
       this.$emit('refresh');
-      this.$emit('input', true);
+      this.$emit('update:value', true);
     } else {
       this.reset();
     }

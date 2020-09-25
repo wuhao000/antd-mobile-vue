@@ -1,57 +1,46 @@
-import {Options, Vue} from 'vue-class-component';
+import {defineComponent, PropType, ref, Ref, watch} from 'vue';
 
-@Options({
+const Input = defineComponent({
   name: 'Input',
   props: {
-    value: {type: [String, Number]},
+    value: {type: [String, Number] as PropType<string | number>},
     disabled: Boolean,
     placeholder: String,
     readonly: Boolean,
     type: {type: String},
     textAlign: {type: String, default: 'left'}
   },
-  watch: {
-    value(value: string) {
-      this.currentValue = value;
-    }
-  }
-})
-
-class Input extends Vue {
-  public value: string;
-  public disabled: boolean;
-  public placeholder: string;
-  public readonly: boolean;
-  public type: string;
-  // @ts-ignore
-  private currentValue: string = this.value ?? '';
-  private textAlign: 'left' | 'right' | 'center';
-
-  get inputRef(): HTMLInputElement {
-    return this.$refs['input'] as HTMLInputElement;
-  }
-
-  public onInputBlur(e) {
-    const value = (e.target as any).value;
-    this.$emit('blur', value);
-  }
-
-  public onInputFocus(e) {
-    this.$emit('focus');
-  }
-
-  public focus() {
-    if (this.inputRef) {
-      this.inputRef.focus();
-    }
-  }
-
-  public render(): any {
-    const value = this.currentValue + '';
+  setup(props, {emit}) {
+    const currentValue: Ref<string> = ref(props.value?.toString() ?? '');
+    const inputRef = ref(null);
+    const onInputBlur = (e) => {
+      const value = (e.target as any).value;
+      emit('blur', value);
+    };
+    const onInputFocus = (e) => {
+      emit('focus');
+    };
+    const focus = () => {
+      if (inputRef.value) {
+        inputRef.value.focus();
+      }
+    };
+    watch(() => props.value, (value) => {
+      currentValue.value = value?.toString();
+    });
+    return {currentValue, inputRef, onInputBlur, focus, onInputFocus};
+  },
+  render(): any {
+    const {currentValue} = this;
     const type = this.type === 'number' ? 'text' : this.type;
     const props: any = {
-      value, type,
-      ref: 'input',
+      ...this.$props,
+      ...this.$attrs,
+      value: currentValue,
+      type,
+      ref: (el) => {
+        this.inputRef = el;
+      },
       disabled: this.disabled,
       readonly: this.readonly,
       placeholder: this.placeholder,
@@ -61,12 +50,10 @@ class Input extends Vue {
       onInput: e => {
         this.$emit('change', e);
       },
-      style: {textAlign: this.textAlign},
-      ...this.$props,
-      ...this.$attrs
+      style: {textAlign: this.textAlign}
     };
     return <input {...props}/>;
   }
-}
+});
 
 export default Input as any;

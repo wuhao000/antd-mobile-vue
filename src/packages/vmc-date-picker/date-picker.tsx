@@ -136,7 +136,7 @@ const DatePicker = defineComponent({
           }
           break;
       }
-      emit('input', newValue);
+      emit('update:value', newValue);
     };
     const onDismiss = () => {
       const {value} = getValueCols();

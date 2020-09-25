@@ -1,8 +1,10 @@
 /* tslint:disable:jsx-no-multiline-js */
 import classNames from 'classnames';
 import {computed, defineComponent, getCurrentInstance, inject, onBeforeUnmount, PropType, ref, Ref, VNode} from 'vue';
-import TouchFeedback from '../../vmc-feedback';
+import Popover from '../../popover';
 import toast from '../../toast';
+import {isEmptySlot} from '../../utils/vnode';
+import TouchFeedback from '../../vmc-feedback';
 
 const Brief = defineComponent({
   name: 'Brief',
@@ -96,7 +98,7 @@ const Item = defineComponent({
     },
     touchFeedback: {
       type: Boolean as PropType<boolean>,
-      default: true
+      default: false
     },
     required: {
       type: Boolean as PropType<boolean>,
@@ -117,7 +119,7 @@ const Item = defineComponent({
     const showErrorPopover: boolean = false;
     const instance = getCurrentInstance();
     const actualError = computed(() => {
-      return props.error || instance.parent['error'];
+      return props.error ?? instance.parent['error'] ?? false;
     });
     const actualErrorMessage = computed(() => {
       return props.errorMessage || instance.parent['errorMessage'];
@@ -126,7 +128,7 @@ const Item = defineComponent({
       return props.disabled;
     });
     const actualErrorDisplayType = computed(() => {
-      return props.errorDisplayType && instance.parent['errorDisplayType'];
+      return props.errorDisplayType ?? instance.parent['errorDisplayType'];
     });
     const onClick = (ev: any) => {
       const isAndroid = props.platform === 'android';
@@ -155,7 +157,7 @@ const Item = defineComponent({
       emit('click');
     };
     const renderExtra = () => {
-      return (slots.extra !== undefined || props.extra) ? (
+      return (!isEmptySlot(slots.extra) || props.extra) ? (
         <div style={props.extraStyle}
              class={classNames(`${props.prefixCls}-extra`, {
                [props.prefixCls + '-extra-text']: props.text
@@ -184,7 +186,7 @@ const Item = defineComponent({
       }
     };
     const renderLabel = () => {
-      if (slots.default !== undefined) {
+      if (!isEmptySlot(slots.default)) {
         return (
           <div class={`${props.prefixCls}-content`}
                style={props.contentStyle}>{slots.default()}</div>
@@ -225,11 +227,11 @@ const Item = defineComponent({
       wrap,
       disabled,
       multipleLine,
-      arrow
-    } = this.$props;
+      arrow,
+      actualError
+    } = this;
     const {coverRippleStyle, rippleClicked} = this;
     const section = this.$parent['section'];
-    const actualError = this.actualError;
     const wrapCls = classNames(`${prefixCls}-item`,
       `${prefixCls}-item-label-` + this.labelPosition,
       {
@@ -283,23 +285,24 @@ const Item = defineComponent({
                 this.$emit('error-click', e);
                 this.$emit('errorClick', e);
               }}>
-              <m-popover vModel={this.showErrorPopover}
-                         mask={false}>
-                <m-popover-item slot="content">
-                  {this.errorMessage}
-                </m-popover-item>
-              </m-popover>
+              {
+                this.errorDisplayType === 'popover' ? <Popover v-model={[this.showErrorPopover, 'value']}
+                                                               mask={false}>
+                  <Popover.Item slot="content">
+                    {this.errorMessage}
+                  </Popover.Item>
+                </Popover>: null
+              }
             </div>
 
           ) : null}
           {this.$slots.suffix || this.suffix ? <div class={this.prefixCls + '-suffix'}>
-            {this.$slots.suffix || this.suffix}
+            {this.$slots.suffix?.() || this.suffix}
           </div> : null}
         </div>
         <div style={coverRippleStyle} class={rippleCls}/>
       </div>
     );
-
     return (
       // @ts-ignore
       <TouchFeedback

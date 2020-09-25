@@ -24,7 +24,7 @@ const MultiPicker = defineComponent({
       });
       setListeners(col, {
         input: (...args) => {
-          this.$emit('input', i, ...args);
+          this.$emit('update:value', i, ...args);
         },
         scrollChange: (...args) => {
           this.$emit('scroll-change', i, ...args);

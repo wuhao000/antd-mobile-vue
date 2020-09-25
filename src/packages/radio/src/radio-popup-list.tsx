@@ -42,7 +42,7 @@ export default class MRadioPopupList extends OptionsBasedComponent {
 
   public onClear() {
     this.$emit('clear');
-    this.$emit('input', null);
+    this.$emit('update:value', null);
     this.closePopup();
   }
 

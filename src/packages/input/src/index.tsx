@@ -1,8 +1,9 @@
 /* tslint:disable:jsx-no-multiline-js */
-import {formComponentProps, useFormComponent} from '../../mixins/form-component';
 import classnames from 'classnames';
 import {defineComponent, getCurrentInstance, onBeforeUnmount, PropType, reactive, ref, watch} from 'vue';
 import List from '../../list';
+import {formComponentProps, useFormComponent} from '../../mixins/form-component';
+import {isEmptySlot} from '../../utils/vnode';
 import TouchFeedback from '../../vmc-feedback';
 import CustomInput from './custom-input';
 import Input from './input';
@@ -20,6 +21,10 @@ function normalizeValue(value?: string) {
 export default defineComponent({
   name: 'InputItem',
   props: {
+    ...formComponentProps,
+    defaultValue: {
+      type: [String, Number] as PropType<string | number>
+    },
     title: {
       type: [String, Object] as PropType<string>
     },
@@ -82,7 +87,7 @@ export default defineComponent({
      * 最大长度
      */
     maxLength: {
-      type: Number as PropType<number>
+      type: Number as PropType<number>, default: 1_000_000
     },
     /**
      * 右边注释
@@ -105,7 +110,10 @@ export default defineComponent({
       type: Boolean as PropType<boolean>,
       default: false
     },
-    ...formComponentProps
+    errorDisplayType: {
+      type: String as PropType<'toast' | 'popover' | 'text' | undefined>,
+      default: 'toast'
+    }
   },
   install: null,
   setup(props, {slots, emit, attrs}) {
@@ -129,7 +137,7 @@ export default defineComponent({
         [`${prefixCls}-label-6`]: labelNumber === 6,
         [`${prefixCls}-label-7`]: labelNumber === 7
       });
-      if (slots.default) {
+      if (!isEmptySlot(slots.default)) {
         return <div class={labelCls}>{slots.default()}</div>;
       } else if (props.title) {
         return <div class={labelCls}>{props.title}</div>;
@@ -190,11 +198,20 @@ export default defineComponent({
       });
       onFieldChange();
     };
+    /**
+     *
+     * @param {string} value
+     * @param {boolean} isMutated 校正值是否和输入值不同
+     * @param adjustPos
+     */
     const handleOnChange = (value: string, isMutated: boolean = false, adjustPos: any = noop) => {
       currentValue.value = value;
-      emit('input', value);
+      emit('update:value', value);
       emit('change', value);
       adjustPos();
+      if (inputRef.value && isMutated) {
+        inputRef.value.$forceUpdate();
+      }
     };
     const instance = getCurrentInstance();
     const onInputFocus = (value: string) => {
@@ -345,14 +362,9 @@ export default defineComponent({
     if (type === 'digit') {
       classNameProp = 'h5numInput';
     }
-    return (
-      <List.Item title={this.renderLabel()}
-                 required={this.required}
-                 error={this.error}
-                 errorMessage={this.errorMessage}
-                 errorDisplayType={this.errorDisplayType}
-                 class={wrapCls}>
-        <div class={controlCls} slot="control">
+    const slots = {
+      control: () => {
+        return <div class={controlCls}>
           {type === 'money' ? (
             // @ts-ignore
             <CustomInput
@@ -383,51 +395,60 @@ export default defineComponent({
             />
           ) : (
             <Input
-              props={
-                {
+              {
+                ...{
                   ...patternProps,
                   value: normalizeValue(currentValue),
-                  defaultValue: undefined,
+                  defaultValue: this.defaultValue,
                   textAlign: this.textAlign,
                   type: inputType,
                   maxLength,
                   name,
                   placeholder,
                   readonly: isReadonly,
-                  disabled: isDisabled
-                }
-              }
-              class={classNameProp}
-              ref="input"
-              on={
-                {
-                  change: this.onInputChange,
-                  focus: this.onInputFocus,
-                  blur: this.onInputBlur
+                  disabled: isDisabled,
+                  onChange: this.onInputChange,
+                  onFocus: this.onInputFocus,
+                  onBlur: this.onInputBlur,
+                  class: classNameProp,
+                  ref: this.setInputRef
                 }
               }
             />
           )}
-        </div>
-        {clearable &&
+        </div>;
+      },
+      suffix: () => {
+        return clearable &&
         !isReadonly &&
         !isDisabled &&
         (currentValue && `${currentValue}`.length > 0) ? (
           // @ts-ignore
-          <TouchFeedback slot="suffix" activeClassName={`${prefixCls}-clear-active`}>
+          <TouchFeedback activeClassName={`${prefixCls}-clear-active`}>
             <div class={`${prefixCls}-clear`}
                  onClick={this.clearInput}/>
           </TouchFeedback>
-        ) : null}
-        {extra !== '' ? (
+        ) : null;
+      },
+      extra: extra !== '' ? () => {
+        return (
           <div class={`${prefixCls}-extra`}
-               slot="extra"
                onClick={(e) => {
                  this.$emit('extra-click', e);
                }}>
             {extra}
           </div>
-        ) : null}
+        );
+      } : null
+    };
+    return (
+      <List.Item title={this.renderLabel()}
+                 required={this.required}
+                 error={this.error}
+                 errorMessage={this.errorMessage}
+                 errorDisplayType={this.errorDisplayType}
+                 v-slots={slots}
+                 class={wrapCls}>
       </List.Item>
     );
   }

@@ -30,7 +30,7 @@ class Checkbox extends Vue {
     // e.preventDefault();
     this.checked = !this.checked;
     this.$emit('change', this.checked);
-    this.$emit('input', this.checked);
+    this.$emit('update:value', this.checked);
   }
 
   @Watch('value')
@@ -40,7 +40,7 @@ class Checkbox extends Vue {
 
   @Watch('checked')
   public checkedChanged(checked: boolean) {
-    this.$emit('input', checked);
+    this.$emit('update:value', checked);
   }
 
   public render() {

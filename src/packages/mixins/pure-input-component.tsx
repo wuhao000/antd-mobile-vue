@@ -33,7 +33,7 @@ export const usePureInputComponent = (props, {emit, attrs}) => {
   watch(() => stateValue.value, (value) => {
     const val = convertValueBack(value);
     if (hasProp(this, 'value')) {
-      emit('input', val);
+      emit('update:value', val);
     }
     emit('change', val);
     dispatch('DFormItem', 'd.form.change', [val]);
@@ -122,7 +122,7 @@ export const usePureInputComponent = (props, {emit, attrs}) => {
     if (value && value.toString() === '[object InputEvent]') {
       val = value.target.value;
     }
-    emit('input', val);
+    emit('update:value', val);
     if (!(hasProp(this, 'value') && hasListener(this, 'input'))) {
       stateValue.value = val;
     }

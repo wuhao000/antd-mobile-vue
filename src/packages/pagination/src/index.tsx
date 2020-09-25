@@ -51,7 +51,7 @@ export default class Pagination extends Vue {
 
   public onChange(p: number) {
     this.state.current = p;
-    this.$emit('input', p);
+    this.$emit('update:value', p);
   }
 
   public render() {

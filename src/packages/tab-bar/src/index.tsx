@@ -56,7 +56,7 @@ class TabBar extends Vue {
   @Watch('store.currentTab')
   public currentTabChanged(value: number | string) {
     if (this.$listeners.input) {
-      this.$emit('input', value);
+      this.$emit('update:value', value);
     }
     console.log(this.store.currentTab);
   }

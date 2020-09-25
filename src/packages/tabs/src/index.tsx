@@ -146,7 +146,7 @@ export default class Tabs extends Vue {
 
   @Watch('currentTab')
   public currentTabChanged(index) {
-    this.$emit('input', index);
+    this.$emit('update:value', index);
   }
 
   /** on tab click */

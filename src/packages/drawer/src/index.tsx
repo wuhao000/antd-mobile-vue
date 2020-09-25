@@ -53,7 +53,7 @@ export default class Drawer extends Vue {
       on={{
         ...this.$listeners,
         open: (value) => {
-          this.$emit('input', value);
+          this.$emit('update:value', value);
           this.$emit('open', value);
         }
       }}>

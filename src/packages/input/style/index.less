@@ -6,6 +6,14 @@
 @inputPrefixCls: am-input;
 
 .@{listPrefixCls}-item {
+  &.@{listPrefixCls}-item-error {
+    .@{inputPrefixCls}-control {
+      input {
+        color: red;
+      }
+    }
+  }
+
 
   &.@{inputPrefixCls}-item {
     padding-left: @h-spacing-lg;

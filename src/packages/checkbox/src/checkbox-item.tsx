@@ -46,7 +46,7 @@ class CheckboxItem extends Vue {
 
   @Watch('state.value')
   public stateValueChanged(value: any) {
-    this.$emit('input', value);
+    this.$emit('update:value', value);
     this.$emit('change', value);
   }
 

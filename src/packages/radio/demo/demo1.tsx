@@ -1,3 +1,4 @@
+import {PropType, defineComponent, reactive} from 'vue';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import Flex from '../../flex';
@@ -7,40 +8,39 @@ import Radio from '../index';
 
 const RadioItem = Radio.RadioItem;
 
-@Component({
-  name: 'RadioExample'
-})
-export default class Test extends Vue {
+export default defineComponent({
+  name: 'RadioExample',
+  props: {},
+  setup(props) {
+    const state = reactive({
+      value: 0,
+      value2: 0,
+      value3: 0,
+      value4: 0,
+      value5: false,
+      value6: 2,
+      value7: null
+    });
 
-  public state = {
-    value: 0,
-    value2: 0,
-    value3: 0,
-    value4: 0,
-    value5: false,
-    value6: 2,
-    value7: null
-  };
 
-  public onChange(value) {
-    console.log('checkbox');
-    this.state.value = value;
-  }
+    const onChange = (value) => {
+      console.log('checkbox');
+      state.value = value;
+    };
+    const onChange2 = (value) => {
+      console.log('checkbox');
+      state.value2 = value;
+    };
+    const onChange3 = (value) => {
+      state.value3 = value;
+    };
+    const onChange4 = (value) => {
+      state.value4 = value;
+    };
 
-  public onChange2(value) {
-    console.log('checkbox');
-    this.state.value2 = value;
-  }
-
-  public onChange3(value) {
-    this.state.value3 = value;
-  }
-
-  public onChange4(value) {
-    this.state.value4 = value;
-  }
-
-  public render() {
+    return {state, onChange, onChange2, onChange3, onChange4};
+  },
+  render() {
     const {value, value2, value3, value4} = this.state;
     const data = [
       {value: 0, label: 'doctor'},
@@ -106,4 +106,4 @@ export default class Test extends Vue {
       </Flex>
     </div>);
   }
-}
+});

@@ -182,7 +182,7 @@ const Picker = defineComponent({
           state.selectedValue = selectedValue;
         }
         emit('update:value', selectedValue);
-        emit('input', selectedValue);
+        emit('update:value', selectedValue);
       }
     };
     const onScrollChange = () => {

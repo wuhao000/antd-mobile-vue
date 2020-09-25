@@ -62,7 +62,7 @@ export const useFormComponent = (props, {emit}) => {
     }
   });
   watch(() => currentValue.value, (currentValue) => {
-    emit('input', currentValue);
+    emit('update:value', currentValue);
     emit('change', currentValue);
   });
   const fieldValue = computed(() => {

@@ -15,7 +15,7 @@ interface Emitter {
 }
 
 export const useEmitter = (instance: ComponentInternalInstance) => {
-  const emitter: Emitter = inject('emitter');
+  const emitter: Emitter = inject('emitter', null);
   if (emitter) {
     return emitter;
   } else {
