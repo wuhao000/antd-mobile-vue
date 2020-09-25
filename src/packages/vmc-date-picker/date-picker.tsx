@@ -47,26 +47,8 @@ const DatePicker = defineComponent({
   setup(props, {emit}) {
     const state = reactive({
       date: props.date || props.defaultDate,
-      values: []
+      values: null
     });
-    const defaultMinDate: any = ref(null);
-    const defaultMaxDate: any = ref(null);
-    const store: {
-      onDismiss: () => void;
-      onOk: (...args: any) => any
-    } = inject('store');
-    const getDefaultMinDate = () => {
-      if (!defaultMinDate.value) {
-        defaultMinDate.value = new Date(2000, 1, 1, 0, 0, 0);
-      }
-      return defaultMinDate.value;
-    };
-    const getDefaultMaxDate = () => {
-      if (!defaultMaxDate.value) {
-        defaultMaxDate.value = new Date(2030, 1, 1, 23, 59, 59);
-      }
-      return defaultMaxDate.value;
-    };
     const getMinDate = () => {
       return props.minDate || getDefaultMinDate();
     };
@@ -110,6 +92,67 @@ const DatePicker = defineComponent({
     };
     const getDate = () => {
       return clipDate(state.date || getDefaultMinDate());
+    };
+    const getValueCols = () => {
+      const {mode, use12Hours} = props;
+      const date = getDate();
+      let cols: any[] = [];
+      let value: any[] = [];
+
+      if (mode === YEAR) {
+        return {
+          cols: getDateData(),
+          value: [date.getFullYear()]
+        };
+      }
+
+      if (mode === MONTH) {
+        return {
+          cols: getDateData(),
+          value: [date.getFullYear(), date.getMonth()]
+        };
+      }
+
+      if (mode === DATETIME || mode === DATE) {
+        cols = getDateData();
+        value = [date.getFullYear(), date.getMonth(), date.getDate()];
+      }
+
+      if (mode === DATETIME || mode === TIME) {
+        const time = getTimeData(date);
+        cols = cols.concat(time.cols);
+        const hour = date.getHours();
+        let dtValue = [hour, time.selMinute];
+        let nhour = hour;
+        if (use12Hours) {
+          nhour = hour === 0 ? 12 : (hour > 12 ? hour - 12 : hour);
+          dtValue = [nhour, time.selMinute, (hour >= 12 ? 1 : 0)];
+        }
+        value = value.concat(dtValue);
+      }
+      return {
+        value,
+        cols
+      };
+    };
+
+    const defaultMinDate: any = ref(null);
+    const defaultMaxDate: any = ref(null);
+    const store: {
+      onDismiss: () => void;
+      onOk: (...args: any) => any
+    } = inject('store');
+    const getDefaultMinDate = () => {
+      if (!defaultMinDate.value) {
+        defaultMinDate.value = new Date(2000, 1, 1, 0, 0, 0);
+      }
+      return defaultMinDate.value;
+    };
+    const getDefaultMaxDate = () => {
+      if (!defaultMaxDate.value) {
+        defaultMaxDate.value = new Date(2030, 1, 1, 23, 59, 59);
+      }
+      return defaultMaxDate.value;
     };
     const getMinYear = () => {
       return getMinDate().getFullYear();
@@ -234,48 +277,6 @@ const DatePicker = defineComponent({
         props: {children: [{value: 0, label: locale.am}, {value: 1, label: locale.pm}]}
       }] : []);
       return {cols, selMinute};
-    };
-    const getValueCols = () => {
-      const {mode, use12Hours} = props;
-      const date = getDate();
-      let cols: any[] = [];
-      let value: any[] = [];
-
-      if (mode === YEAR) {
-        return {
-          cols: getDateData(),
-          value: [date.getFullYear()]
-        };
-      }
-
-      if (mode === MONTH) {
-        return {
-          cols: getDateData(),
-          value: [date.getFullYear(), date.getMonth()]
-        };
-      }
-
-      if (mode === DATETIME || mode === DATE) {
-        cols = getDateData();
-        value = [date.getFullYear(), date.getMonth(), date.getDate()];
-      }
-
-      if (mode === DATETIME || mode === TIME) {
-        const time = getTimeData(date);
-        cols = cols.concat(time.cols);
-        const hour = date.getHours();
-        let dtValue = [hour, time.selMinute];
-        let nhour = hour;
-        if (use12Hours) {
-          nhour = hour === 0 ? 12 : (hour > 12 ? hour - 12 : hour);
-          dtValue = [nhour, time.selMinute, (hour >= 12 ? 1 : 0)];
-        }
-        value = value.concat(dtValue);
-      }
-      return {
-        value,
-        cols
-      };
     };
     watch(() => state.date, () => {
       const {value} = getValueCols();

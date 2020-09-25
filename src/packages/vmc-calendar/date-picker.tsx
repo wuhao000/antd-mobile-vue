@@ -8,8 +8,8 @@ import WeekPanel from './date/week-panel';
 const DatePicker = defineComponent({
   name: 'DatePicker',
   props: {
-    displayMode: {type: Boolean, default: false},
-    ...DatePickerProps
+    ...DatePickerProps,
+    displayMode: {type: Boolean, default: false}
   },
   setup(props, {emit}) {
     const genMonthComponent = (data?: MonthData) => {
@@ -26,7 +26,7 @@ const DatePicker = defineComponent({
                             onCellClick(day);
                           }}
                           getDateExtra={props.getDateExtra}
-                          callback={(dom: {updateWeeks: (data?: MonthData) => any}) => {
+                          callback={(dom: { updateWeeks: (data?: MonthData) => any }) => {
                             data.componentRef = dom || data.componentRef || undefined;
                             data.updateLayout = () => {
                               computeHeight(data, dom);

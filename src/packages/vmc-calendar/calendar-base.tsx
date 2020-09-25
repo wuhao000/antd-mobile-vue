@@ -20,7 +20,7 @@ export class StateType {
 }
 
 export const useBaseCalendar = (props, {emit}) => {
-  const currentValue: Ref<Date[]> = ref([]);
+  const currentValue: Ref<Date[]> = ref(props.value ?? []);
   provide('currentValue', currentValue);
   const state = reactive({
     showTimePicker: false,
@@ -141,6 +141,7 @@ export const useBaseCalendar = (props, {emit}) => {
             <DatePicker
               locale={locale}
               type={type}
+              value={endDate ? endDate : startDate}
               displayMode={props.displayMode}
               prefixCls={prefixCls}
               infiniteOpt={infiniteOpt}

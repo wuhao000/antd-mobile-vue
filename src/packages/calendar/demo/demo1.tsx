@@ -81,8 +81,13 @@ export default defineComponent({
         <m-list class="calendar-list" style={{backgroundColor: 'white'}}>
           {this.renderBtn('选择日期区间', 'Select Date Range')}
           {this.renderBtn('选择日期时间区间', 'Select DateTime Range', {pickTime: true})}
-          {this.renderBtn('选择日期', 'Select Date', {type: 'one'})}
-          {this.renderBtn('选择日期时间', 'Select DateTime', {type: 'one', pickTime: true})}
+          {this.renderBtn('选择日期', 'Select Date', {
+            type: 'one',
+            value: new Date()
+          })}
+          {this.renderBtn('选择日期时间', 'Select DateTime', {type: 'one',
+            value: new Date(),
+            pickTime: true})}
           {this.renderBtn('选择日期区间(快捷)', 'Select Date Range (Shortcut)', {showShortcut: true})}
           {this.renderBtn('选择日期时间区间(快捷)', 'Select DateTime Range (Shortcut)', {pickTime: true, showShortcut: true})}
           {this.renderBtn('大行距', 'XL row size', {rowSize: 'xl'})}

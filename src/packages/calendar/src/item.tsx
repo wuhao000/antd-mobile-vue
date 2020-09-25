@@ -1,4 +1,4 @@
-import {defineComponent, PropType, Ref, ref, watch} from 'vue';
+import {computed, defineComponent, PropType, Ref, ref, watch} from 'vue';
 import List from '../../list';
 import {useBaseInputComponent} from '../../mixins/base-input-component';
 import {pureInputComponentProps} from '../../mixins/pure-input-component';
@@ -11,6 +11,8 @@ const MAX_DATE = new Date(new Date().getFullYear() + 10, 12, 31, 23, 59, 59);
 export default defineComponent({
   name: 'MCalendarItem',
   props: {
+    ...simpleFormComponentProps,
+    ...pureInputComponentProps,
     /**
      * 标题
      */
@@ -23,18 +25,15 @@ export default defineComponent({
     maxDate: {type: Date, default: () => MAX_DATE},
     pickTime: {type: Boolean, default: false},
     type: {type: String as PropType<'one' | 'range'>, default: 'range'},
-    placeholder: {type: String},
-    ...simpleFormComponentProps,
-    ...pureInputComponentProps
+    placeholder: {type: String}
   },
   setup(props, {emit, attrs, slots}) {
-    const {getDefaultSlot, stateValue, slots: inputSlots, cssStyle, listeners, props: inputProps} = useBaseInputComponent(props, {
+    const {getDefaultSlot, slots: inputSlots, cssStyle, listeners, props: inputProps} = useBaseInputComponent(props, {
       emit,
       attrs,
       slots
     });
     const currentValue: Ref<Date[]> = ref([]);
-    const displayValue: Ref<string> = ref(null);
     const visible: Ref<boolean> = ref(false);
     watch(() => props.value, (value: any) => {
       if (props.type === 'one') {
@@ -43,8 +42,11 @@ export default defineComponent({
         currentValue.value = value;
       }
     }, {immediate: true});
-    const getDisplayValue = () => {
+    const displayValue = computed(() => {
       const valueStrs = currentValue.value.map(it => {
+        if (!it) {
+          return null;
+        }
         if (props.pickTime) {
           return moment(it).format('YYYY/MM/DD HH:mm');
         } else {
@@ -52,22 +54,14 @@ export default defineComponent({
         }
       });
       if (props.type === 'range') {
-        return valueStrs[0] + ' ~ ' + (valueStrs[1] || '');
+        if (valueStrs[0] || valueStrs[1]) {
+          return valueStrs[0] ?? '' + ' ~ ' + (valueStrs[1] ?? '');
+        }
+        return '';
       } else {
-        return valueStrs[0];
+        return valueStrs[0] ?? '';
       }
-    };
-    watch(() => currentValue.value, () => {
-      if (currentValue.value.length) {
-        displayValue.value = getDisplayValue();
-      } else {
-        displayValue.value = '';
-      }
-    }, {immediate: true});
-
-    const getInputComponent = () => {
-      return Calendar;
-    };
+    });
     const onClick = () => {
       visible.value = true;
     };
@@ -88,7 +82,7 @@ export default defineComponent({
       onClose, inputProps, displayValue,
       onClick, onConfirm, listeners,
       getDefaultSlot, cssStyle,
-      inputSlots, visible, stateValue,
+      inputSlots, visible,
       currentValue
     };
   },
@@ -98,12 +92,12 @@ export default defineComponent({
         return [
           <Calendar {...this.inputProps}
                     {...this.listeners}
-                    value={this.stateValue}
+                    value={this.currentValue}
                     visible={this.visible}
                     onClose={this.onClose}
                     onConfirm={this.onConfirm}
                     defaultValue={this.currentValue}
-                    slots={this.inputSlots}
+                    v-slots={this.inputSlots}
                     style={this.cssStyle}>
             {this.getDefaultSlot()}
           </Calendar>,

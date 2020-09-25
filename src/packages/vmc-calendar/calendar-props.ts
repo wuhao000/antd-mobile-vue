@@ -13,6 +13,7 @@ export default {
       return new Date(2000, 0, 1, 8);
     }
   },
+  value: {type: Array as PropType<Date[]>},
   defaultValue: {type: Array as PropType<Date[]>},
   displayMode: {type: Boolean, default: false},
   enterDirection: {type: String, default: 'vertical'},

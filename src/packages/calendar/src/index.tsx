@@ -16,13 +16,15 @@ export default defineComponent({
   },
   setup(props, {emit}) {
     const state = reactive({
-      visible: props.visible
+      visible: props.visible,
+      value: props.value
     });
     watch(() => props.visible, (value) => {
       state.visible = value;
     });
     const onConfirm = (...args) => {
       emit('confirm', ...args);
+      emit('update:value', state.value);
       onClose();
     };
     const onClear = (e) => {
@@ -30,6 +32,7 @@ export default defineComponent({
     };
     const onClose = (...args) => {
       state.visible = false;
+      state.value = props.value;
       emit('close', ...args);
       emit('update:visible', false);
     };
@@ -42,6 +45,10 @@ export default defineComponent({
     const Header = VMCalendar.DefaultHeader;
     return (
       <VMCalendar
+        {
+          ...this.$props
+        }
+        v-model={[this.state.value, 'value']}
         locale={locale}
         renderHeader={headerProps => (
           <Header {...headerProps} closeIcon={<Icon type="cross"/>}/>
@@ -55,9 +62,6 @@ export default defineComponent({
         onSelectHasDisableDate={(...args) => {
           this.$emit('select-has-disable-date', ...args);
         }}
-        {
-          ...this.$props
-        }
         visible={this.state.visible}
       />
     );
