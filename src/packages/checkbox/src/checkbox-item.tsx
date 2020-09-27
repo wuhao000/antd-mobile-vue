@@ -1,66 +1,70 @@
 import classnames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
+import {defineComponent, PropType, reactive, watch} from 'vue';
 import List from '../../list';
 import Checkbox from './checkbox';
 
-const ListItem = List.Item;
-
-@Component({
-  name: 'MCheckboxItem'
-})
-class CheckboxItem extends Vue {
-  @Prop({type: Object, default: () => ({})})
-  public thumbStyle: object;
-  @Prop({type: String, default: 'am-list'})
-  public listPrefixCls?: string;
-  @Prop({type: String, default: 'am-checkbox'})
-  public prefixCls?: string;
-  @Prop({type: String})
-  public name?: string;
-  @Prop({type: Boolean, default: false})
-  public wrapLabel?: boolean;
-  @Prop({
-    type: Object,
-    default: () => {
-      return {};
+const CheckboxItem = defineComponent({
+  name: 'MCheckboxItem',
+  props: {
+    thumbStyle: {
+      type: Object as PropType<object>,
+      default: () => ({})
+    },
+    listPrefixCls: {
+      type: String as PropType<string>,
+      default: 'am-list'
+    },
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-checkbox'
+    },
+    name: {
+      type: String as PropType<string>
+    },
+    wrapLabel: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    checkboxProps: {
+      type: Object as PropType<object>,
+      default: () => {
+        return {};
+      }
+    },
+    extra: {
+      type: String as PropType<string>
+    },
+    disabled: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    value: {
+      type: Boolean as PropType<boolean>,
+      default: false
     }
-  })
-  public checkboxProps?: object;
-  @Prop({type: String})
-  public extra?: string;
-  @Prop({type: Boolean, default: false})
-  public disabled: boolean;
-  @Prop({type: Boolean, default: false})
-  public value: boolean;
+  },
+  setup(props, {emit}) {
+    const state = reactive({
+      value: props.value
+    });
+    watch(() => props.value, (value: any) => {
+      state.value = value;
+    });
+    watch(() => state.value, (value: any) => {
+      emit('update:value', value);
+      emit('change', value);
+    });
 
-  public state = {
-    value: this.value
-  };
-
-  @Watch('value')
-  public valueCahnged(value: any) {
-    this.state.value = value;
-  }
-
-  @Watch('state.value')
-  public stateValueChanged(value: any) {
-    this.$emit('update:value', value);
-    this.$emit('change', value);
-  }
-
-
-  public onChange(value: boolean) {
-  }
-
-  public onClick(e) {
-    if (!this.disabled) {
-      this.state.value = !this.state.value;
-    }
-  }
-
-  public render() {
+    const onChange = (value: boolean) => {
+    };
+    const onClick = (e) => {
+      if (!props.disabled) {
+        state.value = !state.value;
+      }
+    };
+    return {state, onChange, onClick};
+  },
+  render() {
     const {
       listPrefixCls,
       disabled,
@@ -89,8 +93,8 @@ class CheckboxItem extends Vue {
       onChange={this.onChange}/>;
     return (
       // @ts-ignore
-      <ListItem
-        attrs={{
+      <List.Item
+        {...{
           ...restProps
         }}
         touchFeedback={!this.disabled}
@@ -98,10 +102,11 @@ class CheckboxItem extends Vue {
         prefixCls={listPrefixCls}
         class={wrapCls}
         thumb={thumb}>
-        {this.$slots.default}
-      </ListItem>
+        {this.$slots.default()}
+      </List.Item>
     );
   }
-}
+});
+
 
 export default CheckboxItem as any;

@@ -6,8 +6,8 @@
               type="left"/>
       <m-icon key="0"
               slot="right-content"
-              type="search"
-              :style="{ marginRight : '16px' }"/>
+              :style="{ marginRight : '16px' }"
+              type="search"/>
       <m-icon key="1"
               slot="right-content"
               type="ellipsis"/>
@@ -17,8 +17,8 @@
                mode="dark">
       <m-icon key="0"
               slot="right-content"
-              type="search"
-              :style="{ marginRight : '16px' }"/>
+              :style="{ marginRight : '16px' }"
+              type="search"/>
       <m-icon key="1"
               slot="right-content"
               type="ellipsis"/>
@@ -27,15 +27,17 @@
   </div>
 </template>
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
+import {defineComponent} from 'vue';
 
-  @Component({
-    name: 'DemoDemo1'
-  })
-  export default class DemoDemo1 extends Vue {
-    public onLeftClick() {
+export default defineComponent({
+  name: 'DemoDemo1',
+  props: {},
+  setup(props, {emit, slots}) {
+    const onLeftClick = () => {
       console.log('left click');
-    }
+    };
+    return {};
   }
+});
+
 </script>

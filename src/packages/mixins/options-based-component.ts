@@ -1,73 +1,76 @@
-import {mixins, Options} from 'vue-class-component';
+import {defineComponent, onBeforeUpdate, Ref, ref} from 'vue';
 import {getOptionProperty} from '../utils/option';
 import {getNodeText} from '../utils/vnode';
-import BaseFormComponent from './base-input-component';
+import {useBaseInputComponent} from './base-input-component';
+
+const optionsBasedComponentProps = {
+  labelProperty: {type: [String, Function], default: 'label'},
+  valueProperty: {type: [String, Function], default: 'value'},
+  options: {type: Array}
+};
+const useOptionsBaseComponent = (props, ctx) => {
+  const {} = useBaseInputComponent(props, ctx);
+};
 
 // @ts-ignore
-@Options({
+defineComponent({
   name: 'OptionsBasedComponent',
-  props: {
-    labelProperty: {type: [String, Function], default: 'label'},
-    options: {type: Array},
-    valueProperty: {type: [String, Function], default: 'value'}
-  }
-})
-export default class OptionsBasedComponent extends mixins(BaseFormComponent) {
-  public searchKeyword: string = '';
-  /**
-   * 选项对象中作为标签的属性名称
-   */
-  public labelProperty: string | ((option) => any);
-  /**
-   * 选项数据
-   */
-  public options: any[];
-  /**
-   * 选项对象中作为值的属性名称
-   */
-  public valueProperty: string | ((option) => any);
+  props: {},
+  setup(props, {emit, slots}) {
+    const searchKeyword: Ref<string> = ref('');
+    /**
+     * 选项对象中作为标签的属性名称
+     */
+    const labelProperty: Ref<string | ((option) => any)> = ref(null);
+    /**
+     * 选项数据
+     */
+    const options: Ref<any[]> = ref(null);
+    /**
+     * 选项对象中作为值的属性名称
+     */
+    const valueProperty: Ref<string | ((option) => any)> = ref(null);
 
-  public beforeUpdate() {
-    this.setProps();
-  }
 
-  public created() {
-    this.setProps();
-  }
-
-  public getOptions() {
-    return this.getResolvedOptions(this.options);
-  }
-
-  public getResolvedOptions(options: any[]): any[] | null {
-    if (options) {
-      return options.map(option => {
-        return Object.assign({}, option, {
-          label: getOptionProperty(option, this.labelProperty),
-          value: getOptionProperty(option, this.valueProperty)
+    const getOptions = () => {
+      return getResolvedOptions(options.value);
+    };
+    const getResolvedOptions = (options: any[]) => {
+      if (options) {
+        return options.map(option => {
+          return Object.assign({}, option, {
+            label: getOptionProperty(option, labelProperty.value),
+            value: getOptionProperty(option, valueProperty.value)
+          });
+        }).filter(item => {
+          let label = item.label;
+          if (typeof label === 'object') {
+            label = getNodeText(label) || '';
+          }
+          return !searchKeyword.value || label.includes(searchKeyword.value);
         });
-      }).filter(item => {
-        let label = item.label;
-        if (typeof label === 'object') {
-          label = getNodeText(label) || '';
-        }
-        return !this.searchKeyword || label.includes(this.searchKeyword);
-      });
-    } else {
-      return null;
+      } else {
+        return null;
+      }
+    };
+    const setProps = () => {
+      if (this.$slots.default) {
+        this.$slots.default().forEach(node => {
+          if (node.props.disabled === undefined) {
+            node.props.disabled = this.isDisabled;
+          }
+          if (node.props.readonly === undefined) {
+            node.props.readonly = this.isReadonly;
+          }
+        });
+      }
+    };
+    onBeforeUpdate(() => {
+      setProps();
+    });
+    {
+      setProps();
     }
+    return {};
   }
-
-  private setProps() {
-    if (this.$slots.default) {
-      this.$slots.default().forEach(node => {
-        if (node.props.disabled === undefined) {
-          node.props.disabled = this.isDisabled;
-        }
-        if (node.props.readonly === undefined) {
-          node.props.readonly = this.isReadonly;
-        }
-      });
-    }
-  }
-}
+});

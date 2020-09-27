@@ -1,63 +1,71 @@
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent, PropType} from 'vue';
 import RmcDrawer from '../../vmc-drawer';
 
-@Component({
-  name: 'Drawer'
-})
-export default class Drawer extends Vue {
-  /**
-   * 抽屉内容容器样式
-   */
-  @Prop({type: Object})
-  public sidebarStyle?: any;
-  @Prop({type: Object})
-  public contentStyle?: any;
-  @Prop({type: Object})
-  public overlayStyle?: any;
-  @Prop({type: Object})
-  public dragHandleStyle?: any;
-  @Prop({type: Boolean})
-  public docked?: boolean;
-  @Prop({type: Boolean})
-  public transitions?: boolean;
-  @Prop({type: Boolean, default: true})
-  public touch?: boolean;
-  @Prop({type: Number})
-  public dragToggleDistance?: number;
-  @Prop({
-    type: String,
-    default: 'am-drawer'
-  })
-  public prefixCls?: string;
-  @Prop({})
-  public sidebar?: VNode;
-  @Prop({type: Boolean})
-  public value?: boolean;
-  @Prop({type: String, default: 'left'})
-  public position?: 'left' | 'right' | 'top' | 'bottom';
-  public static install: (Vue) => void;
-
-  public render() {
+const Drawer = defineComponent({
+  install: null,
+  name: 'Drawer',
+  props: {
+    /**
+     * 抽屉内容容器样式
+     */
+    sidebarStyle: {
+      type: Object as PropType<any>
+    },
+    contentStyle: {
+      type: Object as PropType<any>
+    },
+    overlayStyle: {
+      type: Object as PropType<any>
+    },
+    dragHandleStyle: {
+      type: Object as PropType<any>
+    },
+    docked: {
+      type: Boolean as PropType<boolean>
+    },
+    transitions: {
+      type: Boolean as PropType<boolean>
+    },
+    touch: {
+      type: Boolean as PropType<boolean>,
+      default: true
+    },
+    dragToggleDistance: {
+      type: Number as PropType<number>
+    },
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-drawer'
+    },
+    sidebar: {},
+    value: {
+      type: Boolean as PropType<boolean>
+    },
+    position: {
+      type: String as PropType<'left' | 'right' | 'top' | 'bottom'>,
+      default: 'left'
+    }
+  },
+  render() {
     // @ts-ignore
     return <RmcDrawer
-      attrs={
-        {
+      {
+        ...{
           ...this.$props,
           ...this.$attrs,
-          sidebar: this.$slots.sidebar || this.sidebar
+          sidebar: this.$slots.sidebar?.() ?? this.sidebar
         }
       }
       open={this.value}
-      on={{
-        ...this.$listeners,
-        open: (value) => {
+      {...{
+        onOpen: (value) => {
           this.$emit('update:value', value);
           this.$emit('open', value);
         }
       }}>
-      {this.$slots.default}
+      {this.$slots.default?.()}
     </RmcDrawer>;
   }
-}
+});
+
+export default Drawer;

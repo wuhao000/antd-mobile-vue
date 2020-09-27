@@ -1,7 +1,5 @@
 /* tslint:disable:no-console */
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent, PropType, ref, Ref, VNode} from 'vue';
 import {cloneElement} from '../utils/vnode';
 import {DIRECTION_ALL, DIRECTION_HORIZONTAL, DIRECTION_VERTICAL, PRESS} from './config';
 import {
@@ -143,478 +141,421 @@ const directionMap = {
   horizontal: DIRECTION_HORIZONTAL
 };
 
-@Component({
-  name: 'Gesture'
-})
-class Gesture extends Vue {
-  @Prop({type: Boolean, default: false})
-  public enableRotate: boolean;
-  @Prop({type: Boolean, default: false})
-  public enablePinch: boolean;
-  @Prop({type: String, default: 'all'})
-  public direction: string;
-  // pinch: s.zoom
-  @Prop()
-  public onPinch?: GestureHandler;
-  @Prop()
-  public onPinchStart?: GestureHandler;
-  @Prop()
-  public onPinchMove?: GestureHandler;
-  @Prop()
-  public onPinchEnd?: GestureHandler;
-  @Prop()
-  public onPinchCancel?: GestureHandler;
-  @Prop()
-  public onPinchIn?: GestureHandler;
-  @Prop()
-  public onPinchOut?: GestureHandler;
+const Gesture = defineComponent({
+  name: 'Gesture',
+  props: {
+    enableRotate: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    enablePinch: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    direction: {
+      type: String as PropType<string>,
+      default: 'all'
+    },
+    onPinch: {},
+    onPinchStart: {},
+    onPinchMove: {},
+    onPinchEnd: {},
+    onPinchCancel: {},
+    onPinchIn: {},
+    onPinchOut: {},
+    onRotate: {},
+    onRotateStart: {},
+    onRotateMove: {},
+    onRotateEnd: {},
+    onRotateCancel: {},
+    onPan: {},
+    onPanStart: {},
+    onPanMove: {},
+    onPanEnd: {},
+    onPanCancel: {},
+    onPanLeft: {},
+    onPanRight: {},
+    onPanUp: {},
+    onPanDown: {},
+    onTap: {},
+    onPress: {},
+    onPressUp: {},
+    onSwipe: {},
+    onSwipeLeft: {},
+    onSwipeRight: {},
+    onSwipeUp: {},
+    onSwipeDown: {},
+    onTouchStart: {},
+    onTouchMove: {},
+    onTouchEnd: {},
+    onTouchCancel: {}
+  },
+  setup(props, {emit, slots}) {
+    const gesture: Ref<IGestureStatus> = ref(null);
+    const event: Ref<any> = ref(null);
+    const pressTimer: Ref<NodeJS.Timer> = ref(null);
+    const directionSetting: Ref<number> = ref(null);
 
-  // rotate: s.angle
-  @Prop()
-  public onRotate?: GestureHandler;
-  @Prop()
-  public onRotateStart?: GestureHandler;
-  @Prop()
-  public onRotateMove?: GestureHandler;
-  @Prop()
-  public onRotateEnd?: GestureHandler;
-  @Prop()
-  public onRotateCancel?: GestureHandler;
 
-  // pan: s.delta
-  @Prop()
-  public onPan?: GestureHandler;
-  @Prop()
-  public onPanStart?: GestureHandler;
-  @Prop()
-  public onPanMove?: GestureHandler;
-  @Prop()
-  public onPanEnd?: GestureHandler;
-  @Prop()
-  public onPanCancel?: GestureHandler;
-  @Prop()
-  public onPanLeft?: GestureHandler;
-  @Prop()
-  public onPanRight?: GestureHandler;
-  @Prop()
-  public onPanUp?: GestureHandler;
-  @Prop()
-  public onPanDown?: GestureHandler;
-
-  // tap
-  @Prop()
-  public onTap?: GestureHandler;
-
-  // long tap
-  @Prop()
-  public onPress?: GestureHandler;
-  @Prop()
-  public onPressUp?: GestureHandler;
-
-  // swipe
-  @Prop()
-  public onSwipe?: GestureHandler;
-  @Prop()
-  public onSwipeLeft?: GestureHandler;
-  @Prop()
-  public onSwipeRight?: GestureHandler;
-  @Prop()
-  public onSwipeUp?: GestureHandler;
-  @Prop()
-  public onSwipeDown?: GestureHandler;
-
-  // original dom element event handler
-  @Prop()
-  public onTouchStart?: any;
-  @Prop()
-  public onTouchMove?: any;
-  @Prop()
-  public onTouchEnd?: any;
-  @Prop()
-  public onTouchCancel?: any;
-  protected gesture: IGestureStatus;
-  protected event: any;
-  private pressTimer: NodeJS.Timer;
-  private directionSetting: number;
-
-  public created() {
-    this.directionSetting = directionMap[this.$props.direction];
-  }
-
-  public triggerEvent(name, ...args) {
-    const cb = this.$props[name];
-    if (typeof cb === 'function') {
-      // always give user gesture object as first params first
-      cb(this.getGestureState(), ...args);
-    }
-  }
-
-  public triggerCombineEvent(mainEventName, eventStatus, ...args) {
-    this.triggerEvent(mainEventName, ...args);
-    this.triggerSubEvent(mainEventName, eventStatus, ...args);
-
-  }
-
-  public triggerSubEvent(mainEventName, eventStatus, ...args) {
-    if (eventStatus) {
-      const subEventName = getEventName(mainEventName, eventStatus);
-      this.triggerEvent(subEventName, ...args);
-    }
-  }
-
-  public triggerPinchEvent(mainEventName, eventStatus, ...args) {
-    const {scale} = this.gesture;
-    if (eventStatus === 'move' && typeof scale === 'number') {
-      if (scale > 1) {
-        this.triggerEvent('onPinchOut');
+    const triggerEvent = (name, ...args) => {
+      const cb = props[name];
+      if (typeof cb === 'function') {
+        // always give user gesture object as first params first
+        cb(getGestureState(), ...args);
       }
-      if (scale < 1) {
-        this.triggerEvent('onPinchIn');
-      }
-    }
-    this.triggerCombineEvent(mainEventName, eventStatus, ...args);
-  }
-
-  public initPressTimer() {
-    this.cleanPressTimer();
-    this.pressTimer = setTimeout(() => {
-      this.setGestureState({
-        press: true
-      });
-      this.triggerEvent('onPress');
-    }, PRESS.time);
-  }
-
-  public cleanPressTimer() {
-    /* tslint:disable:no-unused-expression */
-    this.pressTimer && clearTimeout(this.pressTimer);
-  }
-
-  public setGestureState(params) {
-    if (!this.gesture) {
-      this.gesture = {} as any;
-    }
-
-    // cache the previous touches
-    if (this.gesture.touches) {
-      this.gesture.preTouches = this.gesture.touches;
-    }
-    this.gesture = {
-      ...this.gesture,
-      ...params
     };
-  }
+    const triggerCombineEvent = (mainEventName, eventStatus, ...args) => {
+      triggerEvent(mainEventName, ...args);
+      triggerSubEvent(mainEventName, eventStatus, ...args);
 
-  public getGestureState() {
-    if (!this.gesture) {
-      return this.gesture;
-    } else {
-      // shallow copy
-      return {
-        ...this.gesture
-      };
-    }
-  }
-
-  public cleanGestureState() {
-    delete this.gesture;
-  }
-
-  public getTouches(e) {
-    return Array.prototype.slice.call(e.touches).map(item => ({
-      x: item.screenX,
-      y: item.screenY
-    }));
-  }
-
-  public triggerUserCb(status, e) {
-    const cbName = getEventName('onTouch', status);
-    if (cbName in this.$props && this.$props[cbName]) {
-      this.$props[cbName](e);
-    }
-  }
-
-  public _handleTouchStart(e) {
-    this.triggerUserCb('start', e);
-    this.event = e;
-    if (e.touches.length > 1) {
-      e.preventDefault();
-    }
-    this.initGestureStatus(e);
-    this.initPressTimer();
-    this.checkIfMultiTouchStart();
-  }
-
-  public initGestureStatus(e) {
-    this.cleanGestureState();
-    // store the gesture start state
-    const startTouches = this.getTouches(e);
-    const startTime = now();
-    const startMutliFingerStatus = calcMutliFingerStatus(startTouches);
-    this.setGestureState({
-      startTime,
-      startTouches,
-      startMutliFingerStatus,
-      /* copy for next time touch move cala convenient*/
-      time: startTime,
-      touches: startTouches,
-      mutliFingerStatus: startMutliFingerStatus,
-      srcEvent: this.event
-    });
-  }
-
-  public checkIfMultiTouchStart() {
-    const {enablePinch, enableRotate} = this;
-    const {touches} = this.gesture;
-    if (touches.length > 1 && (enablePinch || enableRotate)) {
-      if (enablePinch) {
-        const startMutliFingerStatus = calcMutliFingerStatus(touches);
-        this.setGestureState({
-          startMutliFingerStatus,
-
-          /* init pinch status */
-          pinch: true,
-          scale: 1
-        });
-        this.triggerCombineEvent('onPinch', 'start');
+    };
+    const triggerSubEvent = (mainEventName, eventStatus, ...args) => {
+      if (eventStatus) {
+        const subEventName = getEventName(mainEventName, eventStatus);
+        triggerEvent(subEventName, ...args);
       }
-      if (enableRotate) {
-        this.setGestureState({
-          /* init rotate status */
-          rotate: true,
-          rotation: 0
-        });
-        this.triggerCombineEvent('onRotate', 'start');
-      }
-    }
-  }
-
-  public _handleTouchMove(e) {
-    this.triggerUserCb('move', e);
-    this.event = e;
-    if (!this.gesture) {
-      // sometimes weird happen: touchstart -> touchmove..touchmove.. --> touchend --> touchmove --> touchend
-      // so we need to skip the unnormal event cycle after touchend
-      return;
-    }
-
-    // not a long press
-    this.cleanPressTimer();
-
-    this.updateGestureStatus(e);
-    this.checkIfSingleTouchMove();
-    this.checkIfMultiTouchMove();
-  }
-
-  public checkIfMultiTouchMove() {
-    const {pinch, rotate, touches, startMutliFingerStatus, mutliFingerStatus} = this.gesture as any;
-    if (!pinch && !rotate) {
-      return;
-    }
-    if (touches.length < 2) {
-      this.setGestureState({
-        pinch: false,
-        rotate: false
-      });
-      // Todo: 2 finger -> 1 finger, wait to test this situation
-      pinch && this.triggerCombineEvent('onPinch', 'cancel');
-      rotate && this.triggerCombineEvent('onRotate', 'cancel');
-      return;
-    }
-
-    if (pinch) {
-      const scale = mutliFingerStatus.z / startMutliFingerStatus.z;
-      this.setGestureState({
-        scale
-      });
-      this.triggerPinchEvent('onPinch', 'move');
-    }
-    if (rotate) {
-      const rotation = calcRotation(startMutliFingerStatus, mutliFingerStatus);
-      this.setGestureState({
-        rotation
-      });
-      this.triggerCombineEvent('onRotate', 'move');
-    }
-  }
-
-  public allowGesture() {
-    return shouldTriggerDirection(this.gesture.direction, this.directionSetting);
-  }
-
-  public checkIfSingleTouchMove() {
-    const {pan, touches, moveStatus, preTouches, availablePan = true} = this.gesture;
-    if (touches.length > 1) {
-      this.setGestureState({
-        pan: false
-      });
-      // Todo: 1 finger -> 2 finger, wait to test this situation
-      pan && this.triggerCombineEvent('onPan', 'cancel');
-      return;
-    }
-
-    // add avilablePan condition to fix the case in scrolling, which will cause unavailable pan move.
-    if (moveStatus && availablePan) {
-      const direction = getMovingDirection(preTouches[0], touches[0]);
-      this.setGestureState({direction});
-
-      const eventName = getDirectionEventName(direction);
-      if (!this.allowGesture()) {
-        // if the first move is unavailable, then judge all of remaining touch movings are also invalid.
-        if (!pan) {
-          this.setGestureState({availablePan: false});
+    };
+    const triggerPinchEvent = (mainEventName, eventStatus, ...args) => {
+      const {scale} = gesture.value;
+      if (eventStatus === 'move' && typeof scale === 'number') {
+        if (scale > 1) {
+          triggerEvent('onPinchOut');
         }
-        return;
+        if (scale < 1) {
+          triggerEvent('onPinchIn');
+        }
       }
-      if (!pan) {
-        this.triggerCombineEvent('onPan', 'start');
-        this.setGestureState({
-          pan: true,
-          availablePan: true
+      triggerCombineEvent(mainEventName, eventStatus, ...args);
+    };
+    const initPressTimer = () => {
+      cleanPressTimer();
+      pressTimer.value = setTimeout(() => {
+        setGestureState({
+          press: true
         });
+        triggerEvent('onPress');
+      }, PRESS.time);
+    };
+    const cleanPressTimer = () => {
+      /* tslint:disable:no-unused-expression */
+      pressTimer.value && clearTimeout(pressTimer.value);
+    };
+    const setGestureState = (params) => {
+      if (!gesture.value) {
+        gesture.value = {} as any;
+      }
+
+      // cache the previous touches
+      if (gesture.value.touches) {
+        gesture.value.preTouches = gesture.value.touches;
+      }
+      gesture.value = {
+        ...gesture.value,
+        ...params
+      };
+    };
+    const getGestureState = () => {
+      if (!gesture.value) {
+        return gesture.value;
       } else {
-        this.triggerCombineEvent('onPan', eventName);
-        this.triggerSubEvent('onPan', 'move');
+        // shallow copy
+        return {
+          ...gesture.value
+        };
       }
-    }
-  }
-
-  public checkIfMultiTouchEnd(status) {
-    const {pinch, rotate} = this.gesture;
-    if (pinch) {
-      this.triggerCombineEvent('onPinch', status);
-    }
-    if (rotate) {
-      this.triggerCombineEvent('onRotate', status);
-    }
-  }
-
-  public updateGestureStatus(e) {
-    const time = now();
-    this.setGestureState({
-      time
-    });
-    if (!e.touches || !e.touches.length) {
-      return;
-    }
-    const {startTime, startTouches, pinch, rotate} = this.gesture;
-    const touches = this.getTouches(e);
-    const moveStatus = calcMoveStatus(startTouches, touches, time - startTime);
-    let mutliFingerStatus;
-    if (pinch || rotate) {
-      mutliFingerStatus = calcMutliFingerStatus(touches);
-    }
-
-    this.setGestureState({
-      /* update status snapshot */
-      touches,
-      mutliFingerStatus,
-      /* update duration status */
-      moveStatus
-
-    });
-  }
-
-  public _handleTouchEnd(e) {
-    this.triggerUserCb('end', e);
-    this.event = e;
-    if (!this.gesture) {
-      return;
-    }
-    this.cleanPressTimer();
-    this.updateGestureStatus(e);
-    this.doSingleTouchEnd('end');
-    this.checkIfMultiTouchEnd('end');
-  }
-
-  public _handleTouchCancel(e) {
-    this.triggerUserCb('cancel', e);
-    this.event = e;
-    // Todo: wait to test cancel case
-    if (!this.gesture) {
-      return;
-    }
-    this.cleanPressTimer();
-    this.updateGestureStatus(e);
-    this.doSingleTouchEnd('cancel');
-    this.checkIfMultiTouchEnd('cancel');
-  }
-
-  public triggerAllowEvent(type, status) {
-    if (this.allowGesture()) {
-      this.triggerCombineEvent(type, status);
-    } else {
-      this.triggerSubEvent(type, status);
-    }
-  }
-
-  public doSingleTouchEnd(status) {
-    const {moveStatus, pinch, rotate, press, pan, direction} = this.gesture;
-
-    if (pinch || rotate) {
-      return;
-    }
-    if (moveStatus) {
-      const {z, velocity} = moveStatus;
-      const swipe = shouldTriggerSwipe(z, velocity);
-      this.setGestureState({
-        swipe
+    };
+    const cleanGestureState = () => {
+      delete gesture.value;
+    };
+    const getTouches = (e) => {
+      return Array.prototype.slice.call(e.touches).map(item => ({
+        x: item.screenX,
+        y: item.screenY
+      }));
+    };
+    const triggerUserCb = (status, e) => {
+      const cbName = getEventName('onTouch', status);
+      if (cbName in props && props[cbName]) {
+        props[cbName](e);
+      }
+    };
+    const _handleTouchStart = (e) => {
+      triggerUserCb('start', e);
+      event.value = e;
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+      initGestureStatus(e);
+      initPressTimer();
+      checkIfMultiTouchStart();
+    };
+    const initGestureStatus = (e) => {
+      cleanGestureState();
+      // store the gesture start state
+      const startTouches = getTouches(e);
+      const startTime = now();
+      const startMutliFingerStatus = calcMutliFingerStatus(startTouches);
+      setGestureState({
+        startTime,
+        startTouches,
+        startMutliFingerStatus,
+        /* copy for next time touch move cala convenient*/
+        time: startTime,
+        touches: startTouches,
+        mutliFingerStatus: startMutliFingerStatus,
+        srcEvent: event.value
       });
-      if (pan) {
-        // pan need end, it's a process
-        // sometimes, start with pan left, but end with pan right....
-        this.triggerAllowEvent('onPan', status);
+    };
+    const checkIfMultiTouchStart = () => {
+      const {enablePinch, enableRotate} = props;
+      const {touches} = gesture.value;
+      if (touches.length > 1 && (enablePinch || enableRotate)) {
+        if (enablePinch) {
+          const startMutliFingerStatus = calcMutliFingerStatus(touches);
+          setGestureState({
+            startMutliFingerStatus,
+
+            /* init pinch status */
+            pinch: true,
+            scale: 1
+          });
+          triggerCombineEvent('onPinch', 'start');
+        }
+        if (enableRotate) {
+          setGestureState({
+            /* init rotate status */
+            rotate: true,
+            rotation: 0
+          });
+          triggerCombineEvent('onRotate', 'start');
+        }
       }
-      if (swipe) {
-        const directionEvName = getDirectionEventName(direction);
-        // swipe just need a direction, it's a endpoint
-        this.triggerAllowEvent('onSwipe', directionEvName);
+    };
+    const _handleTouchMove = (e) => {
+      triggerUserCb('move', e);
+      event.value = e;
+      if (!gesture.value) {
+        // sometimes weird happen: touchstart -> touchmove..touchmove.. --> touchend --> touchmove --> touchend
+        // so we need to skip the unnormal event cycle after touchend
         return;
       }
+
+      // not a long press
+      cleanPressTimer();
+
+      updateGestureStatus(e);
+      checkIfSingleTouchMove();
+      checkIfMultiTouchMove();
+    };
+    const checkIfMultiTouchMove = () => {
+      const {pinch, rotate, touches, startMutliFingerStatus, mutliFingerStatus} = gesture.value as any;
+      if (!pinch && !rotate) {
+        return;
+      }
+      if (touches.length < 2) {
+        setGestureState({
+          pinch: false,
+          rotate: false
+        });
+        // Todo: 2 finger -> 1 finger, wait to test this situation
+        pinch && triggerCombineEvent('onPinch', 'cancel');
+        rotate && triggerCombineEvent('onRotate', 'cancel');
+        return;
+      }
+
+      if (pinch) {
+        const scale = mutliFingerStatus.z / startMutliFingerStatus.z;
+        setGestureState({
+          scale
+        });
+        triggerPinchEvent('onPinch', 'move');
+      }
+      if (rotate) {
+        const rotation = calcRotation(startMutliFingerStatus, mutliFingerStatus);
+        setGestureState({
+          rotation
+        });
+        triggerCombineEvent('onRotate', 'move');
+      }
+    };
+    const allowGesture = () => {
+      return shouldTriggerDirection(gesture.value.direction, directionSetting.value);
+    };
+    const checkIfSingleTouchMove = () => {
+      const {pan, touches, moveStatus, preTouches, availablePan = true} = gesture.value;
+      if (touches.length > 1) {
+        setGestureState({
+          pan: false
+        });
+        // Todo: 1 finger -> 2 finger, wait to test this situation
+        pan && triggerCombineEvent('onPan', 'cancel');
+        return;
+      }
+
+      // add avilablePan condition to fix the case in scrolling, which will cause unavailable pan move.
+      if (moveStatus && availablePan) {
+        const direction = getMovingDirection(preTouches[0], touches[0]);
+        setGestureState({direction});
+
+        const eventName = getDirectionEventName(direction);
+        if (!allowGesture()) {
+          // if the first move is unavailable, then judge all of remaining touch movings are also invalid.
+          if (!pan) {
+            setGestureState({availablePan: false});
+          }
+          return;
+        }
+        if (!pan) {
+          triggerCombineEvent('onPan', 'start');
+          setGestureState({
+            pan: true,
+            availablePan: true
+          });
+        } else {
+          triggerCombineEvent('onPan', eventName);
+          triggerSubEvent('onPan', 'move');
+        }
+      }
+    };
+    const checkIfMultiTouchEnd = (status) => {
+      const {pinch, rotate} = gesture.value;
+      if (pinch) {
+        triggerCombineEvent('onPinch', status);
+      }
+      if (rotate) {
+        triggerCombineEvent('onRotate', status);
+      }
+    };
+    const updateGestureStatus = (e) => {
+      const time = now();
+      setGestureState({
+        time
+      });
+      if (!e.touches || !e.touches.length) {
+        return;
+      }
+      const {startTime, startTouches, pinch, rotate} = gesture.value;
+      const touches = getTouches(e);
+      const moveStatus = calcMoveStatus(startTouches, touches, time - startTime);
+      let mutliFingerStatus;
+      if (pinch || rotate) {
+        mutliFingerStatus = calcMutliFingerStatus(touches);
+      }
+
+      setGestureState({
+        /* update status snapshot */
+        touches,
+        mutliFingerStatus,
+        /* update duration status */
+        moveStatus
+
+      });
+    };
+    const _handleTouchEnd = (e) => {
+      triggerUserCb('end', e);
+      event.value = e;
+      if (!gesture.value) {
+        return;
+      }
+      cleanPressTimer();
+      updateGestureStatus(e);
+      doSingleTouchEnd('end');
+      checkIfMultiTouchEnd('end');
+    };
+    const _handleTouchCancel = (e) => {
+      triggerUserCb('cancel', e);
+      event.value = e;
+      // Todo: wait to test cancel case
+      if (!gesture.value) {
+        return;
+      }
+      cleanPressTimer();
+      updateGestureStatus(e);
+      doSingleTouchEnd('cancel');
+      checkIfMultiTouchEnd('cancel');
+    };
+    const triggerAllowEvent = (type, status) => {
+      if (allowGesture()) {
+        triggerCombineEvent(type, status);
+      } else {
+        triggerSubEvent(type, status);
+      }
+    };
+    const doSingleTouchEnd = (status) => {
+      const {moveStatus, pinch, rotate, press, pan, direction} = gesture.value;
+
+      if (pinch || rotate) {
+        return;
+      }
+      if (moveStatus) {
+        const {z, velocity} = moveStatus;
+        const swipe = shouldTriggerSwipe(z, velocity);
+        setGestureState({
+          swipe
+        });
+        if (pan) {
+          // pan need end, it's a process
+          // sometimes, start with pan left, but end with pan right....
+          triggerAllowEvent('onPan', status);
+        }
+        if (swipe) {
+          const directionEvName = getDirectionEventName(direction);
+          // swipe just need a direction, it's a endpoint
+          triggerAllowEvent('onSwipe', directionEvName);
+          return;
+        }
+      }
+
+      if (press) {
+        triggerEvent('onPressUp');
+        return;
+      }
+      triggerEvent('onTap');
+    };
+    const componentWillUnmount = () => {
+      cleanPressTimer();
+    };
+    const getTouchAction = () => {
+      const {enablePinch, enableRotate} = props;
+      if (enablePinch || enableRotate || directionSetting.value === DIRECTION_ALL) {
+        return 'pan-x pan-y';
+      }
+      if (directionSetting.value === DIRECTION_VERTICAL) {
+        return 'pan-x';
+      }
+      if (directionSetting.value === DIRECTION_HORIZONTAL) {
+        return 'pan-y';
+      }
+      return 'auto';
+    };
+    {
+      directionSetting.value = directionMap[props.direction];
     }
 
-    if (press) {
-      this.triggerEvent('onPressUp');
-      return;
-    }
-    this.triggerEvent('onTap');
-  }
-
-  public componentWillUnmount() {
-    this.cleanPressTimer();
-  }
-
-  public getTouchAction() {
-    const {enablePinch, enableRotate} = this;
-    const {directionSetting} = this;
-    if (enablePinch || enableRotate || directionSetting === DIRECTION_ALL) {
-      return 'pan-x pan-y';
-    }
-    if (directionSetting === DIRECTION_VERTICAL) {
-      return 'pan-x';
-    }
-    if (directionSetting === DIRECTION_HORIZONTAL) {
-      return 'pan-y';
-    }
-    return 'auto';
-  }
-
-  public render() {
+    return {
+      getTouchAction,
+      _handleTouchStart,
+      _handleTouchMove,
+      _handleTouchCancel,
+      _handleTouchEnd
+    };
+  },
+  render() {
     const child: VNode = this.$slots.default.length >= 1 ? this.$slots.default[0] : null;
     const touchAction = this.getTouchAction();
 
-    child.data.on = Object.assign({
-      touchstart: this._handleTouchStart,
-      touchmove: this._handleTouchMove,
-      touchcancel: this._handleTouchCancel,
-      touchend: this._handleTouchEnd
-    }, child.data.on || {});
+    child.props = Object.assign({
+      onTouchstart: this._handleTouchStart,
+      onTouchmove: this._handleTouchMove,
+      onTouchcancel: this._handleTouchCancel,
+      onTouchend: this._handleTouchEnd
+    }, child.props || {});
     return cloneElement(child, {
       style: {
         touchAction
       }
     });
   }
-}
+});
 
 export default Gesture as any;

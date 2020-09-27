@@ -3,33 +3,13 @@
 
 
 
-  "card": {
-    "type": "component",
-    "componentType": "mobile",
-    "name": "card",
-    "chineseName": "卡片",
-    "tag": "数据展示"
-  },
-  "carousel": {
-    "type": "component",
-    "componentType": "mobile",
-    "name": "carousel",
-    "chineseName": "走马灯",
-    "tag": "数据展示"
-  },
+
   "chart": {
     "type": "component",
     "componentType": "mobile",
     "name": "chart",
     "chineseName": "图表",
     "tag": "数据展示"
-  },
-  "checkbox": {
-    "type": "component",
-    "componentType": "mobile",
-    "name": "checkbox",
-    "chineseName": "复选框",
-    "tag": "数据入口"
   },
   "date-picker": {
     "type": "component",
@@ -43,13 +23,6 @@
     "componentType": "mobile",
     "name": "date-picker-view",
     "chineseName": "日期选择器"
-  },
-  "drawer": {
-    "type": "component",
-    "componentType": "mobile",
-    "name": "drawer",
-    "chineseName": "抽屉",
-    "tag": "导航"
   },
   "flex": {
     "type": "component",
@@ -97,13 +70,6 @@
     "name": "modal",
     "chineseName": "模态框",
     "tag": "反馈"
-  },
-  "nav-bar": {
-    "type": "component",
-    "componentType": "mobile",
-    "name": "nav-bar",
-    "chineseName": "导航栏",
-    "tag": "导航"
   },
   "notice-bar": {
     "type": "component",

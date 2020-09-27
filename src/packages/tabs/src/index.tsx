@@ -1,11 +1,8 @@
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
+import {computed, defineComponent, onBeforeUpdate, onUpdated, PropType, reactive, Ref, ref, watch} from 'vue';
+import {Models} from '../../../types/models';
 import Gesture, {IGestureStatus} from '../../vmc-gesture';
 import {DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP} from '../../vmc-gesture/config';
 import DefaultTabBar from './default-tab-bar';
-import {Models} from '../../../types/models';
-import {TabBarPropsType} from './props-type';
 import TabPane from './tab-pane';
 import {getTransformPropValue, setPxStyle, setTransform} from './utils';
 
@@ -24,470 +21,478 @@ export const getPanDirection = (direction: number | undefined) => {
   }
 };
 
-@Component({
-  name: 'Tabs'
-})
-export default class Tabs extends Vue {
-
-  public static DefaultTabBar: any = DefaultTabBar;
-  /**
-   * 使用卡片样式
-   */
-  @Prop({type: Boolean})
-  public card: boolean;
-  /**
-   * 激活的卡片背景色（未激活卡片的边框色与之相同）
-   */
-  @Prop({type: String})
-  public activeCardColor: string;
-  /**
-   * class前缀
-   */
-  @Prop({type: String, default: 'am-tabs'})
-  public prefixCls: string;
-  @Prop({type: Boolean, default: true})
-  public useOnPan: boolean;
-  public contentPos: string = '';
-  public isMoving = false;
-  @Prop()
-  public renderTabBar: (props: any) => VNode;
-  /**
-   * 标签数据
-   */
-  @Prop({
-    default: () => {
-      return [];
-    }
-  })
-  public tabs: Models.TabData[];
-  /** TabBar's position | default: top */
-  @Prop({default: 'top'})
-  public tabBarPosition?: 'top' | 'bottom' | 'left' | 'right';
-  /**
-   * 当前激活的卡片的索引
-   */
-  @Prop({type: [String, Number], default: 0})
-  public value?: number | string;
-  @Prop({type: Number})
-  public page?: number | string;
-  /**
-   * 是否支持手势
-   */
-  @Prop({type: Boolean, default: true})
-  public swipeable?: boolean;
-  /**
-   * 与当前激活标签相邻的提前渲染的标签数量
-   */
-  @Prop({type: Number, default: 1})
-  public prerenderingSiblingsNumber?: number;
-  /**
-   * 切换标签时是否有动画
-   */
-  @Prop({type: Boolean, default: true})
-  public animated?: boolean;
-  /**
-   * 是否销毁未激活的标签页
-   */
-  @Prop({type: Boolean, default: false})
-  public destroyInactiveTab?: boolean;
-  /**
-   * 切换卡片的滑动距离，0-1之间
-   */
-  @Prop({type: Number, default: 0.3})
-  public distanceToChangeTab?: number;
-  @Prop({type: Boolean, default: true})
-  public usePaged?: boolean;
-  /**
-   * 标签页方向
-   */
-  @Prop({type: String, default: 'horizontal'})
-  public tabDirection?: 'horizontal' | 'vertical';
-  /** 标签下划线样式 */
-  @Prop({type: Object})
-  public tabBarUnderlineStyle?: any;
-  /** 标签页背景颜色 */
-  @Prop({type: String})
-  public tabBarBackgroundColor?: string;
-  /** 激活的标签页文字颜色 */
-  @Prop({type: String})
-  public tabBarActiveTextColor?: string;
-  /** 未激活的标签页文字颜色 */
-  @Prop({type: String})
-  public tabBarInactiveTextColor?: string;
-  /** 标签栏文字样式 */
-  @Prop({type: Object})
-  public tabBarTextStyle?: any;
-  /** use left instead of transform | default: false */
-  @Prop({type: Boolean})
-  public useLeftInsteadTransform?: boolean;
-
-  protected instanceId: number;
-  protected prevCurrentTab: number;
-  protected tabCache: { [index: number]: any } = {};
-  public currentTab: number = this.getTabIndex();
-  private nextCurrentTab: number;
-
-  public created() {
-    this.nextCurrentTab = this.currentTab;
-    this.instanceId = instanceId++;
-    this.contentPos = this.getContentPosByIndex(
-      this.getTabIndex(),
-      this.isTabVertical(this.tabDirection),
-      this.useLeftInsteadTransform
-    );
-  }
-
-  @Watch('page')
-  public pageChanged(page: number) {
-    if (page !== undefined && page !== null) {
-      this.currentTab = page;
-    }
-  }
-
-  @Watch('currentTab')
-  public currentTabChanged(index) {
-    this.$emit('update:value', index);
-  }
-
-  /** on tab click */
-  public onTabClick(tab: Models.TabData, index: number) {
-    this.$emit('tab-click', index);
-  }
-
-  public getTabIndex() {
-    const {page, value, tabs} = this;
-    const param = (page !== undefined ? page : value) || 0;
-
-    let index = 0;
-    if (typeof (param as any) === 'string') {
-      tabs.forEach((t, i) => {
-        if (t.key === param) {
-          index = i;
-        }
-      });
-    } else {
-      index = param as number || 0;
-    }
-    return index < 0 ? 0 : index;
-  }
-
-  public isTabVertical(direction = this.tabDirection) {
-    return direction === 'vertical';
-  }
-
-  public shouldRenderTab(idx: number) {
-    const {prerenderingSiblingsNumber = 0} = this;
-    const {currentTab = 0} = this;
-    return currentTab - prerenderingSiblingsNumber <= idx && idx <= currentTab + prerenderingSiblingsNumber;
-  }
-
-  public beforeUpdate() {
-    if (this.page !== this.page && this.page !== undefined) {
-      this.baseGoToTab(this.getTabIndex(), true, {});
-    }
-  }
-
-  public componentDidMount() {
-    this.prevCurrentTab = this.currentTab;
-  }
-
-  public updated() {
-    this.prevCurrentTab = this.currentTab;
-  }
-
-  public getOffsetIndex(current: number, width: number, threshold = this.distanceToChangeTab || 0) {
-    const ratio = Math.abs(current / width);
-    const direction = ratio > this.currentTab ? '<' : '>';
-    const index = Math.floor(ratio);
-    switch (direction) {
-      case '<':
-        return ratio - index > threshold ? index + 1 : index;
-      case '>':
-        return 1 - ratio + index > threshold ? index : index + 1;
-      default:
-        return Math.round(ratio);
-    }
-  }
-
-  public baseGoToTab(index: number, force = false, newState: any = {}) {
-    if (!force && this.nextCurrentTab === index) {
-      return false;
-    }
-    this.nextCurrentTab = index;
-    const {tabs} = this;
-    if (index >= 0 && index < tabs.length) {
-      if (!force) {
-        this.$emit('change', tabs[index], index);
-        if (this.page !== undefined) {
-          return false;
-        }
+const Tabs = defineComponent({
+  DefaultTabBar: DefaultTabBar,
+  name: 'Tabs',
+  props: {
+    /**
+     * 使用卡片样式
+     */
+    card: {
+      type: Boolean as PropType<boolean>
+    },
+    /**
+     * 激活的卡片背景色（未激活卡片的边框色与之相同）
+     */
+    activeCardColor: {
+      type: String as PropType<string>
+    },
+    /**
+     * class前缀
+     */
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-tabs'
+    },
+    useOnPan: {
+      type: Boolean as PropType<boolean>,
+      default: true
+    },
+    renderTabBar: {type: Function},
+    /**
+     * 标签数据
+     */
+    tabs: {
+      default: () => {
+        return [];
       }
-      this.currentTab = index;
-      Object.keys(newState).forEach(key => {
-        this[key] = newState[key];
-      });
+    },
+    /** TabBar's position | default: top */
+    tabBarPosition: {
+      default: 'top'
+    },
+    /**
+     * 当前激活的卡片的索引
+     */
+    value: {
+      type: [String, Number] as PropType<number | string>,
+      default: 0
+    },
+    page: {
+      type: Number as PropType<number>
+    },
+    /**
+     * 是否支持手势
+     */
+    swipeable: {
+      type: Boolean as PropType<boolean>,
+      default: true
+    },
+    /**
+     * 与当前激活标签相邻的提前渲染的标签数量
+     */
+    prerenderingSiblingsNumber: {
+      type: Number as PropType<number>,
+      default: 1
+    },
+    /**
+     * 切换标签时是否有动画
+     */
+    animated: {
+      type: Boolean as PropType<boolean>,
+      default: true
+    },
+    /**
+     * 是否销毁未激活的标签页
+     */
+    destroyInactiveTab: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    /**
+     * 切换卡片的滑动距离，0-1之间
+     */
+    distanceToChangeTab: {
+      type: Number as PropType<number>,
+      default: 0.3
+    },
+    usePaged: {
+      type: Boolean as PropType<boolean>,
+      default: true
+    },
+    /**
+     * 标签页方向
+     */
+    tabDirection: {
+      type: String as PropType<'horizontal' | 'vertical'>,
+      default: 'horizontal'
+    },
+    /** 标签下划线样式 */
+    tabBarUnderlineStyle: {
+      type: Object as PropType<any>
+    },
+    /** 标签页背景颜色 */
+    tabBarBackgroundColor: {
+      type: String as PropType<string>
+    },
+    /** 激活的标签页文字颜色 */
+    tabBarActiveTextColor: {
+      type: String as PropType<string>
+    },
+    /** 未激活的标签页文字颜色 */
+    tabBarInactiveTextColor: {
+      type: String as PropType<string>
+    },
+    /** 标签栏文字样式 */
+    tabBarTextStyle: {
+      type: Object as PropType<any>
+    },
+    /** use left instead of transform | default: false */
+    useLeftInsteadTransform: {
+      type: Boolean as PropType<boolean>
     }
-    return true;
-  }
+  },
+  setup(props, {emit, slots}) {
+    const contentPos: Ref<string> = ref('');
+    const isMoving = ref(false);
+    const instanceId: Ref<number> = ref(null);
+    const prevCurrentTab: Ref<number> = ref(null);
+    const tabCache: { [index: number]: any } = reactive({});
+    const getTabIndex = () => {
+      const {page, value, tabs} = props;
+      const param = (page !== undefined ? page : value) || 0;
 
-  public getTabBarBaseProps() {
-    const {
-      animated,
-      tabBarActiveTextColor,
-      tabBarBackgroundColor,
-      tabBarInactiveTextColor,
-      tabBarPosition,
-      tabBarTextStyle,
-      tabBarUnderlineStyle,
-      tabs
-    } = this;
-    return {
-      activeTab: this.currentTab,
-      animated,
-      card: this.card,
-      activeCardColor: this.activeCardColor,
-      goToTab: this.tabClickGoToTab,
-      tabBarActiveTextColor,
-      tabBarBackgroundColor,
-      tabBarInactiveTextColor,
-      tabBarPosition,
-      tabBarTextStyle,
-      tabBarUnderlineStyle,
-      tabs,
-      instanceId: this.instanceId
-    };
-  }
-
-  public getSubElements() {
-    const children = this.$slots.default;
-    const subElements: { [key: string]: any } = {};
-    return (defaultPrefix: string = '$i$-', allPrefix: string = '$ALL$') => {
-      if (Array.isArray(children)) {
-        children.forEach((child: any, index) => {
-          if (child.key) {
-            subElements[child.key] = child;
+      let index = 0;
+      if (typeof (param as any) === 'string') {
+        tabs.forEach((t, i) => {
+          if (t.key === param) {
+            index = i;
           }
-          subElements[`${defaultPrefix}${index}`] = child;
         });
-      } else if (children) {
-        subElements[allPrefix] = children;
+      } else {
+        index = param as number || 0;
       }
-      return subElements;
+      return index < 0 ? 0 : index;
     };
-  }
+    const currentTab: Ref<number> = ref(getTabIndex());
+    const nextCurrentTab: Ref<number> = ref(null);
+    const layoutRef = ref(null);
+    watch(() => props.page, (page: number) => {
+      if (page !== undefined && page !== null) {
+        currentTab.value = page;
+      }
+    });
+    watch(() => currentTab.value, (index) => {
+      emit('update:value', index);
+    });
+    const onPan = computed(() => {
+      let lastOffset: number | string = 0;
+      let finalOffset = 0;
+      let panDirection: string;
 
-  public getSubElement(tab: Models.TabData,
-                       index: number,
-                       defaultPrefix: string = '$i$-',
-                       allPrefix: string = '$ALL$') {
+      const getLastOffset = (isVertical = isTabVertical()) => {
+        let offset = +`${lastOffset}`.replace('%', '');
+        if (`${lastOffset}`.indexOf('%') >= 0) {
+          offset /= 100;
+          offset *= isVertical ? layoutRef.clientHeight : layoutRef.value.clientWidth;
+        }
+        return offset;
+      };
 
-    const key = (tab.key !== null && tab.key !== undefined && tab.key !== '') ? tab.key : `${defaultPrefix}${index}`;
-    const getSubElements = this.getSubElements();
-    const elements = getSubElements(defaultPrefix, allPrefix);
-    let component = elements[key] || elements[allPrefix];
-    if (component instanceof Function) {
-      component = component(tab, index);
+      return {
+        onPanStart: (status: IGestureStatus) => {
+          if (!props.swipeable || !props.animated) {
+            return;
+          }
+          panDirection = getPanDirection(status.direction);
+          isMoving.value = true;
+        },
+
+        onPanMove: (status: IGestureStatus) => {
+          const {swipeable, animated, useLeftInsteadTransform} = props;
+          if (!status.moveStatus || !layoutRef.value.value || !swipeable || !animated) {
+            return;
+          }
+          const isVertical = isTabVertical();
+          let offset = getLastOffset();
+          if (isVertical) {
+            offset += panDirection === 'horizontal' ? 0 : status.moveStatus.y;
+          } else {
+            offset += panDirection === 'vertical' ? 0 : status.moveStatus.x;
+          }
+          const canScrollOffset = isVertical ?
+            -layoutRef.value.scrollHeight + layoutRef.value.clientHeight :
+            -layoutRef.value.scrollWidth + layoutRef.value.clientWidth;
+          offset = Math.min(offset, 0);
+          offset = Math.max(offset, canScrollOffset);
+          setPxStyle(layoutRef.value.value, offset, 'px', isVertical, useLeftInsteadTransform);
+          finalOffset = offset;
+        },
+
+        onPanEnd: () => {
+          if (!props.swipeable || !props.animated) {
+            return;
+          }
+          lastOffset = finalOffset;
+          const isVertical = isTabVertical();
+          const offsetIndex = getOffsetIndex(finalOffset, isVertical ? layoutRef.value.clientHeight : layoutRef.value.clientWidth);
+          isMoving.value = false;
+          if (offsetIndex === currentTab.value) {
+            if (props.usePaged) {
+              setTransform(
+                layoutRef.value.style,
+                getContentPosByIndex(
+                  offsetIndex,
+                  isTabVertical(),
+                  props.useLeftInsteadTransform
+                )
+              );
+            }
+          } else {
+            goToTab(offsetIndex);
+          }
+        },
+        setCurrentOffset: (offset: number | string) => lastOffset = offset
+      };
+    });
+    /** on tab click */
+    const onTabClick = (tab: Models.TabData, index: number) => {
+      emit('tab-click', index);
+    };
+    const isTabVertical = (direction = props.tabDirection) => {
+      return direction === 'vertical';
+    };
+    const shouldRenderTab = (idx: number) => {
+      const {prerenderingSiblingsNumber = 0} = props;
+      return currentTab.value - prerenderingSiblingsNumber <= idx && idx <= currentTab.value + prerenderingSiblingsNumber;
+    };
+    const componentDidMount = () => {
+      prevCurrentTab.value = currentTab.value;
+    };
+    const getOffsetIndex = (current: number, width: number, threshold = props.distanceToChangeTab || 0) => {
+      const ratio = Math.abs(current / width);
+      const direction = ratio > currentTab.value ? '<' : '>';
+      const index = Math.floor(ratio);
+      switch (direction) {
+        case '<':
+          return ratio - index > threshold ? index + 1 : index;
+        case '>':
+          return 1 - ratio + index > threshold ? index : index + 1;
+        default:
+          return Math.round(ratio);
+      }
+    };
+    const baseGoToTab = (index: number, force = false, newState: any = {}) => {
+      if (!force && nextCurrentTab.value === index) {
+        return false;
+      }
+      nextCurrentTab.value = index;
+      const {tabs} = props;
+      if (index >= 0 && index < tabs.length) {
+        if (!force) {
+          emit('change', tabs[index], index);
+          if (props.page !== undefined) {
+            return false;
+          }
+        }
+        currentTab.value = index;
+        Object.keys(newState).forEach(key => {
+          this[key] = newState[key];
+        });
+      }
+      return true;
+    };
+    const getTabBarBaseProps = () => {
+      const {
+        animated,
+        tabBarActiveTextColor,
+        tabBarBackgroundColor,
+        tabBarInactiveTextColor,
+        tabBarPosition,
+        tabBarTextStyle,
+        tabBarUnderlineStyle,
+        tabs
+      } = props;
+      return {
+        activeTab: currentTab.value,
+        animated,
+        card: props.card,
+        activeCardColor: props.activeCardColor,
+        goToTab: tabClickGoToTab,
+        tabBarActiveTextColor,
+        tabBarBackgroundColor,
+        tabBarInactiveTextColor,
+        tabBarPosition,
+        tabBarTextStyle,
+        tabBarUnderlineStyle,
+        tabs,
+        instanceId: instanceId.value
+      };
+    };
+    const getSubElements = () => {
+      const children = slots.default();
+      const subElements: { [key: string]: any } = {};
+      return (defaultPrefix: string = '$i$-', allPrefix: string = '$ALL$') => {
+        if (Array.isArray(children)) {
+          children.forEach((child: any, index) => {
+            if (child.key) {
+              subElements[child.key] = child;
+            }
+            subElements[`${defaultPrefix}${index}`] = child;
+          });
+        } else if (children) {
+          subElements[allPrefix] = children;
+        }
+        return subElements;
+      };
+    };
+    const getSubElement = (tab: Models.TabData,
+                           index: number,
+                           defaultPrefix: string = '$i$-',
+                           allPrefix: string = '$ALL$') => {
+
+      const key = (tab.key !== null && tab.key !== undefined && tab.key !== '') ? tab.key : `${defaultPrefix}${index}`;
+      const elements = getSubElements();
+      let component = elements[key] || elements[allPrefix];
+      if (component instanceof Function) {
+        component = component(tab, index);
+      }
+      return component || null;
+    };
+    const goToTab = (index: number, force = false, usePaged = props.usePaged) => {
+      const {tabDirection, useLeftInsteadTransform} = props;
+      let newState = {};
+      if (usePaged) {
+        newState = {
+          contentPos: getContentPosByIndex(
+            index,
+            isTabVertical(tabDirection),
+            useLeftInsteadTransform
+          )
+        };
+      }
+      return baseGoToTab(index, force, newState);
+    };
+    const tabClickGoToTab = (index: number) => {
+      goToTab(index, false, true);
+    };
+    const getContentPosByIndex = (index: number, isVertical: boolean, useLeft = false) => {
+      const value = `${-index * 100}%`;
+      onPan.value.setCurrentOffset(value);
+      if (useLeft) {
+        return `${value}`;
+      } else {
+        const translate = isVertical ? `0px, ${value}` : `${value}, 0px`;
+        // fix: content overlay TabBar on iOS 10. ( 0px -> 1px )
+        return `translate3d(${translate}, 1px)`;
+      }
+    };
+    const onSwipe = (status: IGestureStatus) => {
+      const {tabBarPosition, swipeable, usePaged} = props;
+      if (!swipeable || !usePaged || isTabVertical()) {
+        return;
+      }
+
+      switch (tabBarPosition) {
+        case 'top':
+        case 'bottom':
+          switch (status.direction) {
+            case DIRECTION_LEFT:
+              if (!isTabVertical()) {
+                goToTab(prevCurrentTab.value + 1);
+              }
+              break;
+            case DIRECTION_UP:
+              if (isTabVertical()) {
+                goToTab(prevCurrentTab.value + 1);
+              }
+              break;
+            case DIRECTION_RIGHT:
+              if (!isTabVertical()) {
+                goToTab(prevCurrentTab.value - 1);
+              }
+              break;
+            case DIRECTION_DOWN:
+              if (isTabVertical()) {
+                goToTab(prevCurrentTab.value - 1);
+              }
+              break;
+          }
+          break;
+      }
+    };
+    const renderContent = () => {
+      const {prefixCls, tabs, animated, destroyInactiveTab, useLeftInsteadTransform} = props;
+
+      let contentCls = `${prefixCls}-content-wrap`;
+      if (animated && !isMoving.value) {
+        contentCls += ` ${contentCls}-animated`;
+      }
+      const contentStyle: any = animated ? (
+        useLeftInsteadTransform ? {
+          position: 'relative',
+          ...isTabVertical() ? {top: contentPos.value} : {left: contentPos}
+        } : getTransformPropValue(contentPos.value)
+      ) : {
+        position: 'relative',
+        ...isTabVertical() ? {top: `${-currentTab.value * 100}%`} : {left: `${-currentTab * 100}%`}
+      };
+      const {instanceId} = getTabBarBaseProps();
+      return <div class={contentCls}
+                  style={contentStyle}
+                  ref={(el) => {
+                    layoutRef.value = el;
+                  }}>
+        {
+          tabs && tabs.map((tab, index) => {
+            let cls = `${prefixCls}-pane-wrap`;
+            if (currentTab.value === index) {
+              cls += ` ${cls}-active`;
+            } else {
+              cls += ` ${cls}-inactive`;
+            }
+
+            const key = tab.key || `tab_${index}`;
+            // update tab cache
+            if (shouldRenderTab(index)) {
+              tabCache[index] = getSubElement(tab, index);
+            } else if (destroyInactiveTab) {
+              tabCache[index] = undefined;
+            }
+            return <TabPane key={key} class={cls}
+                            active={currentTab.value === index}
+                            role="tabpanel"
+                            aria-hidden={currentTab.value !== index}
+                            aria-labelledby={`m-tabs-${instanceId}-${index}`}
+                            fixX={isTabVertical} fixY={!isTabVertical}
+            >
+              {tabCache[index]}
+            </TabPane>;
+          })
+        }
+      </div>;
+    };
+    {
+      nextCurrentTab.value = currentTab.value;
+      instanceId.value = instanceId.value++;
+      contentPos.value = getContentPosByIndex(
+        getTabIndex(),
+        isTabVertical(props.tabDirection),
+        props.useLeftInsteadTransform
+      );
     }
-    return component || null;
-  }
-
-  get layout(): HTMLDivElement {
-    return this.$refs['layout'] as HTMLDivElement;
-  }
-
-  get onPan() {
-    let lastOffset: number | string = 0;
-    let finalOffset = 0;
-    let panDirection: string;
-
-    const getLastOffset = (isVertical = this.isTabVertical()) => {
-      let offset = +`${lastOffset}`.replace('%', '');
-      if (`${lastOffset}`.indexOf('%') >= 0) {
-        offset /= 100;
-        offset *= isVertical ? this.layout.clientHeight : this.layout.clientWidth;
+    onBeforeUpdate(() => {
+      if (props.page !== props.page && props.page !== undefined) {
+        baseGoToTab(getTabIndex(), true, {});
       }
-      return offset;
-    };
+    });
+    onUpdated(() => {
+      prevCurrentTab.value = currentTab.value;
+    });
 
     return {
-      onPanStart: (status: IGestureStatus) => {
-        if (!this.swipeable || !this.animated) {
-          return;
-        }
-        panDirection = getPanDirection(status.direction);
-        this.isMoving = true;
-      },
-
-      onPanMove: (status: IGestureStatus) => {
-        const {swipeable, animated, useLeftInsteadTransform} = this;
-        if (!status.moveStatus || !this.layout || !swipeable || !animated) {
-          return;
-        }
-        const isVertical = this.isTabVertical();
-        let offset = getLastOffset();
-        if (isVertical) {
-          offset += panDirection === 'horizontal' ? 0 : status.moveStatus.y;
-        } else {
-          offset += panDirection === 'vertical' ? 0 : status.moveStatus.x;
-        }
-        const canScrollOffset = isVertical ?
-          -this.layout.scrollHeight + this.layout.clientHeight :
-          -this.layout.scrollWidth + this.layout.clientWidth;
-        offset = Math.min(offset, 0);
-        offset = Math.max(offset, canScrollOffset);
-        setPxStyle(this.layout, offset, 'px', isVertical, useLeftInsteadTransform);
-        finalOffset = offset;
-      },
-
-      onPanEnd: () => {
-        if (!this.swipeable || !this.animated) {
-          return;
-        }
-        lastOffset = finalOffset;
-        const isVertical = this.isTabVertical();
-        const offsetIndex = this.getOffsetIndex(finalOffset, isVertical ? this.layout.clientHeight : this.layout.clientWidth);
-        this.isMoving = false;
-        if (offsetIndex === this.currentTab) {
-          if (this.usePaged) {
-            setTransform(
-              this.layout.style,
-              this.getContentPosByIndex(
-                offsetIndex,
-                this.isTabVertical(),
-                this.useLeftInsteadTransform
-              )
-            );
-          }
-        } else {
-          this.goToTab(offsetIndex);
-        }
-      },
-      setCurrentOffset: (offset: number | string) => lastOffset = offset
+      isTabVertical,
+      getTabBarBaseProps,
+      onPan,
+      onTabClick,
+      onSwipe,
+      renderContent
     };
-  }
-
-  public goToTab(index: number, force = false, usePaged = this.usePaged) {
-    const {tabDirection, useLeftInsteadTransform} = this;
-    let newState = {};
-    if (usePaged) {
-      newState = {
-        contentPos: this.getContentPosByIndex(
-          index,
-          this.isTabVertical(tabDirection),
-          useLeftInsteadTransform
-        )
-      };
-    }
-    return this.baseGoToTab(index, force, newState);
-  }
-
-  public tabClickGoToTab(index: number) {
-    this.goToTab(index, false, true);
-  }
-
-  public getContentPosByIndex(index: number, isVertical: boolean, useLeft = false) {
-    const value = `${-index * 100}%`;
-    this.onPan.setCurrentOffset(value);
-    if (useLeft) {
-      return `${value}`;
-    } else {
-      const translate = isVertical ? `0px, ${value}` : `${value}, 0px`;
-      // fix: content overlay TabBar on iOS 10. ( 0px -> 1px )
-      return `translate3d(${translate}, 1px)`;
-    }
-  }
-
-  public onSwipe(status: IGestureStatus) {
-    const {tabBarPosition, swipeable, usePaged} = this;
-    if (!swipeable || !usePaged || this.isTabVertical()) {
-      return;
-    }
-
-    switch (tabBarPosition) {
-      case 'top':
-      case 'bottom':
-        switch (status.direction) {
-          case DIRECTION_LEFT:
-            if (!this.isTabVertical()) {
-              this.goToTab(this.prevCurrentTab + 1);
-            }
-            break;
-          case DIRECTION_UP:
-            if (this.isTabVertical()) {
-              this.goToTab(this.prevCurrentTab + 1);
-            }
-            break;
-          case DIRECTION_RIGHT:
-            if (!this.isTabVertical()) {
-              this.goToTab(this.prevCurrentTab - 1);
-            }
-            break;
-          case DIRECTION_DOWN:
-            if (this.isTabVertical()) {
-              this.goToTab(this.prevCurrentTab - 1);
-            }
-            break;
-        }
-        break;
-    }
-  }
-
-  public renderContent() {
-    const {prefixCls, tabs, animated, destroyInactiveTab, useLeftInsteadTransform} = this;
-    const {currentTab, isMoving, contentPos} = this;
-    const isTabVertical = this.isTabVertical();
-
-    let contentCls = `${prefixCls}-content-wrap`;
-    if (animated && !isMoving) {
-      contentCls += ` ${contentCls}-animated`;
-    }
-    const contentStyle: any = animated ? (
-      useLeftInsteadTransform ? {
-        position: 'relative',
-        ...this.isTabVertical() ? {top: contentPos} : {left: contentPos}
-      } : getTransformPropValue(contentPos)
-    ) : {
-      position: 'relative',
-      ...this.isTabVertical() ? {top: `${-currentTab * 100}%`} : {left: `${-currentTab * 100}%`}
-    };
-    const {instanceId} = this.getTabBarBaseProps();
-    return <div class={contentCls}
-                style={contentStyle}
-                ref="layout">
-      {
-        tabs && tabs.map((tab, index) => {
-          let cls = `${prefixCls}-pane-wrap`;
-          if (this.currentTab === index) {
-            cls += ` ${cls}-active`;
-          } else {
-            cls += ` ${cls}-inactive`;
-          }
-
-          const key = tab.key || `tab_${index}`;
-          // update tab cache
-          if (this.shouldRenderTab(index)) {
-            this.tabCache[index] = this.getSubElement(tab, index);
-          } else if (destroyInactiveTab) {
-            this.tabCache[index] = undefined;
-          }
-          return <TabPane key={key} class={cls}
-                          active={currentTab === index}
-                          role="tabpanel"
-                          aria-hidden={currentTab !== index}
-                          aria-labelledby={`m-tabs-${instanceId}-${index}`}
-                          fixX={isTabVertical} fixY={!isTabVertical}
-          >
-            {this.tabCache[index]}
-          </TabPane>;
-        })
-      }
-    </div>;
-  }
-
-  public render() {
+  },
+  render() {
     const {prefixCls, tabBarPosition, tabDirection, useOnPan} = this;
     const isTabVertical = this.isTabVertical(tabDirection);
-    const tabBarProps: TabBarPropsType = {
+    const tabBarProps: any = {
       ...this.getTabBarBaseProps()
     };
     const onPan = !isTabVertical && useOnPan ? this.onPan : {};
@@ -516,4 +521,6 @@ export default class Tabs extends Vue {
       }
     </div>;
   }
-}
+});
+
+export default Tabs;

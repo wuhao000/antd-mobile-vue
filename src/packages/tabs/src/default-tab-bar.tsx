@@ -1,221 +1,218 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
-import Gesture, {IGestureStatus} from '../../vmc-gesture';
+import {computed, defineComponent, PropType, ref, Ref, watch} from 'vue';
 import {Models} from '../../../types/models';
+import Gesture, {IGestureStatus} from '../../vmc-gesture';
 import {getPxStyle, getTransformPropValue, setPxStyle} from './utils';
 
 let instanceId: number = 0;
 
-@Component({
-  name: 'DefaultTabBar'
-})
-class DefaultTabBar extends Vue {
-
-  @Prop({type: Boolean})
-  public card: boolean;
-  @Prop(String)
-  public activeCardColor: string;
-  @Prop({default: 'am-tabs-default-bar'})
-  public prefixCls: string;
-  /** call this function to switch tab */
-  @Prop({
-    default: () => {
-    }
-  })
-  public goToTab: (index: number) => void;
-  @Prop({
-    default: () => {
-      return [];
-    }
-  })
-  /** tabs data */
-  public tabs: Models.TabData[];
-  /** 当前激活的标签页 */
-  @Prop({default: 0})
-  public activeTab: number;
-  @Prop({type: Boolean, default: true})
-  /** use animate | default: true */
-  public animated: boolean;
-  @Prop()
-  /** render the tab of tabbar */
-  public renderTab?: any;
-  @Prop({type: Boolean, default: true})
-  /** render the underline of tabbar */
-  public renderUnderline?: boolean;
-  @Prop({default: 5})
-  /** page size of tabbar's tab | default: 5 */
-  public page?: number;
-  @Prop({type: String, default: 'top'})
-  /** tabBar's position | defualt: top */
-  public tabBarPosition?: 'top' | 'bottom' | 'left' | 'right';
-  @Prop({
-    default: () => {
-      return {};
-    }
-  })
-  // TabBar shortcut settings.
-  /** tabBar underline style */
-  public tabBarUnderlineStyle?: any;
-  @Prop({default: '#fff'})
-  /** tabBar background color */
-  public tabBarBackgroundColor?: string;
-  @Prop({default: ''})
-  /** tabBar active text color */
-  public tabBarActiveTextColor?: string;
-  @Prop({default: ''})
-  /** tabBar inactive text color */
-  public tabBarInactiveTextColor?: string;
-  @Prop({
-    default: () => {
-      return {};
-    }
-  })
-  /** tabBar text style */
-  public tabBarTextStyle?: any;
-  public instanceId: number;
-
-  get layout(): HTMLDivElement {
-    return this.$refs['layout'] as HTMLDivElement;
-  }
-
-  get onPan() {
-    let lastOffset: number | string = 0;
-    let finalOffset = 0;
-
-    const getLastOffset = (isVertical = this.isTabBarVertical()) => {
-      let offset = +`${lastOffset}`.replace('%', '');
-      if (`${lastOffset}`.indexOf('%') >= 0) {
-        offset /= 100;
-        offset *= isVertical ? this.layout.clientHeight : this.layout.clientWidth;
+const DefaultTabBar = defineComponent({
+  name: 'DefaultTabBar',
+  props: {
+    card: {
+      type: Boolean as PropType<boolean>
+    },
+    activeCardColor: {
+      type: String as PropType<string>
+    },
+    prefixCls: {
+      default: 'am-tabs-default-bar'
+    },
+    /** call this function to switch tab */
+    goToTab: {
+      type: Function,
+      default: () => {
       }
-      return offset;
+    },
+    tabs: {
+      default: () => {
+        return [];
+      }
+    },
+    /** 当前激活的标签页 */
+    activeTab: {
+      default: 0
+    },
+    animated: {
+      type: Boolean as PropType<boolean>,
+      default: true
+    },
+    renderTab: {
+      type: Function as PropType<(tab) => any>
+    },
+    renderUnderline: {
+      type: Boolean as PropType<boolean>,
+      default: true
+    },
+    page: {
+      default: 5
+    },
+    tabBarPosition: {
+      type: String as PropType<'top' | 'bottom' | 'left' | 'right'>,
+      default: 'top'
+    },
+    tabBarUnderlineStyle: {
+      default: () => {
+        return {};
+      }
+    },
+    tabBarBackgroundColor: {
+      default: '#fff'
+    },
+    tabBarActiveTextColor: {
+      default: ''
+    },
+    tabBarInactiveTextColor: {
+      default: ''
+    },
+    tabBarTextStyle: {
+      default: () => {
+        return {};
+      }
+    }
+  },
+  setup(props, {emit, slots}) {
+    const instanceId: Ref<number> = ref(null);
+    const isMoving: Ref<boolean> = ref(false);
+    const showPrev: Ref<boolean> = ref(false);
+    const showNext: Ref<boolean> = ref(false);
+    const transform: Ref<string> = ref('');
+    watch(() => props.activeTab, () => {
+      getTransformByIndex();
+    });
+    watch(() => props.tabs, () => {
+      getTransformByIndex();
+    });
+    const layoutRef = ref(null);
+    const onPan = computed(() => {
+      let lastOffset: number | string = 0;
+      let finalOffset = 0;
+
+      const getLastOffset = (isVertical = isTabBarVertical()) => {
+        let offset = +`${lastOffset}`.replace('%', '');
+        if (`${lastOffset}`.indexOf('%') >= 0) {
+          offset /= 100;
+          offset *= isVertical ? layoutRef.value.clientHeight : layoutRef.value.clientWidth;
+        }
+        return offset;
+      };
+
+      return {
+        onPanStart: () => {
+          isMoving.value = true;
+        },
+
+        onPanMove: (status: IGestureStatus) => {
+          if (!status.moveStatus || !layoutRef.value.value) {
+            return;
+          }
+          const isVertical = isTabBarVertical();
+          let offset = getLastOffset() + (isVertical ? status.moveStatus.y : status.moveStatus.x);
+          const canScrollOffset = isVertical ?
+            -layoutRef.value.scrollHeight + layoutRef.value.clientHeight :
+            -layoutRef.value.scrollWidth + layoutRef.value.clientWidth;
+          offset = Math.min(offset, 0);
+          offset = Math.max(offset, canScrollOffset);
+          setPxStyle(layoutRef.value.value, offset, 'px', isVertical);
+          finalOffset = offset;
+          showPrev.value = -offset > 0;
+          showNext.value = offset > canScrollOffset;
+        },
+
+        onPanEnd: () => {
+          const isVertical = isTabBarVertical();
+          lastOffset = finalOffset;
+          isMoving.value = false;
+          transform.value = getPxStyle(finalOffset, 'px', isVertical);
+        },
+
+        setCurrentOffset: (offset: number | string) => lastOffset = offset
+      };
+    });
+    const getTransformByIndex = () => {
+      const {activeTab, tabs, page = 0} = props;
+      const isVertical = isTabBarVertical();
+      const size = getTabSize(page, tabs.length);
+      const center = page / 2;
+      const pos = Math.min(activeTab, tabs.length - center - .5);
+      const skipSize = Math.min(-(pos - center + .5) * size, 0);
+      onPan.value.setCurrentOffset(`${skipSize}%`);
+      transform.value = getPxStyle(skipSize, '%', isVertical);
+      showPrev.value = activeTab > center - .5 && tabs.length > page;
+      showNext.value = activeTab < tabs.length - center - .5 && tabs.length > page;
     };
+    const onPress = (index: number) => {
+      const {goToTab, tabs} = props;
+      emit('tabClick', tabs[index], index);
+      goToTab && goToTab(index);
+    };
+    const isTabBarVertical = (position = props.tabBarPosition) => {
+      return position === 'left' || position === 'right';
+    };
+    const nativeRenderTab = (t: Models.TabData, i: number, size: number, isTabBarVertical: boolean) => {
+      const {
+        prefixCls, renderTab, activeTab,
+        tabBarTextStyle,
+        tabBarActiveTextColor,
+        tabBarInactiveTextColor
+
+      } = props;
+
+      const textStyle = {...tabBarTextStyle} as any;
+      let cls = `${prefixCls}-tab`;
+      let ariaSelected = false;
+      const style: any = {
+        ...textStyle,
+        ...isTabBarVertical ? {height: `${size}%`} : {width: `${size}%`}
+      };
+      if (props.card && props.activeCardColor) {
+        style.borderColor = props.activeCardColor;
+      }
+      if (props.card) {
+        cls += ` ${cls}-card`;
+      }
+      if (activeTab === i) {
+        cls += ` ${cls}-active`;
+        ariaSelected = true;
+        if (tabBarActiveTextColor) {
+          textStyle.color = tabBarActiveTextColor;
+        }
+        style.backgroundColor = props.activeCardColor;
+      } else if (tabBarInactiveTextColor) {
+        textStyle.color = tabBarInactiveTextColor;
+      }
+      return <div key={`t_${i}`}
+                  style={style}
+                  id={`m-tabs-${instanceId.value}-${i}`}
+                  role="tab"
+                  aria-selected={ariaSelected}
+                  class={cls}
+                  onClick={() => onPress(i)}>
+        {renderTab ? renderTab(t) : t.title}
+      </div>;
+    };
+    const getTabSize = (page: number, tabLength: number) => {
+      return 100 / Math.min(page, tabLength);
+    };
+    {
+      getTransformByIndex();
+      instanceId.value = instanceId.value++;
+    }
 
     return {
-      onPanStart: () => {
-        this.isMoving = true;
+      setLayout(el) {
+        layoutRef.value = el;
       },
-
-      onPanMove: (status: IGestureStatus) => {
-        if (!status.moveStatus || !this.layout) {
-          return;
-        }
-        const isVertical = this.isTabBarVertical();
-        let offset = getLastOffset() + (isVertical ? status.moveStatus.y : status.moveStatus.x);
-        const canScrollOffset = isVertical ?
-          -this.layout.scrollHeight + this.layout.clientHeight :
-          -this.layout.scrollWidth + this.layout.clientWidth;
-        offset = Math.min(offset, 0);
-        offset = Math.max(offset, canScrollOffset);
-        setPxStyle(this.layout, offset, 'px', isVertical);
-        finalOffset = offset;
-        this.showPrev = -offset > 0;
-        this.showNext = offset > canScrollOffset;
-      },
-
-      onPanEnd: () => {
-        const isVertical = this.isTabBarVertical();
-        lastOffset = finalOffset;
-        this.isMoving = false;
-        this.transform = getPxStyle(finalOffset, 'px', isVertical);
-      },
-
-      setCurrentOffset: (offset: number | string) => lastOffset = offset
+      isTabBarVertical,
+      getTabSize,
+      nativeRenderTab,
+      isMoving,
+      transform,
+      showNext,
+      showPrev,
+      onPan
     };
-  }
-
-  private isMoving: boolean = false;
-  private showPrev: boolean = false;
-  private showNext: boolean = false;
-  private transform: string = '';
-
-  public created() {
-    this.getTransformByIndex();
-    this.instanceId = instanceId++;
-  }
-
-  public getTransformByIndex() {
-    const {activeTab, tabs, page = 0} = this;
-    const isVertical = this.isTabBarVertical();
-    const size = this.getTabSize(page, tabs.length);
-    const center = page / 2;
-    const pos = Math.min(activeTab, tabs.length - center - .5);
-    const skipSize = Math.min(-(pos - center + .5) * size, 0);
-    this.onPan.setCurrentOffset(`${skipSize}%`);
-    this.transform = getPxStyle(skipSize, '%', isVertical);
-    this.showPrev = activeTab > center - .5 && tabs.length > page;
-    this.showNext = activeTab < tabs.length - center - .5 && tabs.length > page;
-  }
-
-  public onPress(index: number) {
-    const {goToTab, tabs} = this;
-    this.$emit('tabClick', tabs[index], index);
-    goToTab && goToTab(index);
-  }
-
-  public isTabBarVertical(position = this.tabBarPosition) {
-    return position === 'left' || position === 'right';
-  }
-
-  public nativeRenderTab(t: Models.TabData, i: number, size: number, isTabBarVertical: boolean) {
-    const {
-      prefixCls, renderTab, activeTab,
-      tabBarTextStyle,
-      tabBarActiveTextColor,
-      tabBarInactiveTextColor,
-      instanceId
-    } = this;
-
-    const textStyle = {...tabBarTextStyle} as any;
-    let cls = `${prefixCls}-tab`;
-    let ariaSelected = false;
-    const style: any = {
-      ...textStyle,
-      ...isTabBarVertical ? {height: `${size}%`} : {width: `${size}%`}
-    };
-    if (this.card && this.activeCardColor) {
-      style.borderColor = this.activeCardColor;
-    }
-    if (this.card) {
-      cls += ` ${cls}-card`;
-    }
-    if (activeTab === i) {
-      cls += ` ${cls}-active`;
-      ariaSelected = true;
-      if (tabBarActiveTextColor) {
-        textStyle.color = tabBarActiveTextColor;
-      }
-      style.backgroundColor = this.activeCardColor;
-    } else if (tabBarInactiveTextColor) {
-      textStyle.color = tabBarInactiveTextColor;
-    }
-    return <div key={`t_${i}`}
-                style={style}
-                id={`m-tabs-${instanceId}-${i}`}
-                role="tab"
-                aria-selected={ariaSelected}
-                class={cls}
-                onClick={() => this.onPress(i)}>
-      {renderTab ? renderTab(t) : t.title}
-    </div>;
-  }
-
-  public getTabSize(page: number, tabLength: number) {
-    return 100 / Math.min(page, tabLength);
-  }
-
-  @Watch('activeTab')
-  public activeTabChanged() {
-    this.getTransformByIndex();
-  }
-
-  @Watch('tabs')
-  public tabsChanged() {
-    this.getTransformByIndex();
-  }
-
-  public render() {
+  },
+  render() {
     const {
       prefixCls, animated, tabs = [], page = 0, activeTab = 0,
       tabBarBackgroundColor, tabBarUnderlineStyle, tabBarPosition
@@ -259,7 +256,7 @@ class DefaultTabBar extends Vue {
                direction={isTabBarVertical ? 'vertical' : 'horizontal'}>
         <div role="tablist" class={`${prefixCls}-content`}
              style={transformStyle}
-             ref="layout">
+             ref={this.setLayout}>
           {Tabs}
           {
             renderUnderline ? <div {...underlineProps}/> : ''
@@ -269,6 +266,6 @@ class DefaultTabBar extends Vue {
       {showNext && <div class={`${prefixCls}-nextpage`}/>}
     </div>;
   }
-}
+});
 
 export default DefaultTabBar as any;

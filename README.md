@@ -32,8 +32,8 @@ ActivityIndicator | √ |
 Badge | √ | √ | √
 Button | √ | √ | √
 Calendar | √ |  | √
-Card | √ |  | √
-Carousel | √ |  | √
+Card | √ | √ | √
+Carousel | √ | √ | √
 Chart | [无] | 
 Checkbox | √ |  | √
 DatePicker | √ |  | √

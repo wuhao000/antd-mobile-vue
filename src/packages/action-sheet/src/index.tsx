@@ -1,192 +1,232 @@
-import {nextTick, VNode} from 'vue';
-import {Options, Vue} from 'vue-class-component';
+import {computed, defineComponent, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, PropType, Ref, ref, watch} from 'vue';
 import Popup from '../../popup';
 import TouchFeedback from '../../vmc-feedback';
 
-interface ActionSheetMenu {
-  label?: string | VNode;
-  badge?: string | boolean | number | undefined;
-}
-
-@Options({
+const ActionSheet = defineComponent({
+  install: null,
   name: 'ActionSheet',
   props: {
-    prefixCls: {type: String, default: 'am-action-sheet'},
-    cancelText: {type: String, default: '取消'},
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-action-sheet'
+    },
+    /**
+     * 取消按钮文本
+     */
+    cancelText: {
+      type: String as PropType<string>,
+      default: '取消'
+    },
+    /**
+     * 是否在点击遮罩层时关闭
+     */
     closeOnClickingMask: {
-      type: Boolean,
+      type: Boolean as PropType<boolean>,
       default: true
     },
+    /**
+     * 是否在点击按钮后关闭
+     */
     closeOnClickingMenu: {
-      type: Boolean,
+      type: Boolean as PropType<boolean>,
       default: true
     },
     menus: {
-      type: [Object, Array],
+      type: [Object, Array] as PropType<any[]>,
       default: () => []
     },
-    showCancel: {type: Boolean, default: true},
+    /**
+     * 是否显示取消按钮
+     */
+    showCancel: {
+      type: Boolean as PropType<boolean>,
+      default: true
+    },
     theme: {
-      type: String,
+      type: String as PropType<string>,
       default: 'ios'
     },
-    value: Boolean,
-    type: {type: String, default: 'normal'},
-    title: {type: String}
+    value: {
+      type: Boolean as PropType<boolean>
+    },
+    type: {
+      type: String as PropType<'normal' | 'share'>,
+      default: 'normal'
+    },
+    title: {
+      type: String as PropType<string>
+    }
   },
-  watch: {
-    show(val) {
-      this.$emit('update:value', val);
+  setup(props, {emit, slots}) {
+    const $tabbar: Ref<Element> = ref(null);
+    const hasHeaderSlot = ref(false);
+    const show = ref(props.value || false);
+    const iOSMenuRef = ref(null);
+    watch(() => show.value, (val) => {
+      emit('input', val);
       if (val) {
-        this.fixIos(-1);
+        fixIos(-1);
       } else {
         setTimeout(() => {
-          this.fixIos(100);
+          fixIos(100);
         }, 200);
       }
-    },
-    value: {
-      immediate: true,
-      handler(val) {
-        this.show = val;
-      }
-    }
-  }
-})
-
-class ActionSheet extends Vue {
-  public prefixCls: string;
-  /**
-   * 取消按钮文本
-   */
-  public cancelText: string;
-  /**
-   * 是否在点击遮罩层时关闭
-   */
-  public closeOnClickingMask: boolean;
-  /**
-   * 是否在点击按钮后关闭
-   */
-  public closeOnClickingMenu: boolean;
-  public menus: any[];
-  /**
-   * 是否显示取消按钮
-   */
-  public showCancel: boolean;
-  public theme: string;
-  public value: boolean;
-  private tabbar: Element = null;
-  public hasHeaderSlot = false;
-  public show = false;
-  public type: 'normal' | 'share';
-  private title: string;
-  public static install: (Vue) => void;
-
-  private cancelClick() {
-    this.$emit('update:value', false);
-    this.show = false;
-  }
-
-  public mounted() {
-    this.show = this.value ?? false;
-    this.hasHeaderSlot = !!this.$slots.header;
-    nextTick(() => {
-      this.tabbar = document.querySelector('.weui-tabbar');
-      this.$refs.iOSMenu && (this.$refs.iOSMenu as any).addEventListener('transitionend', this.onTransitionEnd);
     });
-  }
-
-  public beforeDestroy() {
-    this.fixIos(100);
-    this.$refs.iOSMenu && (this.$refs.iOSMenu as any).removeEventListener('transitionend', this.onTransitionEnd);
-  }
-
-  public emitEvent(event, menu, item) {
-    if (event === 'on-click-menu' && !/.noop/.test(menu)) {
-      let _item = item;
-      if (typeof _item === 'object') {
-        _item = JSON.parse(JSON.stringify(_item));
+    watch(() => props.value, (val) => {
+      show.value = val;
+    }, {
+      immediate: true
+    });
+    const showStyle = computed(() => {
+      const style: any = {};
+      if (!show.value) {
+        style.display = 'none';
       }
-      this.$emit(event, menu, _item);
-      this.$emit(`${event}-${menu}`);
-      this.closeOnClickingMenu && (this.show = false);
-    }
-  }
-
-  public fixIos(zIndex) {
-    if (this.$el.parentNode && (this.$el.parentNode as Element).className.indexOf('v-transfer-dom') !== -1) {
-      return;
-    }
-    if (this.tabbar && /iphone/i.test(navigator.userAgent)) {
-      (this.tabbar as HTMLElement).style.zIndex = zIndex;
-    }
-  }
-
-  public onClickingMask() {
-    this.$emit('click-mask');
-    this.closeOnClickingMask && (this.show = false);
-  }
-
-  public onMenuClick(text, key) {
-    if (typeof text === 'string') {
-      this.emitEvent('click-menu', key, text);
-    } else {
-      if (text.type !== 'disabled' && text.type !== 'info') {
-        if (text.value || text.value === 0) {
-          this.emitEvent('click-menu', text.value, text);
-        } else {
-          this.emitEvent('click-menu', '', text);
-          this.show = false;
+      return style;
+    });
+    const listClassPrefix = computed(() => {
+      return props.prefixCls + '-button-list';
+    });
+    const cancelClick = () => {
+      emit('input', false);
+      show.value = false;
+    };
+    const emitEvent = (event, menu, item) => {
+      if (event === 'on-click-menu' && !/.noop/.test(menu)) {
+        let _item = item;
+        if (typeof _item === 'object') {
+          _item = JSON.parse(JSON.stringify(_item));
+        }
+        emit(event, menu, _item);
+        emit(`${event}-${menu}`);
+        props.closeOnClickingMenu && (show.value = false);
+      }
+    };
+    const instance = getCurrentInstance();
+    const fixIos = (zIndex) => {
+      if (instance.vnode.el.parentNode && (instance.vnode.el.parentNode as Element).className.indexOf('v-transfer-dom') !== -1) {
+        return;
+      }
+      if ($tabbar.value && /iphone/i.test(navigator.userAgent)) {
+        ($tabbar.value as HTMLElement).style.zIndex = zIndex;
+      }
+    };
+    const onClickingMask = () => {
+      emit('click-mask');
+      props.closeOnClickingMask && (show.value = false);
+    };
+    const onMenuClick = (text, key) => {
+      if (typeof text === 'string') {
+        emitEvent('click-menu', key, text);
+      } else {
+        if (text.type !== 'disabled' && text.type !== 'info') {
+          if (text.value || text.value === 0) {
+            emitEvent('click-menu', text.value, text);
+          } else {
+            emitEvent('click-menu', '', text);
+            show.value = false;
+          }
         }
       }
-    }
-  }
-
-  public onTransitionEnd() {
-    this.$emit(this.show ? 'on-after-show' : 'on-after-hide');
-  }
-
-  get showStyle() {
-    const style: any = {};
-    if (!this.show) {
-      style.display = 'none';
-    }
-    return style;
-  }
-
-  public renderSheet() {
-    if (this.theme === 'android') {
-      return <div class="weui-skin_android">
-        <transition name="vux-android-actionsheet"
-                    onAfterEnter={() => {
-                      this.$emit('after-show');
-                    }}
-                    onAfterLeave={() => {
-                      this.$emit('after-hide');
-                    }}>
-          <div style={this.showStyle}
-               class="weui-actionsheet">
-            <div class="weui-actionsheet__menu">
-              {this.renderButtons()}
+    };
+    const onTransitionEnd = () => {
+      emit(show.value ? 'on-after-show' : 'on-after-hide');
+    };
+    const renderSheet = () => {
+      if (props.theme === 'android') {
+        return <div class="weui-skin_android">
+          <transition name="vux-android-actionsheet"
+                      onAfterEnter={() => {
+                        emit('after-show');
+                      }}
+                      onAfterLeave={() => {
+                        emit('after-hide');
+                      }}>
+            <div style={showStyle.value}
+                 class="weui-actionsheet">
+              <div class="weui-actionsheet__menu">
+                {renderButtons()}
+              </div>
+            </div>
+          </transition>
+        </div>;
+      } else {
+        return <div ref={(el) => {
+          iOSMenuRef.value = el;
+        }}>
+          <div class="am-action-sheet-content">
+            <div class="am-action-sheet-body">
+              <div>
+                {renderTitle()}
+                {renderButtons()}
+              </div>
             </div>
           </div>
-        </transition>
-      </div>;
-    } else {
-      return <div ref="iOSMenu">
-        <div class="am-action-sheet-content">
-          <div class="am-action-sheet-body">
-            <div>
-              {this.renderTitle()}
-              {this.renderButtons()}
-            </div>
-          </div>
+        </div>;
+      }
+    };
+    const renderButtons = () => {
+      return (<div class={listClassPrefix.value} role="group">
+        {props.menus.map(it => renderMenu(it))}
+        {props.showCancel ? renderCancelButton() : null}
+      </div>);
+    };
+    const renderTitle = () => {
+      return props.title ? <div class={props.prefixCls + '-message'}>{props.title}</div> : null;
+    };
+    const renderMenu = (menu: any) => {
+      const MTouchFeedback = TouchFeedback as any;
+      const itemClassPrefix = listClassPrefix.value + '-item';
+      const classes = {
+        [itemClassPrefix]: true,
+        [listClassPrefix.value + '-badge']: menu.badge
+      };
+      return <MTouchFeedback activeClassName={itemClassPrefix + '-active'}>
+        <div class={classes} role="button">
+          <span class={itemClassPrefix + '-content'}>{menu.label}</span>
+          {renderBadge(menu.badge)}
         </div>
-      </div>;
-    }
-  }
+      </MTouchFeedback>;
+    };
+    const renderBadge = (badge: string | boolean | number | undefined) => {
+      if (badge) {
+        const supClass = typeof badge === 'boolean' ? 'am-badge-dot' : 'am-badge-text';
+        return badge ? <span class="am-badge am-badge-not-a-wrapper">
+                <sup class={supClass}>
+                  {typeof badge === 'boolean' ? null : badge}
+                </sup>
+              </span> : null;
+      }
+    };
+    const renderCancelButton = () => {
+      const MTouchFeedback = TouchFeedback as any;
+      const itemClassPrefix = listClassPrefix.value + '-item';
+      const classes = itemClassPrefix + ` ${props.prefixCls}-cancel-button`;
+      return <MTouchFeedback activeClassName={itemClassPrefix + '-active'}>
+        <div class={classes} role="button"
+             onClick={cancelClick}>
+          <span class={itemClassPrefix + '-content'}>取消</span>
+          <span class={props.prefixCls + '-cancel-button-mask'}/>
+        </div>
+      </MTouchFeedback>;
+    };
+    onMounted(() => {
+      hasHeaderSlot.value = !!slots.header?.();
+      nextTick(() => {
+        $tabbar.value = document.querySelector('.weui-tabbar');
+        iOSMenuRef.value && (iOSMenuRef.value as any).addEventListener('transitionend', onTransitionEnd);
+      });
+    });
+    onBeforeUnmount(() => {
+      fixIos(100);
+      iOSMenuRef.value && (iOSMenuRef.value as any).removeEventListener('transitionend', onTransitionEnd);
+    });
 
-  public render(): any {
+    return {
+      cancelClick, renderSheet, show
+    };
+  },
+  render() {
     const classes = 'am-action-sheet am-action-sheet-' + this.type;
     // @ts-ignore
     return <Popup value={this.show}
@@ -197,60 +237,6 @@ class ActionSheet extends Vue {
       </div>
     </Popup>;
   }
-
-  get listClassPrefix() {
-    return this.prefixCls + '-button-list';
-  }
-
-  private renderButtons() {
-    return (<div class={this.listClassPrefix} role="group">
-      {this.menus.map(it => this.renderMenu(it))}
-      {this.showCancel ? this.renderCancelButton() : null}
-    </div>);
-  }
-
-  private renderTitle() {
-    return this.title ? <div class={this.prefixCls + '-message'}>{this.title}</div> : null;
-  }
-
-  private renderMenu(menu: ActionSheetMenu) {
-    const MTouchFeedback = TouchFeedback as any;
-    const itemClassPrefix = this.listClassPrefix + '-item';
-    const classes = {
-      [itemClassPrefix]: true,
-      [this.listClassPrefix + '-badge']: menu.badge
-    };
-    return <MTouchFeedback activeClassName={itemClassPrefix + '-active'}>
-      <div class={classes} role="button">
-        <span class={itemClassPrefix + '-content'}>{menu.label}</span>
-        {this.renderBadge(menu.badge)}
-      </div>
-    </MTouchFeedback>;
-  }
-
-  private renderBadge(badge: string | boolean | number | undefined) {
-    if (badge) {
-      const supClass = typeof badge === 'boolean' ? 'am-badge-dot' : 'am-badge-text';
-      return badge ? <span class="am-badge am-badge-not-a-wrapper">
-        <sup class={supClass}>
-          {typeof badge === 'boolean' ? null : badge}
-        </sup>
-      </span> : null;
-    }
-  }
-
-  private renderCancelButton() {
-    const MTouchFeedback = TouchFeedback as any;
-    const itemClassPrefix = this.listClassPrefix + '-item';
-    const classes = itemClassPrefix + ` ${this.prefixCls}-cancel-button`;
-    return <MTouchFeedback activeClassName={itemClassPrefix + '-active'}>
-      <div class={classes} role="button"
-           onClick={this.cancelClick}>
-        <span class={itemClassPrefix + '-content'}>取消</span>
-        <span class={this.prefixCls + '-cancel-button-mask'}/>
-      </div>
-    </MTouchFeedback>;
-  }
-}
+});
 
 export default ActionSheet;

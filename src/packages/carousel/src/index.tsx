@@ -1,31 +1,35 @@
 import classnames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent, PropType, ref, Ref} from 'vue';
 import CarouselBase from './base';
 
 type IFrameOverFlow = 'visible' | 'hidden';
 
 
-@Component({
-  name: 'DotDecorator'
-})
-class DotDecorator extends Vue {
-
-  @Prop(Number)
-  public slideCount: number;
-  @Prop(Number)
-  public slidesToScroll: number;
-  @Prop(Number)
-  public currentSlide: number;
-  @Prop({type: String, default: 'am-carousel'})
-  public prefixCls: string;
-  @Prop({type: Object})
-  public dotActiveStyle: object;
-  @Prop({type: Object})
-  public dotStyle: object;
-
-  public render() {
+const DotDecorator = defineComponent({
+  name: 'DotDecorator',
+  inheritAttrs: false,
+  props: {
+    slideCount: {
+      type: Number as PropType<number>
+    },
+    slidesToScroll: {
+      type: Number as PropType<number>
+    },
+    currentSlide: {
+      type: Number as PropType<number>
+    },
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-carousel'
+    },
+    dotActiveStyle: {
+      type: Object as PropType<object>
+    },
+    dotStyle: {
+      type: Object as PropType<object>
+    }
+  },
+  render() {
     const arr: number[] = [];
     for (let i = 0; i < this.slideCount; i += this.slidesToScroll) {
       arr.push(i);
@@ -44,64 +48,80 @@ class DotDecorator extends Vue {
     });
     return <div class={`${this.prefixCls}-wrap`}>{dotDom}</div>;
   }
-}
+});
 
-@Component({
-  name: 'Carousel'
-})
-export default class Carousel extends Vue {
-  public selectedIndex?: number = 0;
-  @Prop({type: String, default: 'am-carousel'})
-  public prefixCls?: string;
-  @Prop()
-  public beforeChange?: (from: number, to: number) => void;
-  @Prop()
-  public afterChange?: (current: number) => void;
-  @Prop()
-  public swipeSpeed?: number;
-  @Prop()
-  public easing?: () => void;
-  @Prop({
-    default: () => {
-      return {};
+const Carousel = defineComponent({
+  name: 'Carousel',
+  props: {
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-carousel'
+    },
+    beforeChange: {},
+    afterChange: {
+      type: Function
+    },
+    swipeSpeed: {},
+    easing: {},
+    dotStyle: {
+      default: () => {
+        return {};
+      }
+    },
+    dotActiveStyle: {
+      default: () => {
+        return {};
+      }
+    },
+    frameOverflow: {
+      type: String as PropType<IFrameOverFlow>
+    },
+    cellAlign: {
+      type: String as PropType<string>,
+      default: 'center'
+    },
+    cellSpacing: {
+      type: Number as PropType<number>
+    },
+    slideWidth: {
+      type: [String, Number] as PropType<string | number>
+    },
+    dots: {
+      type: Boolean as PropType<boolean>,
+      default: true
+    },
+    vertical: {
+      type: Boolean as PropType<boolean>
+    },
+    autoplay: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    autoplayInterval: {
+      type: Number as PropType<number>
+    },
+    infinite: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    initialSlideWidth: {
+      type: Number as PropType<number>
     }
-  })
-  public dotStyle?: any;
-  @Prop({
-    default: () => {
-      return {};
-    }
-  })
-  public dotActiveStyle?: any;
-  @Prop({type: String})
-  public frameOverflow?: IFrameOverFlow;
-  @Prop({type: String, default: 'center'})
-  public cellAlign: string;
-  @Prop(Number)
-  public cellSpacing?: number;
-  @Prop([String, Number])
-  public slideWidth?: string | number;
-  @Prop({type: Boolean, default: true})
-  public dots?: boolean;
-  @Prop({type: Boolean})
-  public vertical?: boolean;
-  @Prop({type: Boolean, default: false})
-  public autoplay?: boolean;
-  @Prop(Number)
-  public autoplayInterval?: number;
-  @Prop({type: Boolean, default: false})
-  public infinite?: boolean;
-  @Prop(Number)
-  public initialSlideWidth?: number;
+  },
+  setup(props, {emit, slots}) {
+    const selectedIndex: Ref<number> = ref(0);
 
-  public onChange(index: number) {
-    this.selectedIndex = index;
-    if (this.afterChange) {
-      this.afterChange(index);
-    }
-  }
+    const onChange = (index: number) => {
+      selectedIndex.value = index;
+      if (props.afterChange) {
+        props.afterChange(index);
+      }
+    };
 
-  public render() {
+
+    return {onChange, selectedIndex};
+  },
+  render() {
     const {
       infinite,
       selectedIndex,
@@ -124,29 +144,27 @@ export default class Carousel extends Vue {
     let Decorators: any[] = [];
 
     if (dots) {
-      Decorators = [
-        {
-          component: DotDecorator,
-          position: 'BottomCenter'
-        }
-      ];
+      Decorators = [{
+        component: DotDecorator,
+        position: 'BottomCenter'
+      }];
     }
-
     const wrapCls = classnames(prefixCls, {
       [`${prefixCls}-vertical`]: vertical
     });
     return (
       <CarouselBase
-        props={
-          {
+        {
+          ...{
             ...newProps,
             decorators: Decorators,
             afterSlide: this.onChange
           }
         }
         class={wrapCls}>
-        {this.$slots.default}
+        {this.$slots.default()}
       </CarouselBase>
     );
   }
-}
+});
+export default Carousel;

@@ -1,3 +1,4 @@
+import {isEmptySlot} from '../../utils/vnode';
 import {defineComponent} from 'vue';
 
 export default defineComponent({
@@ -13,10 +14,10 @@ export default defineComponent({
     return (
       <div class={wrapCls}>
         <div class={`${prefixCls}-footer-content`}>{
-          this.$slots.default ? this.$slots.default : content
+          !isEmptySlot(this.$slots.default) ? this.$slots.default() : content
         }</div>
         {(this.$slots.extra || extra) && <div class={`${prefixCls}-footer-extra`}>{
-          this.$slots.extra ? this.$slots.extra : extra
+          !isEmptySlot(this.$slots.extra) ? this.$slots.extra() : extra
         }</div>}
       </div>
     );

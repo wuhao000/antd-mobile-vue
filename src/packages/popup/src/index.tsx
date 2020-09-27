@@ -63,21 +63,21 @@ const Popup = defineComponent({
     });
     const onCancel = () => {
       // @ts-ignore
-      if (this.value !== undefined) {
+      if (props.value !== undefined) {
         emit('update:value', false);
       } else {
         // @ts-ignore
-        this.stateValue = false;
+        stateValue.value = false;
       }
       emit('cancel');
     };
     const onOk = () => {
       // @ts-ignore
-      if (this.value !== undefined) {
+      if (props.value !== undefined) {
         emit('update:value', false);
       } else {
         // @ts-ignore
-        this.stateValue = false;
+        stateValue.value = false;
       }
       emit('ok');
     };
@@ -96,7 +96,7 @@ const Popup = defineComponent({
         close: (e) => {
           emit('cancel');
           // @ts-ignore
-          this.stateValue = false;
+          stateValue.value = false;
         }
       };
     };

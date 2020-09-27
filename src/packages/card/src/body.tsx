@@ -9,6 +9,6 @@ export default defineComponent({
   render() {
     const {prefixCls} = this;
     const wrapCls = classnames(`${prefixCls}-body`);
-    return <div class={wrapCls}>{this.$slots.default}</div>;
+    return <div class={wrapCls}>{this.$slots.default?.()}</div>;
   }
 });

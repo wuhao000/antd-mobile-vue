@@ -6,6 +6,27 @@
     "chineseName": "手风琴",
     "tag": "数据展示"
   },
+  "nav-bar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "nav-bar",
+    "chineseName": "导航栏",
+    "tag": "导航"
+  },
+  "drawer": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "drawer",
+    "chineseName": "抽屉",
+    "tag": "导航"
+  },
+  "card": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "card",
+    "chineseName": "卡片",
+    "tag": "数据展示"
+  },
   "action-sheet": {
     "type": "component",
     "componentType": "mobile",
@@ -75,6 +96,20 @@
     "name": "wing-blank",
     "chineseName": "两翼留白",
     "tag": "布局"
+  },
+  "checkbox": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "checkbox",
+    "chineseName": "复选框",
+    "tag": "数据入口"
+  },
+  "carousel": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "carousel",
+    "chineseName": "走马灯",
+    "tag": "数据展示"
   },
   "white-space": {
     "type": "component",

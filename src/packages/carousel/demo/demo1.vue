@@ -1,16 +1,14 @@
 <template>
   <m-wing-blank>
-    <m-carousel infinite
-                :after-change="afterChange"
+    <m-carousel :after-change="afterChange"
                 :autoplay="false"
-                :before-change="beforeChange"
-    >
+                :before-change="beforeChange" infinite>
       <a v-for="(val, index) in state.data"
          :key="index"
          :style="{display : 'inline-block', width : '100%', height : state.imgHeight}">
-        <img alt=""
-             :src="`https://zos.alipayobjects.com/rmsportal/${val}.png`"
+        <img :src="`https://zos.alipayobjects.com/rmsportal/${val}.png`"
              :style="{ width : '100%', verticalAlign : 'top' }"
+             alt=""
              @load="onLoad"
         />
       </a>
@@ -18,14 +16,14 @@
   </m-wing-blank>
 </template>
 <script lang="ts">
-  import BaseDemo from './base';
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
+import {useBaseDemo} from '@/packages/carousel/demo/base';
+import {defineComponent} from 'vue';
 
-  @Component({
-    name: 'CarouselDemo1'
-  })
-  export default class CarouselDemo1 extends BaseDemo {
-
+export default defineComponent({
+  name: 'CarouselDemo1',
+  setup() {
+    const {state, onLoad, afterChange, beforeChange} = useBaseDemo();
+    return {state, onLoad, afterChange, beforeChange};
   }
+});
 </script>

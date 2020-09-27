@@ -1,157 +1,185 @@
+import {defineComponent, PropType} from 'vue';
+
 'use strict';
 
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+const IDecoratorProps = {
+  currentSlide: {
+    type: Number as PropType<number>
+  },
+  slideCount: {
+    type: Number as PropType<number>
+  },
+  frameWidth: {
+    type: [Number, String] as PropType<number | string>
+  },
+  slideWidth: {
+    type: [Number, String] as PropType<number | string>
+  },
+  slidesToScroll: {
+    type: Number as PropType<number>
+  },
+  cellSpacing: {
+    type: Number as PropType<number>
+  },
+  slidesToShow: {
+    type: Number as PropType<number>
+  },
+  wrapAround: {
+    type: Boolean as PropType<boolean>
+  },
+  nextSlide: {type: Function},
+  previousSlide: {type: Function},
+  goToSlide: {
+    type: Function
+  }
+};
 
-@Component({name: 'DefaultDecorator'})
-export class IDecoratorProps extends Vue {
-  @Prop({type: Number})
-  public currentSlide: number;
-  @Prop({type: Number})
-  public slideCount: number;
-  @Prop({type: [Number, String]})
-  public frameWidth: number | string;
-  @Prop({type: [Number, String]})
-  public slideWidth: number | string;
-  @Prop({type: Number})
-  public slidesToScroll: number;
-  @Prop({type: Number})
-  public cellSpacing?: number;
-  @Prop({type: Number})
-  public slidesToShow?: number;
-  @Prop({type: Boolean})
-  public wrapAround?: boolean;
-  @Prop()
-  public nextSlide?: () => void;
-  @Prop()
-  public previousSlide: () => void;
-  @Prop()
-  public goToSlide?: (index: number) => void;
-}
 
-@Component({name: 'Decorator1'})
-class Decorator1 extends IDecoratorProps {
-  public render() {
+const Decorator1 = defineComponent({
+  name: 'Decorator1',
+  props: {
+    ...IDecoratorProps
+  },
+  setup(props) {
+
+    const handleClick = (e) => {
+      e.preventDefault();
+      props.previousSlide();
+    };
+    const getButtonStyles = (disabled) => {
+      return {
+        border: 0,
+        background: 'rgba(0,0,0,0.4)',
+        color: 'white',
+        padding: 10,
+        outline: 0,
+        opacity: disabled ? 0.3 : 1,
+        cursor: 'pointer'
+      };
+    };
+
+
+    return {getButtonStyles, handleClick};
+  },
+  render() {
     return (
-        <button
-            style={this.getButtonStyles(this.currentSlide === 0 && !this.wrapAround)}
-            onClick={this.handleClick.bind(this)}>PREV</button>
+      <button
+        style={this.getButtonStyles(this.currentSlide === 0 && !this.wrapAround)}
+        onClick={this.handleClick.bind(this)}>PREV</button>
     );
   }
+});
 
-  public handleClick(e) {
-    e.preventDefault();
-    this.previousSlide();
-  }
-
-  public getButtonStyles(disabled) {
-    return {
-      border: 0,
-      background: 'rgba(0,0,0,0.4)',
-      color: 'white',
-      padding: 10,
-      outline: 0,
-      opacity: disabled ? 0.3 : 1,
-      cursor: 'pointer'
+const Decorator2 = defineComponent({
+  name: 'DefaultDecorator',
+  props: {
+    ...IDecoratorProps
+  },
+  setup(props) {
+    const handleClick = (e) => {
+      e.preventDefault();
+      if (props.nextSlide) {
+        props.nextSlide();
+      }
     };
-  }
-}
+    const getButtonStyles = (disabled) => {
+      return {
+        border: 0,
+        background: 'rgba(0,0,0,0.4)',
+        color: 'white',
+        padding: 10,
+        outline: 0,
+        opacity: disabled ? 0.3 : 1,
+        cursor: 'pointer'
+      };
+    };
 
-@Component({name: 'DefaultDecorator'})
-class Decorator2 extends IDecoratorProps {
-  public render() {
+
+    return {getButtonStyles, handleClick};
+  },
+  render() {
     return (
-        <button
-            style={
-              this.getButtonStyles(
-                  this.currentSlide + this.slidesToScroll >= this.slideCount && !this.wrapAround
-              )
-            }
-            onClick={this.handleClick.bind(this)}>NEXT</button>
+      <button
+        style={
+          this.getButtonStyles(
+            this.currentSlide + this.slidesToScroll >= this.slideCount && !this.wrapAround
+          )
+        }
+        onClick={this.handleClick.bind(this)}>NEXT</button>
     );
   }
+});
 
-  public handleClick(e) {
-    e.preventDefault();
-    if (this.nextSlide) {
-      this.nextSlide();
-    }
-  }
 
-  public getButtonStyles(disabled) {
-    return {
-      border: 0,
-      background: 'rgba(0,0,0,0.4)',
-      color: 'white',
-      padding: 10,
-      outline: 0,
-      opacity: disabled ? 0.3 : 1,
-      cursor: 'pointer'
+const Decorator3 = defineComponent({
+  name: 'DefaultDecorator',
+  props: {
+    ...IDecoratorProps
+  },
+  setup() {
+
+
+    const getIndexes = (count, inc) => {
+      const arr: number[] = [];
+      for (let i = 0; i < count; i += inc) {
+        arr.push(i);
+      }
+      return arr;
     };
-  }
-}
+    const getListStyles: any = () => {
+      return {
+        position: 'relative',
+        margin: 0,
+        top: -10,
+        padding: 0
+      };
+    };
+    const getListItemStyles = () => {
+      return {
+        listStyleType: 'none',
+        display: 'inline-block'
+      };
+    };
+    const getButtonStyles = (active) => {
+      return {
+        border: 0,
+        background: 'transparent',
+        color: 'black',
+        cursor: 'pointer',
+        padding: 10,
+        outline: 0,
+        fontSize: 24,
+        opacity: active ? 1 : 0.5
+      };
+    };
 
-@Component({name: 'DefaultDecorator'})
-class Decorator3 extends IDecoratorProps {
-  public render() {
+
+    return {
+      getIndexes, getListStyles, getButtonStyles, getListItemStyles
+    };
+  },
+  render() {
     const indexes = this.getIndexes(this.slideCount, this.slidesToScroll);
     return (
-        <ul style={this.getListStyles()}>
-          {
-            indexes.map((index) => {
-              return (
-                  <li style={this.getListItemStyles()} key={index}>
-                    <button
-                        style={this.getButtonStyles(this.currentSlide === index)}
-                        onClick={this.goToSlide && this.goToSlide.bind(null, index)}>
-                      &bull;
-                    </button>
-                  </li>
-              );
-            })
-          }
-        </ul>
+      <ul style={this.getListStyles()}>
+        {
+          indexes.map((index) => {
+            return (
+              <li style={this.getListItemStyles()} key={index}>
+                <button
+                  style={this.getButtonStyles(this.currentSlide === index)}
+                  onClick={this.goToSlide && this.goToSlide.bind(null, index)}>
+                  &bull;
+                </button>
+              </li>
+            );
+          })
+        }
+      </ul>
     );
   }
+});
 
-  public getIndexes(count, inc) {
-    const arr: number[] = [];
-    for (let i = 0; i < count; i += inc) {
-      arr.push(i);
-    }
-    return arr;
-  }
-
-  public getListStyles() {
-    return {
-      position: 'relative',
-      margin: 0,
-      top: -10,
-      padding: 0
-    };
-  }
-
-  public getListItemStyles() {
-    return {
-      listStyleType: 'none',
-      display: 'inline-block'
-    };
-  }
-
-  public getButtonStyles(active) {
-    return {
-      border: 0,
-      background: 'transparent',
-      color: 'black',
-      cursor: 'pointer',
-      padding: 10,
-      outline: 0,
-      fontSize: 24,
-      opacity: active ? 1 : 0.5
-    };
-  }
-}
 
 const DefaultDecorators = [
   {

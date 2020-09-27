@@ -35,7 +35,6 @@ export default class Steps extends Vue {
       labelPlacement, iconPrefix, status, size, current, progressDot,
       ...restProps
     } = this;
-
     const adjustedlabelPlacement = !!progressDot ? 'vertical' : labelPlacement;
     const classString = classNames(prefixCls, `${prefixCls}-${direction}`, {
       [`${prefixCls}-${size}`]: size,

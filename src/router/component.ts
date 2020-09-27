@@ -8,6 +8,27 @@ export default [{
   },
   component: () => import('@/generated/accordion/index.vue')
 }, {
+  path: 'nav-bar',
+  name: 'NavBar 导航栏',
+  meta: {
+    tag: '导航'
+  },
+  component: () => import('@/generated/nav-bar/index.vue')
+}, {
+  path: 'drawer',
+  name: 'Drawer 抽屉',
+  meta: {
+    tag: '导航'
+  },
+  component: () => import('@/generated/drawer/index.vue')
+}, {
+  path: 'card',
+  name: 'Card 卡片',
+  meta: {
+    tag: '数据展示'
+  },
+  component: () => import('@/generated/card/index.vue')
+}, {
   path: 'action-sheet',
   name: 'ActionSheet 动作面板',
   meta: {
@@ -77,6 +98,20 @@ export default [{
     tag: '布局'
   },
   component: () => import('@/generated/wing-blank/index.vue')
+}, {
+  path: 'checkbox',
+  name: 'Checkbox 复选框',
+  meta: {
+    tag: '数据入口'
+  },
+  component: () => import('@/generated/checkbox/index.vue')
+}, {
+  path: 'carousel',
+  name: 'Carousel 走马灯',
+  meta: {
+    tag: '数据展示'
+  },
+  component: () => import('@/generated/carousel/index.vue')
 }, {
   path: 'white-space',
   name: 'WhiteSpace 上下留白',

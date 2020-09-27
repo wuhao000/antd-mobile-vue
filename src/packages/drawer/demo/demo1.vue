@@ -1,70 +1,71 @@
 <template>
   <div class="demo">
     <m-nav-bar @left-click="onOpenChange">
-      <m-icon slot="icon"
-              type="ellipsis"/>
+      <template v-slot:icon>
+        <m-icon type="ellipsis"/>
+      </template>
       Basic
     </m-nav-bar>
-    <m-drawer enable-drag-handle
-              class="my-drawer"
-              :content-style="{ color : '#A6A6A6', textAlign : 'center', paddingTop : '42px' }"
+    <m-drawer :content-style="{ color : '#A6A6A6', textAlign : 'center', paddingTop : '42px' }"
               :style="drawerStyle"
               :value="state.open"
+              class="my-drawer" enable-drag-handle
               @open-change="{onOpenChange}">
-      <m-list slot="sidebar">
-        <m-list-item multiple-line
-                     thumb="https://zos.alipayobjects.com/rmsportal/eOZidTabPoEbPeU.png">Category
-        </m-list-item>
-        <template v-for="index in 15">
-          <m-list-item thumb="https://zos.alipayobjects.com/rmsportal/eOZidTabPoEbPeU.png"
-                       :key="index">Category{{index}}
+      <template v-slot:sidebar>
+        <m-list>
+          <m-list-item multiple-line
+                       thumb="https://zos.alipayobjects.com/rmsportal/eOZidTabPoEbPeU.png">Category
           </m-list-item>
-        </template>
-      </m-list>
+          <template v-for="index in 15"
+                    :key="index">
+            <m-list-item thumb="https://zos.alipayobjects.com/rmsportal/eOZidTabPoEbPeU.png">Category{{ index }}
+            </m-list-item>
+          </template>
+        </m-list>
+      </template>
       Click upper-left corner
     </m-drawer>
   </div>
 </template>
 <script lang="ts">
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
+import {computed, defineComponent, reactive} from 'vue';
 
-  @Component({
-    name: 'DemoDemo1'
-  })
-  export default class DemoDemo1 extends Vue {
-
-    public state = {
+export default defineComponent({
+  name: 'DemoDemo1',
+  props: {},
+  setup(props, {emit, slots}) {
+    const state = reactive({
       open: true
-    };
+    });
 
-    get drawerStyle() {
+    const drawerStyle = computed(() => {
       return {minHeight: document.documentElement.clientHeight + 'px'};
-    }
-
-    public onOpenChange(...args) {
+    });
+    const onOpenChange = (...args) => {
       console.log(args);
-      this.state.open = !this.state.open;
-    }
+      state.open = !state.open;
+    };
+    return {state, drawerStyle, onOpenChange};
   }
+});
 </script>
 <style lang="less">
-  .demo {
-    .my-drawer {
-      position: relative;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .my-drawer .am-drawer-sidebar {
-      background-color: #fff;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .my-drawer .am-drawer-sidebar .am-list {
-      width: 300px;
-      padding: 0;
-    }
+.demo {
+  .my-drawer {
+    position: relative;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
   }
+
+  .my-drawer .am-drawer-sidebar {
+    background-color: #fff;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .my-drawer .am-drawer-sidebar .am-list {
+    width: 300px;
+    padding: 0;
+  }
+}
 </style>

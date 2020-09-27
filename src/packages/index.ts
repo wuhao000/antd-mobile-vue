@@ -3,6 +3,9 @@ import HttpMethod from './http-method';
 import VueIcon from '@ant-design/icons-vue';
 import zhCn from './moment-zh_CN';
 import Accordion from './accordion';
+import NavBar from './nav-bar';
+import Drawer from './drawer';
+import Card from './card';
 import ActionSheet from './action-sheet';
 import Button from './button';
 import List from './list';
@@ -13,6 +16,8 @@ import Input from './input';
 import Calendar from './calendar';
 import Badge from './badge';
 import WingBlank from './wing-blank';
+import Checkbox from './checkbox';
+import Carousel from './carousel';
 import WhiteSpace from './white-space';
 // 注册moment中文国际化文案
 if (window.moment) {
@@ -21,6 +26,9 @@ if (window.moment) {
 // 存储组件列表
 const components = [
   Accordion,
+	NavBar,
+	Drawer,
+	Card,
 	ActionSheet,
 	Button,
 	List,
@@ -31,6 +39,8 @@ const components = [
 	Calendar,
 	Badge,
 	WingBlank,
+	Checkbox,
+	Carousel,
 	WhiteSpace
 ];
 
@@ -50,6 +60,9 @@ export {
   // 以下是具体的组件列表
   HttpMethod,
   Accordion,
+	NavBar,
+	Drawer,
+	Card,
 	ActionSheet,
 	Button,
 	List,
@@ -60,6 +73,8 @@ export {
 	Calendar,
 	Badge,
 	WingBlank,
+	Checkbox,
+	Carousel,
 	WhiteSpace
 };
 export default {
@@ -67,6 +82,9 @@ export default {
   install,
   HttpMethod,
   Accordion,
+	NavBar,
+	Drawer,
+	Card,
 	ActionSheet,
 	Button,
 	List,
@@ -77,5 +95,7 @@ export default {
 	Calendar,
 	Badge,
 	WingBlank,
+	Checkbox,
+	Carousel,
 	WhiteSpace
 };

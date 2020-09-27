@@ -1,29 +1,23 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {reactive} from 'vue';
 
-@Component({
-  name: 'BaseDemo'
-})
-export default class BaseDemo extends Vue {
-
-  public state = {
+export const useBaseDemo = () => {
+  const state = reactive({
     data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
     imgHeight: '176px',
     slideIndex: 2
+  });
+  return {
+    state,
+    afterChange(index) {
+      state.slideIndex = index;
+    },
+    beforeChange(from, to) {
+      console.log(`slide from ${from} to ${to}`);
+    },
+    onLoad() {
+      // fire window resize event to change height
+      window.dispatchEvent(new Event('resize'));
+      state.imgHeight = 'auto';
+    }
   };
-
-  public afterChange(index) {
-    this.state.slideIndex = index;
-  }
-
-  public beforeChange(from, to) {
-    console.log(`slide from ${from} to ${to}`);
-  }
-
-  public onLoad() {
-    // fire window resize event to change height
-    window.dispatchEvent(new Event('resize'));
-    this.state.imgHeight = 'auto';
-  }
-
-}
+};
