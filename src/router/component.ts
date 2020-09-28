@@ -106,6 +106,20 @@ export default [{
   },
   component: () => import('@/generated/checkbox/index.vue')
 }, {
+  path: 'flex',
+  name: 'Flex 弹性布局',
+  meta: {
+    tag: '布局'
+  },
+  component: () => import('@/generated/flex/index.vue')
+}, {
+  path: 'grid',
+  name: 'Grid 宫格',
+  meta: {
+    tag: '数据展示'
+  },
+  component: () => import('@/generated/grid/index.vue')
+}, {
   path: 'carousel',
   name: 'Carousel 走马灯',
   meta: {

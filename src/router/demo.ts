@@ -64,6 +64,14 @@ export default [{
   name: 'm-checkbox',
   component: () => import('@/generated/checkbox/demo.vue')
 }, {
+  path: 'm-flex',
+  name: 'm-flex',
+  component: () => import('@/generated/flex/demo.vue')
+}, {
+  path: 'm-grid',
+  name: 'm-grid',
+  component: () => import('@/generated/grid/demo.vue')
+}, {
   path: 'm-carousel',
   name: 'm-carousel',
   component: () => import('@/generated/carousel/demo.vue')

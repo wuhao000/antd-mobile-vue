@@ -24,20 +24,7 @@
     "name": "date-picker-view",
     "chineseName": "日期选择器"
   },
-  "flex": {
-    "type": "component",
-    "componentType": "mobile",
-    "name": "flex",
-    "chineseName": "弹性布局",
-    "tag": "布局"
-  },
-  "grid": {
-    "type": "component",
-    "componentType": "mobile",
-    "name": "grid",
-    "chineseName": "宫格",
-    "tag": "数据展示"
-  },
+
   "icon": {
     "type": "component",
     "componentType": "mobile",

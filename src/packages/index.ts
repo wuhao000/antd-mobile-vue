@@ -17,6 +17,8 @@ import Calendar from './calendar';
 import Badge from './badge';
 import WingBlank from './wing-blank';
 import Checkbox from './checkbox';
+import Flex from './flex';
+import Grid from './grid';
 import Carousel from './carousel';
 import WhiteSpace from './white-space';
 // 注册moment中文国际化文案
@@ -40,6 +42,8 @@ const components = [
 	Badge,
 	WingBlank,
 	Checkbox,
+	Flex,
+	Grid,
 	Carousel,
 	WhiteSpace
 ];
@@ -74,6 +78,8 @@ export {
 	Badge,
 	WingBlank,
 	Checkbox,
+	Flex,
+	Grid,
 	Carousel,
 	WhiteSpace
 };
@@ -96,6 +102,8 @@ export default {
 	Badge,
 	WingBlank,
 	Checkbox,
+	Flex,
+	Grid,
 	Carousel,
 	WhiteSpace
 };

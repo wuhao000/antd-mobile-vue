@@ -1,128 +1,146 @@
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
+import {optionsBasedComponentProps, useOptionsBaseComponent} from '../../mixins/options-based-component';
+import {simpleFormComponentProps} from '../../mixins/simple-form-component';
+import {computed, defineComponent, PropType, ref, Ref, watch} from 'vue';
 import List from '../../list';
-import OptionsBasedComponent from '../../mixins/options-based-component';
 import Popup from '../../popup';
 import CheckboxList from './checkbox-list';
 
-@Component({
-  name: 'MCheckboxPopupList'
-})
-export default class MCheckboxPopupList extends OptionsBasedComponent {
-
-  @Prop({type: [String, Object]})
-  public title: string;
-  @Prop({type: String})
-  public placeholder: string;
-  @Prop({type: Boolean, default: false})
-  private clearable: boolean;
-  @Prop({type: String, default: '、'})
-  public separator: string;
-  @Prop({type: Boolean, default: false})
-  public visible: boolean;
-  public popupVisible: boolean = this.visible;
-  @Prop({type: Boolean, default: false})
-  private searchable: boolean;
-
-  @Watch('visible')
-  public visibleChanged(visible: boolean) {
-    this.popupVisible = visible;
-  }
-
-  @Watch('popupVisible')
-  public popupVisibleChanged(popupVisible: boolean) {
-    this.$emit('update:visible', popupVisible);
-  }
-
-  private onChange(value: any[]) {
-    this.stateValue = value;
-    this.$emit('update:value', this.stateValue);
-    this.$emit('change', this.stateValue);
-  }
-
-  public onClick() {
-    if (!this.disabled && !this.readOnly) {
-      this.popupVisible = true;
+export default defineComponent({
+  name: 'MCheckboxPopupList',
+  props: {
+    ...simpleFormComponentProps,
+    ...optionsBasedComponentProps,
+    title: {
+      type: [String, Object] as PropType<string>
+    },
+    placeholder: {
+      type: String as PropType<string>
+    },
+    clearable: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    separator: {
+      type: String as PropType<string>,
+      default: '、'
+    },
+    visible: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    searchable: {
+      type: Boolean as PropType<boolean>,
+      default: false
     }
-  }
+  },
+  setup(props, {emit, slots, attrs}) {
+    const {getOptions, searchKeyword, isReadonly, stateValue, isDisabled} = useOptionsBaseComponent(props, {
+      emit,
+      slots,
+      attrs
+    });
+    const popupVisible: Ref<boolean> = ref(props.visible);
+    watch(() => props.visible, (visible: boolean) => {
+      popupVisible.value = visible;
+    });
+    watch(() => popupVisible.value, (popupVisible: boolean) => {
+      emit('update:visible', popupVisible);
+    });
+    const optionText = computed(() => {
+      const options = getOptions();
+      // @ts-ignore
+      const value = stateValue.value;
+      const array = [];
+      if (value) {
+        value.forEach((v, index) => {
+          const option = options.find(it => it.value === v);
+          if (option) {
+            array.push(option.label);
+          } else {
+            array.push(v);
+          }
+          if (index < value.length - 1) {
+            array.push(props.separator);
+          }
+        });
+      }
+      return array;
+    });
+    const onChange = (value: any[]) => {
+      stateValue.value = value;
+      emit('update:value', stateValue.value);
+      emit('change', stateValue.value);
+    };
+    const onClick = () => {
+      if (!isDisabled.value && !isReadonly.value) {
+        popupVisible.value = true;
+      }
+    };
+    const onClear = () => {
+      emit('clear');
+      emit('update:value', []);
+      closePopup();
+    };
+    const closePopup = () => {
+      popupVisible.value = false;
+    };
+    const renderSearch = () => {
+      return props.searchable ? <m-search-bar
+        value={searchKeyword.value}
+        onInput={(v) => {
+          searchKeyword.value = v;
+        }}/> : null;
+    };
 
-  get optionText() {
-    const options = this.getOptions();
-    // @ts-ignore
-    const value = this.stateValue;
-    const array = [];
-    if (value) {
-      value.forEach((v, index) => {
-        const option = options.find(it => it.value === v);
-        if (option) {
-          array.push(option.label);
-        } else {
-          array.push(v);
-        }
-        if (index < value.length - 1) {
-          array.push(this.separator);
-        }
-      });
-    }
-    return array;
-  }
 
-  public onClear() {
-    this.$emit('clear');
-    this.$emit('update:value', []);
-    this.closePopup();
-  }
-
-  public render() {
+    return {
+      onChange, stateValue, getOptions,
+      onClick, isDisabled, isReadonly, closePopup,
+      onClear, renderSearch, popupVisible, optionText
+    };
+  },
+  render() {
     const listProps: any = {
       ...this.$attrs,
       ...this.$props,
       options: this.getOptions()
     };
-    const {stateValue, optionText, placeholder} = this;
+    const {stateValue, placeholder} = this;
     listProps.title = undefined;
-    const cancelButton = <div onclick={this.onClear}
+    const cancelButton = <div onClick={this.onClear}
                               class={`am-popup-item am-popup-header-left`}>清除</div>;
+    const slots = {
+      extra: () => {
+        return <span>{stateValue && stateValue.length ? this.optionText : placeholder}</span>
+      },
+      default: () => {
+        return [
+          <Popup value={this.isDisabled ? false : this.popupVisible}
+                 showCancel={this.clearable}
+                 disabled={this.isDisabled || this.isReadonly}
+                 cancelButton={cancelButton}
+                 title={this.title}
+                 onOk={this.closePopup}
+                 onCancel={this.closePopup}>
+            {this.renderSearch()}
+            <CheckboxList
+              {
+                ...listProps
+              }
+              maxHeightPercentage={0.7}
+              onChange={this.onChange}
+            />
+          </Popup>,
+          <span>{this.title}</span>
+        ]
+      }
+    }
     return <List.Item onClick={this.onClick}
-                      touchFeedback={!this.readOnly && !this.disabled}
+                      touchFeedback={!this.isReadonly && !this.isDisabled}
                       required={this.required}
-                      text={!!optionText}
+                      text={!!this.optionText}
                       disabled={this.isDisabled}>
-      <Popup value={this.isDisabled ? false : this.popupVisible}
-             showCancel={this.clearable}
-             disabled={this.disabled || this.isReadonly}
-             cancelButton={cancelButton}
-             title={this.title}
-             onOk={this.closePopup}
-             onCancel={this.closePopup}>
-        {this.renderSearch()}
-        <CheckboxList
-          attrs={
-            listProps
-          }
-          maxHeightPercentage={0.7}
-          onChange={this.onChange}
-        />
-      </Popup>
-      <span slot="extra">{stateValue && stateValue.length ? optionText : placeholder}</span>
-      <span>{this.title}</span>
+
     </List.Item>;
   }
-
-  private closePopup() {
-    this.popupVisible = false;
-  }
-
-  @Watch('searchKeyword')
-  public searchKeywordChanged(keyword: string) {
-    console.log(keyword);
-  }
-
-  private renderSearch() {
-    return this.searchable ? <m-search-bar
-      value={this.searchKeyword}
-      onInput={(v) => {
-        this.searchKeyword = v;
-      }}/> : null;
-  }
-}
+});

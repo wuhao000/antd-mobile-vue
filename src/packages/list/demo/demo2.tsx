@@ -81,7 +81,7 @@ export default class ListExample extends Vue {
         </Item>
       </List>
       <List renderHeader={() => 'Text Wrapping'} class="my-list">
-        <Item data-seed="logId">Single line，long text will be hidden with ellipsis；</Item>
+        <Item>Single line，long text will be hidden with ellipsis；</Item>
         <Item wrap>Multiple line，long text will wrap；Long Text Long Text Long Text Long Text Long Text Long Text</Item>
         <Item extra="extra content" multipleLine align="top" wrap>
           Multiple line and long text will wrap. Long Text Long Text Long Text

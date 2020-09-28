@@ -43,7 +43,7 @@ export default class MRadioList extends OptionsBasedComponent {
     if (options) {
       return options.map(option => {
         return <RadioItem
-          attrs={{disabled: option.disabled || this.isDisabled}}
+          {...{disabled: option.disabled || this.isDisabled}}
           value={this.stateValue === option.value}
           onChange={(checkState) => {
             this.onChange(checkState, option.value);

@@ -87,45 +87,45 @@
   </div>
 </template>
 <script lang="ts">
-  import WhiteSpace from '@/packages/white-space/src';
-  import Vue from 'vue';
-  import Component from 'vue-class-component';
-  import PlaceHolder from './place-holder.vue';
+import WhiteSpace from '@/packages/white-space/src';
+import {defineComponent} from 'vue';
+import PlaceHolder from './place-holder.vue';
 
-  @Component({
-    name: 'FlexDemo1',
-    components: {
-      WhiteSpace,
-      PlaceHolder
-    }
-  })
-  export default class FlexDemo1 extends Vue {
-
+export default defineComponent({
+  name: 'FlexDemo1',
+  components: {
+    WhiteSpace,
+    PlaceHolder
   }
+});
 </script>
 <style>
-  .flex-container {
-    margin: 0 15px;
-  }
-  .flex-container .inline {
-    width: 80px!important;
-    margin: 9px 9px 9px 0;
-  }
-  .flex-container .small {
-    height: 20px!important;
-    line-height: 20px!important;
-  }
-  .sub-title {
-    color: #888;
-    font-size: 14px;
-    padding: 30px 0 18px 0;
-  }
-  .placeholder {
-    background-color: #ebebef;
-    color: #bbb;
-    text-align: center;
-    height: 30px;
-    line-height: 30px;
-    width: 100%;
-  }
+.flex-container {
+  margin: 0 15px;
+}
+
+.flex-container .inline {
+  width: 80px !important;
+  margin: 9px 9px 9px 0;
+}
+
+.flex-container .small {
+  height: 20px !important;
+  line-height: 20px !important;
+}
+
+.sub-title {
+  color: #888;
+  font-size: 14px;
+  padding: 30px 0 18px 0;
+}
+
+.placeholder {
+  background-color: #ebebef;
+  color: #bbb;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  width: 100%;
+}
 </style>

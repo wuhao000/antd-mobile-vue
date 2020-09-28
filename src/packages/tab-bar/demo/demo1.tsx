@@ -64,7 +64,6 @@ export default class TabBarExample extends Vue {
             />
             }
             badge={1}
-            data-seed="logId"
           >
             {this.renderContent('Life')}
           </m-tab-bar-item>
@@ -88,7 +87,6 @@ export default class TabBarExample extends Vue {
             title="Koubei"
             key="Koubei"
             badge={'new'}
-            data-seed="logId1"
           >
             {this.renderContent('Koubei')}
           </m-tab-bar-item>

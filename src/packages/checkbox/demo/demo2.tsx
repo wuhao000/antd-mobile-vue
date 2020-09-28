@@ -1,5 +1,10 @@
-export default {
-  render() {
+import {defineComponent, reactive} from 'vue';
+
+export default defineComponent({
+  setup() {
+    const state = reactive({
+      value: []
+    });
     const options = [{
       label: '选项1',
       value: 0
@@ -10,8 +15,14 @@ export default {
       label: '选项3',
       value: 2
     }];
+    return {
+      state, options
+    };
+  },
+  render() {
     return <div>
-      <m-checkbox-list options={options}></m-checkbox-list>
+      <m-checkbox-list v-model={[this.state.value, 'value']}
+                       options={this.options}></m-checkbox-list>
     </div>;
   }
-};
+});

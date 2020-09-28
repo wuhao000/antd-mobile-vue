@@ -55,7 +55,7 @@ const Checkbox = defineComponent({
           onClick={this.onClick}
           checked={this.value}
           {...this.$props}/>
-        {this.$slots.default()}
+        {this.$slots.default?.()}
       </label>
     );
     if (this.wrapLabel) {

@@ -1,76 +1,68 @@
-import {defineComponent, onBeforeUpdate, Ref, ref} from 'vue';
+import {unwrapFragment} from '@/packages/utils/vue';
+import {onBeforeUpdate, Ref, ref} from 'vue';
 import {getOptionProperty} from '../utils/option';
-import {getNodeText} from '../utils/vnode';
+import {getNodeText, isEmptySlot} from '../utils/vnode';
 import {useBaseInputComponent} from './base-input-component';
 
-const optionsBasedComponentProps = {
+export const optionsBasedComponentProps = {
+  /**
+   * 选项对象中作为标签的属性名称
+   */
   labelProperty: {type: [String, Function], default: 'label'},
+  /**
+   * 选项对象中作为值的属性名称
+   */
   valueProperty: {type: [String, Function], default: 'value'},
+  /**
+   * 选项数据
+   */
   options: {type: Array}
 };
-const useOptionsBaseComponent = (props, ctx) => {
-  const {} = useBaseInputComponent(props, ctx);
-};
+export const useOptionsBaseComponent = (props, {emit, attrs, slots}) => {
+  const {isDisabled, stateValue, isReadonly} = useBaseInputComponent(props, {emit, attrs, slots});
+  const searchKeyword: Ref<string> = ref('');
 
-// @ts-ignore
-defineComponent({
-  name: 'OptionsBasedComponent',
-  props: {},
-  setup(props, {emit, slots}) {
-    const searchKeyword: Ref<string> = ref('');
-    /**
-     * 选项对象中作为标签的属性名称
-     */
-    const labelProperty: Ref<string | ((option) => any)> = ref(null);
-    /**
-     * 选项数据
-     */
-    const options: Ref<any[]> = ref(null);
-    /**
-     * 选项对象中作为值的属性名称
-     */
-    const valueProperty: Ref<string | ((option) => any)> = ref(null);
-
-
-    const getOptions = () => {
-      return getResolvedOptions(options.value);
-    };
-    const getResolvedOptions = (options: any[]) => {
-      if (options) {
-        return options.map(option => {
-          return Object.assign({}, option, {
-            label: getOptionProperty(option, labelProperty.value),
-            value: getOptionProperty(option, valueProperty.value)
-          });
-        }).filter(item => {
-          let label = item.label;
-          if (typeof label === 'object') {
-            label = getNodeText(label) || '';
-          }
-          return !searchKeyword.value || label.includes(searchKeyword.value);
+  const getOptions = () => {
+    return getResolvedOptions(props.options);
+  };
+  const getResolvedOptions = (options: any[]) => {
+    if (options) {
+      return options.map(option => {
+        return Object.assign({}, option, {
+          label: getOptionProperty(option, props.labelProperty),
+          value: getOptionProperty(option, props.valueProperty)
         });
-      } else {
-        return null;
-      }
-    };
-    const setProps = () => {
-      if (this.$slots.default) {
-        this.$slots.default().forEach(node => {
-          if (node.props.disabled === undefined) {
-            node.props.disabled = this.isDisabled;
-          }
-          if (node.props.readonly === undefined) {
-            node.props.readonly = this.isReadonly;
-          }
-        });
-      }
-    };
-    onBeforeUpdate(() => {
-      setProps();
-    });
-    {
-      setProps();
+      }).filter(item => {
+        let label = item.label;
+        if (typeof label === 'object') {
+          label = getNodeText(label) || '';
+        }
+        return !searchKeyword.value || label.includes(searchKeyword.value);
+      });
+    } else {
+      return null;
     }
-    return {};
+  };
+  const setProps = () => {
+    if (!isEmptySlot(slots.default)) {
+      unwrapFragment(slots.default()).forEach(node => {
+        if (node.props.disabled === undefined) {
+          node.props.disabled = isDisabled.value;
+        }
+        if (node.props.readonly === undefined) {
+          node.props.readonly = isReadonly.value;
+        }
+      });
+    }
+  };
+  onBeforeUpdate(() => {
+    setProps();
+  });
+  {
+    setProps();
   }
-});
+  return {
+    getOptions, isReadonly, isDisabled, searchKeyword,
+    stateValue
+  };
+};

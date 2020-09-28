@@ -84,7 +84,7 @@ const CheckboxItem = defineComponent({
     });
     // @ts-ignore
     const thumb = <Checkbox
-      attrs={{
+      {...{
         ...checkboxProps,
         ...extraProps,
         value: this.state.value

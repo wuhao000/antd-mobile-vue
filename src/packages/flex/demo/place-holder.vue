@@ -1,13 +1,18 @@
 <template>
   <div class="placeholder">Block</div>
 </template>
+<script lang="ts">
+import {defineComponent} from 'vue';
+
+export default defineComponent({}) as any;
+</script>
 <style>
-  .placeholder {
-    background-color: #ebebef;
-    color: #bbb;
-    text-align: center;
-    height: 30px;
-    line-height: 30px;
-    width: 100%;
-  }
+.placeholder {
+  background-color: #ebebef;
+  color: #bbb;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  width: 100%;
+}
 </style>

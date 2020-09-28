@@ -1,16 +1,15 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {defineComponent} from 'vue';
 
-@Component({
-  name: 'Test'
-})
-export default class Test extends Vue {
-
-  public onChange(val) {
-    console.log(val);
-  }
-
-  public render() {
+export default defineComponent({
+  name: 'Test',
+  props: {},
+  setup(props, {emit, slots}) {
+    const onChange = (val) => {
+      console.log(val);
+    };
+    return {onChange};
+  },
+  render() {
     const data = [
       {value: 0, label: 'Ph.D.'},
       {value: 1, label: 'Bachelor'},
@@ -23,14 +22,14 @@ export default class Test extends Vue {
             {i.label}
           </m-checkbox-item>
         ))}
-        <m-checkbox-item key="disabled" data-seed="logId" disabled defaultChecked multipleLine>
+        <m-checkbox-item key="disabled" disabled defaultChecked multipleLine>
           Undergraduate
           <m-list-item-brief>Auxiliary text</m-list-item-brief>
         </m-checkbox-item>
       </m-list>
       <m-flex>
         <m-flex-item>
-          <m-agree-item data-seed="logId" onChange={e => console.log('checkbox', e)}>
+          <m-agree-item onChange={e => console.log('checkbox', e)}>
             Agree <a onClick={(e) => {
             e.preventDefault();
             alert('agree it');
@@ -40,4 +39,4 @@ export default class Test extends Vue {
       </m-flex>
     </div>);
   }
-}
+});

@@ -5,6 +5,7 @@ import {Options, Vue} from 'vue-class-component';
 import Item from './item';
 
 @Options({
+  inheritAttrs: false,
   name: 'MList',
   props: {
     section: {type: Boolean, default: false},

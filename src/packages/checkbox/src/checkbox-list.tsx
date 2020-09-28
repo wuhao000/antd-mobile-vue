@@ -1,10 +1,12 @@
-import {defineComponent, onMounted, PropType, ref} from 'vue';
+import {defineComponent, getCurrentInstance, onMounted, PropType, ref} from 'vue';
 import List from '../../list';
+import {optionsBasedComponentProps, useOptionsBaseComponent} from '../../mixins/options-based-component';
 import CheckboxItem from './checkbox-item';
 
 const MCheckboxList = defineComponent({
   name: 'MCheckboxList',
   props: {
+    ...optionsBasedComponentProps,
     value: {
       type: Array as PropType<any[]>
     },
@@ -15,69 +17,49 @@ const MCheckboxList = defineComponent({
       type: Number as PropType<number>
     }
   },
-  setup(props, {emit, slots}) {
-    const stateValue = ref(props.value || []);
-
-
+  setup(props, {emit, slots, attrs}) {
+    const {getOptions, stateValue, isDisabled} = useOptionsBaseComponent(props, {emit, attrs, slots});
     const renderOptions = () => {
-      const options = this.getOptions();
+      const options = getOptions();
       return options.map(option => {
         return <CheckboxItem
           value={stateValue.value.includes(option.value)}
-          disabled={option.disabled || this.isDisabled}
-          on={
-            {
-              change: (checkState) => {
-                onChange(checkState, option.value);
-              }
-            }
-          }>{option.label}</CheckboxItem>;
+          disabled={option.disabled || isDisabled.value}
+          onChange={(checkState) => {
+            onChange(checkState, option.value);
+          }}>{option.label}</CheckboxItem>;
       });
     };
     const onChange = (checkState: any, value: any) => {
+      const newValue = [].concat(...stateValue.value);
       if (checkState) {
-        if (props.value) {
-          if (!props.value.includes(value)) {
-            const array = [].concat(props.value);
-            array.push(value);
-            emit('update:value', array);
-            emit('change', array);
-          }
-        } else {
-          if (!stateValue.value.includes(value)) {
-            stateValue.value.push(value);
-          }
+        if (!newValue.includes(value)) {
+          newValue.push(value);
         }
       } else {
-        if (props.value) {
-          if (props.value.includes(value)) {
-            const array = [].concat(props.value);
-            array.splice(array.indexOf(value), 1);
-            emit('update:value', array);
-            emit('change', array);
-          }
-        } else {
-          if (stateValue.value.includes(value)) {
-            stateValue.value.splice(stateValue.value.indexOf(value), 1);
-          }
+        if (newValue.includes(value)) {
+          newValue.splice(newValue.indexOf(value), 1);
         }
       }
+      stateValue.value = newValue;
     };
+    const instance = getCurrentInstance();
     onMounted(() => {
       if (props.maxHeightPercentage) {
         const windowHeight = document.body.clientHeight;
         const maxHeight = props.maxHeightPercentage;
-        if (this.$el.clientHeight > windowHeight * maxHeight) {
-          (this.$el as HTMLElement).style.height = windowHeight * maxHeight + 'px';
+        if (instance.vnode.el.clientHeight > windowHeight * maxHeight) {
+          (instance.vnode.el as HTMLElement).style.height = windowHeight * maxHeight + 'px';
         }
       }
     });
-
-    return {};
+    return {renderOptions, stateValue};
   },
   render() {
     // @ts-ignore
-    return <List required={this.required} title={this.title}>
+    return <List required={this.required}
+                 title={this.title}>
+      {this.stateValue}
       {this.renderOptions()}
     </List>;
   }

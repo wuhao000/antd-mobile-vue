@@ -13,6 +13,8 @@ import {CalendarComponent} from './components/calendar';
 import {BadgeComponent} from './components/badge';
 import {WingBlankComponent} from './components/wing-blank';
 import {CheckboxComponent} from './components/checkbox';
+import {FlexComponent} from './components/flex';
+import {GridComponent} from './components/grid';
 import {CarouselComponent} from './components/carousel';
 import {WhiteSpaceComponent} from './components/white-space';
 
@@ -45,6 +47,10 @@ export class Badge extends BadgeComponent {
 export class WingBlank extends WingBlankComponent {
 }
 export class Checkbox extends CheckboxComponent {
+}
+export class Flex extends FlexComponent {
+}
+export class Grid extends GridComponent {
 }
 export class Carousel extends CarouselComponent {
 }

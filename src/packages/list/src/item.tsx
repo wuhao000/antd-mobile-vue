@@ -22,6 +22,7 @@ const Brief = defineComponent({
 });
 
 const Item = defineComponent({
+  inheritAttrs: false,
   name: 'ListItem',
   props: {
     text: {

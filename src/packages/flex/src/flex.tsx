@@ -1,31 +1,38 @@
 import classnames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent, PropType} from 'vue';
 
-@Component({
-  name: 'Flex'
-})
-export default class Flex extends Vue {
-  @Prop(String)
-  public alignContent?: 'start' | 'end' | 'center' | 'between' | 'around' | 'stretch';
-  @Prop({type: String, default: 'am-flexbox'})
-  public prefixCls?: string;
-  @Prop(String)
-  public role?: string;
-  @Prop(String)
-  public direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
-  @Prop(String)
-  public wrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
-  @Prop(String)
-  public justify?: 'start' | 'end' | 'center' | 'between' | 'around';
-  @Prop({type: String, default: 'center'})
-  public align?: 'start' | 'center' | 'end' | 'baseline' | 'stretch';
-  @Prop(Boolean)
-  public disabled?: boolean;
-  public static Item: any;
-
-  public render() {
+export default defineComponent({
+  Item: null,
+  name: 'Flex',
+  props: {
+    alignContent: {
+      type: String as PropType<'start' | 'end' | 'center' | 'between' | 'around' | 'stretch'>
+    },
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-flexbox'
+    },
+    role: {
+      type: String as PropType<string>
+    },
+    direction: {
+      type: String as PropType<'row' | 'row-reverse' | 'column' | 'column-reverse'>
+    },
+    wrap: {
+      type: String as PropType<'nowrap' | 'wrap' | 'wrap-reverse'>
+    },
+    justify: {
+      type: String as PropType<'start' | 'end' | 'center' | 'between' | 'around'>
+    },
+    align: {
+      type: String as PropType<'start' | 'center' | 'end' | 'baseline' | 'stretch'>,
+      default: 'center'
+    },
+    disabled: {
+      type: Boolean as PropType<boolean>
+    }
+  },
+  render() {
     const {
       direction,
       wrap,
@@ -66,9 +73,9 @@ export default class Flex extends Vue {
     });
 
     return (
-        <div class={wrapCls} {...{props: restProps}}>
-          {this.$slots.default}
-        </div>
+      <div class={wrapCls} {...{props: restProps}}>
+        {this.$slots.default?.()}
+      </div>
     );
   }
-}
+});
