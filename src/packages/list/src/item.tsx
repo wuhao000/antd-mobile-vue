@@ -132,6 +132,7 @@ const Item = defineComponent({
       return props.errorDisplayType ?? instance.parent['errorDisplayType'];
     });
     const onClick = (ev: any) => {
+      ev.stopPropagation();
       const isAndroid = props.platform === 'android';
       if (isAndroid) {
         if (debounceTimeout.value) {

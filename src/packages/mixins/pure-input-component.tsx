@@ -1,37 +1,37 @@
-import {computed, defineComponent, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch} from 'vue';
+import {computed, getCurrentInstance, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 import {useEmitter} from './emitter';
 
-export const usePureInputComponent = (props, {emit, attrs}) => {
-  const getInitValue = () => {
-    return null;
-  };
+export const usePureInputComponent = (props, {emit, attrs}, options?: {defaultValue: any}) => {
   const convertValue = ref((value: any) => {
     return value;
   });
-  const initValue = computed(() => {
+  const defaultValue = computed(() => {
     const convertedValue = convertValue.value(props.value);
     if (convertedValue !== null && convertedValue !== undefined) {
       return convertedValue;
     } else {
-      return getInitValue();
+      return options?.defaultValue;
     }
   });
-  const stateValue = ref(initValue.value);
+  const stateValue = ref(defaultValue.value);
   const instance = getCurrentInstance();
   const {dispatch} = useEmitter(instance);
   watch(() => stateValue.value, (value) => {
+    if (Array.isArray(value) && typeof value[0] === 'object') {
+      console.log('invalid');
+    }
     const val = convertValueBack(value);
     if (props.value !== undefined) {
-      console.log(val);
       emit('update:value', val);
     }
     emit('change', val);
     dispatch('DFormItem', 'd.form.change', [val]);
   });
   watch(() => props.value, (value) => {
-    console.log(value);
-    if (stateValue.value !== convertValue.value(value)) {
-      stateValue.value = convertValue.value(value);
+    const convertedValue = convertValue.value(value);
+    if (stateValue.value !== convertedValue) {
+      console.log(convertedValue);
+      stateValue.value = convertedValue;
     }
   });
   const cssStyle = computed(() => {
@@ -75,9 +75,6 @@ export const usePureInputComponent = (props, {emit, attrs}) => {
   const getInputComponent = () => {
     return {};
   };
-  const getListeners = () => {
-    return {};
-  };
   const getProps = () => {
     return {};
   };
@@ -99,6 +96,7 @@ export const usePureInputComponent = (props, {emit, attrs}) => {
     }
     const comp: any = getInputComponent();
     if (comp.model && comp.model.prop === 'value' && comp.model.event === 'change') {
+      console.log(value);
       stateValue.value = value;
     }
   };
@@ -113,10 +111,9 @@ export const usePureInputComponent = (props, {emit, attrs}) => {
     if (value && value.toString() === '[object InputEvent]') {
       val = value.target.value;
     }
-    console.log(value);
-    console.log(321);
     emit('update:value', val);
     if (props.value === undefined) {
+      console.log(val);
       stateValue.value = val;
     }
   };
@@ -140,8 +137,7 @@ export const usePureInputComponent = (props, {emit, attrs}) => {
         ...getSlotProps(),
         ...attrs,
         ...props,
-        ...getProps(),
-        visible: stateValue.value
+        ...getProps()
       };
     }),
     slots,
@@ -153,28 +149,4 @@ export const pureInputComponentProps = {
   block: Boolean,
   value: {},
   width: [String, Number]
-}
-export default defineComponent({
-  name: 'PureInputComponent',
-  props: pureInputComponentProps,
-  setup(_props, ctx) {
-    const {getInputComponent, getDefaultSlot, slots, listeners, props, cssStyle, stateValue} = usePureInputComponent(_props, ctx);
-    return {
-      getInputComponent, listeners, props, cssStyle, stateValue, slots, getDefaultSlot
-    };
-  },
-  render() {
-    const CustomComponent = this.getInputComponent();
-    const props = {
-      ...this.listeners,
-      ...this.props,
-      style: this.cssStyle,
-      value: this.stateValue
-    };
-    // @ts-ignore
-    return <CustomComponent {...props}
-                            v-slots={this.slots}>
-      {this.getDefaultSlot()}
-    </CustomComponent>;
-  }
-});
+};

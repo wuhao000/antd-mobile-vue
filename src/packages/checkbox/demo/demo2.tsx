@@ -1,4 +1,4 @@
-import {defineComponent, reactive} from 'vue';
+import {defineComponent, reactive, watch} from 'vue';
 
 export default defineComponent({
   setup() {
@@ -15,6 +15,9 @@ export default defineComponent({
       label: '选项3',
       value: 2
     }];
+    watch(() => state.value, (v) => {
+      console.log(v);
+    });
     return {
       state, options
     };

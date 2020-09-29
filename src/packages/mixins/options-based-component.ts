@@ -1,3 +1,4 @@
+import {simpleFormComponentProps} from '@/packages/mixins/simple-form-component';
 import {unwrapFragment} from '@/packages/utils/vue';
 import {onBeforeUpdate, Ref, ref} from 'vue';
 import {getOptionProperty} from '../utils/option';
@@ -5,6 +6,7 @@ import {getNodeText, isEmptySlot} from '../utils/vnode';
 import {useBaseInputComponent} from './base-input-component';
 
 export const optionsBasedComponentProps = {
+  ...simpleFormComponentProps,
   /**
    * 选项对象中作为标签的属性名称
    */
@@ -18,10 +20,12 @@ export const optionsBasedComponentProps = {
    */
   options: {type: Array}
 };
-export const useOptionsBaseComponent = (props, {emit, attrs, slots}) => {
-  const {isDisabled, stateValue, isReadonly} = useBaseInputComponent(props, {emit, attrs, slots});
+export const useOptionsBaseComponent = (props, {emit, attrs, slots}, options?: {
+  defaultValue: any
+}) => {
+  const {isDisabled, stateValue, isReadonly} =
+    useBaseInputComponent(props, {emit, attrs, slots}, options);
   const searchKeyword: Ref<string> = ref('');
-
   const getOptions = () => {
     return getResolvedOptions(props.options);
   };
@@ -62,7 +66,6 @@ export const useOptionsBaseComponent = (props, {emit, attrs, slots}) => {
     setProps();
   }
   return {
-    getOptions, isReadonly, isDisabled, searchKeyword,
-    stateValue
+    getOptions, isReadonly, isDisabled, searchKeyword, stateValue
   };
 };

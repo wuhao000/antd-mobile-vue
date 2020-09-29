@@ -37,11 +37,11 @@ export default {
   },
   render(this: any) {
     return <div>
-      {/*<m-checkbox-popup-list*/}
-      {/*  visible={true}*/}
-      {/*  searchable={true}*/}
-      {/*  title="点击选择"*/}
-      {/*  options={options}/>*/}
+      <m-checkbox-popup-list
+        visible={true}
+        searchable={true}
+        title="点击选择"
+        options={options}/>
       {/*<m-checkbox-popup-list*/}
       {/*  title="点击选择（包含禁用选项）"*/}
       {/*  options={options2}/>*/}

@@ -1,14 +1,12 @@
-import {optionsBasedComponentProps, useOptionsBaseComponent} from '../../mixins/options-based-component';
-import {simpleFormComponentProps} from '../../mixins/simple-form-component';
 import {computed, defineComponent, PropType, ref, Ref, watch} from 'vue';
 import List from '../../list';
+import {optionsBasedComponentProps, useOptionsBaseComponent} from '../../mixins/options-based-component';
 import Popup from '../../popup';
 import CheckboxList from './checkbox-list';
 
 export default defineComponent({
   name: 'MCheckboxPopupList',
   props: {
-    ...simpleFormComponentProps,
     ...optionsBasedComponentProps,
     title: {
       type: [String, Object] as PropType<string>
@@ -111,7 +109,7 @@ export default defineComponent({
                               class={`am-popup-item am-popup-header-left`}>清除</div>;
     const slots = {
       extra: () => {
-        return <span>{stateValue && stateValue.length ? this.optionText : placeholder}</span>
+        return <span>{stateValue && stateValue.length ? this.optionText : placeholder}</span>;
       },
       default: () => {
         return [
@@ -132,15 +130,15 @@ export default defineComponent({
             />
           </Popup>,
           <span>{this.title}</span>
-        ]
+        ];
       }
-    }
+    };
     return <List.Item onClick={this.onClick}
                       touchFeedback={!this.isReadonly && !this.isDisabled}
                       required={this.required}
                       text={!!this.optionText}
+                      v-slots={slots}
                       disabled={this.isDisabled}>
-
     </List.Item>;
   }
 });
