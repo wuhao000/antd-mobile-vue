@@ -1,3 +1,4 @@
+import {unwrapFragment} from '../../utils/vue';
 import {computed, defineComponent, onBeforeUpdate, onUpdated, PropType, reactive, Ref, ref, watch} from 'vue';
 import {Models} from '../../../types/models';
 import Gesture, {IGestureStatus} from '../../vmc-gesture';
@@ -5,8 +6,6 @@ import {DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP} from '../
 import DefaultTabBar from './default-tab-bar';
 import TabPane from './tab-pane';
 import {getTransformPropValue, setPxStyle, setTransform} from './utils';
-
-let instanceId: number = 0;
 
 export const getPanDirection = (direction: number | undefined) => {
   switch (direction) {
@@ -272,7 +271,7 @@ const Tabs = defineComponent({
           return Math.round(ratio);
       }
     };
-    const baseGoToTab = (index: number, force = false, newState: any = {}) => {
+    const baseGoToTab = (index: number, force = false, setState: () => any = null) => {
       if (!force && nextCurrentTab.value === index) {
         return false;
       }
@@ -286,9 +285,9 @@ const Tabs = defineComponent({
           }
         }
         currentTab.value = index;
-        Object.keys(newState).forEach(key => {
-          this[key] = newState[key];
-        });
+        if (setState) {
+          setState();
+        }
       }
       return true;
     };
@@ -320,7 +319,8 @@ const Tabs = defineComponent({
       };
     };
     const getSubElements = () => {
-      const children = slots.default();
+      const children = unwrapFragment(slots.default());
+
       const subElements: { [key: string]: any } = {};
       return (defaultPrefix: string = '$i$-', allPrefix: string = '$ALL$') => {
         if (Array.isArray(children)) {
@@ -342,7 +342,8 @@ const Tabs = defineComponent({
                            allPrefix: string = '$ALL$') => {
 
       const key = (tab.key !== null && tab.key !== undefined && tab.key !== '') ? tab.key : `${defaultPrefix}${index}`;
-      const elements = getSubElements();
+      const getSubElementsFn = getSubElements();
+      const elements = getSubElementsFn(defaultPrefix, allPrefix);
       let component = elements[key] || elements[allPrefix];
       if (component instanceof Function) {
         component = component(tab, index);
@@ -351,17 +352,18 @@ const Tabs = defineComponent({
     };
     const goToTab = (index: number, force = false, usePaged = props.usePaged) => {
       const {tabDirection, useLeftInsteadTransform} = props;
-      let newState = {};
+      let setState = () => {
+      };
       if (usePaged) {
-        newState = {
-          contentPos: getContentPosByIndex(
+        setState = () => {
+          contentPos.value = getContentPosByIndex(
             index,
             isTabVertical(tabDirection),
             useLeftInsteadTransform
-          )
+          );
         };
       }
-      return baseGoToTab(index, force, newState);
+      return baseGoToTab(index, force, setState);
     };
     const tabClickGoToTab = (index: number) => {
       goToTab(index, false, true);
@@ -449,13 +451,13 @@ const Tabs = defineComponent({
             } else if (destroyInactiveTab) {
               tabCache[index] = undefined;
             }
-            return <TabPane key={key} class={cls}
+            return <TabPane key={key}
+                            class={cls}
                             active={currentTab.value === index}
                             role="tabpanel"
                             aria-hidden={currentTab.value !== index}
                             aria-labelledby={`m-tabs-${instanceId}-${index}`}
-                            fixX={isTabVertical} fixY={!isTabVertical}
-            >
+                            fixX={isTabVertical} fixY={!isTabVertical}>
               {tabCache[index]}
             </TabPane>;
           })
@@ -473,7 +475,7 @@ const Tabs = defineComponent({
     }
     onBeforeUpdate(() => {
       if (props.page !== props.page && props.page !== undefined) {
-        baseGoToTab(getTabIndex(), true, {});
+        baseGoToTab(getTabIndex(), true);
       }
     });
     onUpdated(() => {
@@ -500,21 +502,20 @@ const Tabs = defineComponent({
       <div key="tabBar" class={`${prefixCls}-tab-bar-wrap`}>
         {
           this.renderTabBar ? this.renderTabBar(tabBarProps)
-            : <DefaultTabBar attrs={tabBarProps}
-                             on={{
-                               tabClick: (tab, index) => {
+            : <DefaultTabBar {...tabBarProps}
+                             onTabClick={
+                               (tab, index) => {
                                  this.onTabClick(tab, index);
                                }
-                             }}/>
+                             }/>
         }
       </div>,
       <Gesture key="$content"
                onSwipe={this.onSwipe}
-               {...{props: onPan}}>
+               {...{onPan}}>
         {this.renderContent()}
       </Gesture>
     ];
-
     return <div class={`${prefixCls} ${prefixCls}-${tabDirection} ${prefixCls}-${tabBarPosition}`}>
       {
         tabBarPosition === 'top' || tabBarPosition === 'left' ? content : content.reverse()

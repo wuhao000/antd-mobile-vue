@@ -28,7 +28,7 @@ Chart| 图表组件
 --- | :---: | :---: | :---: | ---
 Accordion | √ | √ | √
 ActionSheet | √ | 
-ActivityIndicator | √ | 
+ActivityIndicator | √ | √ / √ 
 Badge | √ | √ | √
 Button | √ | √ | √
 Calendar | √ |  | √
@@ -39,25 +39,25 @@ Checkbox | √ |  | √
 DatePicker | √ |  | √
 DatePickerView |  | √
 Drawer | √ |  | √
-Flex | √ |  | √
-Grid | √ | 
-Icon | √ | 
+Flex | √ | √ | √
+Grid | √ | √
+Icon | √ | √ | √
 ImagePicker | √ |  | √
 InputItem | √ | v | √
 List | √ | √ | √
 ListView | √ | [无] 
 Menu | √ |  | √
-Modal | √ |  | √ 
-NavBar | √ |  | √
-NoticeBar | √ |  | √
-Pagination | √ |  | √
+Modal | √ | √ | √ 
+NavBar | √ | √ | √
+NoticeBar | √ | √ | √
+Pagination | √ | √ | √
 Picker | √ |  | √
 PickerView | √ | 
 Popover | √ |  | √
 Progress | √ | 
 Radio | √ |  | √
 PullToRefresh | √ | 
-Result | √ | 
+Result | √ | √ / √ 
 SearchBar | √ | 
 SegmentedControl | √ |  | √
 Slider | √ | 
@@ -67,9 +67,9 @@ Steps | √ |
 SwipeAction | √ |  [无] 
 Switch | √ | √ 
 TabBar | √ |  | √
-Tabs | √ |  | √
-Tag | √ | 
-TextareaItem | √ | 
+Tabs | √ | √ | √
+Tag | √ | √ / √ 
+TextareaItem | √ | √ / √ 
 Toast | √ | √ | √ 
 WhiteSpace | √ | √ | √
 WingBlank | √ | √ | √
@@ -193,3 +193,4 @@ npm run remove <name>
 ```bash
 npm publish
 ```
+

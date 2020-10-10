@@ -1,9 +1,7 @@
 import classnames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
-import {FormComponent} from '../../mixins/form-component';
+import {defineComponent, onBeforeUnmount, onMounted, onUpdated, PropType, reactive, ref, Ref, watch} from 'vue';
 import List from '../../list';
+import {formComponentProps, useFormComponent} from '../../mixins/form-component';
 import {IS_IOS} from '../../utils/exenv';
 import TouchFeedback from '../../vmc-feedback';
 
@@ -16,129 +14,138 @@ function fixControlledValue(value?: string) {
 
 const regexAstralSymbols = /[\uD800-\uDBFF][\uDC00-\uDFFF]|\n/g;
 
-function countSymbols(text = '') {
+function countSymbols(text: any = '') {
   return text.replace(regexAstralSymbols, '_').length;
 }
 
-@Component({
-  name: 'MTextarea'
-})
-export default class Textarea extends FormComponent {
-  @Prop({type: String, default: 'am-textarea'})
-  public prefixCls?: string;
-  @Prop({type: String, default: 'am-list'})
-  public prefixListCls?: string;
-  @Prop({type: String})
-  public title?: string;
-  @Prop({type: Number})
-  public maxLength?: number;
-  @Prop({type: String})
-  public name?: string;
-  @Prop({default: ''})
-  public placeholder?: string;
-  @Prop({type: Boolean, default: false})
-  public clearable?: boolean;
-  @Prop({type: Number, default: 1})
-  public rows?: number;
-  @Prop()
-  public count?: number;
-  @Prop({type: Boolean, default: false})
-  public autoHeight?: boolean;
-  @Prop({type: Number, default: 5})
-  public labelNumber?: number;
-
-  get textareaRef(): any {
-    return this.$refs['textarea'];
-  }
-
-  private debounceTimeout: any;
-  public state = {focus: false, value: this.value || ''};
-
-  public focus() {
-    this.textareaRef.focus();
-  }
-
-  @Watch('value')
-  public valueChanged(value: string) {
-    this.state.value = fixControlledValue(value);
-  }
-
-  public mounted() {
-    if (this.autoHeight) {
-      this.reAlignHeight();
+export default defineComponent({
+  name: 'MTextarea',
+  props: {
+    ...formComponentProps,
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-textarea'
+    },
+    prefixListCls: {
+      type: String as PropType<string>,
+      default: 'am-list'
+    },
+    title: {
+      type: String as PropType<string>
+    },
+    maxLength: {
+      type: Number as PropType<number>
+    },
+    name: {
+      type: String as PropType<string>
+    },
+    placeholder: {
+      default: ''
+    },
+    clearable: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    rows: {
+      type: Number as PropType<number>,
+      default: 1
+    },
+    count: {
+      type: Number
+    },
+    autoHeight: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    labelNumber: {
+      type: Number as PropType<number>,
+      default: 5
     }
-  }
-
-  public updated() {
-    if (this.autoHeight && this.state.focus) {
-      this.reAlignHeight();
-    }
-  }
-
-  public reAlignHeight() {
-    const textareaDom = this.textareaRef;
-    textareaDom.style.height = ''; // 字数减少时能自动减小高度
-    textareaDom.style.height = `${textareaDom.scrollHeight}px`;
-  }
-
-  public beforeDestroy() {
-    if (this.debounceTimeout) {
-      clearTimeout(this.debounceTimeout);
-      this.debounceTimeout = null;
-    }
-  }
-
-  @Watch('state.value')
-  public stateValueChanged(value: string) {
-    this.$emit('update:value', value);
-  }
-
-  public onChange(e) {
-    const value = e.target.value;
-    this.state.value = value;
-    this.$emit('change', value);
-  }
-
-  public onBlur(e) {
-    this.debounceTimeout = setTimeout(() => {
-      if (document.activeElement !== this.textareaRef) {
-        this.state.focus = false;
+  },
+  setup(props, {emit, slots, attrs}) {
+    const {isReadonly, isDisabled} = useFormComponent(props, {emit});
+    const debounceTimeout: Ref<any> = ref(null);
+    const state = reactive({focus: false, value: props.value || ''});
+    watch(() => props.value, (value: any) => {
+      state.value = fixControlledValue(value);
+    });
+    watch(() => state.value, (value: any) => {
+      emit('update:value', value);
+    });
+    const textareaRef = ref(null);
+    const focus = () => {
+      textareaRef.value.focus();
+    };
+    const reAlignHeight = () => {
+      const textareaDom = textareaRef.value;
+      textareaDom.style.height = ''; // 字数减少时能自动减小高度
+      textareaDom.style.height = `${textareaDom.scrollHeight}px`;
+    };
+    const onChange = (e) => {
+      const value = e.target.value;
+      state.value = value;
+      emit('change', value);
+    };
+    const onBlur = (e) => {
+      debounceTimeout.value = setTimeout(() => {
+        if (document.activeElement !== textareaRef.value) {
+          state.focus = false;
+        }
+      }, 150);
+      const value = e.currentTarget.value;
+      // fix autoFocus item blur with flash
+      setTimeout(() => {
+        // fix ios12 wechat browser click failure after input
+        if (document.body) {
+          document.body.scrollTop = document.body.scrollTop;
+        }
+      }, 100);
+      emit('blur', value);
+    };
+    const onFocus = (e) => {
+      if (debounceTimeout.value) {
+        clearTimeout(debounceTimeout.value);
+        debounceTimeout.value = null;
       }
-    }, 150);
-    const value = e.currentTarget.value;
-    // fix autoFocus item blur with flash
-    setTimeout(() => {
-      // fix ios12 wechat browser click failure after input
-      if (document.body) {
-        document.body.scrollTop = document.body.scrollTop;
+      state.focus = true;
+      const value = e.currentTarget.value;
+      emit('focus', value);
+    };
+    const clearInput = () => {
+      state.value = '';
+      emit('change', '');
+    };
+    const onInput = (e) => {
+      state.value = e.target.value;
+      if (props.autoHeight && state.focus) {
+        reAlignHeight();
       }
-    }, 100);
-    this.$emit('blur', value);
-  }
-
-  public onFocus(e) {
-    if (this.debounceTimeout) {
-      clearTimeout(this.debounceTimeout);
-      this.debounceTimeout = null;
-    }
-    this.state.focus = true;
-    const value = e.currentTarget.value;
-    this.$emit('focus', value);
-  }
-
-  public clearInput() {
-    this.state.value = '';
-    this.$emit('change', '');
-  }
-
-  public onInput(e) {
-    this.state.value = e.target.value;
-    if (this.autoHeight && this.state.focus) {
-      this.reAlignHeight();
-    }
-  }
-
-  public render() {
+    };
+    onMounted(() => {
+      if (props.autoHeight) {
+        reAlignHeight();
+      }
+    });
+    onUpdated(() => {
+      if (props.autoHeight && state.focus) {
+        reAlignHeight();
+      }
+    });
+    onBeforeUnmount(() => {
+      if (debounceTimeout.value) {
+        clearTimeout(debounceTimeout.value);
+        debounceTimeout.value = null;
+      }
+    });
+    return {
+      setTextareaRef(el) {
+        textareaRef.value = el;
+      }, state, isDisabled, isReadonly,
+      onInput, onChange, onBlur, onFocus, clearInput,
+      focus
+    };
+  },
+  render() {
     const {
       prefixCls,
       prefixListCls,
@@ -150,7 +157,7 @@ export default class Textarea extends FormComponent {
       autoHeight,
       disabled
     } = this;
-    const {value, focus} = this.state;
+    const {value, focus} = this.state as any;
     const hasCount = count! > 0 && this.rows! > 1;
 
     const wrapCls = classnames(
@@ -178,14 +185,11 @@ export default class Textarea extends FormComponent {
           count! - characterLength + (value ? value.length : 0);
       }
     }
-    return (
-      <List.Item class={wrapCls}
-                 required={this.required}
-                 disabled={this.isDisabled}
-                 title={title}>
-        <div class={`${prefixCls}-control`} slot="extra">
+    const slots = {
+      extra: () => {
+        return <div class={`${prefixCls}-control`} slot="extra">
           <textarea
-            ref="textarea"
+            ref={this.setTextareaRef}
             {...lengthCtrlProps}
             rows={this.rows}
             disabled={this.isDisabled}
@@ -206,7 +210,7 @@ export default class Textarea extends FormComponent {
             <TouchFeedback activeClassName={`${prefixCls}-clear-active`}>
               <div
                 class={`${prefixCls}-clear`}
-                onclick={this.clearInput}
+                onClick={this.clearInput}
               />
             </TouchFeedback>
           )}
@@ -216,7 +220,14 @@ export default class Textarea extends FormComponent {
           </span>
           )}
         </div>
-      </List.Item>
+      }
+    }
+    return (
+      <List.Item class={wrapCls}
+                 required={this.required}
+                 disabled={this.isDisabled}
+                 v-slots={slots}
+                 title={title}/>
     );
   }
-}
+});

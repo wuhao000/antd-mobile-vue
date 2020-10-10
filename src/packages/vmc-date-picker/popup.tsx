@@ -40,8 +40,8 @@ export default class PopupDatePicker extends Vue {
   public render() {
     // @ts-ignore
     return (<PopupPicker
-      attrs={
-        {
+      {
+        ...{
           picker: this.datePicker,
           value: this.date,
           ...this.$props,

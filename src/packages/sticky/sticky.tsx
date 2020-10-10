@@ -1,137 +1,140 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Inject, Prop} from 'vue-property-decorator';
+import {computed, defineComponent,
+  getCurrentInstance,
+  inject, onBeforeUnmount, onMounted, onUpdated, PropType, reactive, ref} from 'vue';
 
-@Component({
-  name: 'Container'
-})
-export default class Sticky extends Vue {
-
-  @Prop({type: Number, default: 0})
-  public topOffset: number;
-  @Prop({type: Number, default: 0})
-  public bottomOffset: number;
-  @Prop({type: Boolean, default: false})
-  public relative: boolean;
-  @Prop({type: Boolean, default: false})
-  public disableCompensation: boolean;
-  @Prop({type: Boolean, default: false})
-  public disableHardwareAcceleration: boolean;
-  @Inject({
-    from: 'stickyContext',
-    default: undefined
-  })
-  public context: {
-    subscribe: any;
-    unsubscribe: any;
-    getParent: any;
-  };
-
-  public state = {
-    isSticky: false,
-    wasSticky: false,
-    style: {},
-    distanceFromTop: null,
-    distanceFromBottom: null,
-    calculatedHeight: null
-  };
-
-  public mounted() {
-    if (!this.context.subscribe) {
-      throw new TypeError(
-        'Expected Sticky to be mounted within StickyContainer'
-      );
+export default defineComponent({
+  name: 'Container',
+  props: {
+    topOffset: {
+      type: Number as PropType<number>,
+      default: 0
+    },
+    bottomOffset: {
+      type: Number as PropType<number>,
+      default: 0
+    },
+    relative: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    disableCompensation: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    disableHardwareAcceleration: {
+      type: Boolean as PropType<boolean>,
+      default: false
     }
-    this.context.subscribe(this.handleContainerEvent);
-  }
+  },
+  setup(props, {emit, slots}) {
+    const context: {
+      subscribe: any;
+      unsubscribe: any;
+      getParent: any;
+    } = inject('stickyContext', undefined);
+    const state = reactive({
+      isSticky: false,
+      wasSticky: false,
+      style: {},
+      distanceFromTop: null,
+      distanceFromBottom: null,
+      calculatedHeight: null
+    });
+    const contentWrapRef = ref<HTMLDivElement>(null);
+    const placeholderRef = ref(null);
+    const content = computed<HTMLDivElement>(() => {
+      return contentWrapRef.value.children[0] as HTMLDivElement;
+    });
+    const handleContainerEvent = ({
+                                    distanceFromTop,
+                                    distanceFromBottom,
+                                    eventSource
+                                  }) => {
+      const parent = context.getParent();
+      let preventingStickyStateChanges = false;
+      let distanceFromTopCopy = distanceFromTop;
+      if (props.relative) {
+        preventingStickyStateChanges = eventSource !== parent;
+        distanceFromTopCopy = -(eventSource.scrollTop + eventSource.offsetTop) + placeholderRef.value.offsetTop;
+      }
+      let distanceFromBottomCopy = distanceFromBottom;
+      const placeholderClientRect = placeholderRef.value.getBoundingClientRect();
+      const contentClientRect = content.value.getBoundingClientRect();
+      const calculatedHeight = contentClientRect.height;
 
-  public beforeDestroy() {
-    this.context.unsubscribe(this.handleContainerEvent);
-  }
+      const bottomDifference =
+        distanceFromBottomCopy - props.bottomOffset - calculatedHeight;
 
-  public updated() {
-    this.placeholder.style.paddingBottom = this.disableCompensation
-      ? '0' : `${this.state.isSticky ? this.state.calculatedHeight : 0}px`;
-  }
+      const wasSticky = state.isSticky;
+      const isSticky = preventingStickyStateChanges
+        ? wasSticky
+        : distanceFromTopCopy <= -props.topOffset &&
+        distanceFromBottomCopy > -props.bottomOffset;
 
-  get placeholder(): HTMLDivElement {
-    return this.$refs.placeholder as any;
-  }
+      distanceFromBottomCopy =
+        (props.relative
+          ? parent.scrollHeight - parent.scrollTop
+          : distanceFromBottomCopy) - calculatedHeight;
 
-  public handleContainerEvent({
-                                distanceFromTop,
-                                distanceFromBottom,
-                                eventSource
-                              }) {
-    const parent = this.context.getParent();
-    let preventingStickyStateChanges = false;
-    let distanceFromTopCopy = distanceFromTop;
-    if (this.relative) {
-      preventingStickyStateChanges = eventSource !== parent;
-      distanceFromTopCopy = -(eventSource.scrollTop + eventSource.offsetTop) + this.placeholder.offsetTop;
-    }
-    let distanceFromBottomCopy = distanceFromBottom;
-    const placeholderClientRect = this.placeholder.getBoundingClientRect();
-    const contentClientRect = this.content.getBoundingClientRect();
-    const calculatedHeight = contentClientRect.height;
+      const style: any = !isSticky
+        ? {}
+        : {
+          position: 'fixed',
+          top:
+            bottomDifference > 0
+              ? props.relative
+              ? parent.offsetTop - parent.offsetParent.scrollTop
+              : 0
+              : bottomDifference,
+          left: placeholderClientRect.left,
+          width: placeholderClientRect.width
+        };
 
-    const bottomDifference =
-      distanceFromBottomCopy - this.bottomOffset - calculatedHeight;
+      if (!props.disableHardwareAcceleration) {
+        style.transform = 'translateZ(0)';
+      }
+      state.isSticky = isSticky;
+      state.wasSticky = wasSticky;
+      state.distanceFromTop = distanceFromTopCopy;
+      state.distanceFromBottom = distanceFromBottomCopy;
+      state.calculatedHeight = calculatedHeight;
+      state.style = style;
+    };
+    onMounted(() => {
+      if (!context.subscribe) {
+        throw new TypeError(
+          'Expected Sticky to be mounted within StickyContainer'
+        );
+      }
+      context.subscribe(handleContainerEvent);
+    });
+    onBeforeUnmount(() => {
+      context.unsubscribe(handleContainerEvent);
+    });
+    onUpdated(() => {
+      placeholderRef.value.style.paddingBottom = props.disableCompensation
+        ? '0' : `${state.isSticky ? state.calculatedHeight : 0}px`;
+    });
 
-    const wasSticky = this.state.isSticky;
-    const isSticky = preventingStickyStateChanges
-      ? wasSticky
-      : distanceFromTopCopy <= -this.topOffset &&
-      distanceFromBottomCopy > -this.bottomOffset;
-
-    distanceFromBottomCopy =
-      (this.relative
-        ? parent.scrollHeight - parent.scrollTop
-        : distanceFromBottomCopy) - calculatedHeight;
-
-    const style: any = !isSticky
-      ? {}
-      : {
-        position: 'fixed',
-        top:
-          bottomDifference > 0
-            ? this.relative
-            ? parent.offsetTop - parent.offsetParent.scrollTop
-            : 0
-            : bottomDifference,
-        left: placeholderClientRect.left,
-        width: placeholderClientRect.width
-      };
-
-    if (!this.disableHardwareAcceleration) {
-      style.transform = 'translateZ(0)';
-    }
-    this.state.isSticky = isSticky;
-    this.state.wasSticky = wasSticky;
-    this.state.distanceFromTop = distanceFromTopCopy;
-    this.state.distanceFromBottom = distanceFromBottomCopy;
-    this.state.calculatedHeight = calculatedHeight;
-    this.state.style = style;
-  }
-
-  get content(): HTMLDivElement {
-    const child = this.$slots.default && this.$slots.default[0] as any;
-    if (child && child.$el) {
-      return child.$el;
-    } else if (child && child.elm) {
-      return child.elm;
-    }
-    return child;
-  }
-
-  public render() {
+    return {
+      setContentWrapRef(el) {
+        contentWrapRef.value = el;
+      },
+      setPlaceholderRef(el) {
+        placeholderRef.value = el;
+      }, state
+    };
+  },
+  render() {
     return (
       <div>
-        <div ref="placeholder"/>
-        <div style={Object.assign({zIndex: 1, width: '100%'}, this.state.style)}>
-          {this.$slots.default}
+        <div ref={
+          this.setPlaceholderRef
+        }/>
+        <div ref={this.setContentWrapRef} style={Object.assign({zIndex: 1, width: '100%'}, this.state.style)}>
+          {this.$slots.default()}
         </div>
       </div>
     );
   }
-}
+});

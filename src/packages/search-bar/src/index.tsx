@@ -1,7 +1,5 @@
 import classnames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
+import {defineComponent, onBeforeUnmount, onMounted, onUpdated, PropType, reactive, ref, Ref, watch} from 'vue';
 import TouchFeedback from '../../vmc-feedback';
 
 function onNextFrame(cb: () => void) {
@@ -19,190 +17,178 @@ function clearNextFrameAction(nextFrameId: number) {
   }
 }
 
-@Component({
-  name: 'SearchBar'
-})
-export default class SearchBar extends Vue {
-  @Prop({type: String, default: 'am-search'})
-  public prefixCls?: string;
-  @Prop({type: String})
-  public defaultValue?: string;
-  @Prop({type: String})
-  public value?: string;
-  @Prop({type: String})
-  public placeholder?: string;
-  @Prop({type: Boolean})
-  public showCancelButton?: boolean;
-  @Prop({type: String})
-  public cancelText?: string;
-  @Prop({type: Boolean})
-  public disabled?: boolean;
-  @Prop({type: Boolean})
-  public autoFocus?: boolean;
-  @Prop({type: Boolean})
-  public focused?: boolean;
-  @Prop({type: Number})
-  public maxLength?: number;
-  public rightBtnInitMarginleft: string | null;
-  public firstFocus: boolean;
-  public blurFromOnClear: boolean;
-  public onBlurTimeout: number | null;
-
-  get inputRef(): HTMLInputElement | null {
-    return this.$refs['input'] as any;
-  }
-
-  get rightBtnRef(): HTMLDivElement | null {
-    return this.$refs['rightBtn'] as any;
-  }
-
-  get syntheticPhContainerRef(): HTMLSpanElement | null {
-    return this.$refs['syntheticPhContainer'] as any;
-  }
-
-  get syntheticPhRef(): HTMLDivElement | null {
-    return this.$refs['syntheticPh'] as any;
-  }
-
-  get inputContainerRef(): HTMLFormElement | null {
-    return this.$refs['inputContainer'] as any;
-  }
-
-  public state = {
-    value: this.value || '',
-    focus: false
-  };
-
-  public mounted() {
-    if (this.rightBtnRef) {
-      const initBtn = window.getComputedStyle(this.rightBtnRef);
-      this.rightBtnInitMarginleft = initBtn.marginLeft;
+export default defineComponent({
+  name: 'SearchBar',
+  props: {
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-search'
+    },
+    defaultValue: {
+      type: String as PropType<string>
+    },
+    value: {
+      type: String as PropType<string>
+    },
+    placeholder: {
+      type: String as PropType<string>
+    },
+    showCancelButton: {
+      type: Boolean as PropType<boolean>
+    },
+    cancelText: {
+      type: String as PropType<string>
+    },
+    disabled: {
+      type: Boolean as PropType<boolean>
+    },
+    autoFocus: {
+      type: Boolean as PropType<boolean>
+    },
+    focused: {
+      type: Boolean as PropType<boolean>
+    },
+    maxLength: {
+      type: Number as PropType<number>
     }
-    this.update();
-  }
-
-  public updated() {
-    this.update();
-  }
-
-  public update() {
-    if (this.syntheticPhRef) {
-      if (
-        this.inputContainerRef &&
-        this.inputContainerRef.className.indexOf(
-          `${this.prefixCls}-start`
-        ) > -1
-      ) {
-        // 检测是否包含名为 ${this.props.prefixCls}-start 样式，生成动画
-        // offsetWidth 某些时候是向上取整，某些时候是向下取整，不能用
-        if (this.syntheticPhContainerRef) {
-          const realWidth = this.syntheticPhContainerRef.getBoundingClientRect()
-            .width; // 包含小数
-          this.syntheticPhRef.style.width = `${Math.ceil(realWidth)}px`;
-        }
-        if (!this.showCancelButton && this.rightBtnRef) {
-          this.rightBtnRef.style.marginRight = '0';
-        }
-      } else {
-        this.syntheticPhRef.style.width = '100%';
-        if (!this.showCancelButton && this.rightBtnRef) {
-          this.rightBtnRef.style.marginRight = `-${this.rightBtnRef
-            .offsetWidth +
-          (this.rightBtnInitMarginleft != null
-            ? parseInt(this.rightBtnInitMarginleft, 10)
-            : 0)}px`;
-        }
-      }
-    }
-  }
-
-  @Watch('value')
-  public valueChanged(value: string) {
-    this.state.value = value;
-  }
-
-  public beforeDestroy() {
-    if (this.onBlurTimeout) {
-      clearNextFrameAction(this.onBlurTimeout);
-      this.onBlurTimeout = null;
-    }
-  }
-
-  public onSubmit(e) {
-    e.preventDefault();
-    this.$emit('submit', this.state.value || '');
-    if (this.inputRef) {
-      this.inputRef.blur();
-    }
-  }
-
-  @Watch('state.value')
-  public stateValueChanged(value: string) {
-    this.$emit('update:value', value);
-  }
-
-  public onChange(e) {
-    if (!this.state.focus) {
-      this.state.focus = true;
-    }
-    const value = e.target.value;
-    this.state.value = value;
-    this.$emit('change', value);
-  }
-
-  public onFocus() {
-    this.state.focus = true;
-    this.firstFocus = true;
-    this.$emit('focus');
-  }
-
-  public onBlur() {
-    this.onBlurTimeout = onNextFrame(() => {
-      if (!this.blurFromOnClear) {
-        if (document.activeElement !== this.inputRef) {
-          this.state.focus = false;
-        }
-      }
-      this.blurFromOnClear = false;
+  },
+  setup(props, {emit, attrs, slots}) {
+    const rightBtnInitMarginleft: Ref<string | null> = ref(null);
+    const firstFocus: Ref<boolean> = ref(null);
+    const blurFromOnClear: Ref<boolean> = ref(null);
+    const onBlurTimeout: Ref<number | null> = ref(null);
+    const state = reactive({
+      value: props.value || '',
+      focus: false
     });
-    // fix autoFocus item blur with flash
-    if (this.$listeners && this.$listeners.blur) {
-      setTimeout(() => {
-        // fix ios12 wechat browser click failure after input
-        if (document.body) {
-          document.body.scrollTop = document.body.scrollTop;
+
+    watch(() => props.value, (value: string) => {
+      state.value = value;
+    });
+    watch(() => state.value, (value: string) => {
+      emit('update:value', value);
+    });
+    const inputRef = ref(null);
+    const rightBtnRef = ref(null);
+    const syntheticPhContainerRef = ref(null);
+    const syntheticPhRef = ref(null);
+    const inputContainerRef = ref(null);
+    const update = () => {
+      if (syntheticPhRef.value) {
+        if (
+          inputContainerRef.value &&
+          inputContainerRef.value.className.indexOf(
+            `${props.prefixCls}-start`
+          ) > -1
+        ) {
+          // 检测是否包含名为 ${this.props.prefixCls}-start 样式，生成动画
+          // offsetWidth 某些时候是向上取整，某些时候是向下取整，不能用
+          if (syntheticPhContainerRef.value) {
+            const realWidth = syntheticPhContainerRef.value.getBoundingClientRect()
+              .width; // 包含小数
+            syntheticPhRef.value.style.width = `${Math.ceil(realWidth)}px`;
+          }
+          if (!props.showCancelButton && rightBtnRef.value) {
+            rightBtnRef.value.style.marginRight = '0';
+          }
+        } else {
+          syntheticPhRef.value.style.width = '100%';
+          if (!props.showCancelButton && rightBtnRef.value) {
+            rightBtnRef.value.style.marginRight = `-${rightBtnRef.value
+              .offsetWidth +
+            (rightBtnInitMarginleft.value != null
+              ? parseInt(rightBtnInitMarginleft.value, 10)
+              : 0)}px`;
+          }
         }
-      }, 100);
-      this.$emit('blur');
-    }
-  }
+      }
+    };
+    const onSubmit = (e) => {
+      e.preventDefault();
+      emit('submit', state.value || '');
+      if (inputRef.value) {
+        inputRef.value.blur();
+      }
+    };
+    const onChange = (e) => {
+      if (!state.focus) {
+        state.focus = true;
+      }
+      const value = e.target.value;
+      state.value = value;
+      emit('change', value);
+    };
+    const onFocus = () => {
+      state.focus = true;
+      firstFocus.value = true;
+      emit('focus');
+    };
+    const onBlur = () => {
+      onBlurTimeout.value = onNextFrame(() => {
+        if (!blurFromOnClear.value) {
+          if (document.activeElement !== inputRef.value) {
+            state.focus = false;
+          }
+        }
+        blurFromOnClear.value = false;
+      });
+      // fix autoFocus item blur with flash
+      if (attrs.onBlur) {
+        setTimeout(() => {
+          // fix ios12 wechat browser click failure after input
+          if (document.body) {
+            document.body.scrollTop = document.body.scrollTop;
+          }
+        }, 100);
+        emit('blur');
+      }
+    };
+    const onClear = () => {
+      doClear();
+    };
+    const doClear = (value = true) => {
+      blurFromOnClear.value = value;
+      state.value = '';
+      emit('clear');
+      emit('change');
+      if (blurFromOnClear) {
+        focus();
+      }
+    };
+    const onCancel = () => {
+      emit('cancel');
+      doClear(false);
+    };
+    const focus = () => {
+      if (inputRef.value) {
+        inputRef.value.focus();
+      }
+    };
+    onMounted(() => {
+      if (rightBtnRef.value) {
+        const initBtn = window.getComputedStyle(rightBtnRef.value);
+        rightBtnInitMarginleft.value = initBtn.marginLeft;
+      }
+      update();
+    });
+    onUpdated(() => {
+      update();
+    });
+    onBeforeUnmount(() => {
+      if (onBlurTimeout.value) {
+        clearNextFrameAction(onBlurTimeout.value);
+        onBlurTimeout.value = null;
+      }
+    });
 
-  public onClear() {
-    this.doClear();
-  }
-
-  public doClear(blurFromOnClear = true) {
-    this.blurFromOnClear = blurFromOnClear;
-    this.state.value = '';
-    this.$emit('clear');
-    this.$emit('change');
-    if (blurFromOnClear) {
-      this.focus();
-    }
-  }
-
-  public onCancel() {
-    this.$emit('cancel');
-    this.doClear(false);
-  }
-
-  public focus() {
-    if (this.inputRef) {
-      this.inputRef.focus();
-    }
-  }
-
-  public render() {
+    return {
+      state, firstFocus, onClear, inputRef,
+      rightBtnRef, syntheticPhContainerRef,
+      syntheticPhRef, inputContainerRef,
+      onCancel, onBlur, onChange, onFocus, onSubmit
+    };
+  },
+  render() {
     const {
       prefixCls,
       showCancelButton,
@@ -234,20 +220,18 @@ export default class SearchBar extends Vue {
     });
     const TouchFeedback2 = TouchFeedback as any;
     return (
-      <form
-        onSubmit={this.onSubmit}
-        class={wrapCls}
-        ref="inputContainer"
-        action="#"
-      >
+      <form onSubmit={this.onSubmit}
+            class={wrapCls}
+            ref={this.inputContainerRef}
+            action="#">
         <div class={`${prefixCls}-input`}>
           <div
             class={`${prefixCls}-synthetic-ph`}
-            ref="syntheticPh"
+            ref={this.syntheticPhRef}
           >
             <span
               class={`${prefixCls}-synthetic-ph-container`}
-              ref="syntheticPhContainer"
+              ref={this.syntheticPhContainerRef}
             >
               <i class={`${prefixCls}-synthetic-ph-icon`}/>
               <span
@@ -271,8 +255,8 @@ export default class SearchBar extends Vue {
             onChange={this.onChange}
             onFocus={this.onFocus}
             onBlur={this.onBlur}
-            ref="input"
-            maxLength={maxLength}
+            ref={this.inputRef}
+            maxlength={maxLength}
           />
           <TouchFeedback2 activeclass={`${prefixCls}-clear-active`}>
             <a onClick={this.onClear} class={clearCls}/>
@@ -281,10 +265,10 @@ export default class SearchBar extends Vue {
         <div
           class={cancelCls}
           onClick={this.onCancel}
-          ref="rightBtn">
+          ref={this.rightBtnRef}>
           {this.cancelText || cancelText}
         </div>
       </form>
     );
   }
-}
+});

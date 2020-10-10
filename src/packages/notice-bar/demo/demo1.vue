@@ -5,50 +5,58 @@
     </m-notice-bar>
     <m-white-space size="lg"/>
     <m-notice-bar mode="link"
-                  @click="() => alert('1')">
+                  @click="clicked">
       Notice: The arrival time of incomes and transfers of Yu &#39;E Bao will be delayed during National Day.
     </m-notice-bar>
     <m-white-space size="lg"/>
     <m-notice-bar mode="closable">Remove the default icon.</m-notice-bar>
     <m-white-space size="lg"/>
     <m-notice-bar mode="closable">
-      <m-icon slot="icon"
-              type="check-circle-o"
-              size="xxs"/>
+      <template v-slot:icon>
+        <m-icon size="xxs"
+                type="check-circle-o"/>
+      </template>
       Customized icon.
     </m-notice-bar>
     <m-white-space size="lg"/>
     <m-notice-bar mode="closable">
-      <span slot="action"
-            :style="{ color : '#a1a1a1' }">不再提示</span>
+      <template v-slot:action>
+        <span :style="{ color : '#a1a1a1' }">不再提示</span>
+      </template>
       Closable demo for `actionText`.
     </m-notice-bar>
     <m-white-space size="lg"/>
     <m-notice-bar mode="link">
-      <span slot="action">去看看</span>
+      <template v-slot:action>
+        <span>去看看</span>
+      </template>
       Link demo for `actionText`.
     </m-notice-bar>
   </div>
 </template>
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import MNoticeBar from '../index';
+import {message} from 'ant-design-vue';
+import {defineComponent, ref} from 'vue';
 
-Vue.use(MNoticeBar);
-@Component({
-  name: 'Demo1'
-})
-export default class Demo1 extends Vue {
+export default defineComponent({
+  name: 'Demo1',
+  props: {},
+  setup(props, {emit, slots}) {
+    const clickCount = ref(0);
+    const messages = ref(['你点了我', '你点我干嘛', '轻点点', '别再点了']);
 
-  public clickCount = 0;
-  public messages = ['你点了我', '你点我干嘛', '轻点点', '别再点了'];
 
-  public clicked() {
-    this.$message.success(this.messages[this.clickCount % this.messages.length]);
-    this.clickCount++;
+    const clicked = () => {
+      message.success(messages.value[clickCount.value % messages.value.length]);
+      clickCount.value++;
+    };
+
+
+    return {clicked};
   }
-}
+
+});
+
 </script>
-<style scoped lang="less">
+<style lang="less" scoped>
 </style>

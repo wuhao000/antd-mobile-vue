@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import {createApp, App} from 'vue';
 import closest from '../../utils/closest';
 import Modal from './modal';
 import {Action} from './props-type';
@@ -13,11 +13,11 @@ export default function operation(
   const div = document.createElement('div');
   document.body.appendChild(div);
 
-  let modal = null;
+  let modal: App = null;
 
   function close() {
-    if (modal && modal.$destroy) {
-      modal.$destroy();
+    if (modal && modal.unmount) {
+      modal.unmount(div);
     }
     if (div && div.parentNode) {
       div.parentNode.removeChild(div);
@@ -60,8 +60,7 @@ export default function operation(
     }
   }
 
-  modal = new Vue({
-    el: div,
+  modal = createApp({
     render() {
       // @ts-ignore
       return <Modal
@@ -81,6 +80,7 @@ export default function operation(
       >{this.$slots.default}</Modal>;
     }
   });
+  modal.mount(div);
 
   return {
     close

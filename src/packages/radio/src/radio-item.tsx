@@ -1,42 +1,51 @@
 import classnames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent, PropType} from 'vue';
 import List from '../../list';
 import Radio from './radio';
 
 const ListItem = List.Item as any;
 
-@Component({
-  name: 'MRadioItem'
-})
-class RadioItem extends Vue {
-  @Prop({default: 'am-radio'})
-  public prefixCls?: string;
-  @Prop({default: 'am-list'})
-  public listPrefixCls?: string;
-  @Prop({
-    default: () => {
-      return {};
+const RadioItem = defineComponent({
+  name: 'MRadioItem',
+  props: {
+    prefixCls: {
+      default: 'am-radio'
+    },
+    listPrefixCls: {
+      default: 'am-list'
+    },
+    radioProps: {
+      default: () => {
+        return {};
+      }
+    },
+    disabled: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    value: {
+      type: Boolean as PropType<boolean>,
+      default: false
     }
-  })
-  public radioProps?: object;
-  @Prop({type: Boolean, default: false})
-  public disabled: boolean;
-  @Prop({type: Boolean, default: false})
-  public value: boolean;
+  },
+  setup(props, {emit}) {
 
-  public onChange(value: boolean) {
-    this.$emit('change', value);
-  }
 
-  public onClick(e) {
-    if (!this.disabled) {
-      this.$emit('click', e);
-    }
-  }
+    const onChange = (value: boolean) => {
+      emit('change', value);
+    };
+    const onClick = (e) => {
+      if (!props.disabled) {
+        emit('click', e);
+      }
+    };
 
-  public render() {
+
+    return {
+      onClick, onChange
+    };
+  },
+  render() {
     const {
       listPrefixCls,
       disabled,
@@ -56,8 +65,8 @@ class RadioItem extends Vue {
     });
     // @ts-ignore
     const extra = <Radio
-      attrs={
-        {
+      {
+        ...{
           ...radioProps,
           ...extraProps
         }
@@ -68,8 +77,8 @@ class RadioItem extends Vue {
     />;
     return (
       <ListItem
-        attrs={
-          {...otherProps}
+        {
+          ...otherProps
         }
         prefixCls={listPrefixCls}
         class={wrapCls}
@@ -78,6 +87,6 @@ class RadioItem extends Vue {
       </ListItem>
     );
   }
-}
+});
 
 export default RadioItem as any;

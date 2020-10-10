@@ -1,40 +1,42 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {defineComponent, reactive} from 'vue';
 import {Icon, NavBar, Popover} from '../../index';
 
 const Item = Popover.Item;
 
-@Component({
-  name: 'PopoverExample'
-})
-export default class PopoverExample extends Vue {
+export default defineComponent({
+  name: 'PopoverExample',
+  setup() {
+    const state = reactive({
+      visible: true,
+      selected: '',
+      maskClosable: true,
+      mask: true,
+      placement: 'bottomRight'
+    });
 
-  public state = {
-    visible: true,
-    selected: '',
-    maskClosable: true,
-    mask: true,
-    placement: 'bottomRight'
-  };
 
-  public onSelect(opt) {
-    this.state.visible = false;
-    this.state.selected = opt.props.value;
-  }
+    const onSelect = (opt) => {
+      state.visible = false;
+      state.selected = opt.props.value;
+    };
+    const handleVisibleChange = (visible) => {
+      state.visible = visible;
+    };
+    const myImg = (src) => {
+      return <img src={`https://gw.alipayobjects.com/zos/rmsportal/${src}.svg`} class="am-icon am-icon-xs" alt=""/>;
+    };
+    const onItemClick = () => {
+      state.visible = false;
+    };
 
-  public handleVisibleChange(visible) {
-    this.state.visible = visible;
-  }
 
-  public myImg(src) {
-    return <img src={`https://gw.alipayobjects.com/zos/rmsportal/${src}.svg`} class="am-icon am-icon-xs" alt=""/>;
-  }
-
-  public onItemClick() {
-    this.state.visible = false;
-  }
-
-  public render() {
+    return {
+      state,
+      onItemClick,
+      myImg
+    };
+  },
+  render() {
     return (<div>
       <NavBar
         mode="light"
@@ -44,19 +46,24 @@ export default class PopoverExample extends Vue {
             mask={this.state.mask}
             placement={this.state.placement}
             maskClosable={this.state.maskClosable}
-            vModel={this.state.visible}>
-            <div slot="content">
-              <Item key="4"
-                    value="scan"
-                    onClick={this.onItemClick}
-                    icon={this.myImg('tOtXhkIWzwotgGSeptou')}>Scan</Item>
-              <Item key="5"
-                    value="special" icon={this.myImg('PKAgAqZWJVNwKsAJSmXd')}
-                    style={{whiteSpace: 'nowrap'}}>My Qrcode</Item>
-              <Item key="6" value="button ct" icon={this.myImg('uQIYTFeRrjPELImDRrPt')}>
-                <span style={{marginRight: 5}}>Help</span>
-              </Item>
-            </div>
+            v-slots={{
+              content: () => {
+                return <div>
+                  <Item key="4"
+                        value="scan"
+                        onClick={this.onItemClick}
+                        icon={this.myImg('tOtXhkIWzwotgGSeptou')}>Scan</Item>
+                  <Item key="5"
+                        value="special" icon={this.myImg('PKAgAqZWJVNwKsAJSmXd')}
+                        style={{whiteSpace: 'nowrap'}}>My Qrcode</Item>
+                  <Item key="6" value="button ct" icon={this.myImg('uQIYTFeRrjPELImDRrPt')}>
+                    <span style={{marginRight: 5}}>Help</span>
+                  </Item>
+                </div>
+              }
+            }}
+            v-model={[this.state.visible, 'value']}>
+
             <div style={{
               height: '100%',
               padding: '0 15px',
@@ -86,9 +93,9 @@ export default class PopoverExample extends Vue {
         {label: '左上', value: 'topLeft'},
         {label: '右上', value: 'topRight'},
         {label: '左下', value: 'bottomLeft'},
-        {label: '右下', value: 'bottomRight'},
+        {label: '右下', value: 'bottomRight'}
       ]}>
       </m-radio-popup-list>
     </div>);
   }
-}
+});

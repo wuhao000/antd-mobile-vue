@@ -1,7 +1,9 @@
+import {filterHTMLAttrs} from '../../utils/dom';
 import classnames from 'classnames';
 import {defineComponent, PropType} from 'vue';
 
 export default defineComponent({
+  inheritAttrs: false,
   Item: null,
   name: 'Flex',
   props: {
@@ -71,9 +73,12 @@ export default defineComponent({
       [`${prefixCls}-align-content-around`]: alignContent === 'around',
       [`${prefixCls}-align-content-stretch`]: alignContent === 'stretch'
     });
-
+    const props = filterHTMLAttrs({
+      ...restProps,
+      ...this.$attrs
+    });
     return (
-      <div class={wrapCls} {...{props: restProps}}>
+      <div {...props} class={wrapCls}>
         {this.$slots.default?.()}
       </div>
     );

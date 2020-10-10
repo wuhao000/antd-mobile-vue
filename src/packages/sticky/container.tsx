@@ -1,107 +1,93 @@
 import raf from 'raf';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Provide} from 'vue-property-decorator';
+import {defineComponent, onBeforeUnmount, onMounted, provide, Ref, ref} from 'vue';
 
-@Component({
-  name: 'Container'
-})
-export default class Container extends Vue {
+export default defineComponent({
+  name: 'Container',
+  props: {},
+  setup(props, {emit, slots}) {
+    const framePending: Ref<boolean> = ref(false);
+    const events = ref([
+      'resize',
+      'scroll',
+      'touchstart',
+      'touchmove',
+      'touchend',
+      'pageshow',
+      'load'
+    ]);
+    const subscribers = ref([]);
+    const rafHandle = ref(null);
 
-  private framePending: boolean = false;
+    const nodeRef = ref(null);
+    const subscribe = (handler) => {
+      subscribers.value = subscribers.value.concat(handler);
+    };
+    const unsubscribe = (handler) => {
+      subscribers.value = subscribers.value.filter(current => current !== handler);
+    };
+    const notifySubscribers = (evt) => {
+      if (!framePending.value) {
+        const {currentTarget} = evt;
 
-  @Provide('stickyContext')
-  public context = {
-    subscribe: this.subscribe,
-    unsubscribe: this.unsubscribe,
-    getParent: this.getParent
-  };
+        rafHandle.value = raf(() => {
+          framePending.value = false;
+          const {top, bottom} = nodeRef.value.getBoundingClientRect();
 
-  public events = [
-    'resize',
-    'scroll',
-    'touchstart',
-    'touchmove',
-    'touchend',
-    'pageshow',
-    'load'
-  ];
-
-  public subscribers = [];
-
-  public rafHandle = null;
-
-  public subscribe(handler) {
-    this.subscribers = this.subscribers.concat(handler);
-  }
-
-  public unsubscribe(handler) {
-    this.subscribers = this.subscribers.filter(current => current !== handler);
-  }
-
-  public notifySubscribers(evt) {
-    if (!this.framePending) {
-      const {currentTarget} = evt;
-
-      this.rafHandle = raf(() => {
-        this.framePending = false;
-        const {top, bottom} = this.node.getBoundingClientRect();
-
-        this.subscribers.forEach(handler =>
-          handler({
-            distanceFromTop: top,
-            distanceFromBottom: bottom,
-            eventSource: currentTarget === window ? document.body : this.node
-          })
-        );
+          subscribers.value.forEach(handler =>
+            handler({
+              distanceFromTop: top,
+              distanceFromBottom: bottom,
+              eventSource: currentTarget === window ? document.body : nodeRef.value
+            })
+          );
+        });
+        framePending.value = true;
+      }
+    };
+    const getParent = () => {
+      return nodeRef.value;
+    };
+    onMounted(() => {
+      events.value.forEach(event => {
+        window.addEventListener(event, notifySubscribers);
+        document.body.addEventListener(event, notifySubscribers);
       });
-      this.framePending = true;
-    }
-  }
-
-  get node(): HTMLDivElement {
-    return this.$refs.node as any;
-  }
-
-  public getParent() {
-    return this.node;
-  }
-
-  public mounted() {
-    this.events.forEach(event => {
-      window.addEventListener(event, this.notifySubscribers);
-      document.body.addEventListener(event, this.notifySubscribers);
     });
-  }
+    onBeforeUnmount(() => {
+      if (rafHandle.value) {
+        raf.cancel(rafHandle.value);
+        rafHandle.value = null;
+      }
 
-  public beforeDestroy() {
-    if (this.rafHandle) {
-      raf.cancel(this.rafHandle);
-      this.rafHandle = null;
-    }
-
-    this.events.forEach(event => {
-      window.removeEventListener(event, this.notifySubscribers);
-      document.body.removeEventListener(event, this.notifySubscribers);
+      events.value.forEach(event => {
+        window.removeEventListener(event, notifySubscribers);
+        document.body.removeEventListener(event, notifySubscribers);
+      });
     });
-  }
-
-  public render() {
+    provide('stickyContext', {
+      subscribe: subscribe,
+      unsubscribe: unsubscribe,
+      getParent: getParent
+    });
+    return {
+      nodeRef, notifySubscribers,
+      setNodeRef(el) {
+        nodeRef.value = el;
+      }
+    };
+  },
+  render() {
     return (
       <div
         {...this.$props}
-        ref="node"
-        on={
-          {
-            scroll: this.notifySubscribers
-          }
-        }
-        onTouchStart={this.notifySubscribers}
-        onTouchMove={this.notifySubscribers}
-        onTouchEnd={this.notifySubscribers}
+        ref={this.setNodeRef}
+        onScroll={this.notifySubscribers}
+        onTouchstart={this.notifySubscribers}
+        onTouchmove={this.notifySubscribers}
+        onTouchend={this.notifySubscribers}
       >
-        {this.$slots.default}
+        {this.$slots.default?.()}
       </div>
     );
   }
-}
+});

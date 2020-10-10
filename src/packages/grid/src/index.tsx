@@ -1,10 +1,9 @@
 import classnames from 'classnames';
-import {defineComponent, onMounted, PropType, ref, Ref} from 'vue';
+import {defineComponent, isVNode, onMounted, PropType, ref, Ref} from 'vue';
 
 import Carousel from '../../carousel';
 import Flex from '../../flex';
 import Icon from '../../icon';
-import {isVNode} from '../../utils/vnode';
 import TouchFeedback from '../../vmc-feedback';
 
 interface DataItem {
@@ -169,7 +168,7 @@ export default defineComponent({
           rowArr.push(itemEl);
         }
         rowsArr.push(
-          <Flex justify="center'} align={'stretch" key={`gridline-${i}`}>
+          <Flex justify="center" align="stretch" key={`gridline-${i}`}>
             {rowArr}
           </Flex>
         );
@@ -188,7 +187,7 @@ export default defineComponent({
         if (isVNode(icon)) {
           return icon;
         }
-        return <Icon {...{props: icon}}/>;
+        return <Icon {...{icon}}/>;
       }
     };
     onMounted(() => {
@@ -243,8 +242,7 @@ export default defineComponent({
         <Carousel
           initialSlideWidth={initialSlideWidth}
           {...restPropsForCarousel}
-          {...carouselProps}
-        >
+          {...carouselProps}>
           {this.renderCarousel(rowsArr, pageCount, rowCount)}
         </Carousel>
       );

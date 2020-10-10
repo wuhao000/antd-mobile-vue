@@ -1,133 +1,129 @@
-import classnames from 'classnames';
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Model, Prop, Watch} from 'vue-property-decorator';
 import Dialog from 'ant-design-vue/lib/vc-dialog';
+import classnames from 'classnames';
+import {defineComponent, PropType, reactive, ref, Ref, watch} from 'vue';
 import TouchFeedback from '../../vmc-feedback';
 import {Action} from './props-type';
 
-export abstract class ModalComponent extends Vue {
-  public static alert: (title: (string | VNode),
-                        message: (string | VNode),
-                        actions?: { text: string }[],
-                        platform?: string) => ({
-    close: () => void
-  } | Promise<any>);
-  public static confirm: (title: (string | VNode),
-                          message: (string | VNode),
-                          actions?: { text: string }[],
-                          platform?: string) => { close: () => void } | Promise<any>;
-  public static prompt: (title: (string | VNode),
-                         message: (string | VNode),
-                         callbackOrActions?: Array<{ text: string, style?: object }>,
-                         type?: string, defaultValue?: string, placeholders?: string[], platform?: string) => ({ close: () => void } | Promise<any>);
-
-  public static operation: (
-    actions: Array<Action<any>>,
-    platform?: string
-  ) => { close: () => void };
-}
-
-@Component({
-  name: 'Modal'
-})
-class Modal extends ModalComponent {
-  @Prop({default: 'am-modal'})
-  public prefixCls?: string;
-  @Prop({type: String})
-  public transitionName?: string;
-  @Prop({type: String})
-  public maskTransitionName?: string;
-  @Prop({type: String})
-  public wrapClassName?: string;
-  @Prop()
-  public wrapProps?: Partial<any>;
-  @Prop({type: String, default: 'ios'})
-  public platform?: string;
-  @Prop()
-  public bodyStyle?: any;
-  @Prop()
-  public title?: string | VNode;
-  @Model('change', {type: Boolean, default: false})
-  public visible: boolean;
-  @Prop({type: Boolean, default: true})
-  public maskClosable?: boolean;
-  @Prop({type: Boolean, default: false})
-  public closable?: boolean;
-  @Prop({
-    default: () => {
-      return [];
-    }
-  })
-  public footer?: Array<Action<any>>;
-  @Prop({type: [String, Object]})
-  public className: string | object;
-  @Prop()
-  public onClose?: () => void;
-  @Prop({type: Boolean, default: false})
-  public transparent?: boolean;
-  @Prop({type: Boolean, default: false})
-  public popup?: boolean;
-  @Prop({type: Boolean, default: true})
-  public animated?: boolean;
-  @Prop({type: String, default: 'slide-down'})
-  public animationType?: any;
-  @Prop()
-  public onAnimationEnd?: (visible: boolean) => void;
-  @Prop({type: Boolean})
-  public animateAppear?: boolean;
-  @Prop({type: Boolean, default: false})
-  public operation?: boolean;
-  public static install: (Vue) => void;
-  public state = {
-    visible: this.visible
-  };
-
-
-  @Watch('visible')
-  public visibleChanged(visible: boolean) {
-    this.state.visible = visible;
-  }
-
-  public renderFooterButton(button: Action<any>, prefixCls: string | undefined, i: number) {
-    let buttonStyle = {};
-    if (button.style) {
-      buttonStyle = button.style;
-      if (typeof buttonStyle === 'string') {
-        const styleMap: {
-          [key: string]: object;
-        } = {
-          cancel: {},
-          default: {},
-          destructive: {color: 'red'}
-        };
-        buttonStyle = styleMap[buttonStyle] || {};
+const Modal = defineComponent({
+  alert: null,
+  confirm: null,
+  prompt: null,
+  operation: null,
+  install: null,
+  name: 'Modal',
+  props: {
+    prefixCls: {
+      default: 'am-modal'
+    },
+    transitionName: {
+      type: String as PropType<string>
+    },
+    maskTransitionName: {
+      type: String as PropType<string>
+    },
+    wrapClassName: {
+      type: String as PropType<string>
+    },
+    wrapProps: {},
+    platform: {
+      type: String as PropType<string>,
+      default: 'ios'
+    },
+    bodyStyle: {},
+    title: {},
+    maskClosable: {
+      type: Boolean as PropType<boolean>,
+      default: true
+    },
+    closable: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    footer: {
+      default: () => {
+        return [];
       }
+    },
+    className: {
+      type: [String, Object] as PropType<string | object>
+    },
+    onClose: {},
+    transparent: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    popup: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    animated: {
+      type: Boolean as PropType<boolean>,
+      default: true
+    },
+    animationType: {
+      type: String as PropType<any>,
+      default: 'slide-down'
+    },
+    onAnimationEnd: {},
+    animateAppear: {
+      type: Boolean as PropType<boolean>
+    },
+    operation: {
+      type: Boolean as PropType<boolean>,
+      default: false
     }
+  },
+  setup(props, {emit, slots}) {
+    const visible: Ref<boolean> = ref(null);
+    const state = reactive({
+      visible: visible.value
+    });
+    watch(() => visible.value, (visible: boolean) => {
+      state.visible = visible;
+    });
 
-    const onClickFn = (e: any) => {
-      e.preventDefault();
-      if (button.onPress) {
-        button.onPress();
+    const renderFooterButton = (button: Action<any>, prefixCls: string | undefined, i: number) => {
+      let buttonStyle = {};
+      if (button.style) {
+        buttonStyle = button.style;
+        if (typeof buttonStyle === 'string') {
+          const styleMap: {
+            [key: string]: object;
+          } = {
+            cancel: {},
+            default: {},
+            destructive: {color: 'red'}
+          };
+          buttonStyle = styleMap[buttonStyle] || {};
+        }
       }
+
+      const onClickFn = (e: any) => {
+        e.preventDefault();
+        if (button.onPress) {
+          button.onPress();
+        }
+      };
+
+      return (
+        // @ts-ignore
+        <TouchFeedback activeClassName={`${prefixCls}-button-active`} key={i}>
+          <a
+            class={`${prefixCls}-button`}
+            role="button"
+            style={buttonStyle}
+            onClick={onClickFn}
+          >
+            {button.text || `Button`}
+          </a>
+        </TouchFeedback>
+      );
     };
-
-    return (
-      // @ts-ignore
-      <TouchFeedback activeClassName={`${prefixCls}-button-active`} key={i}>
-        <a
-          class={`${prefixCls}-button`}
-          role="button"
-          style={buttonStyle}
-          onClick={onClickFn}
-        >
-          {button.text || `Button`}
-        </a>
-      </TouchFeedback>
-    );
-  }
-
-  public render() {
+    return {
+      renderFooterButton, visible
+    };
+  },
+  render() {
     const {
       prefixCls,
       wrapClassName,
@@ -187,7 +183,7 @@ class Modal extends ModalComponent {
     return (
       // @ts-ignore
       <Dialog
-        attrs={{...restProps}}
+        {...restProps}
         maskClosable={this.maskClosable}
         visible={this.visible}
         prefixCls={prefixCls}
@@ -202,9 +198,9 @@ class Modal extends ModalComponent {
         transitionName={transitionName || transName}
         maskTransitionName={maskTransitionName || maskTransName}
         footer={footerDom}
-      >{this.$slots.default}</Dialog>
+      >{this.$slots.default?.()}</Dialog>
     );
   }
-}
+});
 
 export default Modal as any;

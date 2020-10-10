@@ -5,7 +5,7 @@ const getModal = (props, visible, {getContent, hide, onDismiss, onOk}) => {
   const content = getContent();
   // @ts-ignore
   return <Popup
-      attrs={{
+      {...{
         title: props.title,
         value: visible,
         showCancel: true,
@@ -29,4 +29,4 @@ export default PopupMixin(getModal, {
   triggerType: 'onClick',
   pickerValueProp: 'selectedValue',
   pickerValueChangeProp: 'onValueChange'
-});
+}) as any;

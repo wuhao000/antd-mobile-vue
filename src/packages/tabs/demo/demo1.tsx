@@ -1,26 +1,25 @@
+import {computed, defineComponent} from 'vue';
+
 const tabs2 = [
   {title: 'First Tab', sub: '1'},
   {title: 'Second Tab', sub: '2'},
   {title: 'Third Tab', sub: '3'}
 ];
 
-import Vue from 'vue';
-import Component from 'vue-class-component';
-
-@Component({
-  name: 'TabBarExample'
-})
-export default class TabBarExample extends Vue {
-
-  get tabs() {
-    return [
-      {title: <m-badge text="3">First Tab</m-badge>},
-      {title: <m-badge text="今日(20)">Second Tab</m-badge>},
-      {title: <m-badge dot>Third Tab</m-badge>}
-    ];
-  }
-
-  public render() {
+export default defineComponent({
+  name: 'TabBarExample',
+  props: {},
+  setup() {
+    const tabs = computed(() => {
+      return [
+        {title: <m-badge text="3">First Tab</m-badge>},
+        {title: <m-badge text="今日(20)">Second Tab</m-badge>},
+        {title: <m-badge dot={true}>Third Tab</m-badge>}
+      ];
+    });
+    return {tabs};
+  },
+  render() {
     return <div>
       <m-tabs tabs={this.tabs}
               initialPage={1}
@@ -96,4 +95,4 @@ export default class TabBarExample extends Vue {
       <m-white-space/>
     </div>;
   }
-}
+});

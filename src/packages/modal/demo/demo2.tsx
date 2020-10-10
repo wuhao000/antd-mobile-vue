@@ -3,7 +3,7 @@ import {Button, Modal, Toast, WhiteSpace, WingBlank} from '../../index';
 const alert = Modal.alert;
 
 const showAlert = () => {
-  const alertInstance = alert('Delete', 'Are you sure???', [
+  const alertInstance = alert('Delete', 'Are you sure?????', [
     {text: 'Cancel', onPress: () => console.log('cancel'), style: 'default'},
     {text: 'OK', onPress: () => console.log('ok')}
   ]);
@@ -23,7 +23,7 @@ export default {
       <WhiteSpace size="lg"/>
       <Button
         onClick={() =>
-          alert('Delete', 'Are you sure???', [
+          alert('Delete', 'Are you sure?????', [
             {text: 'Cancel', onPress: () => console.log('cancel')},
             {text: 'Ok', onPress: () => console.log('ok')}
           ])
@@ -46,7 +46,7 @@ export default {
       <WhiteSpace size="lg"/>
       <Button
         onClick={() =>
-          alert('Delete', 'Are you sure???', [
+          alert('Delete', 'Are you sure??????', [
             {text: 'Cancel', onPress: () => console.log('cancel')},
             {
               text: 'Ok',

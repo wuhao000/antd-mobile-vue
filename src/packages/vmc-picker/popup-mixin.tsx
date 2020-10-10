@@ -1,5 +1,5 @@
 import {defineComponent, reactive, ref, VNode, watch} from 'vue';
-import {cloneElement, setListeners, setProps} from '../utils/vnode';
+import {cloneVNodes, setListeners, setProps} from '../utils/vnode';
 import {PopupPickerProps} from './popup-picker-types';
 
 export default function PopupMixin(getModal, newProps) {
@@ -81,7 +81,7 @@ export default function PopupMixin(getModal, newProps) {
           if (pickerValue === null) {
             pickerValue = props.value;
           }
-          return cloneElement(picker.value, ({
+          return cloneVNodes(picker.value, ({
             [props.pickerValueProp!]: pickerValue,
             [props.pickerValueChangeProp]: onPickerChange,
             ref: saveRef

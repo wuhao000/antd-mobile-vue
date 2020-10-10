@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {defineComponent} from 'vue';
 
 
 const tabs = [
@@ -8,12 +7,9 @@ const tabs = [
   {title: 'Third Tab', key: 't3'}
 ];
 
-@Component({
-  name: 'TabBarExample'
-})
-export default class TabBarExample extends Vue {
-
-  public render() {
+export default defineComponent({
+  name: 'TabBarExample',
+  render() {
     return <div>
       <m-white-space/>
       <m-tabs tabs={tabs} initialPage={2} animated={false} useOnPan={false}>
@@ -48,4 +44,4 @@ export default class TabBarExample extends Vue {
       <m-white-space/>
     </div>;
   }
-}
+});

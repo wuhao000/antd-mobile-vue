@@ -1,52 +1,53 @@
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Inject, Prop} from 'vue-property-decorator';
+import {defineComponent, inject, PropType, VNode} from 'vue';
 import PopupPicker from '../vmc-picker/popup';
 
-@Component({
-  name: 'PopupCascader'
-})
-export default class PopupCascader extends Vue {
-  @Prop({type: Object})
-  public cascader: VNode;
-  @Inject({from: 'store', default: undefined})
-  public store: {
-    onDismiss: () => void;
-    onOk: (...args: any) => any
-  };
-
-  private onDismiss(): any {
-    if (this.store.onDismiss) {
-      this.store.onDismiss();
+export default defineComponent({
+  name: 'PopupCascader',
+  props: {
+    cascader: {
+      type: Object as PropType<VNode>
     }
-    this.$emit('dismiss');
-  }
+  },
+  setup(props, {emit, slots}) {
+    const store: {
+      onDismiss: () => void;
+      onOk: (...args: any) => any
+    } = inject('store', undefined);
 
-  public onChange(v) {
-    this.$emit('change', v);
-  }
 
-  public onOk(v) {
-    if (this.store.onOk) {
-      this.store.onOk(v);
-    }
-    this.$emit('change', v);
-    this.$emit('ok');
-  }
-
-  public render() {
+    const onDismiss = () => {
+      if (store.onDismiss) {
+        store.onDismiss();
+      }
+      emit('dismiss');
+    };
+    const onChange = (v) => {
+      emit('change', v);
+    };
+    const onOk = (v) => {
+      if (store.onOk) {
+        store.onOk(v);
+      }
+      emit('change', v);
+      emit('ok');
+    };
+    return {
+      onDismiss, onOk, onChange
+    };
+  },
+  render() {
     // @ts-ignore
     return (<PopupPicker
-        attrs={
-          {
-            picker: this.cascader,
-            ...this.$props,
-            ...this.$attrs
-          }
+      {
+        ...{
+          picker: this.cascader,
+          ...this.$props,
+          ...this.$attrs
         }
-        onDismiss={this.onDismiss}
-        onChange={this.onChange}
-        onOk={this.onOk}
+      }
+      onDismiss={this.onDismiss}
+      onChange={this.onChange}
+      onOk={this.onOk}
     >{<template slot={'picker'}>{this.cascader}</template>}{this.$slots.default}</PopupPicker>);
   }
-}
+});

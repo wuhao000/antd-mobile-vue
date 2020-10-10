@@ -1,6 +1,4 @@
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent, getCurrentInstance, onBeforeUnmount, onMounted, onUpdated, PropType, reactive, Ref, ref, VNode} from 'vue';
 
 /*
  * https://github.com/jasonslyvia/react-marquee
@@ -17,136 +15,131 @@ export interface MarqueeProps {
   fps?: number;
 }
 
-@Component({
-  name: 'Marquee'
-})
-class Marquee extends Vue {
-  @Prop({type: String})
-  public prefixCls?: string;
-  @Prop({
-    type: [String, Object],
-    default: ''
-  })
-  public text: string | VNode;
-  @Prop({
-    type: Boolean,
-    default: false
-  })
-  public loop?: boolean;
-  @Prop({
-    type: Number,
-    default: 500
-  })
-  public leading?: number;
-  @Prop({
-    type: Number,
-    default: 800
-  })
-  public trailing?: number;
-  @Prop({
-    type: Number,
-    default: 40
-  })
-  public fps?: number;
-  public state = {
-    animatedWidth: 0,
-    overflowWidth: 0
-  };
-
-  get textRef() {
-    return this.$refs.textRef;
-  }
-
-  private _marqueeTimer: number;
-
-  public mounted() {
-    this._measureText();
-    this._startAnimation();
-  }
-
-  public updated() {
-    this._measureText();
-    if (!this._marqueeTimer) {
-      this._startAnimation();
+const Marquee = defineComponent({
+  name: 'Marquee',
+  props: {
+    prefixCls: {
+      type: String as PropType<string>
+    },
+    text: {
+      type: [String, Object] as PropType<string | VNode>,
+      default: ''
+    },
+    loop: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    leading: {
+      type: Number as PropType<number>,
+      default: 500
+    },
+    trailing: {
+      type: Number as PropType<number>,
+      default: 800
+    },
+    fps: {
+      type: Number as PropType<number>,
+      default: 40
     }
-  }
+  },
+  setup(props, {emit, slots}) {
+    const state = reactive({
+      animatedWidth: 0,
+      overflowWidth: 0
+    });
+    const _marqueeTimer: Ref<number> = ref(null);
 
-  public beforeDestroy() {
-    clearTimeout(this._marqueeTimer);
-  }
+    const textRef = ref(null);
+    const _startAnimation = () => {
+      if (_marqueeTimer.value) {
+        window.clearTimeout(_marqueeTimer.value);
+      }
+      const fps = props.fps;
+      const TIMEOUT = 1 / fps! * 1000;
+      const isLeading = state.animatedWidth === 0;
+      const timeout = isLeading ? props.leading : TIMEOUT;
 
-  public render() {
+      const animate = () => {
+        const {overflowWidth} = state;
+        let animatedWidth = state.animatedWidth + 1;
+        const isRoundOver = animatedWidth > overflowWidth;
+        if (isRoundOver) {
+          if (props.loop) {
+            animatedWidth = 0;
+          } else {
+            return;
+          }
+        }
+
+        if (isRoundOver && props.trailing) {
+          _marqueeTimer.value = window.setTimeout(() => {
+            state.animatedWidth = animatedWidth;
+
+            _marqueeTimer.value = window.setTimeout(animate, TIMEOUT);
+          }, props.trailing);
+        } else {
+          state.animatedWidth = animatedWidth;
+          _marqueeTimer.value = window.setTimeout(animate, TIMEOUT);
+        }
+      };
+
+      if (state.overflowWidth !== 0) {
+        _marqueeTimer.value = window.setTimeout(animate, timeout);
+      }
+    };
+    const instance = getCurrentInstance()
+    const _measureText = () => {
+      const container = instance.vnode.el;
+      const node: any = textRef.value;
+      if (container && node) {
+        const containerWidth = (container as any).offsetWidth;
+        const textWidth = node.offsetWidth;
+        state.overflowWidth = textWidth - containerWidth;
+      }
+    };
+    onMounted(() => {
+      _measureText();
+      _startAnimation();
+    });
+    onUpdated(() => {
+      _measureText();
+      if (!_marqueeTimer.value) {
+        _startAnimation();
+      }
+    });
+    onBeforeUnmount(() => {
+      clearTimeout(_marqueeTimer.value);
+    });
+
+    return {
+      textRef, state
+    };
+  },
+  render() {
     const {prefixCls, text} = this;
-    const style = {
+    const style: any = {
       position: 'relative',
       right: this.state.animatedWidth + 'px',
       whiteSpace: 'nowrap',
       display: 'inline-block'
     };
     return (
+      <div
+        class={`${prefixCls}-marquee-wrap`}
+        style={{overflow: 'hidden'}}
+        role="marquee"
+      >
         <div
-            class={`${prefixCls}-marquee-wrap`}
-            style={{overflow: 'hidden'}}
-            role="marquee"
+          ref={this.textRef}
+          class={`${prefixCls}-marquee`}
+          style={style}
         >
-          <div
-              ref="textRef"
-              class={`${prefixCls}-marquee`}
-              style={style}
-          >
-            {text}
-          </div>
+          {text}
         </div>
+      </div>
     );
   }
+});
 
-  public _startAnimation() {
-    if (this._marqueeTimer) {
-      window.clearTimeout(this._marqueeTimer);
-    }
-    const fps = this.fps;
-    const TIMEOUT = 1 / fps! * 1000;
-    const isLeading = this.state.animatedWidth === 0;
-    const timeout = isLeading ? this.leading : TIMEOUT;
-
-    const animate = () => {
-      const {overflowWidth} = this.state;
-      let animatedWidth = this.state.animatedWidth + 1;
-      const isRoundOver = animatedWidth > overflowWidth;
-      if (isRoundOver) {
-        if (this.loop) {
-          animatedWidth = 0;
-        } else {
-          return;
-        }
-      }
-
-      if (isRoundOver && this.trailing) {
-        this._marqueeTimer = window.setTimeout(() => {
-          this.state.animatedWidth = animatedWidth;
-
-          this._marqueeTimer = window.setTimeout(animate, TIMEOUT);
-        }, this.trailing);
-      } else {
-        this.state.animatedWidth = animatedWidth;
-        this._marqueeTimer = window.setTimeout(animate, TIMEOUT);
-      }
-    };
-
-    if (this.state.overflowWidth !== 0) {
-      this._marqueeTimer = window.setTimeout(animate, timeout);
-    }
-  }
-
-  public _measureText() {
-    const container = this.$el;
-    const node: any = this.textRef;
-    if (container && node) {
-      const containerWidth = (container as any).offsetWidth;
-      const textWidth = node.offsetWidth;
-      this.state.overflowWidth = textWidth - containerWidth;
-    }
-  }
-}
 
 export default Marquee as any;

@@ -1,81 +1,80 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
-import IconRes from '../../mixins/icon-res';
+import {defineComponent, PropType} from 'vue';
 import Badge from '../../badge';
+import IconRes from '../../mixins/icon-res';
 import {isVNode} from '../../utils/vnode';
 
-@Component({
-  name: 'Tab'
-})
-class Tab extends Vue {
-  @Prop({type: Boolean})
-  public dot?: boolean;
-  @Prop({type: [String, Number]})
-  public badge?: string | number;
-  @Prop({type: Boolean})
-  public selected?: boolean;
-  @Prop()
-  public selectedIcon?: any;
-  @Prop()
-  public icon?: any;
-  @Prop({type: String})
-  public title?: string;
-  @Prop({type: String, default: 'am-tab-item'})
-  public prefixCls: string;
-  @Prop({type: String})
-  public unselectedTintColor?: string;
-  @Prop({type: String})
-  public tintColor?: string;
-  @Prop()
-  public dataAttrs?: {
-    [key: string]: string;
-  };
-
-  public renderIcon() {
-    const {
-      dot,
-      badge,
-      selected,
-      selectedIcon,
-      icon,
-      title,
-      prefixCls
-    } = this;
-    const realIcon = selected ? selectedIcon : icon;
-    const iconDom = realIcon ? (
-      isVNode(realIcon) ? realIcon : <IconRes
-        class={`${prefixCls}-image`}
-        props={
-          {
-            type: realIcon
-          }
-        }
-      />
-    ) : null;
-    if (badge) {
-      return (
-        <Badge text={badge} class={`${prefixCls}-badge tab-badge`}>
-          {' '}
-          {iconDom}{' '}
-        </Badge>
-      );
-    }
-    if (dot) {
-      return (
-        <Badge dot class={`${prefixCls}-badge tab-dot`}>
-          {iconDom}
-        </Badge>
-      );
-    }
-    return iconDom;
-  }
-
-  public onClick() {
-    this.$emit('click');
-  }
-
-  public render() {
+const Tab = defineComponent({
+  name: 'Tab',
+  props: {
+    dot: {
+      type: Boolean as PropType<boolean>
+    },
+    badge: {
+      type: [String, Number] as PropType<string | number>
+    },
+    selected: {
+      type: Boolean as PropType<boolean>
+    },
+    selectedIcon: {},
+    icon: {},
+    title: {
+      type: String as PropType<string>
+    },
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-tab-item'
+    },
+    unselectedTintColor: {
+      type: String as PropType<string>
+    },
+    tintColor: {
+      type: String as PropType<string>
+    },
+    dataAttrs: {}
+  },
+  setup(props, {emit, slots}) {
+    const renderIcon = () => {
+      const {
+        dot,
+        badge,
+        selected,
+        selectedIcon,
+        icon,
+        title,
+        prefixCls
+      } = props;
+      const realIcon = selected ? selectedIcon : icon;
+      const iconDom = realIcon ? (
+        isVNode(realIcon) ? realIcon : <IconRes
+          class={`${prefixCls}-image`}
+          type={realIcon}
+        />
+      ) : null;
+      if (badge) {
+        return (
+          <Badge text={badge} class={`${prefixCls}-badge tab-badge`}>
+            {' '}
+            {iconDom}{' '}
+          </Badge>
+        );
+      }
+      if (dot) {
+        return (
+          <Badge dot class={`${prefixCls}-badge tab-dot`}>
+            {iconDom}
+          </Badge>
+        );
+      }
+      return iconDom;
+    };
+    const onClick = () => {
+      emit('click');
+    };
+    return {
+      onClick, renderIcon
+    };
+  },
+  render() {
     const {
       title,
       prefixCls,
@@ -101,6 +100,6 @@ class Tab extends Vue {
       </div>
     );
   }
-}
+});
 
 export default Tab as any;

@@ -1,48 +1,63 @@
+import {computed, defineComponent, getCurrentInstance, inject, onMounted, PropType, ref, VNode} from 'vue';
 import {IconResProps} from '../../mixins/icon-res';
-import Tab from './tab';
 import getDataAttr from '../../utils/get-data-attr';
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Inject, Prop} from 'vue-property-decorator';
+import Tab from './tab';
 
-@Component({
-  name: 'Item'
-})
-export default class Item extends Vue {
-  @Prop({type: [String, Number]})
-  public badge?: string | number;
-  @Prop({type: Boolean, default: undefined})
-  public selected?: boolean;
-  @Prop({type: [String, Object]})
-  public icon?: string | IconResProps | VNode;
-  @Prop({type: [String, Object]})
-  public selectedIcon?: any;
-  @Prop({type: [String, Object], default: ''})
-  public title: string;
-  @Prop({type: Boolean})
-  public dot?: boolean;
-  @Prop({type: String, default: 'am-tab-bar'})
-  public prefixCls?: string;
-  @Inject('store')
-  public store: { currentTab: string | number };
-  @Inject('tabBar')
-  public tabBar: any;
-  public index = -1;
+let _uid = 100;
 
-  get sSelected() {
-    return this.selected !== undefined ? this.selected : (this.index === this.store.currentTab);
-  }
+export default defineComponent({
+  name: 'MTabBarItem',
+  props: {
+    badge: {
+      type: [String, Number] as PropType<string | number>
+    },
+    selected: {
+      type: Boolean as PropType<boolean>,
+      default: undefined
+    },
+    icon: {
+      type: [String, Object] as PropType<string | IconResProps | VNode>
+    },
+    selectedIcon: {
+      type: [String, Object] as PropType<any>
+    },
+    title: {
+      type: [String, Object] as PropType<string>,
+      default: ''
+    },
+    dot: {
+      type: Boolean as PropType<boolean>
+    },
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-tab-bar'
+    }
+  },
+  setup(props, {emit, slots}) {
+    const store: { currentTab: string | number } = inject('store');
+    const tabBar: any = inject('tabBar');
+    const index = ref(-1);
 
-  public mounted() {
-    const tabs = this.$parent.$children.filter(it => it.$vnode.componentOptions.tag === this.$vnode.componentOptions.tag);
-    this.index = tabs.findIndex(it => it['_uid'] === this['_uid']);
-  }
+    const sSelected = computed(() => {
+      return props.selected !== undefined ? props.selected : (index.value === store.currentTab);
+    });
+    const instance = getCurrentInstance();
+    onMounted(() => {
+      const children = tabBar.slots.default();
+      const tabs = children.filter(it => it.props.tag === instance.props.tag);
+      index.value = tabs.findIndex(it => it.key === instance.vnode.key);
+    });
 
-  public render() {
+    return {
+      tabBar, sSelected, index,
+      _uid: _uid++
+    };
+  },
+  render() {
     const {
       tintColor,
       unselectedTintColor
-    } = this.tabBar;
+    } = this.tabBar.props;
     const icon = this.$slots.icon ? this.$slots.icon[0] : this.icon;
     const selectedIcon = this.$slots.selectedIcon ? this.$slots.selectedIcon : (this.selectedIcon || icon);
     const props = {
@@ -55,14 +70,14 @@ export default class Item extends Vue {
       selected: this.sSelected
     };
     return (
-      <Tab props={props}
+      <Tab {...props}
            onClick={(e) => {
              this.tabBar.setCurrentTab(this.index);
              this.$emit('click');
            }}
            dataAttrs={getDataAttr(this.$props)}>
-        {this.$slots.default}
+        {this.$slots.default()}
       </Tab>
     );
   }
-}
+});

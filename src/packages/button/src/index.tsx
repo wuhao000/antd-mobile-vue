@@ -1,8 +1,8 @@
-import {Options, Vue} from 'vue-class-component';
 import classnames from 'classnames';
+import {VNode} from 'vue';
+import {Options, Vue} from 'vue-class-component';
 import IconRes, {IconResProps} from '../../mixins/icon-res';
 import TouchFeedback from '../../vmc-feedback';
-import { VNode } from 'vue';
 
 const httpReg = /^http(s)?:\/\//;
 
@@ -14,6 +14,7 @@ function isString(str: any) {
 }
 
 @Options({
+  inheritAttrs: false,
   name: 'MButton',
   props: {
     prefixCls: {type: String, default: 'am-button'},
@@ -87,7 +88,7 @@ class MButton extends Vue {
         <IconRes
           class={`${prefixCls}-icon`}
           // @ts-ignore
-          props={{
+          {...{
             type: httpReg.test(iconType) ? iconType : {
               mobile: true,
               iconType: 'icon',

@@ -1,4 +1,4 @@
-import Vue, {VNode} from 'vue';
+import {createApp, App, VNode} from 'vue';
 import closest from '../../utils/closest';
 import Modal from './modal';
 
@@ -54,11 +54,11 @@ export default function prompt(
 
     const div = document.createElement('div');
     document.body.appendChild(div);
-    let modal: any = null;
+    let modal: App = null;
 
     function close() {
-      if (modal && modal.$destroy) {
-        modal.$destroy();
+      if (modal && modal.unmount) {
+        modal.unmount(div);
       }
       if (div && div.parentNode) {
         div.parentNode.removeChild(div);
@@ -132,10 +132,10 @@ export default function prompt(
         e.preventDefault();
       }
     }
-    modal = new Vue({
-      el: div,
+
+    modal = createApp({
       methods: {
-        createContent(this: any) {
+        createContent() {
           let inputDom;
           switch (type) {
             case 'login-password':
@@ -194,11 +194,8 @@ export default function prompt(
                       <input
                         type="text"
                         value={data.text}
-                        ref="input"
-                        hook={{
-                          mounted: () => {
-                            focusFn(this.$refs['input']);
-                          }
+                        ref={el => {
+                          focusFn(el);
                         }}
                         onClick={onClick}
                         onChange={onChange}
@@ -235,6 +232,7 @@ export default function prompt(
         </Modal>;
       }
     });
+    modal.mount(div);
 
     return {
       close

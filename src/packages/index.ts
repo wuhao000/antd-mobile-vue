@@ -3,6 +3,14 @@ import HttpMethod from './http-method';
 import VueIcon from '@ant-design/icons-vue';
 import zhCn from './moment-zh_CN';
 import Accordion from './accordion';
+import Popover from './popover';
+import PullRefresh from './pull-refresh';
+import Radio from './radio';
+import Picker from './picker';
+import Slider from './slider';
+import Menu from './menu';
+import Stepper from './stepper';
+import SegmentedControl from './segmented-control';
 import NavBar from './nav-bar';
 import Drawer from './drawer';
 import Card from './card';
@@ -18,6 +26,20 @@ import Badge from './badge';
 import WingBlank from './wing-blank';
 import Checkbox from './checkbox';
 import Flex from './flex';
+import Progress from './progress';
+import Popup from './popup';
+import Steps from './steps';
+import TabBar from './tab-bar';
+import Tabs from './tabs';
+import Tag from './tag';
+import NoticeBar from './notice-bar';
+import Pagination from './pagination';
+import Textarea from './textarea';
+import Result from './result';
+import Toast from './toast';
+import Icon from './icon';
+import Modal from './modal';
+import SearchBar from './search-bar';
 import Grid from './grid';
 import Carousel from './carousel';
 import WhiteSpace from './white-space';
@@ -28,6 +50,14 @@ if (window.moment) {
 // 存储组件列表
 const components = [
   Accordion,
+	Popover,
+	PullRefresh,
+	Radio,
+	Picker,
+	Slider,
+	Menu,
+	Stepper,
+	SegmentedControl,
 	NavBar,
 	Drawer,
 	Card,
@@ -43,6 +73,20 @@ const components = [
 	WingBlank,
 	Checkbox,
 	Flex,
+	Progress,
+	Popup,
+	Steps,
+	TabBar,
+	Tabs,
+	Tag,
+	NoticeBar,
+	Pagination,
+	Textarea,
+	Result,
+	Toast,
+	Icon,
+	Modal,
+	SearchBar,
 	Grid,
 	Carousel,
 	WhiteSpace
@@ -64,6 +108,14 @@ export {
   // 以下是具体的组件列表
   HttpMethod,
   Accordion,
+	Popover,
+	PullRefresh,
+	Radio,
+	Picker,
+	Slider,
+	Menu,
+	Stepper,
+	SegmentedControl,
 	NavBar,
 	Drawer,
 	Card,
@@ -79,6 +131,20 @@ export {
 	WingBlank,
 	Checkbox,
 	Flex,
+	Progress,
+	Popup,
+	Steps,
+	TabBar,
+	Tabs,
+	Tag,
+	NoticeBar,
+	Pagination,
+	Textarea,
+	Result,
+	Toast,
+	Icon,
+	Modal,
+	SearchBar,
 	Grid,
 	Carousel,
 	WhiteSpace
@@ -88,6 +154,14 @@ export default {
   install,
   HttpMethod,
   Accordion,
+	Popover,
+	PullRefresh,
+	Radio,
+	Picker,
+	Slider,
+	Menu,
+	Stepper,
+	SegmentedControl,
 	NavBar,
 	Drawer,
 	Card,
@@ -103,6 +177,20 @@ export default {
 	WingBlank,
 	Checkbox,
 	Flex,
+	Progress,
+	Popup,
+	Steps,
+	TabBar,
+	Tabs,
+	Tag,
+	NoticeBar,
+	Pagination,
+	Textarea,
+	Result,
+	Toast,
+	Icon,
+	Modal,
+	SearchBar,
 	Grid,
 	Carousel,
 	WhiteSpace

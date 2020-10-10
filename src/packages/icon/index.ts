@@ -3,8 +3,8 @@ import './style';
 
 const Plugin: any = MIcon;
 
-Plugin.install = Vue => {
-  Vue.component('MIcon', MIcon);
+Plugin.install = app => {
+  app.component('MIcon', MIcon);
 };
 
 export default Plugin;

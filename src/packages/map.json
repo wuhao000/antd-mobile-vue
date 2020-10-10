@@ -6,6 +6,60 @@
     "chineseName": "手风琴",
     "tag": "数据展示"
   },
+  "popover": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "popover",
+    "chineseName": "气泡"
+  },
+  "pull-refresh": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "pull-refresh",
+    "chineseName": "下拉刷新",
+    "tag": "手势"
+  },
+  "radio": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "radio",
+    "chineseName": "单选",
+    "tag": "数据入口"
+  },
+  "picker": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "picker",
+    "chineseName": "选择器",
+    "tag": "数据入口"
+  },
+  "slider": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "slider",
+    "chineseName": "滑动输入条",
+    "tag": "数据入口"
+  },
+  "menu": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "menu",
+    "chineseName": "菜单",
+    "tag": "导航"
+  },
+  "stepper": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "stepper",
+    "chineseName": "步进器"
+  },
+  "segmented-control": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "segmented-control",
+    "chineseName": "分段器",
+    "tag": "导航"
+  },
   "nav-bar": {
     "type": "component",
     "componentType": "mobile",
@@ -110,6 +164,103 @@
     "name": "flex",
     "chineseName": "弹性布局",
     "tag": "布局"
+  },
+  "progress": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "progress",
+    "chineseName": "进度条",
+    "tag": "反馈"
+  },
+  "popup": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "popup",
+    "chineseName": "弹出层"
+  },
+  "steps": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "steps",
+    "chineseName": "步骤条",
+    "tag": "数据展示"
+  },
+
+  "tab-bar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "tab-bar",
+    "chineseName": "标签栏",
+    "tag": "导航"
+  },
+  "tabs": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "tabs",
+    "chineseName": "标签页",
+    "tag": "导航"
+  },
+  "tag": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "tag",
+    "chineseName": "标签"
+  },
+  "notice-bar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "notice-bar",
+    "chineseName": "通告栏",
+    "tag": "数据展示"
+  },
+  "pagination": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "pagination",
+    "chineseName": "分页器",
+    "tag": "导航"
+  },
+  "textarea": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "textarea",
+    "chineseName": "文本框",
+    "tag": "数据入口"
+  },
+  "result": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "result",
+    "chineseName": "结果页",
+    "tag": "组合"
+  },
+  "toast": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "toast",
+    "chineseName": "轻提示",
+    "tag": "反馈"
+  },
+  "icon": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "icon",
+    "chineseName": "图标",
+    "tag": "数据展示"
+  },
+  "modal": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "modal",
+    "chineseName": "模态框",
+    "tag": "反馈"
+  },
+  "search-bar": {
+    "type": "component",
+    "componentType": "mobile",
+    "name": "search-bar",
+    "chineseName": "搜索框",
+    "tag": "数据入口"
   },
   "grid": {
     "type": "component",

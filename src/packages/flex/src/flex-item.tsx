@@ -1,7 +1,9 @@
+import {filterHTMLAttrs} from '../../utils/dom';
 import classnames from 'classnames';
 import {defineComponent, PropType} from 'vue';
 
 export default defineComponent({
+  inheritAttrs: false,
   name: 'FlexItem',
   props: {
     disabled: {
@@ -16,8 +18,13 @@ export default defineComponent({
   render() {
     const {prefixCls, ...restProps} = this;
     const wrapCls = classnames(`${prefixCls}-item`);
+    const props = filterHTMLAttrs({
+      ...restProps,
+      ...this.$attrs
+    });
     return (
-      <div class={wrapCls} {...{props: restProps}}>
+      <div class={wrapCls}
+           {...props}>
         {this.$slots.default?.()}
       </div>
     );

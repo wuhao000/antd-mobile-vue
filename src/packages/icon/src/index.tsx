@@ -1,26 +1,22 @@
-import {Options, Vue} from 'vue-class-component';
 import classnames from 'classnames';
+import {defineComponent, onMounted, Ref, ref} from 'vue';
 import loadSprite from './load-sprite';
 
-@Options({
+const Icon = defineComponent({
+  inheritAttrs: false,
   name: 'MIcon',
   props: {
     size: {type: [String, Number], default: 'md'},
     type: {type: String, required: true},
     color: String
-  }
-})
-
-class Icon extends Vue {
-  public size: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | number;
-  public type: string;
-  public color?: string;
-
-  public mounted() {
-    loadSprite();
-  }
-
-  public render(): any {
+  },
+  setup(props, {emit, attrs}) {
+    onMounted(() => {
+      loadSprite();
+    });
+    return {};
+  },
+  render() {
     const {type, size, ...restProps} = this;
     const cls = classnames(
       'am-icon',
@@ -42,6 +38,6 @@ class Icon extends Vue {
       </svg>
     );
   }
-}
+});
 
 export default Icon;

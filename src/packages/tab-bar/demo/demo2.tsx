@@ -1,42 +1,49 @@
+import {inject, provide, ref, Ref, reactive, nextTick, PropType, defineComponent} from 'vue';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import './demo1.less';
 
-@Component({
-  name: 'TabBarExample'
-})
-export default class TabBarExample extends Vue {
+export default defineComponent({
+  name: 'TabBarExample',
+  props: {},
+  setup(props, {emit, slots}) {
+    const state = reactive({
+      selectedTab: 0,
+      hidden: false,
+      fullScreen: false
+    });
 
-  public state = {
-    selectedTab: 0,
-    hidden: false,
-    fullScreen: false
-  };
 
-  public renderContent(pageText) {
-    return (
-      <div style={{backgroundColor: 'white', height: '100%', textAlign: 'center'}}>
-        <div style={{paddingTop: '60px'}}>Clicked “{pageText}” tab， show “{pageText}” information</div>
-        <a style={{display: 'block', marginTop: '40px', marginBottom: '20px', color: '#108ee9'}}
-           onClick={(e) => {
-             e.preventDefault();
-             this.state.hidden = !this.state.hidden;
-           }}
-        >
-          Click to show/hide tab-bar
-        </a>
-        <a style={{display: 'block', marginBottom: '600px', color: '#108ee9'}}
-           onClick={(e) => {
-             e.preventDefault();
-             this.state.fullScreen = !this.state.fullScreen;
-           }}>
-          Click to switch fullscreen
-        </a>
-      </div>
-    );
-  }
+    const renderContent = (pageText) => {
+      return (
+        <div style={{backgroundColor: 'white', height: '100%', textAlign: 'center'}}>
+          <div style={{paddingTop: '60px'}}>Clicked “{pageText}” tab， show “{pageText}” information</div>
+          <a style={{display: 'block', marginTop: '40px', marginBottom: '20px', color: '#108ee9'}}
+             onClick={(e) => {
+               e.preventDefault();
+               state.hidden = !state.hidden;
+             }}
+          >
+            Click to show/hide tab-bar
+          </a>
+          <a style={{display: 'block', marginBottom: '600px', color: '#108ee9'}}
+             onClick={(e) => {
+               e.preventDefault();
+               state.fullScreen = !state.fullScreen;
+             }}>
+            Click to switch fullscreen
+          </a>
+        </div>
+      );
+    }
 
-  public render() {
+
+    return {
+      state,
+      renderContent
+    };
+  },
+  render() {
     return (
       <div
         style={this.state.fullScreen ? {position: 'fixed', height: '100%', width: '100%', top: 0} : {height: '400px'}}>
@@ -110,7 +117,7 @@ export default class TabBarExample extends Vue {
             }
             title="Friend"
             key="Friend"
-            dot
+            dot={true}
           >
             {this.renderContent('Friend')}
           </m-tab-bar-item>
@@ -138,4 +145,4 @@ export default class TabBarExample extends Vue {
       </div>
     );
   }
-}
+})

@@ -1,66 +1,62 @@
 import classnames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
+import {defineComponent, PropType, reactive, watch} from 'vue';
 import Icon from '../../icon';
 import getDataAttr from '../../utils/get-data-attr';
 import TouchFeedback from '../../vmc-feedback';
 
-@Component({
-  name: 'Tag'
-})
-class Tag extends Vue {
-  @Prop({
-    type: String,
-    default: 'am-tag'
-  })
-  public prefixCls?: string;
-  @Prop({
-    type: Boolean,
-    default: false
-  })
-  public disabled?: boolean;
-  @Prop({
-    type: Boolean,
-    default: false
-  })
-  public selected?: boolean;
-  @Prop({
-    type: Boolean,
-    default: false
-  })
-  public closable?: boolean;
-  @Prop({
-    type: Boolean,
-    default: false
-  })
-  public small?: boolean;
-  public state = {
-    selected: this.selected,
-    closed: false
-  };
-
-  @Watch('selected')
-  public selectedChanged(selected: boolean) {
-    this.state.selected = selected;
-  }
-
-  public onClick() {
-    const {disabled} = this;
-    if (disabled) {
-      return;
+const Tag = defineComponent({
+  name: 'Tag',
+  props: {
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-tag'
+    },
+    disabled: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    selected: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    closable: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    small: {
+      type: Boolean as PropType<boolean>,
+      default: false
     }
-    const isSelect = this.state.selected;
-    this.state.selected = !isSelect;
-    this.$emit('change', !isSelect);
-  }
+  },
+  setup(props, {emit, slots}) {
+    const state = reactive({
+      selected: props.selected,
+      closed: false
+    });
+    watch(() => props.selected, (selected: boolean) => {
+      state.selected = selected;
+    });
 
-  public onTagClose() {
-    this.state.closed = true;
-    this.$emit('close');
-  }
+    const onClick = () => {
+      const {disabled} = props;
+      if (disabled) {
+        return;
+      }
+      const isSelect = state.selected;
+      state.selected = !isSelect;
+      emit('change', !isSelect);
+    };
+    const onTagClose = () => {
+      state.closed = true;
+      emit('close');
+    };
 
-  public render() {
+
+    return {
+      onClick, state, onTagClose
+    };
+  },
+  render() {
     const {
       prefixCls,
       disabled,
@@ -78,30 +74,30 @@ class Tag extends Vue {
     });
 
     const closableDom =
-        closable && !disabled && !small ? (
-            <TouchFeedback activeClassName={`${prefixCls}-close-active`}>
-              <div
-                  class={`${prefixCls}-close`}
-                  role="button"
-                  onClick={this.onTagClose.bind(this)}
-                  aria-label="remove tag"
-              >
-                <Icon type="cross-circle" size="xs" aria-hidden="true"/>
-              </div>
-            </TouchFeedback>
-        ) : null;
+      closable && !disabled && !small ? (
+        <TouchFeedback activeClassName={`${prefixCls}-close-active`}>
+          <div
+            class={`${prefixCls}-close`}
+            role="button"
+            onClick={this.onTagClose.bind(this)}
+            aria-label="remove tag"
+          >
+            <Icon type="cross-circle" size="xs" aria-hidden="true"/>
+          </div>
+        </TouchFeedback>
+      ) : null;
 
     return !this.state.closed ? (
-        <div
-            {...getDataAttr(this.$props)}
-            class={wrapCls}
-            onClick={this.onClick.bind(this)}
-        >
-          <div class={`${prefixCls}-text`}>{this.$slots.default}</div>
-          {closableDom}
-        </div>
+      <div
+        {...getDataAttr(this.$props)}
+        class={wrapCls}
+        onClick={this.onClick}
+      >
+        <div class={`${prefixCls}-text`}>{this.$slots.default?.()}</div>
+        {closableDom}
+      </div>
     ) : null;
   }
-}
+});
 
 export default Tag as any;

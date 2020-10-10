@@ -1,6 +1,5 @@
 /* eslint global-require:0, no-nested-ternary:0 */
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {defineComponent, reactive} from 'vue';
 import './demo3.less';
 
 const data = [
@@ -73,82 +72,84 @@ const data = [
   }
 ];
 
-@Component({
-  name: 'MenuExample'
-})
-export default class MultiMenuExample extends Vue {
-  public state = {
-    initData: null,
-    show: false
-  };
+export default defineComponent({
+  name: 'MenuExample',
+  props: {},
+  setup(props, {emit, slots}) {
+    const state = reactive({
+      initData: null,
+      show: false
+    });
 
-  public onChange(value) {
-    console.log(value);
-  }
 
-  public onOk(value) {
-    console.log(value);
-    this.onCancel();
-  }
+    const onChange = (value) => {
+      console.log(value);
+    };
+    const onOk = (value) => {
+      console.log(value);
+      onCancel();
+    };
+    const onCancel = () => {
+      state.show = false;
+    };
+    const handleClick = (e) => {
+      e.preventDefault(); // Fix event propagation on Android
+      state.show = !state.show;
+      // mock for async data loading
+      if (!state.initData) {
+        setTimeout(() => {
+          state.initData = data;
+        }, 500);
+      }
+    };
+    const onMaskClick = () => {
+      state.show = false;
+    };
 
-  public onCancel() {
-    this.state.show = false;
-  }
 
-  public handleClick(e) {
-    e.preventDefault(); // Fix event propagation on Android
-    this.state.show = !this.state.show;
-    // mock for async data loading
-    if (!this.state.initData) {
-      setTimeout(() => {
-        this.state.initData = data;
-      }, 500);
-    }
-  }
-
-  public onMaskClick() {
-    this.state.show = false;
-  }
-
-  public render() {
+    return {
+      state, onChange, onCancel, onOk, handleClick, onMaskClick
+    };
+  },
+  render() {
     const {initData, show} = this.state;
     const menuEl = (
-        <m-menu
-            class="multi-foo-menu"
-            data={initData}
-            value={['1', ['3', '4']]}
-            onChange={this.onChange}
-            onOk={this.onOk}
-            onCancel={this.onCancel}
-            height={document.documentElement.clientHeight * 0.6}
-            multiSelect
-        />
+      <m-menu
+        class="multi-foo-menu"
+        data={initData}
+        value={['1', ['3', '4']]}
+        onChange={this.onChange}
+        onOk={this.onOk}
+        onCancel={this.onCancel}
+        height={document.documentElement.clientHeight * 0.6}
+        multiSelect
+      />
     );
     const loadingEl = (
-        <div style={{
-          position: 'absolute',
-          width: '100%',
-          height: document.documentElement.clientHeight * 0.6,
-          display: 'flex',
-          justifyContent: 'center'
-        }}>
-          <m-activity-indicator size="large"/>
-        </div>
+      <div style={{
+        position: 'absolute',
+        width: '100%',
+        height: document.documentElement.clientHeight * 0.6,
+        display: 'flex',
+        justifyContent: 'center'
+      }}>
+        <m-activity-indicator size="large"/>
+      </div>
     );
     return (
-        <div class={show ? 'multi-menu-active demo' : 'demo'}>
-          <div>
-            <m-nav-bar
-                leftContent="Menu"
-                mode="light"
-                onLeftClick={this.handleClick.bind(this)}
-                class="multi-top-nav-bar">
-              Multi select menu
-            </m-nav-bar>
-          </div>
-          {show ? initData ? menuEl : loadingEl : null}
-          {show ? <div class="menu-mask" onClick={this.onMaskClick.bind(this)}/> : null}
+      <div class={show ? 'multi-menu-active demo' : 'demo'}>
+        <div>
+          <m-nav-bar
+            leftContent="Menu"
+            mode="light"
+            onLeftClick={this.handleClick.bind(this)}
+            class="multi-top-nav-bar">
+            Multi select menu
+          </m-nav-bar>
         </div>
+        {show ? initData ? menuEl : loadingEl : null}
+        {show ? <div class="menu-mask" onClick={this.onMaskClick}/> : null}
+      </div>
     );
   }
-}
+});

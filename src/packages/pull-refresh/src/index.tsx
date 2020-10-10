@@ -1,7 +1,15 @@
 import classNames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {
+  computed,
+  defineComponent,
+  getCurrentInstance,
+  onBeforeUnmount,
+  onMounted,
+  onUpdated,
+  PropType,
+  ref,
+  Ref
+} from 'vue';
 
 import Icon from '../../icon';
 import {getScrollEventTarget, getScrollTop} from './util';
@@ -13,7 +21,7 @@ function setTransform(nodeStyle: any, value: any) {
 }
 
 const isWebView = typeof navigator !== 'undefined' &&
-    /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent);
+  /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent);
 const DOWN = 'down';
 const UP = 'up';
 const INDICATOR = {
@@ -39,254 +47,256 @@ const willPreventDefault = supportsPassive ? {passive: false} : false;
 
 type ICurrSt = 'activate' | 'deactivate' | 'release' | 'finish';
 
-@Component({
-  name: 'PullToRefresh'
-})
-export default class PullToRefresh extends Vue {
-  @Prop({type: String, default: '松开刷新'})
-  public activateText: string;
-  @Prop({type: String, default: '取消刷新'})
-  public deactivateText: string;
-  @Prop({type: String, default: '刷新完成'})
-  public finishText: string;
-  @Prop({
-    default: () => {
-      return () => undefined;
-    }
-  })
-  public getScrollContainer?: () => any;
-  @Prop({type: String, default: DOWN})
-  public direction?: 'down' | 'up';
-  @Prop()
-  public value?: boolean;
-  @Prop({type: Number, default: 35})
-  public distanceToRefresh?: number;
-  @Prop({type: String, default: 'am-pull-to-refresh'})
-  public prefixCls?: string;
-  @Prop({type: Number, default: 80})
-  public damping?: number;
-  @Prop({type: Number, default: 40})
-  public indicatorHeight: number;
-
-  // https://github.com/yiminghe/zscroller/blob/2d97973287135745818a0537712235a39a6a62a1/src/Scroller.js#L355
-  // currSt: `activate` / `deactivate` / `release` / `finish`
-  public currSt: ICurrSt = 'deactivate';
-  public dragOnEdge: boolean = false;
-  private scrollEl: any;
-
-  get containerRef(): HTMLDivElement {
-    return this.$refs['container'] as HTMLDivElement;
-  }
-
-  get contentRef(): HTMLDivElement {
-    return this.$refs['content'] as HTMLDivElement;
-  }
-
-  public _to: any;
-  public _ScreenY: any;
-  public _startScreenY: any;
-  public _lastScreenY: number;
-  public _timer: any;
-  public _isMounted = false;
-  @Prop()
-  private className: string;
-
-  get indicator(): any {
-    return {
-      activate: this.activateText,
-      deactivate: this.deactivateText,
-      release: <Icon type={'loading'}/>,
-      finish: this.finishText
-    };
-  }
-
-  public updated() {
-    if (!this.value) {
-      // triggerPullToRefresh 需要尽可能减少 setState 次数
-      this.triggerPullToRefresh();
-    }
-  }
-
-  public mounted() {
-    this.scrollEl = getScrollEventTarget(this.$el as HTMLElement);
-    // `getScrollContainer` most likely return React.Node at the next tick. Need setTimeout
-    setTimeout(() => {
-      this.init(this.getScrollContainer() || this.containerRef);
-      this.triggerPullToRefresh();
-      this._isMounted = true;
-    });
-  }
-
-  public beforeDestroy() {
-    // Should have no setTimeout here!
-    this.destroy(this.getScrollContainer() || this.containerRef);
-  }
-
-  public triggerPullToRefresh() {
-    // 在初始化时、用代码 自动 触发 pullToRefresh
-    // 注意：当 direction 为 up 时，当 visible length < content length 时、则看不到效果
-    // 添加this._isMounted的判断，否则组建一实例化，currSt就会是finish
-    if (!this.dragOnEdge && this._isMounted) {
-      if (this.value) {
-        if (this.direction === UP) {
-          this._lastScreenY = -this.distanceToRefresh - 1;
-        }
-        if (this.direction === DOWN) {
-          this._lastScreenY = this.distanceToRefresh + 1;
-        }
-        // change dom need after setState
-        this.currSt = 'release';
-        this.setContentStyle(this._lastScreenY);
-      } else {
-        this.currSt = 'finish';
-        this.reset();
+export default defineComponent({
+  name: 'PullToRefresh',
+  props: {
+    activateText: {
+      type: String as PropType<string>,
+      default: '松开刷新'
+    },
+    deactivateText: {
+      type: String as PropType<string>,
+      default: '取消刷新'
+    },
+    finishText: {
+      type: String as PropType<string>,
+      default: '刷新完成'
+    },
+    getScrollContainer: {
+      default: () => {
+        return () => undefined;
       }
-    }
-  }
+    },
+    direction: {
+      type: String as PropType<'down' | 'up'>,
+      default: DOWN
+    },
+    value: {},
+    distanceToRefresh: {
+      type: Number as PropType<number>,
+      default: 35
+    },
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-pull-to-refresh'
+    },
+    damping: {
+      type: Number as PropType<number>,
+      default: 80
+    },
+    indicatorHeight: {
+      type: Number as PropType<number>,
+      default: 40
+    },
+    className: {}
+  },
+  setup(props, {emit}) {
+    const currSt: Ref<ICurrSt> = ref('deactivate');
+    const dragOnEdge: Ref<boolean> = ref(false);
+    const scrollEl: Ref = ref(null);
+    const _to: Ref = ref(null);
+    const _ScreenY: Ref = ref(null);
+    const _startScreenY: Ref<any> = ref(null);
+    const _lastScreenY: Ref<number> = ref(null);
+    const _timer: Ref = ref(null);
+    const _isMounted = ref(false);
 
-  public init(ele: any) {
-    if (!ele) {
-      // like return in destroy fn ???!!
-      return;
-    }
-    this._to = {
-      touchstart: this.onTouchStart.bind(this).bind(this, ele),
-      touchmove: this.onTouchMove.bind(this).bind(this, ele),
-      touchend: this.onTouchEnd.bind(this).bind(this, ele),
-      touchcancel: this.onTouchEnd.bind(this).bind(this, ele)
+    const containerRef = ref(null);
+    const contentRef = ref(null);
+    const indicator = computed(() => {
+      return {
+        activate: props.activateText,
+        deactivate: props.deactivateText,
+        release: <Icon type={'loading'}/>,
+        finish: props.finishText
+      };
+    });
+    const triggerPullToRefresh = () => {
+      // 在初始化时、用代码 自动 触发 pullToRefresh
+      // 注意：当 direction 为 up 时，当 visible length < content length 时、则看不到效果
+      // 添加this._isMounted的判断，否则组建一实例化，currSt就会是finish
+      if (!dragOnEdge.value && _isMounted.value) {
+        if (props.value) {
+          if (props.direction === UP) {
+            _lastScreenY.value = -props.distanceToRefresh - 1;
+          }
+          if (props.direction === DOWN) {
+            _lastScreenY.value = props.distanceToRefresh + 1;
+          }
+          // change dom need after setState
+          currSt.value = 'release';
+          setContentStyle(_lastScreenY.value);
+        } else {
+          currSt.value = 'finish';
+          reset();
+        }
+      }
     };
-    Object.keys(this._to).forEach(key => {
-      ele.addEventListener(key, this._to[key], willPreventDefault);
-    });
-  }
-
-  public destroy(ele: any) {
-    if (!this._to || !ele) {
-      // componentWillUnmount fire before componentDidMount, like forceUpdate ???!!
-      return;
-    }
-    Object.keys(this._to).forEach(key => {
-      ele.removeEventListener(key, this._to[key]);
-    });
-  }
-
-  public onTouchStart(_ele: any, e: any) {
-    this._ScreenY = this._startScreenY = e.touches[0].screenY;
-    // 一开始 value 为 true 时 this._lastScreenY 有值
-    this._lastScreenY = this._lastScreenY || 0;
-  }
-
-  public isEdge() {
-    const direction = this.direction;
-    const container = this.getScrollContainer() || this.containerRef;
-    if (container && container === document.body) {
-      // In chrome61 `document.body.scrollTop` is invalid
-      const scrollNode = document.scrollingElement ? document.scrollingElement : document.body;
+    const init = (ele: any) => {
+      if (!ele) {
+        // like return in destroy fn ???!!
+        return;
+      }
+      _to.value = {
+        touchstart: onTouchStart.bind(this).bind(this, ele),
+        touchmove: onTouchMove.bind(this).bind(this, ele),
+        touchend: onTouchEnd.bind(this).bind(this, ele),
+        touchcancel: onTouchEnd.bind(this).bind(this, ele)
+      };
+      Object.keys(_to.value).forEach(key => {
+        ele.addEventListener(key, _to.value[key], willPreventDefault);
+      });
+    };
+    const destroy = (ele: any) => {
+      if (!_to.value || !ele) {
+        // componentWillUnmount fire before componentDidMount, like forceUpdate ???!!
+        return;
+      }
+      Object.keys(_to.value).forEach(key => {
+        ele.removeEventListener(key, _to.value[key]);
+      });
+    };
+    const onTouchStart = (_ele: any, e: any) => {
+      _ScreenY.value = _startScreenY.value = e.touches[0].screenY;
+      // 一开始 value 为 true 时 this._lastScreenY 有值
+      _lastScreenY.value = _lastScreenY.value || 0;
+    };
+    const isEdge = () => {
+      const direction = props.direction;
+      const container = props.getScrollContainer() || containerRef.value;
+      if (container && container === document.body) {
+        // In chrome61 `document.body.scrollTop` is invalid
+        const scrollNode = document.scrollingElement ? document.scrollingElement : document.body;
+        if (direction === UP) {
+          return scrollNode.scrollHeight - scrollNode.scrollTop <= window.innerHeight;
+        }
+        if (direction === DOWN) {
+          return scrollNode.scrollTop <= 0;
+        }
+      }
+      const scrollTop = getScrollTop(scrollEl.value);
       if (direction === UP) {
-        return scrollNode.scrollHeight - scrollNode.scrollTop <= window.innerHeight;
+        return scrollEl.value.scrollHeight - scrollTop === scrollEl.value.clientHeight;
       }
       if (direction === DOWN) {
-        return scrollNode.scrollTop <= 0;
+        return scrollTop <= 0;
       }
-    }
-    const scrollTop = getScrollTop(this.scrollEl);
-    if (direction === UP) {
-      return this.scrollEl.scrollHeight - scrollTop === this.scrollEl.clientHeight;
-    }
-    if (direction === DOWN) {
-      return scrollTop <= 0;
-    }
-    return undefined;
-  }
-
-  public dampingFunc(dy: number): number {
-    if (Math.abs(this._lastScreenY) > this.damping) {
-      return 0;
-    }
-    const ratio = Math.abs(this._ScreenY - this._startScreenY) / window.screen.height;
-    return dy * (1 - ratio) * 0.6;
-  }
-
-  public onTouchMove(ele: any, e: any) {
-    // 使用 pageY 对比有问题
-    const _screenY = e.touches[0].screenY;
-
-    // 拖动方向不符合的不处理
-    if (this.direction === UP && this._startScreenY < _screenY ||
-        this.direction === DOWN && this._startScreenY > _screenY) {
-      return;
-    }
-
-    if (this.isEdge()) {
-      if (!this.dragOnEdge) {
-        // 当用户开始往上滑的时候isEdge还是false的话，会导致this._ScreenY不是想要的，只有当isEdge为true时，再上滑，才有意义
-        // 下面这行代码解决了上面这个问题
-        this._ScreenY = this._startScreenY = e.touches[0].screenY;
-        this.dragOnEdge = true;
+      return undefined;
+    };
+    const dampingFunc = (dy: number) => {
+      if (Math.abs(_lastScreenY.value) > props.damping) {
+        return 0;
       }
-      e.preventDefault();
-      // add stopPropagation with fastclick will trigger content onClick event. why?
-      // ref https://github.com/ant-design/ant-design-mobile/issues/2141
-      // e.stopPropagation();
+      const ratio = Math.abs(_ScreenY.value - _startScreenY.value) / window.screen.height;
+      return dy * (1 - ratio) * 0.6;
+    };
+    const onTouchMove = (ele: any, e: any) => {
+      // 使用 pageY 对比有问题
+      const _screenY = e.touches[0].screenY;
 
-      const _diff = Math.round(_screenY - this._ScreenY);
-      this._ScreenY = _screenY;
-      this._lastScreenY += this.dampingFunc(_diff);
+      // 拖动方向不符合的不处理
+      if (props.direction === UP && _startScreenY.value < _screenY ||
+        props.direction === DOWN && _startScreenY.value > _screenY) {
+        return;
+      }
 
-      this.setContentStyle(this._lastScreenY);
-
-      if (Math.abs(this._lastScreenY) < this.distanceToRefresh) {
-        if (this.currSt !== 'deactivate') {
-          this.currSt = 'deactivate';
+      if (isEdge()) {
+        if (!dragOnEdge.value) {
+          // 当用户开始往上滑的时候isEdge还是false的话，会导致this._ScreenY不是想要的，只有当isEdge为true时，再上滑，才有意义
+          // 下面这行代码解决了上面这个问题
+          _ScreenY.value = _startScreenY.value = e.touches[0].screenY;
+          dragOnEdge.value = true;
         }
+        e.preventDefault();
+        // add stopPropagation with fastclick will trigger content onClick event. why?
+        // ref https://github.com/ant-design/ant-design-mobile/issues/2141
+        // e.stopPropagation();
+
+        const _diff = Math.round(_screenY - _ScreenY.value);
+        _ScreenY.value = _screenY;
+        _lastScreenY.value += dampingFunc(_diff);
+
+        setContentStyle(_lastScreenY.value);
+
+        if (Math.abs(_lastScreenY.value) < props.distanceToRefresh) {
+          if (currSt.value !== 'deactivate') {
+            currSt.value = 'deactivate';
+          }
+        } else {
+          if (currSt.value === 'deactivate') {
+            currSt.value = 'activate';
+          }
+        }
+
+        // https://github.com/ant-design/ant-design-mobile/issues/573#issuecomment-339560829
+        // iOS UIWebView issue, It seems no problem in WKWebView
+        if (isWebView && e.changedTouches[0].clientY < 0) {
+          onTouchEnd();
+        }
+      }
+    };
+    const onTouchEnd = () => {
+      if (dragOnEdge.value) {
+        dragOnEdge.value = false;
+      }
+      if (currSt.value === 'activate') {
+        currSt.value = 'release';
+        _timer.value = setTimeout(() => {
+          if (!props.value) {
+            currSt.value = 'finish';
+            reset();
+          }
+          _timer.value = undefined;
+        }, 1000);
+        setContentStyle(props.indicatorHeight);
+        emit('refresh');
+        emit('update:value', true);
       } else {
-        if (this.currSt === 'deactivate') {
-          this.currSt = 'activate';
-        }
+        reset();
       }
-
-      // https://github.com/ant-design/ant-design-mobile/issues/573#issuecomment-339560829
-      // iOS UIWebView issue, It seems no problem in WKWebView
-      if (isWebView && e.changedTouches[0].clientY < 0) {
-        this.onTouchEnd();
+    };
+    const reset = () => {
+      _lastScreenY.value = 0;
+      setContentStyle(0);
+    };
+    const setContentStyle = (ty: number) => {
+      // todos: Why sometimes do not have `this.contentRef` ?
+      if (contentRef.value) {
+        setTransform(contentRef.value.style, `translate3d(0px,${ty}px,0)`);
       }
-    }
-  }
+    };
+    onUpdated(() => {
+      if (!props.value) {
+        // triggerPullToRefresh 需要尽可能减少 setState 次数
+        triggerPullToRefresh();
+      }
+    });
+    const instance = getCurrentInstance();
+    onMounted(() => {
+      scrollEl.value = getScrollEventTarget(instance.vnode.el as HTMLElement);
+      // `getScrollContainer` most likely return React.Node at the next tick. Need setTimeout
+      setTimeout(() => {
+        init(props.getScrollContainer() || containerRef.value);
+        triggerPullToRefresh();
+        _isMounted.value = true;
+      });
+    });
+    onBeforeUnmount(() => {
+      // Should have no setTimeout here!
+      destroy(props.getScrollContainer() || containerRef.value);
+    });
 
-  public onTouchEnd() {
-    if (this.dragOnEdge) {
-      this.dragOnEdge = false;
-    }
-    if (this.currSt === 'activate') {
-      this.currSt = 'release';
-      this._timer = setTimeout(() => {
-        if (!this.value) {
-          this.currSt = 'finish';
-          this.reset();
-        }
-        this._timer = undefined;
-      }, 1000);
-      this.setContentStyle(this.indicatorHeight);
-      this.$emit('refresh');
-      this.$emit('update:value', true);
-    } else {
-      this.reset();
-    }
-  }
-
-  public reset() {
-    this._lastScreenY = 0;
-    this.setContentStyle(0);
-  }
-
-  public setContentStyle(ty: number) {
-    // todos: Why sometimes do not have `this.contentRef` ?
-    if (this.contentRef) {
-      setTransform(this.contentRef.style, `translate3d(0px,${ty}px,0)`);
-    }
-  }
-
-  public render() {
+    return {
+      setContainerRef(el) {
+        containerRef.value = el;
+      },
+      setContentRef(el) {
+        contentRef.value = el;
+      },
+      indicator, dragOnEdge, currSt
+    };
+  },
+  render() {
     const {
       prefixCls, getScrollContainer,
       direction, value, indicator, distanceToRefresh, ...restProps
@@ -297,15 +307,15 @@ export default class PullToRefresh extends Vue {
     const renderRefresh = (cls: string) => {
       const cla = classNames(cls, !this.dragOnEdge && `${prefixCls}-transition`);
       return (
-          <div class={`${prefixCls}-content-wrapper`}>
-            <div class={cla} ref={'content'}>
-              {direction === UP ? renderChildren : null}
-              <div class={`${prefixCls}-indicator`}>
-                {indicator[this.currSt] || INDICATOR[this.currSt]}
-              </div>
-              {direction === DOWN ? renderChildren : null}
+        <div class={`${prefixCls}-content-wrapper`}>
+          <div class={cla} ref={this.setContentRef}>
+            {direction === UP ? renderChildren : null}
+            <div class={`${prefixCls}-indicator`}>
+              {indicator[this.currSt] || INDICATOR[this.currSt]}
             </div>
+            {direction === DOWN ? renderChildren : null}
           </div>
+        </div>
       );
     };
 
@@ -313,13 +323,13 @@ export default class PullToRefresh extends Vue {
       return renderRefresh(`${prefixCls}-content ${prefixCls}-${direction}`);
     }
     return (
-        <div
-            ref={'container'}
-            class={classNames(this.className, prefixCls, `${prefixCls}-${direction}`)}
-            {...restProps}
-        >
-          {renderRefresh(`${prefixCls}-content`)}
-        </div>
+      <div
+        ref={this.setContainerRef}
+        class={classNames(this.className, prefixCls, `${prefixCls}-${direction}`)}
+        {...restProps}
+      >
+        {renderRefresh(`${prefixCls}-content`)}
+      </div>
     );
   }
-}
+});

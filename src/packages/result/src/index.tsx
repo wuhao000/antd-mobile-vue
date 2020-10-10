@@ -1,8 +1,6 @@
 /* tslint:disable:jsx-no-multiline-js */
 import classnames from 'classnames';
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent, PropType, VNode} from 'vue';
 import Button from '../../button';
 import {ResultPropsType} from './props-type';
 
@@ -10,30 +8,34 @@ export interface ResultProps extends ResultPropsType {
   prefixCls?: string;
 }
 
-@Component({
-  name: 'MResult'
-})
-export default class Result extends Vue {
-  @Prop({
-    type: String,
-    default: 'am-result'
-  })
-  public prefixCls?: string;
-  @Prop({type: String})
-  public imgUrl?: string;
-  @Prop({type: [String, Object]})
-  public img?: string | VNode;
-  @Prop({type: [String, Object]})
-  public title?: string | VNode;
-  @Prop({type: [String, Object]})
-  public message?: string | VNode;
-  @Prop({type: String})
-  public buttonText?: string;
-  @Prop({default: ''})
-  public buttonType?: 'primary' | 'ghost';
-  public static install: (Vue) => void;
-
-  public render() {
+export default defineComponent({
+  install: null,
+  name: 'MResult',
+  props: {
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-result'
+    },
+    imgUrl: {
+      type: String as PropType<string>
+    },
+    img: {
+      type: [String, Object] as PropType<string | VNode>
+    },
+    title: {
+      type: [String, Object] as PropType<string | VNode>
+    },
+    message: {
+      type: [String, Object] as PropType<string | VNode>
+    },
+    buttonText: {
+      type: String as PropType<string>
+    },
+    buttonType: {
+      default: ''
+    }
+  },
+  render() {
     const {
       prefixCls,
       imgUrl,
@@ -41,7 +43,7 @@ export default class Result extends Vue {
       buttonType
     } = this;
 
-    let imgContent: VNode | null = null;
+    let imgContent: any = null;
     const img = this.$slots.img || this.img;
     const title = this.$slots.title || this.title;
     const message = this.$slots.message || this.message;
@@ -82,4 +84,4 @@ export default class Result extends Vue {
       </div>
     );
   }
-}
+});

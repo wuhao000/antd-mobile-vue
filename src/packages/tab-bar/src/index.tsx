@@ -1,100 +1,102 @@
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Provide, Watch} from 'vue-property-decorator';
+import {defineComponent, getCurrentInstance, onMounted, PropType, provide, reactive, ref, Ref, VNode, watch} from 'vue';
 import Tabs from '../../tabs';
 import Item from './item';
 
 
-@Component({
-  name: 'MTabBar'
-})
-class TabBar extends Vue {
-  @Prop({default: 'am-tab-bar'})
-  public prefixCls?: string;
-  @Prop()
-  public className?: string;
-  @Prop({type: Boolean, default: false})
-  public hidden?: boolean;
-  @Prop({type: String, default: '正在加载'})
-  public placeholder?: string;
-  @Prop()
-  public noRenderContent?: boolean;
-  @Prop({type: Number, default: 1})
-  public prerenderingSiblingsNumber?: number;
-  @Prop({type: String, default: 'white'})
-  public barTintColor?: string;
-  @Prop({type: String, default: '#108ee9'})
-  public tintColor?: string;
-  @Prop({type: String, default: '#888'})
-  public unselectedTintColor?: string;
-  @Prop({type: String, default: 'bottom'})
-  public tabBarPosition?: 'top' | 'bottom';
-  @Prop({type: Boolean, default: false})
-  public animated?: boolean;
-  @Prop({type: Boolean, default: false})
-  public swipeable?: boolean;
-  public static Item = Item;
-  @Provide('tabBar')
-  public tabBar = this;
-  @Provide('store')
-  public store: { currentTab: string | number } = {
-    currentTab: -10000
-  };
-  @Prop({type: [Number, String]})
-  public value: string | number;
-  private content: any[] = [];
-
-  @Watch('value', {immediate: true})
-  public valueChanged(value: number | string) {
-    this.store.currentTab = value;
-  }
-
-  public setCurrentTab(tab: number | string) {
-    this.store.currentTab = tab;
-  }
-
-  @Watch('store.currentTab')
-  public currentTabChanged(value: number | string) {
-    if (this.$listeners.input) {
-      this.$emit('update:value', value);
+const TabBar = defineComponent({
+  Item: Item,
+  name: 'MTabBar',
+  props: {
+    prefixCls: {
+      default: 'am-tab-bar'
+    },
+    className: {},
+    hidden: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    placeholder: {
+      type: String as PropType<string>,
+      default: '正在加载'
+    },
+    noRenderContent: {},
+    prerenderingSiblingsNumber: {
+      type: Number as PropType<number>,
+      default: 1
+    },
+    barTintColor: {
+      type: String as PropType<string>,
+      default: 'white'
+    },
+    tintColor: {
+      type: String as PropType<string>,
+      default: '#108ee9'
+    },
+    unselectedTintColor: {
+      type: String as PropType<string>,
+      default: '#888'
+    },
+    tabBarPosition: {
+      type: String as PropType<'top' | 'bottom'>,
+      default: 'bottom'
+    },
+    animated: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    swipeable: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    value: {
+      type: [Number, String] as PropType<string | number>
     }
-    console.log(this.store.currentTab);
-  }
-
-  private renderTabBar() {
-    let cls = `${this.prefixCls}-bar`;
-    if (this.hidden) {
-      cls += ` ${this.prefixCls}-bar-hidden-${this.tabBarPosition}`;
-    }
-    return <div class={cls} style={{backgroundColor: this.barTintColor}}>
-      {this.$slots.default}
-    </div>;
-  }
-
-  public getTabs() {
-    return this.$slots.default.map((c: VNode, index: number) => {
-      const props = Object.assign({}, c.componentOptions.propsData as any);
-      if (props.icon && !props.selectedIcon) {
-        props.selectedIcon = props.icon;
-      }
-      return {
-        props,
-        onClick: () => {
-          this.store.currentTab = index;
-        }
-      };
+  },
+  setup(props, {emit, slots}) {
+    const store = reactive({
+      currentTab: -10000 as number | string
     });
-  }
+    watch(() => props.value, (value: number | string) => {
+      store.currentTab = value;
+    }, {immediate: true});
+    watch(() => store.currentTab, (value: number | string) => {
+      emit('update:value', value);
+    });
 
-  public mounted() {
-    if (this.$slots.default) {
-      this.content = this.$slots.default.filter(it => it.context).map(it =>
-        it.componentInstance.$slots.default || it.componentInstance.$slots.content || ''
-      );
-    }
-  }
-
-  public render() {
+    const setCurrentTab = (tab: number | string) => {
+      store.currentTab = tab;
+    };
+    const renderTabBar = () => {
+      let cls = `${props.prefixCls}-bar`;
+      if (props.hidden) {
+        cls += ` ${props.prefixCls}-bar-hidden-${props.tabBarPosition}`;
+      }
+      return <div class={cls} style={{backgroundColor: props.barTintColor}}>
+        {slots.default()}
+      </div>;
+    };
+    const getTabs = () => {
+      return slots.default().map((c: VNode, index: number) => {
+        const props = Object.assign({}, c.props as any);
+        if (props.icon && !props.selectedIcon) {
+          props.selectedIcon = props.icon;
+        }
+        return {
+          props,
+          onClick: () => {
+            store.currentTab = index;
+          }
+        };
+      });
+    };
+    const instance = getCurrentInstance();
+    provide('tabBar', instance);
+    provide('store', store);
+    return {
+      getTabs, store, renderTabBar
+    };
+  },
+  render() {
     const {
       prefixCls,
       animated,
@@ -114,11 +116,11 @@ class TabBar extends Vue {
               swipeable={swipeable}
               noRenderContent={noRenderContent}
               prerenderingSiblingsNumber={prerenderingSiblingsNumber}>
-          {this.content}
+          {this.$slots.default()}
         </Tabs>
       </div>
     );
   }
-}
+});
 
 export default TabBar;

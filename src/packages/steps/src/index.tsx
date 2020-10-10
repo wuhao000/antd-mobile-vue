@@ -1,35 +1,51 @@
 import classNames from 'classnames';
-import Vue, {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop, Provide} from 'vue-property-decorator';
+import {defineComponent, getCurrentInstance, PropType, provide, VNode} from 'vue';
 
-@Component({
-  name: 'Step'
-})
-export default class Steps extends Vue {
-
-  @Prop(String)
-  public icon: string;
-  @Prop({type: String, default: 'am-steps'})
-  public prefixCls?: string;
-  @Prop({type: String, default: 'ant'})
-  public iconPrefix?: string;
-  @Prop({type: String, default: 'vertical'})
-  public direction?: string;
-  @Prop({type: String, default: 'vertical'})
-  public labelPlacement?: string;
-  @Prop({type: String, default: 'process'})
-  public status?: 'wait' | 'process' | 'finish' | 'error';
-  @Prop({type: String, default: ''})
-  public size?: string;
-  @Prop({type: Boolean, default: false})
-  public progressDot?: boolean | any;
-  @Prop({type: Number, default: 0})
-  public current?: number;
-  @Provide('steps')
-  public steps = this;
-
-  public render() {
+export default defineComponent({
+  name: 'Step',
+  props: {
+    icon: {
+      type: String as PropType<string>
+    },
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-steps'
+    },
+    iconPrefix: {
+      type: String as PropType<string>,
+      default: 'ant'
+    },
+    direction: {
+      type: String as PropType<string>,
+      default: 'vertical'
+    },
+    labelPlacement: {
+      type: String as PropType<string>,
+      default: 'vertical'
+    },
+    status: {
+      type: String as PropType<'wait' | 'process' | 'finish' | 'error'>,
+      default: 'process'
+    },
+    size: {
+      type: String as PropType<string>,
+      default: ''
+    },
+    progressDot: {
+      type: Boolean as PropType<boolean | any>,
+      default: false
+    },
+    current: {
+      type: Number as PropType<number>,
+      default: 0
+    }
+  },
+  setup(props, {emit, slots}) {
+    const instance = getCurrentInstance();
+    provide('steps', instance);
+    return {};
+  },
+  render() {
     const {
       prefixCls, direction,
       labelPlacement, iconPrefix, status, size, current, progressDot,
@@ -43,60 +59,60 @@ export default class Steps extends Vue {
     });
 
     return (
-        <div class={classString} {...restProps}>
-          {
-            this.$slots.default.map((child: VNode, index) => {
-              if (!child) {
-                return null;
+      <div class={classString} {...restProps}>
+        {
+          this.$slots.default().map((child: VNode, index) => {
+            if (!child) {
+              return null;
+            }
+            const childProps = {
+              stepNumber: index + 1,
+              prefixCls,
+              iconPrefix,
+              icon: child.props.icon || '',
+              wrapperStyle: {},
+              progressDot,
+              status: child.props.status || '',
+              class: ''
+            };
+            let icon = this.icon;
+            if (!icon) {
+              if (index < current) {
+                // 对应 state: finish
+                icon = 'check-circle-o';
+              } else if (index > current) {
+                // 对应 state: wait
+                icon = 'ellipsis';
+                childProps.class = 'ellipsis-item';
               }
-              const childProps = {
-                stepNumber: index + 1,
-                prefixCls,
-                iconPrefix,
-                icon: child.componentOptions.propsData['icon'] || '',
-                wrapperStyle: {},
-                progressDot,
-                status: child.componentOptions.propsData['status'] || '',
-                class: ''
-              };
-              let icon = this.icon;
-              if (!icon) {
-                if (index < current) {
-                  // 对应 state: finish
-                  icon = 'check-circle-o';
-                } else if (index > current) {
-                  // 对应 state: wait
-                  icon = 'ellipsis';
-                  childProps.class = 'ellipsis-item';
-                }
-                if ((status === 'error' && index === current)
-                    || child.componentOptions.propsData['status'] === 'error') {
-                  icon = 'cross-circle-o';
-                }
+              if ((status === 'error' && index === current)
+                || child.props.status === 'error') {
+                icon = 'cross-circle-o';
               }
-              if (icon) {
-                childProps.icon = icon;
+            }
+            if (icon) {
+              childProps.icon = icon;
+            }
+            // fix tail color
+            if (status === 'error' && index === current! - 1) {
+              childProps.class = `${prefixCls}-next-error`;
+            }
+            if (!child.props.status) {
+              if (index === current) {
+                childProps.status = status;
+              } else if (index < current!) {
+                childProps.status = 'finish';
+              } else {
+                childProps.status = 'wait';
               }
-              // fix tail color
-              if (status === 'error' && index === current! - 1) {
-                childProps.class = `${prefixCls}-next-error`;
-              }
-              if (!child.componentOptions.propsData['status']) {
-                if (index === current) {
-                  childProps.status = status;
-                } else if (index < current!) {
-                  childProps.status = 'finish';
-                } else {
-                  childProps.status = 'wait';
-                }
-              }
-              Object.keys(childProps).forEach(key => {
-                child.componentOptions.propsData[key] = childProps[key];
-              });
-              return child;
-            })
-          }
-        </div>
+            }
+            Object.keys(childProps).forEach(key => {
+              child.props[key] = childProps[key];
+            });
+            return child;
+          })
+        }
+      </div>
     );
   }
-}
+});

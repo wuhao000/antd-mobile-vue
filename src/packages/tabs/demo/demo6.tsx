@@ -1,25 +1,26 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {defineComponent} from 'vue';
 import Tabs from '../src';
 
-@Component({
-  name: 'TabsExample'
-})
-export default class TabsExample extends Vue {
-
-  public renderContent(tab) {
-    return (<div key={tab.key} style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '150px',
-      backgroundColor: '#fff'
-    }}>
-      <p>Content of {tab.title}</p>
-    </div>);
-  }
-
-  public render() {
+export default defineComponent({
+  name: 'TabsExample',
+  props: {},
+  setup() {
+    const renderContent = (tab) => {
+      return (<div key={tab.key} style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '150px',
+        backgroundColor: '#fff'
+      }}>
+        <p>Content of {tab.title}</p>
+      </div>);
+    };
+    return {
+      renderContent
+    };
+  },
+  render() {
     const tabs = [
       {title: '1st Tab', key: '1'},
       {title: '2nd Tab', key: '2'},
@@ -35,7 +36,8 @@ export default class TabsExample extends Vue {
     return (
       <div>
         <m-white-space/>
-        <m-tabs tabs={tabs} renderTabBar={props => <Tabs.DefaultTabBar attrs={props} page={3}/>}>
+        <m-tabs tabs={tabs} renderTabBar={props => <Tabs.DefaultTabBar
+          {...props} page={3}/>}>
           {
             tabs.map(tab => this.renderContent(tab))
           }
@@ -44,4 +46,4 @@ export default class TabsExample extends Vue {
       </div>
     );
   }
-}
+});

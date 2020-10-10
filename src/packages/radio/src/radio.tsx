@@ -1,37 +1,46 @@
-import classnames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
 import RcCheckbox from 'ant-design-vue/lib/vc-checkbox';
+import classnames from 'classnames';
+import {defineComponent, PropType, ref} from 'vue';
 
 
-@Component({
-  name: 'MRadio'
-})
-class Radio extends Vue {
-  @Prop({type: String, default: 'am-radio'})
-  public prefixCls?: string;
-  @Prop({type: String})
-  public listPrefixCls?: string;
-  @Prop({type: Boolean, default: false})
-  public disabled?: boolean;
-  @Prop({type: String})
-  public name?: string;
-  @Prop({default: true})
-  public wrapLabel?: boolean;
-  public static RadioItem: any;
-  public static install: (Vue) => void;
-  @Prop({type: Boolean, default: false})
-  public value: boolean;
-  public checked = this.value || false;
-
-
-  public onClick() {
-    this.checked = !this.checked;
-    this.$emit('change', this.checked);
-  }
-
-  public render() {
+const Radio = defineComponent({
+  RadioItem: null,
+  install: null,
+  name: 'MRadio',
+  props: {
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-radio'
+    },
+    listPrefixCls: {
+      type: String as PropType<string>
+    },
+    disabled: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    name: {
+      type: String as PropType<string>
+    },
+    wrapLabel: {
+      default: true
+    },
+    value: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    }
+  },
+  setup(props, {emit, slots}) {
+    const checked = ref(props.value || false);
+    const onClick = () => {
+      checked.value = !checked.value;
+      emit('change', checked.value);
+    };
+    return {
+      onClick
+    };
+  },
+  render() {
     const {...restProps} = this.$props;
     const {prefixCls} = restProps;
     const wrapCls = classnames(`${prefixCls}-wrapper`);
@@ -43,7 +52,7 @@ class Radio extends Vue {
     const mark = (
       <label class={wrapCls}
              onClick={this.onClick}>
-        <RcCheckbox attrs={this.$props}
+        <RcCheckbox {...this.$props}
                     checked={this.value}
                     type="radio"/>
         {this.$slots.default}
@@ -52,8 +61,8 @@ class Radio extends Vue {
     if (this.wrapLabel) {
       return mark;
     }
-    return <RcCheckbox type="radio" checked={this.value} attrs={this.$props}>{this.$slots.default}</RcCheckbox>;
+    return <RcCheckbox type="radio" checked={this.value} {...this.$props}>{this.$slots.default}</RcCheckbox>;
   }
-}
+});
 
 export default Radio as any;

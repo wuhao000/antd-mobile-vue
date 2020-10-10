@@ -1,11 +1,12 @@
-import {useBaseInputComponent} from '@/packages/mixins/base-input-component';
-import {pureInputComponentProps} from '@/packages/mixins/pure-input-component';
-import {Drawer} from 'ant-design-vue';
 import {defineComponent, PropType, VNode, watch} from 'vue';
+import {useBaseInputComponent} from '../../mixins/base-input-component';
+import {pureInputComponentProps} from '../../mixins/pure-input-component';
+import Modal from '../../modal';
 import Touchable from '../../vmc-feedback/feedback';
 
 
 const Popup = defineComponent({
+  inheritAttrs: false,
   name: 'MPopup',
   props: {
     ...pureInputComponentProps,
@@ -83,12 +84,13 @@ const Popup = defineComponent({
     };
     const getProps = () => {
       return {
+        ...props,
         title: renderHeader(),
         height: props.height || 'auto',
         width: props.width || 'auto',
         disabled: isDisabled.value,
-        placement: props.placement,
-        visible: isDisabled.value ? false : stateValue.value
+        position: props.placement,
+        open: isDisabled.value ? false : stateValue.value
       };
     };
     const getListeners = () => {
@@ -101,7 +103,7 @@ const Popup = defineComponent({
       };
     };
     const getInputComponent = () => {
-      return Drawer;
+      return Modal;
     };
     const renderHeader = () => {
       return props.showTitle ? <div class={props.prefixCls + '-title-wrap'}>

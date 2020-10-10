@@ -1,64 +1,66 @@
-import Component from 'vue-class-component';
-import {Prop, Watch} from 'vue-property-decorator';
-import OptionsBasedComponent from '../../mixins/options-based-component';
+import {defineComponent, getCurrentInstance, onMounted, PropType, ref, watch} from 'vue';
 import List from '../../list';
+import {optionsBasedComponentProps, useOptionsBaseComponent} from '../../mixins/options-based-component';
 import RadioItem from './radio-item';
 
-@Component({
-  name: 'MRadioList'
-})
-export default class MRadioList extends OptionsBasedComponent {
-
-  @Prop({})
-  public value: any;
-  public stateValue = this.value !== undefined ? this.value : null;
-  @Prop({type: String})
-  private title: string;
-  @Prop({type: Number})
-  public maxHeightPercentage: number;
-
-  @Watch('value')
-  public valueChanged(value: any[]) {
-    this.stateValue = value;
-  }
-
-  public mounted() {
-    if (this.maxHeightPercentage) {
-      const windowHeight = document.body.clientHeight;
-      const maxHeight = this.maxHeightPercentage;
-      if (this.$el.clientHeight > windowHeight * maxHeight) {
-        (this.$el as HTMLElement).style.height = windowHeight * maxHeight + 'px';
-      }
+export default defineComponent({
+  name: 'MRadioList',
+  props: {
+    ...optionsBasedComponentProps,
+    value: {},
+    title: {
+      type: String as PropType<string>
+    },
+    maxHeightPercentage: {
+      type: Number as PropType<number>
     }
-  }
+  },
+  setup(props, {emit, slots, attrs}) {
+    const instance = getCurrentInstance();
+    const {getOptions, isDisabled} = useOptionsBaseComponent(props, {emit, slots, attrs});
+    const stateValue = ref(props.value !== undefined ? props.value : null);
+    watch(() => props.value, (value: any) => {
+      stateValue.value = value;
+    });
 
-  public render() {
+    const renderOptions = () => {
+      const options = getOptions();
+      if (options) {
+        return options.map(option => {
+          return <RadioItem
+            {...{disabled: option.disabled || isDisabled.value}}
+            value={stateValue.value === option.value}
+            onChange={(checkState) => {
+              onChange(checkState, option.value);
+            }}>{option.label}</RadioItem>;
+        });
+      } else {
+        return [];
+      }
+    };
+    const onChange = (checkState: any, value: any) => {
+      if (checkState) {
+        stateValue.value = value;
+      }
+      emit('update:value', value);
+      emit('change', value);
+    };
+    onMounted(() => {
+      if (props.maxHeightPercentage) {
+        const windowHeight = document.body.clientHeight;
+        const maxHeight = props.maxHeightPercentage;
+        if (instance.vnode.el.clientHeight > windowHeight * maxHeight) {
+          (instance.vnode.el as HTMLElement).style.height = windowHeight * maxHeight + 'px';
+        }
+      }
+    });
+    return {
+      renderOptions
+    };
+  },
+  render() {
     return <List required={this.required} title={this.title}>
       {this.renderOptions()}
     </List>;
   }
-
-  private renderOptions() {
-    const options = this.getOptions();
-    if (options) {
-      return options.map(option => {
-        return <RadioItem
-          {...{disabled: option.disabled || this.isDisabled}}
-          value={this.stateValue === option.value}
-          onChange={(checkState) => {
-            this.onChange(checkState, option.value);
-          }}>{option.label}</RadioItem>;
-      });
-    } else {
-      return [];
-    }
-  }
-
-  private onChange(checkState: any, value: any) {
-    if (checkState) {
-      this.stateValue = value;
-    }
-    this.$emit('update:value', value);
-    this.$emit('change', value);
-  }
-}
+});

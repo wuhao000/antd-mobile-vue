@@ -13,7 +13,7 @@ export default class DatePickerItem extends BaseInputComponent {
   public title: string;
 
   public render() {
-    return <DatePicker attrs={this.$attrs}
+    return <DatePicker {...this.$attrs}
                        disabled={this.isDisabled}
                        editable={!this.isReadonly}
                        value={this.stateValue}

@@ -1,6 +1,5 @@
 /* tslint:disable:no-console */
-import {defineComponent, PropType, ref, Ref, VNode} from 'vue';
-import {cloneElement} from '../utils/vnode';
+import {cloneVNode, defineComponent, PropType, ref, Ref, VNode} from 'vue';
 import {DIRECTION_ALL, DIRECTION_HORIZONTAL, DIRECTION_VERTICAL, PRESS} from './config';
 import {
   calcMoveStatus,
@@ -541,7 +540,8 @@ const Gesture = defineComponent({
     };
   },
   render() {
-    const child: VNode = this.$slots.default.length >= 1 ? this.$slots.default[0] : null;
+    const children = this.$slots.default();
+    const child: VNode = children.length >= 1 ? children[0] : null;
     const touchAction = this.getTouchAction();
 
     child.props = Object.assign({
@@ -550,7 +550,7 @@ const Gesture = defineComponent({
       onTouchcancel: this._handleTouchCancel,
       onTouchend: this._handleTouchEnd
     }, child.props || {});
-    return cloneElement(child, {
+    return cloneVNode(child, {
       style: {
         touchAction
       }

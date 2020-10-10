@@ -3,9 +3,8 @@ import {Models} from '../../../types/models';
 import Gesture, {IGestureStatus} from '../../vmc-gesture';
 import {getPxStyle, getTransformPropValue, setPxStyle} from './utils';
 
-let instanceId: number = 0;
-
 const DefaultTabBar = defineComponent({
+  inheritAttrs: false,
   name: 'DefaultTabBar',
   props: {
     card: {
@@ -70,7 +69,7 @@ const DefaultTabBar = defineComponent({
       }
     }
   },
-  setup(props, {emit, slots}) {
+  setup(props, {emit}) {
     const instanceId: Ref<number> = ref(null);
     const isMoving: Ref<boolean> = ref(false);
     const showPrev: Ref<boolean> = ref(false);
@@ -226,7 +225,6 @@ const DefaultTabBar = defineComponent({
     const Tabs = tabs.map((t, i) => {
       return this.nativeRenderTab(t, i, size, isTabBarVertical);
     });
-
     let cls = prefixCls;
     if (animated && !isMoving) {
       cls += ` ${prefixCls}-animated`;

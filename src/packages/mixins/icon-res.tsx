@@ -33,7 +33,7 @@ class IconRes extends Vue {
       } else if ((icon as IconResProps).iconType === 'img') {
         return <img src={icon} {...icon} alt={''}/>;
       } else if ((icon as IconResProps).iconType === 'icon') {
-        return <Icon {...{props: icon}}/>;
+        return <Icon {...icon}/>;
       }
     }
   }

@@ -1,51 +1,53 @@
 import classnames from 'classnames';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
+import {defineComponent, onMounted, PropType, ref, Ref} from 'vue';
 
-@Component({
-  name: 'Progress'
-})
-class Progress extends Vue {
-  @Prop({
-    type: String,
-    default: 'am-progress'
-  })
-  public prefixCls?: string;
-  @Prop({})
-  public barStyle?: any;
-  @Prop({
-    type: Number,
-    default: 0
-  })
-  public percent?: number;
-  @Prop({default: 'fixed'})
-  public position?: 'fixed' | 'normal';
-  @Prop({
-    type: Boolean,
-    default: true
-  })
-  public unfilled?: boolean;
-  @Prop({
-    type: Boolean,
-    default: false
-  })
-  public appearTransition?: boolean;
-  public barRef: HTMLDivElement | null;
-  private noAppearTransition: boolean = true;
-  public static install: (Vue) => void;
-
-  public mounted() {
-    if (this.appearTransition) {
-      setTimeout(() => {
-        if (this.barRef) {
-          this.barRef.style.width = `${this.percent}%`;
-        }
-      }, 10);
+const Progress = defineComponent({
+  install: null,
+  name: 'Progress',
+  props: {
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'am-progress'
+    },
+    barStyle: {
+      type: Object
+    },
+    percent: {
+      type: Number as PropType<number>,
+      default: 0
+    },
+    position: {
+      default: 'fixed'
+    },
+    unfilled: {
+      type: Boolean as PropType<boolean>,
+      default: true
+    },
+    appearTransition: {
+      type: Boolean as PropType<boolean>,
+      default: false
     }
-  }
+  },
+  setup(props, {emit, slots}) {
+    const barRef: Ref<HTMLDivElement | null> = ref(null);
+    const noAppearTransition: Ref<boolean> = ref(true);
 
-  public render() {
+
+    onMounted(() => {
+      if (props.appearTransition) {
+        setTimeout(() => {
+          if (barRef.value) {
+            barRef.value.style.width = `${props.percent}%`;
+          }
+        }, 10);
+      }
+    });
+
+    return {
+      noAppearTransition, barRef
+    };
+  },
+  render() {
     const {
       prefixCls,
       position,
@@ -54,9 +56,9 @@ class Progress extends Vue {
     } = this;
     const percentStyle = {
       width:
-          this.noAppearTransition || !this.appearTransition
-              ? `${this.percent}%`
-              : 0,
+        this.noAppearTransition || !this.appearTransition
+          ? `${this.percent}%`
+          : 0,
       height: 0
     };
 
@@ -66,21 +68,21 @@ class Progress extends Vue {
     });
 
     return (
+      <div
+        class={wrapCls}
+        role="progressbar"
+        aria-valuenow={this.percent}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
         <div
-            class={wrapCls}
-            role="progressbar"
-            aria-valuenow={this.percent}
-            aria-valuemin={0}
-            aria-valuemax={100}
-        >
-          <div
-              ref={el => (this.barRef = el)}
-              class={`${prefixCls}-bar`}
-              style={{...barStyle, ...percentStyle}}
-          />
-        </div>
+          ref={el => (this.barRef = el)}
+          class={`${prefixCls}-bar`}
+          style={{...barStyle, ...percentStyle}}
+        />
+      </div>
     );
   }
-}
+});
 
 export default Progress;

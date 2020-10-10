@@ -29,8 +29,8 @@ class DatePickerView extends DatePickerProps {
     // Here Use `date` instead of `defaultDate`, make it controlled fully.
     return (
         <RCDatePicker
-            props={
-              {
+            {
+              ...{
                 ...this.$props,
                 locale,
                 date: this.value

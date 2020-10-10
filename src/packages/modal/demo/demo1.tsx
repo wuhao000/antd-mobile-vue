@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {defineComponent, reactive} from 'vue';
 import {Button, Icon, List, Modal, WhiteSpace, WingBlank} from '../../index';
 
 function closest(el, selector) {
@@ -14,42 +13,44 @@ function closest(el, selector) {
   return null;
 }
 
-@Component({
-  name: 'ModalExample'
-})
+export default defineComponent({
+  name: 'ModalExample',
+  props: {},
+  setup(props, {emit, slots}) {
+    const state = reactive({
+      modal1: false,
+      modal2: false
+    });
 
-export default class ModalExample extends Vue {
 
-  public state = {
-    modal1: false,
-    modal2: false
-  };
-
-  public showModal(key) {
-    return (e) => {
-      e.preventDefault(); // 修复 Android 上点击穿透
-      this.state[key] = true;
+    const showModal = (key) => {
+      return (e) => {
+        e.preventDefault(); // 修复 Android 上点击穿透
+        state[key] = true;
+      };
     };
-  }
-
-  public onClose(key) {
-    return () => {
-      this.state[key] = false;
+    const onClose = (key) => {
+      return () => {
+        state[key] = false;
+      };
     };
-  }
+    const onWrapTouchStart = (e) => {
+      // fix touch to scroll background page on iOS
+      if (!/iPhone|iPod|iPad/i.test(navigator.userAgent)) {
+        return;
+      }
+      const pNode = closest(e.target, '.am-modal-content');
+      if (!pNode) {
+        e.preventDefault();
+      }
+    };
 
-  public onWrapTouchStart(e) {
-    // fix touch to scroll background page on iOS
-    if (!/iPhone|iPod|iPad/i.test(navigator.userAgent)) {
-      return;
-    }
-    const pNode = closest(e.target, '.am-modal-content');
-    if (!pNode) {
-      e.preventDefault();
-    }
-  }
 
-  public render() {
+    return {
+      showModal, state, onClose, onWrapTouchStart
+    };
+  },
+  render() {
     return (
       <WingBlank>
         <Button onClick={this.showModal('modal1')}><Icon type="up"/>basic<Icon type="up"/></Button>
@@ -66,7 +67,7 @@ export default class ModalExample extends Vue {
               this.onClose('modal1')();
             }
           }]}
-          wrapProps={{onTouchStart: this.onWrapTouchStart.bind(this)}}
+          wrapProps={{onTouchStart: this.onWrapTouchStart}}
           afterClose={() => {
             alert('afterClose');
           }}
@@ -101,4 +102,4 @@ export default class ModalExample extends Vue {
       </WingBlank>
     );
   }
-}
+});

@@ -94,9 +94,7 @@ const CheckboxItem = defineComponent({
     return (
       // @ts-ignore
       <List.Item
-        {...{
-          ...restProps
-        }}
+        {...restProps}
         touchFeedback={!this.disabled}
         onClick={this.onClick}
         prefixCls={listPrefixCls}

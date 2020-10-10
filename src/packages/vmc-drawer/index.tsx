@@ -20,6 +20,7 @@ const CANCEL_DISTANCE_ON_SCROLL = 20;
 
 
 const Drawer = defineComponent({
+  inheritAttrs: false,
   name: 'Drawer',
   props: {
     prefixCls: {

@@ -1,8 +1,6 @@
 import classNames from 'classnames';
-import {VNode} from 'vue';
-import Component from 'vue-class-component';
-import {Prop} from 'vue-property-decorator';
-import BaseComponent from './base';
+import {defineComponent, onBeforeUpdate, onMounted, PropType, ref, Ref, VNode} from 'vue';
+import {baseComponentProps, useBaseComponent} from './base';
 import InputHandler from './input-handler';
 
 function noop() {
@@ -12,76 +10,88 @@ function preventDefault(e: any) {
   e.preventDefault();
 }
 
-@Component({
-  name: 'InputNumber'
-})
-class InputNumber extends BaseComponent {
+const InputNumber = defineComponent({
+  name: 'InputNumber',
+  props: {
+    ...baseComponentProps,
+    valueEditable: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    focusOnUpDown: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    prefixCls: {
+      type: String as PropType<string>,
+      default: 'rmc-input-number'
+    },
+    tabIndex: {
+      type: Number as PropType<number>
+    },
+    upHandler: {
+      type: Object as PropType<VNode>
+    },
+    downHandler: {
+      type: Object as PropType<VNode>
+    },
+    formatter: {
+      type: Function as PropType<(v: any) => void>
+    }
+  },
+  setup(props, {emit, slots, attrs}) {
+    const {state, stop, up, onFocus, onBlur, onChange, down, toPrecisionAsStep} = useBaseComponent(props, {emit});
+    const start: Ref<any> = ref(null);
+    const end: Ref<any> = ref(null);
 
-  @Prop({type: Boolean, default: false})
-  public valueEditable: boolean;
-  @Prop({type: Boolean, default: false})
-  public focusOnUpDown?: boolean;
-  @Prop({type: String, default: 'rmc-input-number'})
-  public prefixCls?: string;
-  @Prop(Number)
-  public tabIndex?: number;
-  @Prop(Object)
-  public upHandler?: VNode;
-  @Prop(Object)
-  public downHandler?: VNode;
-  @Prop(Function)
-  public formatter?: (v: any) => void;
-
-  public start: any;
-  public end: any;
-
-  get input(): any {
-    return this.$refs.input;
-
-  }
-
-  public update() {
-    if (this.focusOnUpDown && this.state.focused) {
-      const selectionRange = this.input.setSelectionRange;
-      if (selectionRange &&
-        typeof selectionRange === 'function' &&
-        this.start !== undefined &&
-        this.end !== undefined &&
-        this.start !== this.end) {
-        this.input.setSelectionRange(this.start, this.end);
-      } else {
-        this.focus();
+    const inputRef = ref(null);
+    const update = () => {
+      if (props.focusOnUpDown && state.focused) {
+        const selectionRange = inputRef.value.setSelectionRange;
+        if (selectionRange &&
+          typeof selectionRange === 'function' &&
+          start.value !== undefined &&
+          end.value !== undefined &&
+          start.value !== end.value) {
+          inputRef.value.setSelectionRange(start.value, end.value);
+        } else {
+          focus();
+        }
       }
-    }
-  }
+    };
+    const focus = () => {
+      inputRef.value.focus();
+    };
+    const formatWrapper = (num: any) => {
+      if (props.formatter) {
+        return props.formatter(num);
+      }
+      return num;
+    };
+    onMounted(() => {
+      update();
+    });
+    onBeforeUpdate(() => {
+      try {
+        start.value = inputRef.value.selectionStart;
+        end.value = inputRef.value.selectionEnd;
+      } catch (e) {
+        // Fix error in Chrome:
+        // Failed to read the 'selectionStart' property from 'HTMLInputElement'
+        // http://stackoverflow.com/q/21177489/3040605
+      }
+    });
 
-  public mounted() {
-    this.update();
-  }
-
-  public beforeUpdate() {
-    try {
-      this.start = this.input.selectionStart;
-      this.end = this.input.selectionEnd;
-    } catch (e) {
-      // Fix error in Chrome:
-      // Failed to read the 'selectionStart' property from 'HTMLInputElement'
-      // http://stackoverflow.com/q/21177489/3040605
-    }
-  }
-
-  public focus() {
-    this.input.focus();
-  }
-
-  public formatWrapper(num: any) {
-    if (this.formatter) {
-      return this.formatter(num);
-    }
-    return num;
-  }
-
-  public render() {
+    return {
+      state, toPrecisionAsStep,
+      stop, up, down, formatWrapper,
+      onFocus, onBlur, onChange,
+      setInputRef(el) {
+        inputRef.value = el;
+      }
+    };
+  },
+  render() {
     const {prefixCls = '', disabled, readOnly, max, step, valueEditable, autoFocus, tabIndex, min} = this;
     const classes = classNames({
       [prefixCls]: true,
@@ -162,7 +172,7 @@ class InputNumber extends BaseComponent {
             class={`${prefixCls}-handler ${prefixCls}-handler-up ${upDisabledClass}`}
           >
             {this.upHandler || <span
-                unselectable="unselectable"
+                unselectable="off"
                 class={`${prefixCls}-handler-up-inner`}
                 onClick={preventDefault}
             />}
@@ -177,7 +187,7 @@ class InputNumber extends BaseComponent {
             aria-disabled={isDownDisabled}
             class={`${prefixCls}-handler ${prefixCls}-handler-down ${downDisabledClass}`}>
             {this.downHandler || <span
-                unselectable="unselectable"
+                unselectable="off"
                 class={`${prefixCls}-handler-down-inner`}
                 onClick={preventDefault}
             />}
@@ -192,24 +202,24 @@ class InputNumber extends BaseComponent {
         >
           <input
             class={`${prefixCls}-input`}
-            tabIndex={tabIndex}
-            autoComplete="off"
+            tabindex={tabIndex}
+            autocomplete="off"
             onFocus={this.onFocus}
             onBlur={this.onBlur}
-            autoFocus={autoFocus}
-            readOnly={readOnly || !valueEditable}
+            autofocus={autoFocus}
+            readonly={readOnly || !valueEditable}
             disabled={disabled}
             max={max}
             min={min}
             step={step}
             onChange={this.onChange}
-            ref="input"
+            ref={this.setInputRef}
             value={inputDisplayValueFormat}
           />
         </div>
       </div>
     );
   }
-}
+});
 
 export default InputNumber as any;

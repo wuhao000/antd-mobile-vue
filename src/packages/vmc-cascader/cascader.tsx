@@ -1,128 +1,107 @@
 import arrayTreeFilter from 'array-tree-filter';
-import Vue from 'vue';
-import Component from 'vue-class-component';
-import {Inject, Prop} from 'vue-property-decorator';
+import {defineComponent, inject, onBeforeUpdate, PropType, reactive} from 'vue';
 import MultiPicker from '../vmc-picker/multi-picker';
 import Picker from '../vmc-picker/picker';
-import {CascaderValue, ICascaderDataItem} from './cascader-types';
 
-@Component({
-  name: 'Cascader'
-})
-export default class Cascader extends Vue {
-  @Prop()
-  public defaultValue?: CascaderValue;
-  @Prop()
-  public value?: CascaderValue;
-  @Prop({
-    default: () => {
-      return [];
+const Cascader = defineComponent({
+  name: 'Cascader',
+  props: {
+    defaultValue: {},
+    value: {},
+    data: {
+      type: Array as PropType<any[]>,
+      default: () => {
+        return [];
+      }
+    },
+    cols: {
+      default: 3
+    },
+    disabled: {
+      type: Boolean as PropType<boolean>,
+      default: false
+    },
+    pickerItemStyle: {},
+    indicatorStyle: {},
+    prefixCls: {
+      default: 'rmc-cascader'
+    },
+    pickerPrefixCls: {
+      default: 'rmc-picker'
     }
-  })
-  public data: ICascaderDataItem[];
-  @Prop({default: 3})
-  public cols?: number;
-  @Prop({type: Boolean, default: false})
-  public disabled?: boolean;
-  @Prop()
-  public pickerItemStyle?: {};
-  @Prop()
-  public indicatorStyle?: {};
-  @Prop({default: 'rmc-cascader'})
-  public prefixCls?: string;
-  @Prop({default: 'rmc-picker'})
-  public pickerPrefixCls?: string;
-  @Inject({from: 'store', default: undefined})
-  public store: {
-    onDismiss: () => void;
-    onOk: (...args: any) => any
-  };
-  public state = {
-    value: this.getValue(this.data, this.defaultValue || this.value)
-  };
-
-  private onOk() {
-    this.$emit('update:value', this.state.value);
-    this.$emit('change', this.state.value);
-  }
-
-  private onDismiss() {
-    this.state.value = this.getValue(this.data, this.defaultValue || this.value);
-    this.$emit('dismiss', this.state.value);
-  }
-
-  public created() {
-    if (this.store) {
-      this.store.onOk = this.onOk;
-      this.store.onDismiss = this.onDismiss;
-    }
-  }
-
-  public onScrollChange() {
-    this.$emit('scroll-change');
-  }
-
-  public beforeUpdate() {
-    if (this.value !== undefined) {
-      this.value = this.getValue(this.data, this.value);
-    }
-  }
-
-  public onValueChange(value, index) {
-    const children = arrayTreeFilter(this.data, (c, level) => {
-      return level <= index && c.value === value[level];
-    });
-    let data = children[index];
-    let i;
-    for (i = index + 1; data && data.children && data.children.length && i < this.cols!; i++) {
-      data = data.children[0];
-      value[i] = data.value;
-    }
-    value.length = i;
-    this.state.value = value;
-    this.$emit('change', value, index);
-  }
-
-  public getValue(d, val) {
-    let data = d || this.data;
-    let value = val || this.value || this.defaultValue;
-    if (!value || !value.length || value.indexOf(undefined) > -1) {
-      value = [];
-      for (let i = 0; i < this.cols!; i++) {
-        if (data && data.length) {
-          value[i] = data[0].value;
-          data = data[0].children;
+  },
+  setup(props, {emit}) {
+    const store: {
+      onDismiss: () => void;
+      onOk: (...args: any) => any
+    } = inject('store', undefined);
+    const getValue = (d, val) => {
+      let data = d || props.data;
+      let value = val || props.value || props.defaultValue;
+      if (!value || !value.length || value.indexOf(undefined) > -1) {
+        value = [];
+        for (let i = 0; i < props.cols!; i++) {
+          if (data && data.length) {
+            value[i] = data[0].value;
+            data = data[0].children;
+          }
         }
       }
-    }
-    return value;
-  }
-
-  public getCols() {
-    const {data, cols, pickerPrefixCls, disabled, pickerItemStyle, indicatorStyle} = this;
-    const value = this.state.value;
-    const childrenTree = arrayTreeFilter(data, (c, level) => {
-      return c.value === value[level];
-    }).map(c => c.children);
-
-    // in case the users data is async get when select change
-    const needPad = cols! - childrenTree.length;
-    if (needPad > 0) {
-      for (let i = 0; i < needPad; i++) {
-        childrenTree.push([]);
+      return value;
+    };
+    const state = reactive({
+      value: getValue(props.data, props.defaultValue || props.value)
+    });
+    const onOk = () => {
+      emit('update:value', state.value);
+      emit('change', state.value);
+    };
+    const onDismiss = () => {
+      state.value = getValue(props.data, props.defaultValue || props.value);
+      emit('dismiss', state.value);
+    };
+    const onScrollChange = () => {
+      emit('scroll-change');
+    };
+    const onValueChange = (value, index) => {
+      const children = arrayTreeFilter(props.data, (c, level) => {
+        return level <= index && c.value === value[level];
+      });
+      let data = children[index];
+      let i;
+      for (i = index + 1; data && data.children && data.children.length && i < props.cols!; i++) {
+        data = data.children[0];
+        value[i] = data.value;
       }
-    }
-    childrenTree.length = cols! - 1;
-    childrenTree.unshift(data);
-    return childrenTree.map((children: any[] = [], level) => (
+      value.length = i;
+      state.value = value;
+      emit('change', value, index);
+    };
+    const getCols = () => {
+      const {data, cols, pickerPrefixCls, disabled, pickerItemStyle, indicatorStyle} = props;
+      const value = state.value;
+      const childrenTree = arrayTreeFilter(data, (c, level) => {
+        return c.value === value[level];
+      }).map(c => c.children);
+
+      // in case the users data is async get when select change
+      const needPad = cols! - childrenTree.length;
+      if (needPad > 0) {
+        for (let i = 0; i < needPad; i++) {
+          childrenTree.push([]);
+        }
+      }
+      childrenTree.length = cols! - 1;
+      childrenTree.unshift(data);
+      return childrenTree.map((children: any[] = [], level) => (
         // @ts-ignore
         <Picker
-            key={level}
-            prefixCls={pickerPrefixCls}
-            style={{flex: 1}}
-            disabled={disabled}
-            itemStyle={pickerItemStyle}
-            indicatorStyle={indicatorStyle}>
+          key={level}
+          prefixCls={pickerPrefixCls}
+          style={{flex: 1}}
+          disabled={disabled}
+          itemStyle={pickerItemStyle}
+          indicatorStyle={indicatorStyle}>
           {
             children.map(item => {
               // @ts-ignore
@@ -132,10 +111,25 @@ export default class Cascader extends Vue {
             })
           }
         </Picker>
-    ));
-  }
+      ));
+    };
+    {
+      if (store) {
+        store.onOk = onOk;
+        store.onDismiss = onDismiss;
+      }
+    }
+    onBeforeUpdate(() => {
+      if (props.value !== undefined) {
+        state.value = getValue(props.data, props.value);
+      }
+    });
 
-  public render() {
+    return {
+      getCols, state, onValueChange, onScrollChange
+    };
+  },
+  render() {
     const props = this.$props;
     const {prefixCls} = props;
     const cols = this.getCols();
@@ -144,16 +138,17 @@ export default class Cascader extends Vue {
       alignItems: 'center'
     };
     return (
-        // @ts-ignore
-        <MultiPicker
-            style={multiStyle}
-            prefixCls={prefixCls}
-            selectedValue={this.state.value}
-            onValueChange={this.onValueChange}
-            onInput={this.onValueChange}
-            onScrollChange={this.onScrollChange}>
-          {cols}
-        </MultiPicker>
+      // @ts-ignore
+      <MultiPicker
+        style={multiStyle}
+        prefixCls={prefixCls}
+        selectedValue={this.state.value}
+        onValueChange={this.onValueChange}
+        onInput={this.onValueChange}
+        onScrollChange={this.onScrollChange}>
+        {cols}
+      </MultiPicker>
     );
   }
-}
+});
+export default Cascader as any;

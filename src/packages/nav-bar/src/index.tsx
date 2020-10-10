@@ -61,4 +61,4 @@ const NavBar = defineComponent({
   }
 });
 
-export default NavBar;
+export default NavBar as any;

@@ -45,7 +45,7 @@ export default class BasicInput extends Vue {
   public render(): any {
     return (<form>
       <List ref="form"
-            attrs={{model: this.data}}
+            {...{model: this.data}}
             renderHeader={() => 'Form Validation'}
             renderFooter={() => 'abc'}>
         <Input clear vModel={this.data2.account}
