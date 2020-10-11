@@ -1,3 +1,4 @@
+import {filterHTMLAttrs} from '../../utils/dom';
 import classNames from 'classnames';
 import {
   computed,
@@ -48,6 +49,7 @@ const willPreventDefault = supportsPassive ? {passive: false} : false;
 type ICurrSt = 'activate' | 'deactivate' | 'release' | 'finish';
 
 export default defineComponent({
+  inheritAttrs: false,
   name: 'PullToRefresh',
   props: {
     activateText: {
@@ -302,8 +304,7 @@ export default defineComponent({
       direction, value, indicator, distanceToRefresh, ...restProps
     } = this;
 
-    const renderChildren = <div>{this.$slots.default}</div>;
-
+    const renderChildren = <div>{this.$slots.default()}</div>;
     const renderRefresh = (cls: string) => {
       const cla = classNames(cls, !this.dragOnEdge && `${prefixCls}-transition`);
       return (
@@ -326,7 +327,7 @@ export default defineComponent({
       <div
         ref={this.setContainerRef}
         class={classNames(this.className, prefixCls, `${prefixCls}-${direction}`)}
-        {...restProps}
+        {...filterHTMLAttrs(restProps)}
       >
         {renderRefresh(`${prefixCls}-content`)}
       </div>

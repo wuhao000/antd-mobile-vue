@@ -28,7 +28,7 @@ Chart| 图表组件
 --- | :---: | :---: | :---: | ---
 Accordion | √ | √ | √
 ActionSheet | √ | 
-ActivityIndicator | √ | √ / √ 
+ActivityIndicator | √ | √ | √ 
 Badge | √ | √ | √
 Button | √ | √ | √
 Calendar | √ |  | √
@@ -54,10 +54,10 @@ Pagination | √ | √ | √
 Picker | √ |  | √
 PickerView | √ | 
 Popover | √ |  | √
-Progress | √ | 
+Progress | √ | √ | √
 Radio | √ |  | √
-PullToRefresh | √ | 
-Result | √ | √ / √ 
+PullToRefresh | √ | √ | √   
+Result | √ | √ | √ 
 SearchBar | √ | 
 SegmentedControl | √ |  | √
 Slider | √ | 
@@ -68,8 +68,8 @@ SwipeAction | √ |  [无]
 Switch | √ | √ 
 TabBar | √ |  | √
 Tabs | √ | √ | √
-Tag | √ | √ / √ 
-TextareaItem | √ | √ / √ 
+Tag | √ | √ | √ 
+TextareaItem | √ | √ | √ 
 Toast | √ | √ | √ 
 WhiteSpace | √ | √ | √
 WingBlank | √ | √ | √

@@ -58,7 +58,7 @@ const MPopover = defineComponent({
     }
     // @ts-ignore
     return <Popover {...popoverProps}>
-      {this.$slots.default}
+      {this.$slots.default()}
       {this.mask ? <div onClick={(e) => {
         if (!this.maskClosable) {
           e.stopPropagation();

@@ -1,4 +1,6 @@
+import {filterHTMLAttrs} from '@/packages/utils/dom';
 import classNames from 'classnames';
+import {Icon} from '../../index';
 import {defineComponent, getCurrentInstance, PropType, provide, VNode} from 'vue';
 
 export default defineComponent({
@@ -40,7 +42,7 @@ export default defineComponent({
       default: 0
     }
   },
-  setup(props, {emit, slots}) {
+  setup() {
     const instance = getCurrentInstance();
     provide('steps', instance);
     return {};
@@ -57,62 +59,60 @@ export default defineComponent({
       [`${prefixCls}-label-${adjustedlabelPlacement}`]: direction === 'horizontal',
       [`${prefixCls}-dot`]: !!progressDot
     });
-
-    return (
-      <div class={classString} {...restProps}>
-        {
-          this.$slots.default().map((child: VNode, index) => {
-            if (!child) {
-              return null;
-            }
-            const childProps = {
-              stepNumber: index + 1,
-              prefixCls,
-              iconPrefix,
-              icon: child.props.icon || '',
-              wrapperStyle: {},
-              progressDot,
-              status: child.props.status || '',
-              class: ''
-            };
-            let icon = this.icon;
-            if (!icon) {
-              if (index < current) {
-                // 对应 state: finish
-                icon = 'check-circle-o';
-              } else if (index > current) {
-                // 对应 state: wait
-                icon = 'ellipsis';
-                childProps.class = 'ellipsis-item';
-              }
-              if ((status === 'error' && index === current)
-                || child.props.status === 'error') {
-                icon = 'cross-circle-o';
-              }
-            }
-            if (icon) {
-              childProps.icon = icon;
-            }
-            // fix tail color
-            if (status === 'error' && index === current! - 1) {
-              childProps.class = `${prefixCls}-next-error`;
-            }
-            if (!child.props.status) {
-              if (index === current) {
-                childProps.status = status;
-              } else if (index < current!) {
-                childProps.status = 'finish';
-              } else {
-                childProps.status = 'wait';
-              }
-            }
-            Object.keys(childProps).forEach(key => {
-              child.props[key] = childProps[key];
-            });
-            return child;
-          })
+    const content = this.$slots.default().map((child: VNode, index) => {
+      if (!child) {
+        return null;
+      }
+      const childProps = {
+        stepNumber: index + 1,
+        prefixCls,
+        iconPrefix,
+        icon: child.props.icon || '',
+        wrapperStyle: {},
+        progressDot,
+        status: child.props.status || '',
+        class: ''
+      };
+      let icon: any = childProps.icon;
+      if (!icon) {
+        if (index < current) {
+          // 对应 state: finish
+          icon = 'check-circle-o';
+        } else if (index > current) {
+          // 对应 state: wait
+          icon = 'ellipsis';
+          childProps.class = 'ellipsis-item';
         }
-      </div>
+        if ((status === 'error' && index === current)
+            || child.props.status === 'error') {
+          icon = 'cross-circle-o';
+        }
+      }
+      if (icon) {
+        childProps.icon = icon;
+      }
+      // fix tail color
+      if (status === 'error' && index === current! - 1) {
+        childProps.class = `${prefixCls}-next-error`;
+      }
+      if (!child.props.status) {
+        if (index === current) {
+          childProps.status = status;
+        } else if (index < current!) {
+          childProps.status = 'finish';
+        } else {
+          childProps.status = 'wait';
+        }
+      }
+      Object.keys(childProps).forEach(key => {
+        child.props[key] = childProps[key];
+      });
+      return child;
+    });
+    return (
+        <div class={classString} {...filterHTMLAttrs(restProps)}>
+          {content}
+        </div>
     );
   }
 });

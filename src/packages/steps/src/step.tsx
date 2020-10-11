@@ -1,3 +1,4 @@
+import {isVNode} from '@/packages/utils/vnode';
 import classNames from 'classnames';
 import {computed, defineComponent, inject, PropType} from 'vue';
 import Icon from '../../icon';
@@ -95,7 +96,9 @@ export default defineComponent({
                 size={iconSize.value}
                 type={icon}/>
         }</span>;
-      } else if (icon || status === 'finish' || status === 'error') {
+      } else if (isVNode(icon)) {
+        iconNode = <span class={iconClassName}>{icon}</span>;
+      } else if (status === 'finish' || status === 'error') {
         iconNode = <span class={iconClassName}/>;
       } else {
         iconNode = <span class={`${prefixCls}-icon`}>{stepNumber}</span>;
@@ -139,11 +142,11 @@ export default defineComponent({
         <div class={`${prefixCls}-item-content`}>
           <div class={`${prefixCls}-item-title`}>
             {
-              this.$slots?.title() ?? title
+              this.$slots?.title?.() ?? title
             }
           </div>
           {(description || this.$slots.description) && <div class={`${prefixCls}-item-description`}>{
-            this.$slots?.description() ?? description
+            this.$slots?.description?.() ?? description
           }</div>}
         </div>
       </div>
