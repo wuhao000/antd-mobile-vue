@@ -28,11 +28,6 @@ export function filterEmpty(children = []) {
   return children.filter(c => !isEmptyElement(c));
 }
 
-
-export function isVNode(obj: any) {
-  return obj.context && obj.context['_isVue'];
-}
-
 export function isEmptySlot(slot: Slot): boolean {
   if (!slot) {
     return true;

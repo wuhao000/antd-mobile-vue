@@ -1,6 +1,5 @@
-import {isVNode} from '@/packages/utils/vnode';
 import classNames from 'classnames';
-import {computed, defineComponent, inject, PropType} from 'vue';
+import {computed, defineComponent, inject, isVNode, PropType} from 'vue';
 import Icon from '../../icon';
 
 function isString(str) {

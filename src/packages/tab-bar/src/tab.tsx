@@ -1,7 +1,6 @@
-import {defineComponent, PropType} from 'vue';
+import {defineComponent, isVNode, PropType} from 'vue';
 import Badge from '../../badge';
 import IconRes from '../../mixins/icon-res';
-import {isVNode} from '../../utils/vnode';
 
 const Tab = defineComponent({
   name: 'Tab',

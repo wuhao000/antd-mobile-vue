@@ -1,7 +1,7 @@
-import {filterHTMLAttrs} from '@/packages/utils/dom';
 import classNames from 'classnames';
-import {Icon} from '../../index';
 import {defineComponent, getCurrentInstance, PropType, provide, VNode} from 'vue';
+import {filterHTMLAttrs} from '../../utils/dom';
+import {unwrapFragment} from '../../utils/vue';
 
 export default defineComponent({
   name: 'Step',
@@ -59,7 +59,7 @@ export default defineComponent({
       [`${prefixCls}-label-${adjustedlabelPlacement}`]: direction === 'horizontal',
       [`${prefixCls}-dot`]: !!progressDot
     });
-    const content = this.$slots.default().map((child: VNode, index) => {
+    const content = unwrapFragment(this.$slots.default()).map((child: VNode, index) => {
       if (!child) {
         return null;
       }
@@ -84,7 +84,7 @@ export default defineComponent({
           childProps.class = 'ellipsis-item';
         }
         if ((status === 'error' && index === current)
-            || child.props.status === 'error') {
+          || child.props.status === 'error') {
           icon = 'cross-circle-o';
         }
       }
@@ -110,9 +110,9 @@ export default defineComponent({
       return child;
     });
     return (
-        <div class={classString} {...filterHTMLAttrs(restProps)}>
-          {content}
-        </div>
+      <div class={classString} {...filterHTMLAttrs(restProps)}>
+        {content}
+      </div>
     );
   }
 });

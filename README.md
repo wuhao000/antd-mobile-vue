@@ -62,8 +62,8 @@ SearchBar | √ |
 SegmentedControl | √ |  | √
 Slider | √ | 
 Range | √ | 
-Stepper | √ |  
-Steps | √ | 
+Stepper | √ | √ | √
+Steps | √ | √ | √ 
 SwipeAction | √ |  [无] 
 Switch | √ | √ 
 TabBar | √ |  | √
