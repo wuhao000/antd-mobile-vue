@@ -1,0 +1,1 @@
+{"version":3,"file":"mobile-component.js","sourceRoot":"","sources":["mobile-component.ts"],"names":[],"mappings":"AAEA,eAAe,CAAC;QACd,IAAI,EAAE,aAAa;QACnB,IAAI,EAAE,gBAAgB;QACtB,SAAS,EAAE,GAAG,EAAE,CAAC,MAAM,CAAC,iCAAiC,CAAC;KAC3D,EAAE;QACD,IAAI,EAAE,gBAAgB;QACtB,IAAI,EAAE,mBAAmB;QACzB,SAAS,EAAE,GAAG,EAAE,CAAC,MAAM,CAAC,oCAAoC,CAAC;KAC9D,CAAqB,CAAC"}
