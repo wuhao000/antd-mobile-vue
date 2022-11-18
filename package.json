@@ -91,7 +91,7 @@
     "@types/webpack-sources": "^0.1.5",
     "@vue/cli-plugin-babel": "^3.5.0",
     "@vue/cli-plugin-typescript": "^3.5.0",
-    "@vue/cli-service": "^3.5.0",
+    "@vue/cli-service": "^5.0.8",
     "add-dom-event-listener": "^1.1.0",
     "aegis-ui-desktop": "^1.0.0",
     "antd-mobile": "^2.3.1",
