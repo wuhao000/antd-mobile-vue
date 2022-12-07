@@ -130,7 +130,7 @@
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "less-plugin-npm-import": "^2.1.0",
-    "lint-staged": "^8.1.5",
+    "lint-staged": "^13.1.0",
     "lodash": "^4.17.11",
     "markdown-loader": "^5.0.0",
     "mini-css-extract-plugin": "^0.8.0",
